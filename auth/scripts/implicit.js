@@ -29,6 +29,11 @@ var OAuthClients = {
         "clientKey": "fSsbB1Lj1W4qKXrDQWSk78gVuE4a",
         "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
         "scope": "PRODUCTION"
+    },
+    'hawaii': {
+        'clientKey': 'AizxkAaiEczmz4IMValzo2MAMgwa',
+        'callbackUrl': 'http://ikewai-dev.its.hawaii.edu/auth',
+        'scope': 'PRODUCTION'
     }
 };
 // // production
