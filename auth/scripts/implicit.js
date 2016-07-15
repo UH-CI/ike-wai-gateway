@@ -24,5 +24,10 @@ var OAuthClients = {
         'clientKey': 'T5jWDj57jKDk37l31yYqhSksvWUa',
         'callbackUrl': 'http://togo.agaveapi.co/auth',
         'scope': 'PRODUCTION'
+    },
+    'hawaii': {
+        'clientKey': 'AizxkAaiEczmz4IMValzo2MAMgwa',
+        'callbackUrl': 'http://ikewai-dev.its.hawaii.edu/auth',
+        'scope': 'PRODUCTION'
     }
 };
