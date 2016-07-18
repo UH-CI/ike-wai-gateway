@@ -65,7 +65,6 @@ AgaveToGo.directive('jobProgressBar', function($timeout, JobsController, moment)
                     }, 50);
                 },
                 function(data) {
-                    console.log(data);
                     App.alert({
                         type: 'danger',
                         message: "There was an error fetching the job history. if this " +

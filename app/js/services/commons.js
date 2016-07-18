@@ -1952,4 +1952,17 @@ angular.module('CommonsService', []).service('Commons', ['$rootScope', '$window'
         return function(input) {
             return Commons.pick(input, 1)[0];
         };
-    }]);
+    }])
+    .filter('newsicon', function() {
+        return function(source) {
+            if (source === 'twitter') {
+                return 'fa fa-twitter';
+            }
+            else if (source === 'statusio') {
+                return 'icon icon-statusio';
+            }
+            else {
+                return 'icon icon-agave';
+            }
+        }
+    });

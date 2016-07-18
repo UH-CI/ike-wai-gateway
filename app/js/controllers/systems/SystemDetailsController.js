@@ -9,7 +9,6 @@ angular.module('AgaveToGo').controller('SystemDetailsController', function($root
             }, 50);
         },
         function (data) {
-            console.log(data);
             App.alert({
                 type: 'danger',
                 message: "There was an error contacting the systems service. If this " +

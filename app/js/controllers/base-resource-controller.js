@@ -40,8 +40,6 @@ function BaseResourceCtrl($rootScope, $scope, $state, $stateParams, Commons, Api
 
       $scope[$scope._RESOURCE_NAME] = response.data;
 
-      console.log($scope[$scope._RESOURCE_NAME]);
-
       $.fn.Data.checkbox();
 
       //$scope.addressesAreSame = $scope[$scope._RESOURCE_NAME].contact.addresses.billing === $scope[$scope._RESOURCE_NAME].contact.addresses.mailing;
@@ -67,8 +65,6 @@ function BaseResourceCtrl($rootScope, $scope, $state, $stateParams, Commons, Api
       if (response.code == 404 && $scope[$scope._RESOURCE_NAME] === null) {
         $state.go('frontend-404');
       } else {
-        console.log("Error response from remote call: ");
-        console.log(response);
         App.alert({
           type: 'danger',
           message: $scope._COLLECTION_NAME + " operation failed <br>" + $scope.getErrorMessage(response)
@@ -142,7 +138,6 @@ function BaseResourceCtrl($rootScope, $scope, $state, $stateParams, Commons, Api
     if ($($scope.getFormId()).valid()) {
       $scope.filterBeforeSubmit();
 
-      console.log($scope[$scope._RESOURCE_NAME]);
       if (Commons.isNotEmpty($scope.getResourceId())) {
         ApiStub.update($scope[$scope._RESOURCE_NAME]).then(
           function (response) {

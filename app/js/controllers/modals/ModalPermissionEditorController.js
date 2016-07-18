@@ -61,7 +61,7 @@ angular.module('AgaveToGo').controller('ModalPermissionEditorController', functi
                     placeholder: "Name of user to whom permissions will be granted",
                     type: "input",
                     onChange: function (value, form) {
-                        console.log("Successfully updated permission for " + $scope.model.grants[arrayIndex].username + " to " + value + " on username change");
+
                         //ApiPermissionUpdateFunction(resource.id, { username: model[arrayIndex].username, permission: value }).then(
                         //    function(response) {
                         //        console.log("Successfully updated permission for " + response.username + " to " + response.permission);
@@ -75,7 +75,7 @@ angular.module('AgaveToGo').controller('ModalPermissionEditorController', functi
                     key: "grants[].permission",
                     type: "select",
                     onChange: function (value, form) {
-                        console.log("Successfully updated permission for " + $scope.model.grants[arrayIndex].username + " to " + value + " on permission value change");
+
                         //ApiUpdateFunction(resource.id, { username: model[arrayIndex].username, permission: value }).then(
                         //    function(response) {
                         //        console.log("Successfully updated permission for " + response.username + " to " + response.permission);
@@ -101,7 +101,6 @@ angular.module('AgaveToGo').controller('ModalPermissionEditorController', functi
         var that = resource;
         ApiPermissionListFunction(resource.id).then(
             function (response) {
-                console.log("Successfully fetched permission for " + that.id);
                 angular.forEach(response, function (grant, key) {
                     if (grant.permission.read) {
                         if (grant.permission.write) {
@@ -133,7 +132,6 @@ angular.module('AgaveToGo').controller('ModalPermissionEditorController', functi
                 App.unblockUI('#modal-permission-form');
             },
             function (response) {
-                console.log("Failed to fetch permissions for " + that.id);
                 App.unblockUI('#modal-permission-form');
             });
     };

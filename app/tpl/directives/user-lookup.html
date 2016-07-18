@@ -1,5 +1,5 @@
 <ui-select ng-model="sysRole" theme="bootstrap" ng-disabled="disabled" title="Single property binding with async data">
-    <ui-select-match placeholder="Username...">{{$select.selected.username || $select.selected}}</ui-select-match>
+    <ui-select-match placeholder="Search username...">{{$select.selected.username || $select.selected}}</ui-select-match>
     <ui-select-choices repeat="person.username as person in peopleAsync | propsFilter: {name: $select.search, username: $select.search, email: $select.search} track by person.uuid">
         <div ng-bind-html="(person.firstName + ' ' person.lastName) | highlight: $select.search"></div>
         <small>

@@ -13,7 +13,6 @@ angular.module('AgaveToGo').controller('AppDetailsController', function($rootSco
             }, 50);
         },
         function (data) {
-            console.log(data);
             t.updateSinglePageInline("Error fetching app description.");
         });
 });

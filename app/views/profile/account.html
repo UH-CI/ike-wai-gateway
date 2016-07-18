@@ -28,13 +28,13 @@
                         <form role="form" action="#">
                             <div class="form-group">
                                 <label class="control-label">First Name</label>
-                                <input type="text" ng-model="profile.firstName" placeholder="John" class="form-control" /> </div>
+                                <input type="text" ng-model="profile.first_name || profile.firstName" placeholder="John" class="form-control" /> </div>
                             <div class="form-group">
                                 <label class="control-label">Last Name</label>
-                                <input type="text" ng-model="profile.lastName" placeholder="Doe" class="form-control" /> </div>
+                                <input type="text" ng-model="profile.last_name || profile.lastName" placeholder="Doe" class="form-control" /> </div>
                             <div class="form-group">
                                 <label class="control-label">Research Interests</label>
-                                <input type="text" placeholder="Neurology, Thermodynamics, Distributed Systems" class="form-control" /> </div>
+                                <input type="text" ng-model="profile.researchInterests"placeholder="Neurology, Thermodynamics, Distributed Systems" class="form-control" /> </div>
                             <div class="form-group">
                                 <label class="control-label">Position</label>
                                 <input type="text" ng-model="profile.position" placeholder="Professor" class="form-control" /> </div>
@@ -46,21 +46,21 @@
                                 <label class="control-label">Website Url</label>
                                 <input type="text" ng-model="profile.website" placeholder="http://www.mywebsite.com" class="form-control" /> </div>
                             <div class="margiv-top-10">
-                                <a href="#" class="btn green-haze"> Save Changes </a>
+                                <a ng-if="username === 'me'" href="#" class="btn green-haze save-button"> Save Changes </a>
                                 <a href="#" class="btn default"> Cancel </a>
                             </div>
                         </form>
                     </div>
                     <!-- END PERSONAL INFO TAB -->
                     <!-- PERSONAL INFO TAB -->
-                    <div class="tab-pane active" id="tab_1_2">
+                    <div class="tab-pane" id="tab_1_2">
                         <form role="form" action="#">
                             <div class="form-group">
                                 <label class="control-label">Email</label>
                                 <input type="text" ng-model="profile.email" placeholder="foo@example.com" class="form-control" /> </div>
                             <div class="form-group">
                                 <label class="control-label">Mobile Number</label>
-                                <input type="text" ng-model="profile.mobile" placeholder="+1 444-444-4444" class="form-control" /> </div>
+                                <input type="text" ng-model="profile.mobile_phone || profile.mobile" placeholder="+1 444-444-4444" class="form-control" /> </div>
                             <div class="form-group">
                                 <label class="control-label">Office Number</label>
                                 <input type="text" ng-model="profile.phone" placeholder="+1 555-555-5555" class="form-control" /> </div>
@@ -87,7 +87,7 @@
                                     <option ng-repeat="country in Commons.getCountries() track by $index" value="{{country.code}}">{{country.name}}</option>
                                 </select></div>
                             <div class="margiv-top-10">
-                                <a href="#" class="btn green-haze"> Save Changes </a>
+                                <a ng-if="username === 'me'" href="#" class="btn green-haze save-button"> Save Changes </a>
                                 <a href="#" class="btn default"> Cancel </a>
                             </div>
                         </form>
@@ -119,37 +119,41 @@
                                 <tr>
                                     <td> Include profile in search results </td>
                                     <td>
-                                        <label class="uniform-inline">
-                                            <input type="radio" name="optionsRadios1" value="option1" /> Yes </label>
-                                        <label class="uniform-inline">
-                                            <input type="radio" name="optionsRadios1" value="option2" checked/> No </label>
+                                        <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="YES" data-off-color="default" data-off-text="NO"> </li>
+                                        <!--<label class="uniform-inline">-->
+                                            <!--<input type="radio" name="optionsRadios1" value="option1" /> Yes </label>-->
+                                        <!--<label class="uniform-inline">-->
+                                            <!--<input type="radio" name="optionsRadios1" value="option2" checked/> No </label>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td> Subscribe to Agave ToGo newsletter. </td>
+                                    <td> Subscribe to <i>fake</i> Agave ToGo newsletter. </td>
                                     <td>
-                                        <label class="uniform-inline">
-                                            <input type="checkbox" value="" /> Yes </label>
+                                        <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="YES" data-off-color="default" data-off-text="NO"> </li>
+                                        <!--<label class="uniform-inline">-->
+                                            <!--<input type="checkbox" value="" /> Yes </label>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td> Subscribe to Agave Platform newsletter. </td>
+                                    <td> Subscribe to <i>fake</i> Agave Platform newsletter. </td>
                                     <td>
-                                        <label class="uniform-inline">
-                                            <input type="checkbox" value="" /> Yes </label>
+                                        <input type="checkbox" class="make-switch" checked data-size="small" data-on-color="success" data-on-text="YES" data-off-color="default" data-off-text="NO"> </li>
+                                        <!--<label class="uniform-inline">-->
+                                            <!--<input type="checkbox" value="" /> Yes </label>-->
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td> Subscribe to the Agave <i>Preview</i> program. </td>
+                                    <td> Subscribe to the <i>fake</i> Agave Beta program. </td>
                                     <td>
-                                        <label class="uniform-inline">
-                                            <input type="checkbox" value="" /> Yes </label>
+                                        <input type="checkbox" class="make-switch" data-size="small" data-on-color="success" data-on-text="YES" data-off-color="default" data-off-text="NO"> </li>
+                                        <!--<label class="uniform-inline">-->
+                                            <!--<input type="checkbox" value="" /> Yes </label>-->
                                     </td>
                                 </tr>
                             </table>
                             <!--end profile-settings-->
                             <div class="margin-top-10">
-                                <a href="#" class="btn green-haze"> Save Changes </a>
+                                <a ng-if="username === 'me'" href="#" class="btn green-haze save-button"> Save Changes </a>
                                 <a href="#" class="btn default"> Cancel </a>
                             </div>
                         </form>

@@ -3,8 +3,8 @@
   "version": "2.0.0",
   "description": "Reference webapp for the Agave Platform",
   "author": "Rion Dooley <dooley@tacc.utexas.edu>",
-  "license": "BSD-2Clause",
-  "repository": "https://bitbucket.org/deardooley/agave-togo",
+  "license": "BSD-2-Clause",
+  "repository": "https://bitbucket.org/agaveapi/agave-togo",
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-ignore": "^2.0.1",
@@ -21,7 +21,7 @@
     "bower": "^1.6.5"
   },
   "scripts": {
-    "postinstall": "bower --allow-root install",
+    "postinstall": "node_modules/bower/bin/bower --allow-root install",
 
     "start": "http-server -a localhost -p 9000 -c-1",
 

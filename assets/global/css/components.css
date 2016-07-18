@@ -14994,3 +14994,7 @@ Color library demo
 
 
 .top-buffer { margin-top:10px; }
+
+.json-formatter-row{
+  font-size: medium;
+}

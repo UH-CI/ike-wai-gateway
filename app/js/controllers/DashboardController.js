@@ -1,5 +1,5 @@
 angular.module('AgaveToGo').controller('DashboardController',
-  function($rootScope, $scope, $http, $timeout, $filter, Commons, JobsController, SystemsController, StatusIoController, moment, amMoment, Jira) {
+  function($rootScope, $scope, $http, $timeout, $filter, Commons, MonitorsController, AppsController, JobsController, SystemsController, StatusIoController, moment, amMoment, Jira) {
     $scope.$on('$viewContentLoaded', function () {
       // initialize core components
       App.initAjax();
@@ -122,14 +122,87 @@ angular.module('AgaveToGo').controller('DashboardController',
       negBarColor: '#e02222'
     });
 
+      StatusIoController.listStatuses().then(function(data) {
+          $timeout(function () {
+              $scope.platformStatuses = data.result;
+          }, 50);
+      },
+      function(error) {
+          $timeout(function () {
+            $scope.platfomStatues = [];
+          }, 0);
+      });
+
+        MonitorsController.listMonitoringTasks().then(
+            function(data) {
+                $timeout(function () {
+                    $scope.monitors = data;
+                }, 50);
+            },
+            function(response) {
+                $timeout(function () {
+                    $scope.monitors = [];
+                }, 50);
+            });
+
+      $scope.systems = [];
+      SystemsController.listSystems(9999999).then(
+          function(data) {
+              var systemCount = data.length;
+              $timeout(function () {
+                  if (systemCount) {
+                      var systems = $filter('orderBy')(data, 'lastUpdated', true);
+                      for (var i =0; i<Math.min(systemCount, 10); i++) {
+                          $scope.systems.push(systems[i]);
+                      }
+                  }
+                  else {
+                      $scope.systems = [];
+                  }
+
+                  $scope.systemCount = systemCount;
+              }, 50);
+          },
+          function(response) {
+              $timeout(function () {
+                  $scope.systems = [];
+                  $scope.systemCount = 0;
+              }, 50);
+          });
+
+      AppsController.listApps(9999999, 0, { filter: 'id' }).then(
+          function(data) {
+              var appCount = data.result.length;
+              $timeout(function () {
+                  $scope.apps = data.result;
+                  $scope.appCount = appCount;
+              }, 50);
+          },
+          function(response) {
+              $timeout(function () {
+                  $scope.apps = [];
+                  $scope.appCount = 0;
+              }, 50);
+          });
+
+      JobsController.listJobs(null, null, null, null, null, null, null, null, 999999).then(
+          function(data) {
+              var jobCount = data.result.length;
+              $scope.jobCount = jobCount;
+          },
+          function (data) {
+              $scope.jobCount = 0;
+          });
+
     JobsController.listJobs(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 'FINISHED', null, null).then(
         function (data) {
           $timeout(function () {
-            $scope.jobListing = data;
+              $scope.jobListing = data.result;
+
           }, 50);
         },
         function (data) {
-          $scope.jobListing = [];
+            $scope.jobListing = [];
         });
 
     Jira.search('open').then(

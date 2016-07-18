@@ -1,0 +1,102 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+
+  <div class="row">
+    <div class="col-xs-9">
+      <div ng-if="notification" class="table-responsive">
+        <table class="table">
+          <thead class="hidden-sm hidden-xs">
+          <tr>
+             <th class="col-sm-2"></th>
+             <th class="col-sm-10"></th>
+           </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="notification.associateId">
+              <td>Associate ID</td>
+              <td>{{notification.associateId}}</td>
+            </tr>
+            <tr ng-if="notification.attemps">
+              <td>Attemps</td>
+              <td>{{notification.attemps}}</td>
+            </tr>
+            <tr ng-if="notification.owner">
+              <td>Created</td>
+              <td>{{notification.created}}</td>
+            </tr>
+            <tr ng-if="notification.event">
+              <td>Event</td>
+              <td>{{notification.event}}</td>
+            </tr>
+            <tr ng-if="notification.id">
+              <td>ID</td>
+              <td>{{notification.id}}</td>
+            </tr>
+           <tr ng-if="notification.lastSent">
+             <td>Last Sent</td>
+             <td>{{notification.lastSent}}</td>
+           </tr>
+           <tr ng-if="notification.lastUpdated">
+             <td>Last Updated</td>
+             <td>{{notification.lastUpdated}}</td>
+           </tr>
+           <tr ng-if="notification.owner">
+             <td>Owner</td>
+             <td>{{notification.owner}}</td>
+           </tr>
+           <tr ng-if="notification.persistent">
+             <td>Persistent</td>
+             <td>{{notification.persistent}}</td>
+           </tr>
+           <tr ng-if="notification.policy">
+             <td>Policy</td>
+             <td>
+               <div ng-repeat="(key, value) in notification.policy">
+                 {{key}}: {{value}}
+               </div>
+             </td>
+           </tr>
+           <tr ng-if="notification.responseCode">
+             <td>Response Code</td>
+             <td>{{notification.responseCode}}</td>
+           </tr>
+           <tr ng-if="notification.status">
+             <td>Status</td>
+             <td>
+               {{notification.status}}
+             </td>
+           </tr>
+           <tr ng-if="notification.success">
+             <td>Success</td>
+             <td>{{notification.success}}</td>
+           </tr>
+           <tr ng-if="notification.url">
+             <td>URL</td>
+             <td>{{notification.url}}</td>
+           </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div ng-if="notification" class="btn-group pull-right">
+          <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+              Actions
+              <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a ng-click="edit('notifications', notification)" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+            </li>
+            <li>
+              <a ng-click="confirmAction('notifications', notification, 'delete')"> <i class="fa fa-trash-o"></i> Delete </a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

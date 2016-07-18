@@ -1,6 +1,6 @@
 build:
-  image: node:0:10
+  image: node:0.10
   command: npm install --unsafe-perm --production
-  workdir: '/usr/src/app'
+  working_dir: '/usr/src/app'
   volumes:
     - '.:/usr/src/app'

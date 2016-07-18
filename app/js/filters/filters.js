@@ -46,4 +46,36 @@ AgaveToGo.filter('propsFilter', function () {
         return path;
     }
 }])
-;
+.filter("systemStatusIcon", [ function() {
+    return function(system) {
+        if (system.type == 'STORAGE') {
+            // if (system.storage.protocol === 'S3') {
+            //     return 'fa-amazon';
+            // } else if (system.storage.protocol === 'DROPBOX') {
+            //     return 'fa-dropbox';
+            // } else if (system.storage.protocol === 'BOX') {
+            //     return 'fa-box';
+            // } else if (system.storage.protocol === 'IRODS') {
+            //     return 'agave-irods';
+            // } else  {
+                return 'fa-database';
+            // }
+        } else {
+            return 'fa-server'
+        }
+    }
+}])
+.filter("notificationStatusColor", [ function() {
+    return function(status) {
+        if (status.indexOf('failed')) {
+            return 'label-warning';
+        } else {
+            return 'label-default';
+        }
+    }
+}])
+.filter("notificationStatusIcon", [ function() {
+    return function(notification) {
+        return 'agave-webhooks';
+    }
+}]);

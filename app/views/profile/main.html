@@ -9,42 +9,7 @@
             <a href="#/profile/dashboard">User Profile</a>
         </li>
     </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true"> Actions
-                <i class="fa fa-angle-down"></i>
-            </button>
-            <ul class="dropdown-menu pull-right" role="menu">
-                <li>
-                    <a href="#">
-                        <i class="icon-user"></i> New User </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="icon-present"></i> New Event
-                        <span class="badge badge-success">4</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="icon-basket"></i> New order </a>
-                </li>
-                <li class="divider"> </li>
-                <li>
-                    <a href="#">
-                        <i class="icon-flag"></i> Pending Orders
-                        <span class="badge badge-danger">4</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="icon-users"></i> Pending Users
-                        <span class="badge badge-warning">12</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <div landing-start-menu></div>
 </div>
 <h3 class="page-title"> Profile </h3>
 <!-- END PAGE HEADER-->
@@ -61,14 +26,14 @@
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">
-                    <div class="profile-usertitle-name"> {{ profile.firstName }} {{ profile.lastName }} </div>
+                    <div class="profile-usertitle-name"> {{ profile.firstName || profile.first_name}} {{ profile.lastName || profile.last_name}} </div>
                     <div ng-if="!!profile.position && profile.position !== 'null'" class="profile-usertitle-job"> {{ profile.position }} </div>
                 </div>
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
                 <div class="profile-userbuttons">
-                    <button type="button" class="btn btn-circle green-haze btn-sm">Follow</button>
-                    <button type="button" class="btn btn-circle btn-danger btn-sm">Message</button>
+                    <a href="mailto:{{profile.email}}" class="btn btn-circle green-haze btn-sm">Add</a>
+                    <a href="mailto:{{profile.email}}" class="btn btn-circle btn-danger btn-sm">Message</a>
                 </div>
                 <!-- END SIDEBAR BUTTONS -->
                 <!-- SIDEBAR MENU -->
@@ -82,9 +47,9 @@
                             <a ui-sref="profile.account">
                                 <i class="icon-settings"></i> Account Settings </a>
                         </li>
-                        <li>
-                            <a href="#/todo">
-                                <i class="icon-check"></i> Tasks </a>
+                        <li ng-if="projects.length > 0">
+                            <a href="#/projects">
+                                <i class="icon-check"></i> Projects </a>
                         </li>
                         <li ng-class="{active: $state.includes('profile.help')}">
                             <a ui-sref="profile.help">
@@ -100,16 +65,16 @@
                 <!-- STAT -->
                 <div class="row list-separated profile-stat">
                     <div class="col-md-4 col-sm-4 col-xs-6">
-                        <div class="uppercase profile-stat-title"> 37 </div>
-                        <div class="uppercase profile-stat-text"> Projects </div>
+                        <div class="uppercase profile-stat-title"> {{jobCount}} </div>
+                        <div class="uppercase profile-stat-text"> Jobs </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-6">
-                        <div class="uppercase profile-stat-title"> 51 </div>
-                        <div class="uppercase profile-stat-text"> Tasks </div>
+                        <div class="uppercase profile-stat-title"> {{appCount}} </div>
+                        <div class="uppercase profile-stat-text"> Apps </div>
                     </div>
                     <div class="col-md-4 col-sm-4 col-xs-6">
-                        <div class="uppercase profile-stat-title"> 61 </div>
-                        <div class="uppercase profile-stat-text"> Uploads </div>
+                        <div class="uppercase profile-stat-title"> {{systemCount}} </div>
+                        <div class="uppercase profile-stat-text"> Systems </div>
                     </div>
                 </div>
                 <!-- END STAT -->

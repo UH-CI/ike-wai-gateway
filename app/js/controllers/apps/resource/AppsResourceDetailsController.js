@@ -7,10 +7,17 @@ angular.module('AgaveToGo').controller('AppsResourceDetailsController', function
       AppsController.getAppDetails($stateParams.appId)
         .then(
           function(response){
-            $scope.app = response;
+            $scope.app = response.result;
           },
           function(response){
-            var message = response.errorMessage ? 'Error: Could not retrieve app - ' + response.errorMessage : 'Error: Could not retrieve app';
+            var message = '';
+            if (response.errorResponse.message) {
+              message = 'Error: Could not retrieve app - ' + response.errorResponse.message
+            } else if (response.errorResponse.fault){
+              message = 'Error: Could not retrieve app - ' + response.errorResponse.fault.message;
+            } else {
+              message = 'Error: Could not retrieve app';
+            }
             App.alert(
               {
                 type: 'danger',
@@ -20,7 +27,14 @@ angular.module('AgaveToGo').controller('AppsResourceDetailsController', function
           }
         );
     } else {
-      var message = response.errorMessage ? 'Error: Could not retrieve app - ' + response.errorMessage : 'Error: Could not retrieve app';
+      var message = '';
+      if (response.errorResponse.message) {
+        message = 'Error: Could not retrieve app - ' + response.errorResponse.message
+      } else if (response.errorResponse.fault){
+        message = 'Error: Could not retrieve app - ' + response.errorResponse.fault.message;
+      } else {
+        message = 'Error: Could not retrieve app';
+      }
       App.alert(
         {
           type: 'danger',

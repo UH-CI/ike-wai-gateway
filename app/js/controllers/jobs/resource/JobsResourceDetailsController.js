@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('JobsResourceDetailsController', function($scope, $stateParams, $state, JobsController, ActionsService, PermissionsService) {
+angular.module('AgaveToGo').controller('JobsResourceDetailsController', function($scope, $stateParams, $state, JobsController, ActionsService) {
 
   $scope.job = null;
 
@@ -8,11 +8,19 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
       JobsController.getJobDetails($stateParams.id)
         .then(
           function(response){
-            $scope.job = response;
+            $scope.job = response.result;
+            $scope.$parent.name = response.result.name;
             $scope.requesting = false;
           },
           function(response){
-            var message = response.errorMessage ? 'Error: Could not retrieve job - ' + response.errorMessage : 'Error: Could not retrieve job';
+            var message = '';
+            if (response.errorResponse.message) {
+              message = 'Error: Could not retrieve job - ' + response.errorResponse.message
+            } else if (response.errorResponse.fault){
+              message = 'Error: Could not retrieve job - ' + response.errorResponse.fault.message;
+            } else {
+              message = 'Error: Could not retrieve job';
+            }
             App.alert(
               {
                 type: 'danger',
@@ -23,13 +31,14 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
           }
         );
     } else {
-      var message = response.errorMessage ? 'Error: Could not retrieve job - ' + response.errorMessage : 'Error: Could not retrieve job';
+      var message = response.errorResponse.message ? 'Error: Could not retrieve job - ' + response.errorResponse.message : 'Error: Could not retrieve job';
       App.alert(
         {
           type: 'danger',
           message: message
         }
       );
+      $scope.requesting = false;
     }
   };
 
@@ -40,7 +49,7 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
           $state.go('data-explorer', {'systemId': data.archiveSystem, path: data.archivePath});
         },
         function(data){
-          var message = response.errorMessage ? 'Error: Could not retrieve job - ' + response.errorMessage : 'Error: Could not retrieve job';
+          var message = response.errorResponse.message ? 'Error: Could not retrieve job - ' + response.errorResponse.message : 'Error: Could not retrieve job';
           App.alert(
             {
               type: 'danger',
@@ -48,21 +57,10 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
             }
           );
           $scope.requesting = false;
+          $scope.requesting = false;
         }
       );
   }
-
-  // $scope.confirmAction = function(resourceType, resource, resourceAction, resourceIndex){
-  //   ActionsService.confirmAction(resourceType, resource, resourceAction, resourceIndex);
-  // };
-  //
-  // $scope.editPermissions = function(resource) {
-  //   PermissionsService.editPermissions(resource);
-  // }
-  //
-  // $scope.edit = function(resourceType, resource){
-  //   ActionsService.edit(resourceType, resource);
-  // };
 
   $scope.getJob();
 

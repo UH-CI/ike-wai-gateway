@@ -25,7 +25,7 @@ AgaveToGo.directive('schemaFormWizard', function($scope, $http, WizardHandler) {
             $scope.submit = function () {
                 $scope.$broadcast('schemaFormValidate');
                 if ($scope.myForm.$valid) {
-                    console.log($scope.model);
+                    // console.log($scope.model);
                 }
             };
 

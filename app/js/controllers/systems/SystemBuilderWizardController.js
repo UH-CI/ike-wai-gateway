@@ -55,7 +55,8 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                 "title": "System Auth Username"
             },
             "password": {
-                "type": "string",
+                // "type": "string",
+                "type": "password",
                 "description": "The password of the default resource to use when defining an X system",
                 "title": "System Auth Password"
             },
@@ -113,7 +114,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                 "title": "Scheduler"
             },
             "environment": {
-                "type": "string",
+                "type": [null,"string"],
                 "title": "Environment"
             },
             "startupScript": {
@@ -263,7 +264,8 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                                 "title": "Username"
                             },
                             "password": {
-                                "type": "string",
+                                // "type": "string",
+                                "type": "password",
                                 "title": "Password"
                             },
                             "type": {
@@ -398,7 +400,8 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                             },
                             "password": {
                                 "title": "Password",
-                                "type": "string"
+                                // "type": "string"
+                                "type": "password"
                             },
                             "type": {
                                 "title": "Type",
@@ -1419,7 +1422,9 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                              "model.login.auth.type === 'ANONYMOUS'",
                            "items": [
                              {
+                                 "title": "Password",
                                  "key": "login.auth.password",
+                                 "type": "password"
                              }
                            ]
                         },
@@ -2853,7 +2858,9 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                                "model.storage.auth.type === 'ANONYMOUS'",
                              "items": [
                                {
-                                   "key": "storage.auth.password"
+                                   "key": "storage.auth.password",
+                                   "type": "password",
+                                   "title": "Password"
                                }
                              ]
                           },

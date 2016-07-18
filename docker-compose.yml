@@ -1,9 +1,24 @@
-web:
-  image: agaveapi/httpd:2.4
-  restart: always
-  environment:
-    - 'DOCUMENT_ROOT=/var/www/html'
-  ports:
-    - '8018:80'
-  volumes:
-    - '.:/var/www/html:ro'
+version: '2'
+
+services:
+  web:
+    image: agaveapi/httpd:2.4
+    hostname: togo.staging.agaveapi.co
+    restart: always
+    environment:
+      - 'DOCUMENT_ROOT=/var/www/html'
+    ports:
+      - '80'
+    volumes:
+      - '.:/var/www/html:ro'
+    labels:
+      - "traefik.backend=togo"
+      - "traefik.frontend.rule=Host:togo.staging.agaveapi.co"
+      - "traefik.port=80"
+      - "traefik.protocol=http"
+      - "traefik.frontend.entryPoints=https,http"
+    networks:
+      - togo
+
+networks:
+  togo:

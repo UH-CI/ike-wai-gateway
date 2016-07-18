@@ -91,7 +91,7 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
               $scope.requesting = true;
 
               AppsController.listAppPermissions($scope.resource.id, 99999, 0).then(
-                function(data) {
+                function(response) {
                   ProfilesController.listProfiles()
                     .then(function(profiles){
                       $scope.profiles = profiles;
@@ -185,7 +185,7 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
 
                       $scope.tempModel.permissions = [];
 
-                      angular.forEach(data, function(permission){
+                      angular.forEach(response.result, function(permission){
                         $scope.tempModel.permissions.push({username: permission.username, permission:  $scope.transformRwxToAgave(permission.permission)});
                       });
 
@@ -200,7 +200,7 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
                       });
                     })
                   },
-                  function(data) {
+                  function(response) {
                       var message = response.errorMessage ?  "Error: " + response.errorMessage : "Error contacting the service"
                       App.alert({
                           type: 'danger',
@@ -235,12 +235,12 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
 
               $q.all(promises).then(
                 function(response) {
-                    App.alert({message: "Successfully updated user permissions for " + system.id});
+                    App.alert({message: "Successfully updated user permissions for " + resource.id});
                     $scope.requesting = false;
                     $modalInstance.close();
                 },
                 function(response) {
-                    var message = response.errorMessage ?  "Error: " + response.errorMessage : "Error contacting the service"
+                    var message = 'Error: Could not update permissions'
                     App.alert({
                         type: 'danger',
                         message: message

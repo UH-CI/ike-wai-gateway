@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('AppsResourceRunController', function($scope, $stateParams, $uibModal, $modalStack, $localStorage, $rootScope, AppsController, SystemsController, JobsController) {
+angular.module('AgaveToGo').controller('AppsResourceRunController', function($scope, $stateParams, $uibModal, $modalStack, $localStorage, $rootScope, AppsController, SystemsController, JobsController, NotificationsController) {
 
     $scope.formSchema = function(app) {
       var schema = {
@@ -128,7 +128,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
         AppsController.getAppDetails($stateParams.appId)
           .then(
             function(response){
-              $scope.app = response;
+              $scope.app = response.result;
               $scope.form = {model: {}};
               $scope.form.schema = $scope.formSchema($scope.app);
               $scope.form.form = [];
@@ -136,6 +136,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               /* inputs */
               var items = [];
               if ($scope.form.schema.properties.inputs) {
+
                 items.push({
                   'key':'inputs',
                   'items': []
@@ -145,7 +146,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                     {
                       "input": key,
                       "type": "template",
-                      "template": '<div class="form-group has-success has-feedback"> <label for="input">{{form.title}}</label> <div class="input-group"> <a class="input-group-addon" ng-click="form.selectFile(form.input)">Select</a> <input type="text" class="form-control" id="input" ng-model="form.model.parameters[form.input]"></div> <span class="help-block">{{form.description}}</span> </div>',
+                      "template": '<div class="form-group has-success has-feedback"> <label for="input">{{form.title}}</label> <div class="input-group"> <a class="input-group-addon" ng-click="form.selectFile(form.input)">Select</a> <input type="text" class="form-control" id="input" ng-model="form.model.inputs[form.input]"></div> <span class="help-block">{{form.description}}</span> </div>',
                       "title": input.title,
                       "description": input.description,
                       "model": $scope.form.model,
@@ -161,8 +162,6 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                                   $rootScope.uploadFileContent = '';
                                   $uibModal.open({
                                     templateUrl: "views/apps/filemanager.html",
-                                    // resolve: {
-                                    // },
                                     scope: $scope,
                                     size: 'lg',
                                     controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
@@ -177,7 +176,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
 
                                       $scope.$watch('uploadFileContent', function(uploadFileContent){
                                           if (typeof uploadFileContent !== 'undefined' && uploadFileContent !== ''){
-                                            if (typeof $scope.form.model.parameters === 'undefined'){
+                                            if (typeof $scope.form.model.inputs === 'undefined'){
                                               $scope.form.model.inputs = {};
                                             }
                                             $scope.form.model.inputs[key] = uploadFileContent;
@@ -205,7 +204,6 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               }
 
               if ($scope.form.schema.properties.parameters) {
-                // items.push('parameters');
                 items.push({
                   'key': 'parameters',
                   'items': []
@@ -291,7 +289,6 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               items = [];
 
               items.push({type: 'submit', title: 'Run', style: 'btn-primary'});
-              // items.push({type: 'button', title: 'Close', style: 'btn-link', onClick: 'closeApp()'});
               $scope.form.form.push({
                 type: 'actions',
                 items: items
@@ -299,7 +296,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
             }
           )
           .catch(
-            function(repsonse){
+            function(response){
               var message = response.errorMessage ? 'Error: Could not retrieve app - ' + response.errorMessage : 'Error: Could not retrieve app';
               App.alert(
                 {
@@ -358,7 +355,35 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
         JobsController.createSubmitJob(jobData)
           .then(
             function(response) {
-              $scope.job = response;
+              // hard-wired for now
+              var notification = {};
+              notification.associatedUuid = response.result.id;
+              notification.event = '*';
+              notification.persistent = true;
+              notification.url = 'http://9d1e23fc.fanoutcdn.com/fpp';
+
+              NotificationsController.addNotification(notification)
+                .then(
+                  function(response){
+                  },
+                  function(response){
+                    var message = '';
+                    if (response.errorResponse.message) {
+                      message = 'Error: Could not register notifications - ' + response.errorResponse.message
+                    } else if (response.errorResponse.fault){
+                      message = 'Error: Could not register notifications - ' + response.errorResponse.fault.message;
+                    } else {
+                      message = 'Error: Could not register notifications';
+                    }
+                    App.alert(
+                      {
+                        type: 'danger',
+                        message: message
+                      }
+                    );
+                  }
+                );
+              $scope.job = response.result;
 
               $uibModal.open({
                 templateUrl: "views/apps/resource/job-success.html",
@@ -379,7 +404,14 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               $scope.requesting = false;
             },
             function(response) {
-              var message = response.errorMessage ? 'Error: your job submission failed with the following message: - ' + response.errorMessage : 'Error: Error: your job submission failed';
+              var message = '';
+              if (response.errorResponse.message) {
+                message = 'Error: Job submission failed - ' + response.errorResponse.message
+              } else if (response.errorResponse.fault){
+                message = 'Error: Job submission failed - ' + response.errorResponse.fault.message;
+              } else {
+                message = 'Error: Job submission failed';
+              }
               App.alert(
                 {
                   type: 'danger',

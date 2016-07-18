@@ -1,3 +1,4 @@
 /auth/scripts/implicit.js
 bower_components
 node_modules
+.idea

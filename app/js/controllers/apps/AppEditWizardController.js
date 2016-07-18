@@ -1,35 +1,4 @@
-angular.module('AgaveToGo').controller('AppEditWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $location, $stateParams, $q, $uibModal, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
-
-    //var handleTitle = function(tab, navigation, index) {
-    //    var total = navigation.find('li').length;
-    //    var current = index + 1;
-    //    // set wizard title
-    //    $('.step-title', $('#form_wizard_1')).text('Step ' + (index + 1) + ' of ' + total);
-    //    // set done steps
-    //    jQuery('li', $('#form_wizard_1')).removeClass("done");
-    //    var li_list = navigation.find('li');
-    //    for (var i = 0; i < index; i++) {
-    //        jQuery(li_list[i]).addClass("done");
-    //    }
-    //
-    //    if (current == 1) {
-    //        $('#form_wizard_1').find('.button-previous').hide();
-    //    } else {
-    //        $('#form_wizard_1').find('.button-previous').show();
-    //    }
-    //
-    //    if (current >= total) {
-    //        $('#form_wizard_1').find('.button-next').hide();
-    //        $('#form_wizard_1').find('.button-submit').show();
-    //        displayConfirm();
-    //    } else {
-    //        $('#form_wizard_1').find('.button-next').show();
-    //        $('#form_wizard_1').find('.button-submit').hide();
-    //    }
-    //    App.scrollTo($('.page-title'));
-    //}
-    //
-
+angular.module('AgaveToGo').controller('AppEditWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $location, $stateParams, $q, $uibModal, $localStorage, $location, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
 
     $scope.schema = {
         "type": "object",
@@ -121,7 +90,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                     "placeholder": 1
                 }
             },
-            "defaultRequestedTime": {
+            "defaultMaxRunTime": {
                 "type": "string",
                 "description": "Default max run time to be used when running this app if no requested run time is given in the job request",
                 "maxLength": 10,
@@ -421,14 +390,14 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                             "title": "Value",
                             "properties": {
                                 "default": {
-                                    "type": "string",
+                                    "type": ["number","string"],
                                     "description": "Description of this parameter.",
                                     "title": "Default value"
                                 },
                                 "type": {
                                     "type": "string",
                                     "description": "The content type of the parameter.",
-                                    "enum": ["string", "number", "boolean", "enumeration", "flag"],
+                                    "enum": ["string", "number", "bool", "enumeration", "flag"],
                                     "title": "Parameter type",
                                 },
                                 "validator": {
@@ -629,7 +598,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                                     });
                                 },
                                 function(result) {
-                                    console.log("Failed to fetch " + modelValue + " system queues");
+                                    // console.log("Failed to fetch " + modelValue + " system queues");
                                 });
                         }
                     },
@@ -648,7 +617,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                     "defaultNodeCount",
                     "defaultMemoryPerNode",
                     "defaultProcessorsPerNode",
-                    "defaultRequestedTime",
+                    "defaultMaxRunTime",
                     {
                         key: "parallelism",
                         type: "select",
@@ -715,7 +684,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                                 "description": "Descriptive details about this app parameter used in form generation.",
                                 "items": [
                                     "parameters[].details.label",
-                                    "parameters[].details.description",
+                                    // "parameters[].details.description",
                                     {
                                         "key": "parameters[].details.showArgument",
                                         type: "radiobuttons",
@@ -814,20 +783,24 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                                         },
                                         $validators: {
                                             minLessThanMax: function (value) {
+                                               if (typeof $scope.model.parameters !== 'undefined'){
                                                 if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
                                                   if (value && $scope.model.parameters[arrayIndex].semantics.maxCardinality > 0 &&
                                                       value > $scope.model.parameters[arrayIndex].semantics.maxCardinality) {
                                                       return false;
                                                   }
                                                 }
+                                              }
                                                 return true;
                                             },
                                             oneWhenBoolish: function (value) {
-                                              if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
-                                                if (value && ($scope.model.parameters[arrayIndex].value.type == 'bool' ||
+                                              if (typeof $scope.model.parameters !== 'undefined'){
+                                                if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
+                                                  if (value && ($scope.model.parameters[arrayIndex].value.type == 'bool' ||
                                                     $scope.model.parameters[arrayIndex].value.type == 'flag') &&
                                                     $scope.model.parameters[arrayIndex].semantics.maxCardinality > 1) {
                                                     return false;
+                                                  }
                                                 }
                                               }
                                               return true;
@@ -921,13 +894,13 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                                             {value: false, name: "No"}
                                         ],
                                         onChange: function (modelValue, form) {
+                                          if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
                                             if (modelValue && $scope.model.parameters[arrayIndex].semantics.minCardinality == 0) {
-                                                console.log("Updating $scope.model.parameters[" + arrayIndex + "].semantics.minCardinality to 1 to satisfy the requirement attribute.");
                                                 $scope.model.parameters[arrayIndex].semantics.minCardinality = 1;
                                             } else if (!modelValue && $scope.model.parameters[arrayIndex].semantics.minCardinality > 0) {
-                                                console.log("Updating $scope.model.parameters[" + arrayIndex + "].semantics.minCardinality to 0 to satisfy the non-requirement attribute.");
                                                 $scope.model.parameters[arrayIndex].semantics.minCardinality = 0;
                                             }
+                                          }
                                         }
                                     },
                                     {
@@ -946,10 +919,11 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                                             {value: false, name: "No"}
                                         ],
                                         onChange: function (modelValue, form) {
+                                           if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
                                             if (!modelValue) {
-                                                console.log("Updating model.parameters[" + arrayIndex + "].semantics.minCardinality to 1 to satisfy the hidden attribute.");
                                                 $scope.model.parameters[arrayIndex].value.required = true
                                             }
+                                          }
                                         }
                                     },
                                     "order"
@@ -1009,7 +983,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
        "defaultNodeCount": 1,
        "defaultMemoryPerNode": 4,
        "defaultProcessorsPerNode": 1,
-       "defaultRequestedTime": "24:00:00",
+       "defaultMaxRunTime": "24:00:00",
        "parallelism": "SERIAL",
        "deploymentPath": "/scratch/apps/foo-1.0",
        "deploymentSystem": "storage.example.com",
@@ -1074,34 +1048,80 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
         if ($stateParams.appId) {
             AppsController.getAppDetails($stateParams.appId).then(
                 function (response) {
-                    if (response.lastModified){
-                      delete response.lastModified;
+                    if (response.result.lastModified){
+                      delete response.result.lastModified;
                     }
-                    if (response.revision){
-                      delete response.revision;
+                    if (response.result.revision){
+                      delete response.result.revision;
                     }
-                    if (response.uuid){
-                      delete response.uuid;
+                    if (response.result.uuid){
+                      delete response.result.uuid;
                     }
-                    if (response.getContext){
-                      delete response.getContext;
+                    if (response.result.getContext){
+                      delete response.result.getContext;
                     }
-                    if (response._links){
-                      delete response._links;
+                    if (response.result._links){
+                      delete response.result._links;
                     }
-                    if (response.available){
-                      delete response.available;
+                    if (response.result.available){
+                      delete response.result.available;
                     }
-                    if (response.icon){
-                      delete response.icon;
+                    if (response.result.icon){
+                      delete response.result.icon;
                     }
-                    $scope.model = response;
+                    $scope.model = response.result;
+                    // check if user can edit
+                    AppsController.getAppPermission($stateParams.appId, $localStorage.activeProfile.username)
+                      .then(
+                        function(permissions){
+                          if (!permissions.result.permission.write){
+                            $scope.edit = false;
+                            $scope.wizview = 'code';
+                            App.alert(
+                              {
+                                type: 'danger',
+                                message: 'Error: User does not have permission to edit app'
+                              }
+                            );
+                          }
+                        },
+                        function(permissions){
+                          $scope.edit = false;
+                          $scope.wizview = 'code';
+                          var message = '';
+                          if (permissions.errorResponse.message) {
+                            message = 'Error: Cannot edit app - ' + permissions.errorResponse.message
+                          } else if (permissions.errorResponse.fault){
+                            message = 'Error: Cannot edit app - ' + permissions.errorResponse.fault.message;
+                          } else {
+                            message = 'Error: Cannot edit app - ';
+                          }
+                          App.alert(
+                            {
+                              type: 'danger',
+                              message: message
+                            }
+                          );
+                        }
+                      );
                 },
                 function (response) {
-                    App.alert({
-                        type: 'danger',
-                        message: "There was an error contacting the apps service. " + response
-                    });
+                  $scope.edit = false;
+                  $scope.wizview = 'code';
+                  var message = '';
+                  if (response.errorResponse.message) {
+                    message = 'Error: Could not retrieve app - ' + response.errorResponse.message
+                  } else if (response.errorResponse.fault){
+                    message = 'Error: Could not retrieve app - ' + response.errorResponse.fault.message;
+                  } else {
+                    message = 'Error: Could not retrieve app';
+                  }
+                  App.alert(
+                    {
+                      type: 'danger',
+                      message: message
+                    }
+                  );
                 });
         }
         // check if WizardHandler service has current model
@@ -1153,12 +1173,20 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                 });
               },
               function(response){
-                var message = (response.errorResponse !== '') ?  "There was an error creating your app:\n" + response.errorResponse.fault.message : message = "There was an error creating your system:\n" + response.errorMessage;
-
-                App.alert({
+                var message = '';
+                if (response.errorResponse.message) {
+                  message = 'Error: Could not create app - ' + response.errorResponse.message
+                } else if (response.errorResponse.fault){
+                  message = 'Error: Could not create app - ' + response.errorResponse.fault.message;
+                } else {
+                  message = 'Error: Could not create app';
+                }
+                App.alert(
+                  {
                     type: 'danger',
                     message: message
-                });
+                  }
+                );
               }
             );
         } else {
@@ -1183,7 +1211,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
 
 
     $scope.updateWizardLayout = function() {
-        console.log($scope.wizview);
+        // console.log($scope.wizview);
     };
 
 
@@ -1222,11 +1250,10 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
         lineNumbers: true,
         matchBrackets: true,
         styleActiveLine: false,
-        theme:"neat",
+        theme:'neat',
         mode: 'javascript',
         json: true,
         statementIndent: 2,
-        readOnly: true,
         onLoad: $scope.codemirrorLoaded
     };
 
@@ -1243,23 +1270,35 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
         if (typeof newValue === 'undefined' && $scope.model !== ''){
           $scope.model.modules = [];
         }
+        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+          $scope.model.ontology = [];
+        }
     }, true);
-
+    //
     $scope.$watch('model.ontology', function(newValue, oldValue){
         if (typeof newValue === 'undefined' && typeof $scope.model !== 'undefined'){
           $scope.model.ontology = [];
         }
+        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+          $scope.model.ontology = [];
+        }
     }, true);
-
+    //
     $scope.$watch('model.parameters', function(newValue, oldValue){
         if (typeof newValue === 'undefined'){
           $scope.model.parameters = [];
+        }
+        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+          $scope.model.ontology = [];
         }
     }, true);
 
     $scope.$watch('model.tags', function(newValue, oldValue){
         if (typeof newValue === 'undefined'){
           $scope.model.tags = [];
+        }
+        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+          $scope.model.ontology = [];
         }
     }, true);
 

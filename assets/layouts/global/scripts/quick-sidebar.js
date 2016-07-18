@@ -40,13 +40,13 @@ var QuickSidebar = function () {
         initChatSlimScroll();
         App.addResizeHandler(initChatSlimScroll); // reinitialize on window resize
 
-        wrapper.find('.page-quick-sidebar-chat-users .media-list > .media').click(function () {
-            wrapperChat.addClass("page-quick-sidebar-content-item-shown");
-        });
-
-        wrapper.find('.page-quick-sidebar-chat-user .page-quick-sidebar-back-to-list').click(function () {
-            wrapperChat.removeClass("page-quick-sidebar-content-item-shown");
-        });
+        // wrapper.find('.page-quick-sidebar-alerts-list .media-list > .media').click(function () {
+        //     wrapperChat.addClass("page-quick-sidebar-content-item-shown");
+        // });
+        //
+        // wrapper.find('.page-quick-sidebar-alerts-list .page-quick-sidebar-back-to-list').click(function () {
+        //     wrapperChat.removeClass("page-quick-sidebar-content-item-shown");
+        // });
 
         var handleChatMessagePost = function (e) {
             e.preventDefault();

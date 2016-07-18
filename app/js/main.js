@@ -9,7 +9,9 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'angularMoment',
   'angularUtils.directives.dirPagination',
   'CommonsService',
+  'jsonFormatter',
   'JiraService',
+  'ChangelogParserService',
   'ngCookies',
   "ngSanitize",
   'ngStorage',
@@ -19,10 +21,69 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'schemaForm',
   'schemaFormWizard',
   'TagsService',
+  'toastr',
   "ui.bootstrap",
   "ui.router",
   'ui.select'
-]);
+]).service('NotificationsService',['$rootScope', '$localStorage', 'MetaController', 'toastr', function($rootScope, $localStorage, MetaController, toastr){
+    if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.activeProfile !== 'undefined') {
+      this.client = new Fpp.Client('http://48e3f6fe.fanoutcdn.com/fpp');
+      this.channel = this.client.Channel($localStorage.tenant.code + '/' + $localStorage.activeProfile.username);
+      this.channel.on('data', function (data) {
+        var toastData = {};
+        if (data.event === 'FORCED_EVENT'){
+          toastData = 'FORCED_ EVENT - ' + data.source;
+        } else {
+          if ('app' in data.message){
+            toastData = 'APP - ' + data.event;
+          } else if ('file' in data.message){
+            toastData = 'FILE - ' + data.event;
+          } else if ('job' in data.message){
+            toastData = 'JOB - ' + data.event;
+          } else if ('system' in data.message){
+            toastData = 'SYSTEM - ' + data.event;
+          } else {
+            toastData = data.event;
+          }
+        }
+
+        // saving all notifications to metadata for now
+        var metadata = {};
+        metadata.name = 'notifications';
+        metadata.value = data;
+        MetaController.addMetadata(metadata)
+          .then(
+            function(response){
+            },
+            function(response){
+              var message = '';
+              if (response.errorResponse.message) {
+                message = 'Error: Could not save notification - ' + response.errorResponse.message
+              } else if (response.errorResponse.fault){
+                message = 'Error: Could not save notifications - ' + response.errorResponse.fault.message;
+              } else {
+                message = 'Error: Could not save notifications';
+              }
+              App.alert(
+                {
+                  type: 'danger',
+                  message: message
+                }
+              );
+            }
+          );
+        toastr.info(toastData);
+      });
+    } else {
+      App.alert(
+        {
+          type: 'danger',
+          message: 'Error: Invalid Credentials'
+        }
+      );
+    }
+
+}]);
 
 /* Configure ocLazyLoader(refer: https://github.com/ocombe/ocLazyLoad) */
 AgaveToGo.config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
@@ -63,6 +124,24 @@ AgaveToGo.config(['$ocLazyLoadProvider', function($ocLazyLoadProvider) {
         }]
     });
 }]);
+
+AgaveToGo.config(function(toastrConfig) {
+  angular.extend(toastrConfig, {
+    allowHtml: false,
+    autoDismiss: true,
+    closeButton: true,
+    maxOpened: 0,
+    newestOnTop: true,
+    positionClass: 'toast-top-right',
+    preventDuplicates: false,
+    preventOpenDuplicates: false,
+    templates: {
+      toast: 'directives/toast/toast.html',
+      progressbar: 'directives/progressbar/progressbar.html'
+    },
+    timeOut: 5000
+  });
+});
 
 AgaveToGo.config(function($locationProvider) {
     $locationProvider.html5Mode({
@@ -161,9 +240,39 @@ initialization can be disabled and Layout.init() should be called on page load c
 ***/
 
 /* Setup Layout Part - Header */
-AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', function($scope, $localStorage) {
+AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoController', function($scope, $localStorage, StatusIoController) {
 
     $scope.authenticatedUser = $localStorage.activeProfile;
+    $scope.platformStatus = { status:'Up', statusCode: 100, incidents: [], issues:[]};
+
+    StatusIoController.listStatuses().then(
+
+        function(data) {
+            var issues = [];
+            for (var i=0; i<data.result.status.length; i++) {
+                if (data.result.status[i].status_code !== 100) {
+                    issues.push({
+                        "component": data.result.status[i].name,
+                        "container": data.result.status[i].containers[0].name,
+                        "status": data.result.status[i].status,
+                        "statusCode" : data.result.status[i].status_code,
+                        "updated": data.result.status[i].updated
+                    });
+                }
+            }
+            setTimeout(function() {
+                $scope.platformStatus.incidents = data.result.incidents;
+                $scope.platformStatus.status = data.result.status_overall.status;
+                $scope.platformStatus.statusCode = data.result.status_overall.status_code;
+                $scope.platformStatus.issues = issues;
+
+            }, 0);
+
+        },
+        function(data) {
+
+        }
+    );
 
     $scope.$on('$includeContentLoaded', function() {
         Layout.initHeader(); // init header
@@ -178,11 +287,28 @@ AgaveToGo.controller('SidebarController', ['$scope', function($scope) {
 }]);
 
 /* Setup Layout Part - Quick Sidebar */
-AgaveToGo.controller('QuickSidebarController', ['$scope', function($scope) {
+AgaveToGo.controller('QuickSidebarController', ['$scope', '$localStorage', 'ChangelogParser', function($scope, $localStorage, ChangelogParser) {
     $scope.$on('$includeContentLoaded', function() {
-       setTimeout(function(){
+        $scope.changelog = {};
+
+        $scope.tenant = $localStorage.tenant;
+        $scope.alerts = [];
+        ChangelogParser.latest().then(function(data) {
+            if (data) {
+
+                for(var version in data) break;
+                $scope.changelog = data[version];
+                $scope.changelog.version = version;
+
+            }
+        });
+
+        setTimeout(function(){
             QuickSidebar.init(); // init quick sidebar
+
         }, 2000)
+
+
     });
 }]);
 
@@ -317,6 +443,25 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
+        .state("jobs.history", {
+          url: "/history",
+          controller: "JobsResourceHistoryController",
+          templateUrl: "views/jobs/resource/history.html",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/controllers/jobs/resource/JobsResourceHistoryController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+        })
+
         .state("jobs.stats", {
           url: "/jobs",
           controller: "JobsResourceStatsController",
@@ -333,6 +478,198 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 ]);
               }]
           }
+        })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Notifications Routes                     ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        .state('notifications-noslash', {
+            url: "/notifications",
+            templateUrl: "views/notifications/manager.html",
+            data: {pageTitle: 'Notifications Manager'},
+            controller: "NotificationsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/notifications/NotificationsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('notifications-manager-noslash', {
+            url: "/notifications/manager",
+            templateUrl: "views/notifications/manager.html",
+            data: {pageTitle: 'Notifications Manager'},
+            controller: "NotificationsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/notifications/NotificationsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('notifications-manager', {
+            url: "/notifications/manager/:associatedUuid",
+            params: {
+              associatedUuid: '',
+              resourceType: ''
+            },
+            templateUrl: "views/notifications/manager.html",
+            data: {pageTitle: 'Notifications Manager'},
+            controller: "NotificationsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/notifications/NotificationsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('notifications-edit', {
+            url: "/notifications/edit/:notificationId",
+            templateUrl: "views/notifications/resource/edit.html",
+            controller: "NotificationsResourceEditController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/notifications/resource/NotificationsResourceEditController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('notifications-add-noslash', {
+            url: "/notifications/add",
+            params: {
+              associatedUuid: '',
+              resourceType: ''
+            },
+            templateUrl: "views/notifications/resource/add.html",
+            controller: "NotificationsResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/notifications/resource/NotificationsResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('notifications-add', {
+            url: "/notifications/add/:associatedUuid",
+            params: {
+              associatedUuid: '',
+              resourceType: ''
+            },
+            templateUrl: "views/notifications/resource/add.html",
+            controller: "NotificationsResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/notifications/resource/NotificationsResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('notifications-history', {
+            url: "/notifications/alerts",
+            templateUrl: "views/notifications/alerts.html",
+            data: {pageTitle: 'Notifications History'},
+            controller: "NotificationsAlertsDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/notifications/NotificationsAlertsDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('notifications', {
+            abtract: true,
+            url: "/notifications/:id",
+            templateUrl: "views/notifications/resource/resource.html",
+            controller: "NotificationsResourceController",
+            resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                      files: [
+                        'js/controllers/notifications/resource/NotificationsResourceController.js'
+                      ]
+                  }
+                ]);
+              }]
+            }
+        })
+
+        .state('notifications.details', {
+            url: "",
+            templateUrl: "views/notifications/resource/details.html",
+            controller: "NotificationsResourceDetailsController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/PermissionsService.js',
+                          'js/controllers/notifications/resource/NotificationsResourceDetailsController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
         })
 
         /**********************************************************************/
@@ -423,6 +760,54 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                     },
                     "ui.codemirror"
                     );
+                }]
+            }
+        })
+
+        .state('apps-manage', {
+            url: "/apps",
+            templateUrl: "views/apps/manager.html",
+            data: {pageTitle: 'App Manager'},
+            controller: "AppDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/PermissionsService.js',
+                            'js/controllers/apps/AppDirectoryController.js',
+                            'js/controllers/modals/ModalConfirmResourceActionController.js',
+                            'js/controllers/modals/ModalPermissionEditorController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('apps-manage-slash', {
+            url: "/apps/",
+            templateUrl: "views/apps/manager.html",
+            data: {pageTitle: 'App Manager'},
+            controller: "AppDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/PermissionsService.js',
+                            'js/controllers/apps/AppDirectoryController.js',
+                            'js/controllers/modals/ModalConfirmResourceActionController.js',
+                            'js/controllers/modals/ModalPermissionEditorController.js'
+                        ]
+                    });
                 }]
             }
         })
@@ -521,29 +906,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
-        .state('apps-manage', {
-            url: "/apps",
-            templateUrl: "views/apps/manager.html",
-            data: {pageTitle: 'App Manager'},
-            controller: "AppDirectoryController",
-            resolve: {
-                deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load({
-                        name: 'AgaveToGo',
-                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
-                        files: [
-                            '../assets/global/scripts/datatable.js',
-                            '../bower_components/holderjs/holder.js',
-                            'js/services/ActionsService.js',
-                            'js/services/PermissionsService.js',
-                            'js/controllers/apps/AppDirectoryController.js',
-                            'js/controllers/modals/ModalConfirmResourceActionController.js',
-                            'js/controllers/modals/ModalPermissionEditorController.js'
-                        ]
-                    });
-                }]
-            }
-        })
+
+
 
 
         /**********************************************************************/
@@ -683,7 +1047,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
 
         // User Profile
         .state("profile", {
-            url: "/profile",
+            url: "/profile/:username",
             templateUrl: "views/profile/main.html",
             data: {pageTitle: 'User Profile'},
             controller: "UserProfileController",
@@ -700,7 +1064,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
 
                             '../assets/pages/scripts/profile.min.js',
-
+                            '../bower_components/faker/build/build/faker.min.js',
                             'js/controllers/profiles/UserProfileController.js'
                         ]
                     });
@@ -1237,7 +1601,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
 
 /* Init global settings and run the app */
 //AgaveToGo.run(["$rootScope", "settings", "$state", 'ProfilesController', function($rootScope, settings, $state) { //}, ProfilesController) {
-AgaveToGo.run(["$rootScope", "settings", "$state", "$http", "CacheFactory", function($rootScope, settings, $state, $http, CacheFactory) {
+AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', 'CacheFactory', 'NotificationsService', function($rootScope, settings, $state, $http, $templateCache, CacheFactory, NotificationsService) {
     $rootScope.$state = $state; // state to be accessed from view
     $rootScope.$settings = settings; // state to be accessed from view
 
@@ -1247,5 +1611,23 @@ AgaveToGo.run(["$rootScope", "settings", "$state", "$http", "CacheFactory", func
         deleteOnExpire: 'aggressive', // Items will be deleted from this cache when they expire
         storageMode: 'localStorage'
     });
+
+    // var strVar="";
+    // strVar += "<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">";
+    // strVar += "  <div ng-switch on=\"allowHtml\">";
+    // strVar += "    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}<\/div>";
+    // strVar += "    <div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}<\/div>";
+    // strVar += "    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"><\/div>";
+    // strVar += "    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"><\/div>";
+    // strVar += "  <\/div>";
+    // strVar += "  <progress-bar ng-if=\"progressBar\"><\/progress-bar>";
+    // strVar += "<\/div>";
+    //
+    // $templateCache.put('directives/toast/toast.html',
+    //   "<div>Your template here</div>"
+    // );
+    // $templateCache.put('directives/progressbar/progressbar.html',
+    //   "<div>Your progressbar here</div>"
+    // );
 
 }]);

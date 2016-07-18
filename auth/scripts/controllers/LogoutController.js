@@ -8,17 +8,15 @@ angular.module('AgaveAuth').controller('LogoutController', function ($injector, 
     $timeout(function() {
 
         $scope.profile = $localStorage.activeProfile;
-        console.log($scope.profile);
-
         $scope.tenant = $localStorage.tenant;
-        console.log($scope.tenant);
 
+        delete $localStorage.activeProfile;
+        delete $localStorage.token;
         if ($scope.profile) {
-            if ($scope.tenant) {
 
+            if ($scope.tenant) {
                 $rootScope.$broadcast('oauth:template:update', '/auth/views/templates/oauth-ng-button.html');
             } else {
-                $localStorage.profile = null;
                 $location.path("/tenants");
                 $location.replace();
             }

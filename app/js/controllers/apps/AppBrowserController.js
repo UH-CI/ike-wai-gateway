@@ -81,13 +81,12 @@ angular.module('AgaveToGo').controller('AppBrowserController', function($rootSco
                                 });
                             },
                             function (data) {
-                                console.log("User does not have permission to edit this app");
+                                // console.log("User does not have permission to edit this app");
                             });
 
                         App.unblockUI('#js-grid-lightbox-gallery');
                     },
                     function (data) {
-                        console.log(data);
                         App.alert({
                             type: 'danger',
                             message: "There was an error contacting the apps service. If this " +
@@ -121,7 +120,6 @@ angular.module('AgaveToGo').controller('AppBrowserController', function($rootSco
         },
         function (data) {
             //self.deferredHandler(data, deferred, $translate.instant('error_creating_folder'));
-            console.log(data);
             App.alert({
                 type: 'danger',
                 message: "There was an error contacting the apps service. If this " +
