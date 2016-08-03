@@ -59,7 +59,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-warning" type="button" ng-click="close()">Close</button>
-      <button ng-click="browse()" class="btn btn-primary">Browse Systems</button>
+      <button class="btn btn-default" type="button" ng-click="close()">Close</button>
+      <a type="button" ui-sref="data-explorer({systemId: model.id})" class="btn btn-warning">Browse Files</a>
+      <a type="button" ui-sref="apps-new" class="btn btn-primary">Create App</a>
     </div>
 </div>

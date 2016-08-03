@@ -44,7 +44,8 @@ body {
 .lock-body {
     display: block;
     margin: 35px;
-    overflow: hidden; }
+    overflow: hidden;
+}
 
 .lock-body .oauth img {
     width: 100%;
@@ -63,12 +64,9 @@ body {
     overflow:hidden;
 }
 
-.lock-form .form-group .form-control,
-.lock-form .form-group .ui-select-container.ui-select-bootstrap {
-    width: 260px;
-}
 
 .lock-form .form-group .ui-select-container.ui-select-bootstrap {
+    width: 260px;
     position: absolute;
 }
 
@@ -116,7 +114,6 @@ body {
 }
 
 .lock-avatar {
-    margin-top: 15px;
     height: 110px;
     -webkit-border-radius: 50% !important;
     -moz-border-radius: 50% !important;
@@ -130,7 +127,8 @@ body {
     margin-top: 0px;
     color: #dbe2ea;
     font-size: 18px;
-    font-weight: 400; }
+    font-weight: 400;
+}
 
 .lock-form .form-group {
     margin-top: 20px; }
@@ -209,11 +207,11 @@ body {
 
 #tokenCountdown {
     margin: 0;
-    overflow: hidden
+    overflow: hidden;
 }
 
 #tokenCountdown span.countdown_row {
-    overflow: hidden
+    overflow: hidden;
 }
 
 #tokenCountdown span.countdown_row span {
@@ -224,7 +222,8 @@ body {
 }
 
 #tokenCountdown span.countdown_row>span {
-    float: left
+    /*float: left*/
+    display:inline-block;
 }
 
 #tokenCountdown span.countdown_section {
@@ -233,7 +232,6 @@ body {
     margin-bottom: 2px;
     font-weight: 300;
     background: url(../img/bg-white.png);
-    text-align: center;
 }
 
 #tokenCountdown span.countdown_section:last-child {
@@ -249,7 +247,7 @@ body {
     width: 100%;
 }
 
-@media (max-width: 1024px) {
+/*@media (max-width: 1024px) {
     #tokenCountdown span.countdown_amount {
         padding:10px
     }
@@ -273,7 +271,8 @@ body {
 @media (max-width: 560px) {
     .page-lock {
         margin: 50px auto;
-        width: 400px; }
+        width: 100%;
+      }
     .lock-body {
         margin: 30px; }
     .lock-avatar {
@@ -292,7 +291,8 @@ body {
 @media (max-width: 420px) {
     .page-lock {
         margin: 30px auto;
-        width: 280px; }
+        width: 100%;
+      }
     .lock-body {
         margin: 0px; }
     .page-lock .page-body {
@@ -314,4 +314,11 @@ body {
         width: 240px; }
     .lock-form .form-actions .btn-success {
         width: 240px;
-        margin-bottom: 20px; } }
+        margin-bottom: 20px; } }*/
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    margin-top:10px;
+}

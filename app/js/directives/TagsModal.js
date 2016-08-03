@@ -18,16 +18,10 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
             };
 
             $scope.selectEvents = function($item, $model) {
-                console.log("new tag was selected: ");
-                console.log($item);
-                console.log($model);
                 $scope.tagModel.activeTags.push($item);
             }
 
             $scope.removeEvents = function($item, $model) {
-                console.log("new tag was selected: ");
-                console.log($item);
-                console.log($model);
                 for (var i = 0; i < $scope.tagModel.activeTags.length; i++) {
                     if ($scope.tagModel.activeTags[i].id == $item.id &&
                             $scope.tagModel.activeTags[i].name == $item.name) {
@@ -56,7 +50,6 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
                         }, 50);
                     },
                     function (data) {
-                        console.log(data);
                         App.alert({
                             type: 'danger',
                             message: "there was an error contacting the tags service. if this " +
@@ -89,11 +82,9 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
                         promises.push(Tags.addTag(tag).then(
                             function (response) {
                                 totalAdded++;
-                                console.log("Added tag " +  response.name + " to resource " + response.associatedUuids);
                             },
                             function (response) {
                                 isSuccess = false;
-                                console.log(response);
                                 App.alert({
                                     type: 'danger',
                                     message: "Error adding tag to resource " + tag.associatedUuids
@@ -104,11 +95,9 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
                         promises.push(Tags.updateTag(tag).then(
                             function (response) {
                                 totalAdded++;
-                                console.log("Updated tag " +  response.name + " with resource " + response.taggedResourceUuid);
                             },
                             function (response) {
                                 isSuccess = false;
-                                console.log(response);
                                 App.alert({
                                     type: 'danger',
                                     message: "Error updating tag with resource " + tag.associatedUuids
@@ -124,11 +113,9 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
                     promises.push(Tags.updateTag(tag).then(
                         function (response) {
                             totalAdded++;
-                            console.log("Updated tag " + response.name + " removing resource " + response.taggedResourceUuid);
                         },
                         function (response) {
                             isSuccess = false;
-                            console.log(response);
                             App.alert({
                                 type: 'danger',
                                 message: "Error updating tag removing resource " + tag.associatedUuids
@@ -143,7 +130,6 @@ AgaveToGo.directive('tagsModal', function ($parse, $q, $timeout, Tags) {
                         $('#tagging-modal').modal('hide');
                     },
                     function(message, result) {
-                        console.log(message);
                         App.alert({
                             type: 'danger',
                             message: message

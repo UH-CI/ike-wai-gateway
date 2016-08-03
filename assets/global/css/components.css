@@ -14998,3 +14998,7 @@ Color library demo
 .json-formatter-row{
   font-size: medium;
 }
+
+.table td, .table th {
+    word-break: break-all;
+}

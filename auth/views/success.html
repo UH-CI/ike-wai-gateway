@@ -1,23 +1,46 @@
-<div class="page-body">
-    <div ng-if="loggedIn" class="lock-head"> Login Success </div>
-    <div class="lock-body">
-        <div class="message"></div>
-        <div class="pull-left lock-avatar-block">
-            <img ng-src="http://www.gravatar.com/avatar/{{ profile.email | gravatar }}?d=mm" class="lock-avatar"> </div>
+<div class="page-body text-center">
+    <div class="row" ng-show="requesting">
+      <div class="col-md-12">
+        <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+      </div>
+    </div>
 
-        <form class="lock-form pull-left">
-            <h4>{{profile.firstName + ' ' + profile.lastName}}</h4>
-            <div class="form-group">
-                <input class="form-control" type="text" disabled="disabled" value="{{profile.email}}"/>
-            </div>
-            <div class="form-group">
-                <div class="coming-soon-countdown">
-                    <div id="tokenCountdown"> </div>
+    <div ng-show="!requesting">
+      <div ng-if="loggedIn" class="lock-head"> Login Success </div>
+      <div class="lock-body">
+          <div class="message"></div>
+          <div class="lock-avatar-block">
+              <img ng-src="http://www.gravatar.com/avatar/{{ profile.email | gravatar }}?d=mm" class="lock-avatar">
+          </div>
+
+          <form class="form-horizontal top-buffer">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h4>{{profile.firstName + ' ' + profile.lastName}}</h4>
+                  </div>
                 </div>
-            </div>
-        </form>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input class="form-control text-center" type="text" disabled="disabled" value="{{profile.email}}"/>
+                  </div>
+                </div>
+              </div>
+
+          </form>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div>
+              <div id="tokenCountdown"> <div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lock-bottom top-buffer">
+          <a href="/app/" target="_blank">Go to your Dashboard</a>
+      </div>
     </div>
-    <div class="lock-bottom">
-        <a href="/app/" target="_blank">Go to your Dashboard</a>
-    </div>
+
 </div>

@@ -3,6 +3,7 @@
     <h4 class="modal-title">System Roles for {{system.id}}</h4>
 </div>
 <div class="modal-body">
+    <p ng-show="error" class="alert alert-danger top-buffer">{{error}}</p>
     <p>These are the current user roles assigned to {{system.name}}. You may add or remove users as needed.
     <span class="text-em" ng-if="system.type === 'STORAGE'">In order to expose this system as a readonly data collection, grant
     the the "WORLD" user the "GUEST" role.</span><span class="text-em" ng-if="system.type === 'EXECUTION'">In order to register apps against this system, users must have a "PUBLISHER" or "ADMIN" role.</span></p>

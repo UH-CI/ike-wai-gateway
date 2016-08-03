@@ -118,7 +118,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                 "title": "Environment"
             },
             "startupScript": {
-                "type": "string",
+                "type": [null,"string"],
                 "title": "Startup Script"
             },
             "queues": {
@@ -1030,7 +1030,8 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                          "condition": "model.type === 'EXECUTION'",
                          "items": [
                            {
-                             "key": "environment"
+                             "key": "environment",
+                             "title": "Environment"
                            }
                          ]
                      },
@@ -1061,7 +1062,8 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                           "condition": "model.type === 'EXECUTION'",
                           "items": [
                             {
-                              "key": "startupScript"
+                              "key": "startupScript",
+                              "title": "Startup Script"
                             }
                           ]
                       },
@@ -3949,7 +3951,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
       if (typeof $localStorage.activeProfile !== 'undefined'){
         SystemsController.getSystemRole($stateParams.systemId, $localStorage.activeProfile.username)
           .then(function(response){
-            if (response.role !== "OWNER"){
+            if (response.result.role !== "OWNER"){
               App.alert({type: 'danger',message: 'Missing credentials to edit system'});
               $scope.wizview = 'code';
               $scope.edit= false;

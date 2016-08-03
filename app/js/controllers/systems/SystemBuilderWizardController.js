@@ -118,7 +118,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                 "title": "Environment"
             },
             "startupScript": {
-                "type": "string",
+                "type": [null,"string"],
                 "title": "Startup Script"
             },
             "queues": {
@@ -1031,7 +1031,8 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                          "condition": "model.type === 'EXECUTION'",
                          "items": [
                            {
-                             "key": "environment"
+                             "key": "environment",
+                             "title": "Environment"
                            }
                          ]
                      },
@@ -1062,7 +1063,8 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                           "condition": "model.type === 'EXECUTION'",
                           "items": [
                             {
-                              "key": "startupScript"
+                              "key": "startupScript",
+                              "title": "Startup Script"
                             }
                           ]
                       },
@@ -3986,7 +3988,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                             $modalInstance.dismiss('cancel');
                         };
                         $scope.browse = function(){
-                            $location.path('/systems');
+                            $location.path('/data/explorer/' + $scope.model.id);
                         }
                       }]
                     });
@@ -4014,7 +4016,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                           $modalInstance.dismiss('cancel');
                       };
                       $scope.browse = function(){
-                          $location.path('/systems');
+                          $location.path('/data/explorer/' + $scope.model.id);
                       }
                     }]
                   });

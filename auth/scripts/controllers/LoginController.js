@@ -13,9 +13,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             client_key: '',
             client_secret: '',
             remember: 0
-        };
-
-    console.log($stateParams);
+    };
 
     if ($stateParams.tenantId) {
         $scope.tenantId = $stateParams.tenantId;
@@ -35,9 +33,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
         if (namedTenant) {
             return namedTenant;
         } else {
-            console.log('No tenant found matching ' + tenantId);
             Alerts.danger({message: 'No tenant found matching ' + tenantId});
-            //$state.go('tenants');
         }
     };
 
@@ -90,7 +86,6 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 return response;
             },
             function(response) {
-                console.log(response);
                 $rootScope.broadcast('oauth:denied');
             });
     }
@@ -129,7 +124,6 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 return response;
             },
             function(response) {
-                console.log(response);
                 $rootScope.broadcast('oauth:denied');
             });
     };

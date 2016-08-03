@@ -1,22 +1,24 @@
-<div class="page-body">
-    <div class="lock-head"> Session Expired </div>
+<div class="page-body text-center">
+    <div class="lock-head"> Session Expired</div>
     <div class="lock-body">
         <div class="message"></div>
-        <div class="pull-left lock-avatar-block">
-            <img ng-src="http://www.gravatar.com/avatar/{{ profile.email | gravatar }}?d=mm" class="lock-avatar"> </div>
-        <form class="lock-form pull-left expired">
+        <div class="lock-avatar-block">
+            <img ng-src="http://www.gravatar.com/avatar/{{ profile.email | gravatar }}?d=mm" class="lock-avatar">
+        </div>
+
+        <form class="form-horizontal expired">
             <h4>{{profile.firstName + ' ' + profile.lastName}}</h4>
             <div class="form-group">
-                <oauth
-                        template="/auth/views/templates/oauth-ng-button.html"
-                        site="tenant.baseUrl"
-                        client-id="settings.oauth.clients[tenant.code].clientKey"
-                        redirect-uri="http://togo.agaveapi.co/auth"
-                        authorize-path="/authorize",
-                        state="12345"
-                        scope="PRODUCTION"
-                        tenant="tenant">
-                </oauth>
+              <oauth
+                      template="/auth/views/templates/oauth-ng-button.html"
+                      site="tenant.baseUrl"
+                      client-id="settings.oauth.clients[tenant.code].clientKey"
+                      redirect-uri="{{settings.oauth.clients[tenant.code].callbackUrl}}"
+                      authorize-path="/authorize",
+                      state="{{randomState()}}"
+                      scope="{{settings.oauth.clients[tenant.code].scope}}"
+                      tenant="tenant">
+              </oauth>
             </div>
             <div class="form-group">
                 <div class="coming-soon-countdown">
@@ -43,5 +45,10 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div class="lock-bottom">
+        <div class="row">
+          <a ui-sref="tenants" type="button" class="btn btn-default top-buffer">Back</a>
+        </div>
     </div>
 </div>
