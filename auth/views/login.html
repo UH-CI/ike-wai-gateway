@@ -3,7 +3,7 @@
     <div class="lock-body">
         <div class="message"></div>
         <div class="lock-avatar-block">
-            <oauth
+<center>            <oauth
                     template="/auth/views/templates/oauth-ng-button.html"
                     site="tenant.baseUrl"
                     client-id="settings.oauth.clients[tenant.code].clientKey"
@@ -13,16 +13,16 @@
                     scope="{{settings.oauth.clients[tenant.code].scope}}"
                     tenant="tenant">
             </oauth>
-        </div>
+    </center>    </div>
     </div>
     <div class="lock-bottom">
         <div class="row login-options">
-            <h4 class="col-xs-12 col-sm-5">Or login with</h4>
-            <ul class="col-xs-12 col-sm-7 social-icons tenant-icons">
-                <li ng-repeat="t in settings.tenants">
-                    <a ui-sref="login({tenantId: t.code})"><img ng-src="/auth/img/tenants/{{t.code}}-icon.png" title="{{t.name}}" class="thumbnail"></a>
-                </li>
-            </ul>
+<!--            <h4 class="col-xs-12 col-sm-5">Or login with</h4> -->
+<!--            <ul class="col-xs-12 col-sm-7 social-icons tenant-icons"> -->
+<!--                <li ng-repeat="t in settings.tenants"> -->
+<!--                    <a ui-sref="login({tenantId: t.code})"><img ng-src="/auth/img/tenants/{{t.code}}-icon.png" title="{{t.name}}" class="thumbnail"></a> -->
+<!--                </li> -->
+<!--            </ul> -->
         </div>
     </div>
 </div>
