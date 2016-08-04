@@ -384,6 +384,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
@@ -496,6 +497,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before',
                         files: [
@@ -515,6 +517,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before',
                         files: [
@@ -538,6 +541,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before',
                         files: [
@@ -557,6 +561,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                   return $ocLazyLoad.load([
                     {
+                      serie: true,
                       name: 'AgaveToGo',
                       files: [
                           'js/services/ActionsService.js',
@@ -580,6 +585,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                   return $ocLazyLoad.load([
                     {
+                      serie: true,
                       name: 'AgaveToGo',
                       files: [
                           'js/services/ActionsService.js',
@@ -603,6 +609,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                   return $ocLazyLoad.load([
                     {
+                      serie: true,
                       name: 'AgaveToGo',
                       files: [
                           'js/services/ActionsService.js',
@@ -622,6 +629,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before',
                         files: [
@@ -660,6 +668,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                   return $ocLazyLoad.load([
                     {
+                      serie: true,
                       name: 'AgaveToGo',
                       files: [
                           'js/services/ActionsService.js',
@@ -711,15 +720,9 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         files: [
-                           //'../bower_components/bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                           // "../bower_components/angular-sanitize/angular-sanitize.min.js",
-                           // "../bower_components/tv4/tv4.js",
-                           // "../bower_components/objectpath/lib/ObjectPath.js",
-                           // "../bower_components/angular-schema-form/dist/bootstrap-decorator.min.js",
-                           // "../bower_components/angular-schema-form/dist/schema-form.js",
-                           // "../app/js/services/WizardHandler.js",
                             "../bower_components/codemirror/lib/codemirror.css",
                             "../bower_components/codemirror/theme/neo.css",
                             "../bower_components/codemirror/lib/codemirror.js",
@@ -742,15 +745,9 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         files: [
-                           //'../bower_components/bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                           // "../bower_components/angular-sanitize/angular-sanitize.min.js",
-                           // "../bower_components/tv4/tv4.js",
-                           // "../bower_components/objectpath/lib/ObjectPath.js",
-                           // "../bower_components/angular-schema-form/dist/bootstrap-decorator.min.js",
-                           // "../bower_components/angular-schema-form/dist/schema-form.js",
-                           // "../app/js/services/WizardHandler.js",
                             "../bower_components/codemirror/lib/codemirror.css",
                             "../bower_components/codemirror/theme/neo.css",
                             "../bower_components/codemirror/lib/codemirror.js",
@@ -772,11 +769,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
-                            '../assets/global/scripts/datatable.js',
-                            '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/PermissionsService.js',
                             'js/controllers/apps/AppDirectoryController.js',
@@ -796,6 +792,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
@@ -840,6 +837,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               deps: ['$ocLazyLoad', function($ocLazyLoad) {
                 return $ocLazyLoad.load([
                   {
+                    serie: true,
                     name: 'AgaveToGo',
                     files: [
                         'js/services/ActionsService.js',
@@ -878,6 +876,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               deps: ['$ocLazyLoad', function($ocLazyLoad) {
                 return $ocLazyLoad.load([
                   {
+                    serie: true,
                     name: 'AgaveToGo',
                     files: [
                         /********* File Manager ******/
@@ -918,26 +917,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         /**********************************************************************/
         /**********************************************************************/
 
-        // .state('data-explorer-default', {
-        //     url: "/data/explorer/",
-        //     templateUrl: "",
-        //     data: { pageTitle: 'File Explorer' },
-        //     controller: function($location) {
-        //         $location.path("/data/explorer//");
-        //         $location.replace();
-        //     }
-        // })
-        //
-        // .state('data-explorer-default-noslash', {
-        //     url: "/data/explorer",
-        //     templateUrl: "",
-        //     data: { pageTitle: 'File Explorer' },
-        //     controller: function($location) {
-        //         $location.path("/data/explorer//");
-        //         $location.replace();
-        //     }
-        // })
-
         // TO-DO: need to improve this with redirect
         .state('data-explorer-noslash', {
             url: "/data/explorer/:systemId",
@@ -948,6 +927,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
+                            serie: true,
                             name: 'AgaveToGo',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
@@ -997,6 +977,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
+                            serie: true,
                             name: 'AgaveToGo',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
@@ -1109,6 +1090,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                        serie: true,
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
@@ -1136,6 +1118,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                            serie: true,
                             name: 'AgaveToGo',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
@@ -1156,14 +1139,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                                 "../bower_components/angular-filebrowser/src/js/controllers/selector-controller.js",
                                 "../bower_components/angular-filebrowser/src/css/angular-filemanager.css",
                                 /********* File Manager ******/
-
-                                //'../bower_components/bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                                // "../bower_components/angular-sanitize/angular-sanitize.min.js",
-                                // "../bower_components/tv4/tv4.js",
-                                // "../bower_components/objectpath/lib/ObjectPath.js",
-                                // "../bower_components/angular-schema-form/dist/bootstrap-decorator.min.js",
-                                // "../bower_components/angular-schema-form/dist/schema-form.js",
-                                // "../app/js/services/WizardHandler.js",
                                 "../bower_components/codemirror/lib/codemirror.css",
                                 "../bower_components/codemirror/theme/neo.css",
                                 "../bower_components/codemirror/lib/codemirror.js",
@@ -1186,6 +1161,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
                     return $ocLazyLoad.load({
+                            serie: true,
                             name: 'AgaveToGo',
                             insertBefore: '#ng_load_plugins_before',
                             files: [
@@ -1206,14 +1182,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                                 "../bower_components/angular-filebrowser/src/js/controllers/selector-controller.js",
                                 "../bower_components/angular-filebrowser/src/css/angular-filemanager.css",
                                 /********* File Manager ******/
-
-                                //'../bower_components/bootstrap-wizard/jquery.bootstrap.wizard.min.js',
-                                // "../bower_components/angular-sanitize/angular-sanitize.min.js",
-                                // "../bower_components/tv4/tv4.js",
-                                // "../bower_components/objectpath/lib/ObjectPath.js",
-                                // "../bower_components/angular-schema-form/dist/bootstrap-decorator.min.js",
-                                // "../bower_components/angular-schema-form/dist/schema-form.js",
-                                // "../app/js/services/WizardHandler.js",
                                 "../bower_components/codemirror/lib/codemirror.css",
                                 "../bower_components/codemirror/theme/neo.css",
                                 "../bower_components/codemirror/lib/codemirror.js",
@@ -1239,7 +1207,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 {
                   name: 'AgaveToGo',
                     files: [
-                      // 'js/services/RolesService.js',
                       'js/controllers/systems/resource/SystemsResourceController.js'
                     ]
                 }
@@ -1256,6 +1223,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               deps: ['$ocLazyLoad', function($ocLazyLoad) {
                 return $ocLazyLoad.load([
                   {
+                    serie: true,
                     name: 'AgaveToGo',
                     files: [
                         'js/services/ActionsService.js',
@@ -1389,7 +1357,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
                             '../assets/global/plugins/jstree/dist/themes/default/style.min.css',
-
                             '../assets/global/plugins/jstree/dist/jstree.min.js',
                             '../assets/pages/scripts/ui-tree.min.js',
                             'js/controllers/GeneralPageController.js'
@@ -1415,7 +1382,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css',
                             '../assets/global/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css',
                             '../assets/global/plugins/typeahead/typeahead.css',
-
                             '../assets/global/plugins/fuelux/js/spinner.min.js',
                             '../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js',
                             '../assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js',

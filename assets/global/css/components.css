@@ -638,6 +638,10 @@ body {
     left: 0 !important;
     right: 0 !important; }
 
+.form-horizontal .form-group h4 {
+  color: #fff !important;
+}
+
 .md-checkbox {
   position: relative;
   /* handling click events */

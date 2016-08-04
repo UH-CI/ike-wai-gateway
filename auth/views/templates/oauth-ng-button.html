@@ -1,7 +1,7 @@
 <span class="oauth">
-  <a href="#" class="btn default logged-out" ng-show="show === 'logged-out'" title="Login to {{tenant.name}}" ng-click="login()">
+  <a href="#" class="btn default logged-out" ng-if="show === 'logged-out'" title="Login to {{tenant.name}}" ng-click="login()">
     <img ng-src="/auth/img/tenants/{{tenant.code}}.png" class="tenant-logo">
   </a>
-  <a href="#" class="btn btn-lg btn-block default logged-in"  ng-show="show === 'logged-in'" title="Logout of {{tenant.name}}"  ng-click="logout()">Logout</a>
-  <a href="#" class="btn btn-lg btn-block red denied"     ng-show="show === 'denied'"     ng-click="login()">Access denied.</a>
+  <a href="#" class="btn btn-lg btn-block default logged-in"  ng-if="show === 'logged-in'" title="Logout of {{tenant.name}}"  ng-click="logout()">Logout</a>
+  <a href="#" class="btn btn-lg btn-block red denied"     ng-if="show === 'denied'"     ng-click="login()">Access denied.</a>
 </span>
