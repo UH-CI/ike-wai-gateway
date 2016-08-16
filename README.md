@@ -147,7 +147,7 @@ You will need to have the [Docker Engine installed](http://docs.docker.com/engin
 Clone the image as you would above, then invoke the `docker build` command. 
   
 ``` 
-git clone https://github.com/deardooley/agave-togo.git  
+git clone https://github.com/UH-CI/uh-togo-app.git  
 cd agave-togo
 docker build --rm=true -t agave-togo .
 ```
