@@ -15,7 +15,7 @@ a jumping point from which you can build your own application. To contribute bac
 make a pull request on the branch you have forked.
 ***************************************************************************************************************************
 ## Install Agave ToGo for UH Tenant
-* git clone https://bitbucket.org/agaveapi/agave-togo
+* git clone git@github.com:UH-CI/uh-togo-app.git
 * npm install
 * npm install http-server -g
 * npm start
@@ -88,16 +88,27 @@ We also use a number of node.js tools to initialize and test agave-togo. You mus
 
 Clone the agave-togo repository using [git](http://git-scm.com/):
 
+<<<<<<< 0601e2067f39c1768c20a79329c002a6ad58671c
 ```
 git clone https://github.com/deardooley/agave-togo.git  
+=======
+```
+git clone git@github.com:UH-CI/uh-togo-app.git  
+>>>>>>> update readme to use the UH Agave togo repo
 cd agave-togo  
 ```
 
 If you just want to start a new project without the agave-togo commit history then you can do:
 
+<<<<<<< 0601e2067f39c1768c20a79329c002a6ad58671c
 ```
 git clone --depth=1 https://github.com/deardooley/agave-togo.git <your-project-name>  
 ```
+=======
+```
+git clone --depth=1 git@github.com:UH-CI/uh-togo-app.git <your-project-name>  
+```
+>>>>>>> update readme to use the UH Agave togo repo
 
 The `depth=1` tells git to only pull down one commit worth of historical data.
 
@@ -219,44 +230,4 @@ Configuration.oAuthAccessToken = '37d51643...';
 ```
 cd agave-togo
 karma start
-```
-
-## Docker Installation
-
-We also provide Agave ToGo as a [Docker](https://hub.docker.com/r/agaveapi/agave-togo) image. This repository is configured to build automatically
-and publish the resulting image to the [Docker Public Registry].
-
-### Prerequisites
-
-You need git to clone the `agave-togo` repository. You can get git from [http://git-scm.com/](http://git-scm.com/).
-
-You will need to have the [Docker Engine installed](http://docs.docker.com/engine/installation/) to perform the actual build.
-
-
-### Build the Image
-
-
-Clone the image as you would above, then invoke the `docker build` command.
-
-```
-git clone https://github.com/UH-CI/uh-togo-app.git  
-
-cd agave-togo
-docker build --rm=true -t agave-togo .
-```
-
-This will create an `agave-togo` image based on the master branch of the repository that you can run anywhere.
-
-### Run the Docker Container
-
-To create and run the image as a Docker image, run the following command:
-
-```
-docker run -p 9000:9000 -n agave-togo agave-togo
-```
-
-The container will write the HTTP access logs to std out. You can view them using the `docker logs` command:
-
-```
-docker logs agave-togo
 ```
