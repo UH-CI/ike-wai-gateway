@@ -16,6 +16,7 @@ make a pull request on the branch you have forked.
 ***************************************************************************************************************************
 ## Install Agave ToGo for UH Tenant
 * git clone git@github.com:UH-CI/uh-togo-app.git
+* git checkout hawaii
 * npm install
 * npm install http-server -g
 * npm start
