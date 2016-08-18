@@ -1,36 +1,5 @@
 angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $localStorage, $location, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
 
-    //var handleTitle = function(tab, navigation, index) {
-    //    var total = navigation.find('li').length;
-    //    var current = index + 1;
-    //    // set wizard title
-    //    $('.step-title', $('#form_wizard_1')).text('Step ' + (index + 1) + ' of ' + total);
-    //    // set done steps
-    //    jQuery('li', $('#form_wizard_1')).removeClass("done");
-    //    var li_list = navigation.find('li');
-    //    for (var i = 0; i < index; i++) {
-    //        jQuery(li_list[i]).addClass("done");
-    //    }
-    //
-    //    if (current == 1) {
-    //        $('#form_wizard_1').find('.button-previous').hide();
-    //    } else {
-    //        $('#form_wizard_1').find('.button-previous').show();
-    //    }
-    //
-    //    if (current >= total) {
-    //        $('#form_wizard_1').find('.button-next').hide();
-    //        $('#form_wizard_1').find('.button-submit').show();
-    //        displayConfirm();
-    //    } else {
-    //        $('#form_wizard_1').find('.button-next').show();
-    //        $('#form_wizard_1').find('.button-submit').hide();
-    //    }
-    //    App.scrollTo($('.page-title'));
-    //}
-    //
-
-
     $scope.schema = {
         "type": "object",
         "title": "Interactive app registration form for the Agave platform.",
@@ -134,7 +103,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
             },
             "ontology": {
                 "type": "array",
-                "description": "An array of ontology terms describing this app.",
+                "description": "An array of ontology values describing this app",
                 "items": {
                     "type": "string"
                 },
@@ -204,140 +173,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 "items": {
                     "type": "string",
                 },
-                // "required": [],
                 "title": "Modules"
             },
-            //"inputs": {
-            //    "type": "array",
-            //    "items": {
-            //        "type": "object",
-            //        "properties": {
-            //            "id": {
-            //                "type": "string",
-            //                "description": "The unique identifier for this input file. This will be referenced in the wrapper script.",
-            //                "required": true,
-            //                "title": "ID",
-            //                "valueInLegend": true
-            //            },
-            //            "details": {
-            //                "type": "object",
-            //                "description": "Descriptive details about this app input file used in form generation.",
-            //                "title": "Details",
-            //                "properties": {
-            //                    "label": {
-            //                        "type": "string",
-            //                        "description": "The label for this input.",
-            //                        "title": "Label"
-            //                    },
-            //                    "description": {
-            //                        "type": "string",
-            //                        "description": "Description of this input.",
-            //                        "title": "Description"
-            //                    },
-            //                    "argument": {
-            //                        "type": "string",
-            //                        "description": "The command line value of this input (ex -n, --name, -name, etc)",
-            //                        "title": "Command line argument",
-            //                        "default": ""
-            //                    },
-            //                    "showArgument": {
-            //                        "type": "boolean",
-            //                        "description": "Whether the argument value should be passed into the wrapper at run time?",
-            //                        "title": "Add command line argument?",
-            //                        "default": false
-            //                    },
-            //                    "repeatArgument": {
-            //                        "type": "boolean",
-            //                        "description": "Whether the argument value should be repeated in front of each user-supplied input before injection into the wrapper template at runtime?",
-            //                        "title": "Add command line argument?",
-            //                        "default": false
-            //                    }
-            //                }
-            //            },
-            //            "semantics": {
-            //                "type": "object",
-            //                "description": "Semantic information about the input field.",
-            //                "title": "Semantics",
-            //                "properties": {
-            //                    "minCardinality": {
-            //                        "type": "integer",
-            //                        "description": "Minimum number of instances of this input per job.",
-            //                        "title": "Min cardinality",
-            //                        "default": 0,
-            //                        "required": false
-            //                    },
-            //                    "maxCardinality": {
-            //                        "title": "Max cardinality",
-            //                        "type": "integer",
-            //                        "description": "Max number of instances of this input per job.",
-            //                        "default": -1,
-            //                        "required": false
-            //                    },
-            //                    "ontology": {
-            //                        "title": "Ontology",
-            //                        "type": "array",
-            //                        "description": "Array of ontology terms describing this app.",
-            //                        "items": {
-            //                            "type": "string"
-            //                        }
-            //                    },
-            //                    "fileTypes": {
-            //                        "type": "array",
-            //                        "description": "Array of file types required for this input.",
-            //                        "items": {
-            //                            "type": "string"
-            //                        },
-            //                        "title": "File types"
-            //                    }
-            //                }
-            //            },
-            //            "value": {
-            //                "type": "object",
-            //                "description": "Default value and validations for the input field.",
-            //                "title": "Value",
-            //                "properties": {
-            //                    "default": {
-            //                        "type": "string",
-            //                        "description": "The default value to use for this input.",
-            //                        "title": "Default value"
-            //                    },
-            //                    "validator": {
-            //                        "type": "string",
-            //                        "description": "The regular expression used to validate this input value.",
-            //                        "title": "Validator"
-            //                    },
-            //                    "required": {
-            //                        "type": "boolean",
-            //                        "description": "Is this input required? If visible is false, this must be true.",
-            //                        "title": "Required",
-            //                        "default": 1,
-            //                        "required": true
-            //                    },
-            //                    "visible": {
-            //                        "type": "boolean",
-            //                        "description": "Should this parameter be visible? If not, there must be a default and it will be required..",
-            //                        "title": "Visible",
-            //                        "default": true,
-            //                        "required": true
-            //                    },
-            //                    "order": {
-            //                        "type": "integer",
-            //                        "description": "The order in which this parameter should be printed when generating an execution command for forked execution. This will also be the order in which inputs are returned in the response json.",
-            //                        "title": "Order",
-            //                        "default": 0
-            //                    },
-            //                    "enquote": {
-            //                        "type": "boolean",
-            //                        "description": "Should this value be double quoted prior to injection in the wrapper template.",
-            //                        "title": "Visible",
-            //                        "default": true,
-            //                        "required": true
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //},
             "parameters": {
                 "type": "array",
                 "description": "Non-file inputs supported by this application.",
@@ -347,8 +184,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     "properties": {
                         "id": {
                             "type": "string",
-                            maxLength: 256,
-                            minLength: 1,
+                            "maxLength": 256,
+                            "minLength": 1,
                             "description": "The unique identifier for this parameter. This will be referenced in the wrapper script.",
                             "title": "Parameter ID"
                         },
@@ -370,7 +207,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                 "showArgument": {
                                     "type": "boolean",
                                     "description": "Should this command line argument be injected into the submit script preceding the parameter?",
-                                    "title": "Prepend command line argument?"
+                                    "title": "Prepend command line argument?",
+                                    "default": true
                                 },
                                 "argument": {
                                     "type": "string",
@@ -380,7 +218,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                 "repeatArgument": {
                                     "type": "boolean",
                                     "description": "In instances where multiple values are supplied for this parameter, should this command line argument be repeatedly injected into the submit script preceding every instance of the parameter value?",
-                                    "title": "Repeat argument for every value?"
+                                    "title": "Repeat argument for every value?",
+                                    "default": false
                                 }
                             }
                         },
@@ -447,12 +286,14 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                 "required": {
                                     "type": "boolean",
                                     "description": "Is this parameter required? If visible is false, this must be true.",
-                                    "title": "Required"
+                                    "title": "Required",
+                                    "default": true
                                 },
                                 "visible": {
                                     "type": "boolean",
                                     "description": "Should this parameter be visible? If not, there must be a default and it will be required.",
-                                    "title": "Visible"
+                                    "title": "Visible",
+                                    "default": true
                                 },
                                 "order": {
                                     "type": "integer",
@@ -463,9 +304,138 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         }
                     }
                 }
+            },
+            "inputs": {
+                "type": "array",
+                "description": "Inputs supported by this application.",
+                "items": {
+                    "type": "object",
+                    "title": "Input",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "description": "The unique identifier for this input file. This will be referenced in the wrapper script.",
+                        "title": "ID",
+                        "valueInLegend": true
+                      },
+                      "details": {
+                        "type": "object",
+                        "description": "Descriptive details about this app input used in form generation.",
+                        "title": "Details",
+                        "properties": {
+                            "argument": {
+                                "type": "string",
+                                "description": "Name of the command line flag or argument (including dashes) for this input.",
+                                "title": "Argument value"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Verbose information on what this input does.",
+                                "title": "Description"
+                            },
+                            "label": {
+                                "type": "string",
+                                "description": "The label displayed for this input.",
+                                "title": "Label"
+                            },
+                            "showArgument": {
+                                "type": "boolean",
+                                "description": "Should this command line argument be injected into the submit script preceding the input?",
+                                "title": "Prepend command line argument?",
+                                "default": true
+                            },
+                            "repeatArgument": {
+                                "type": "boolean",
+                                "description": "In instances where multiple values are supplied for this input, should this command line argument be repeatedly injected into the submit script preceding every instance of the input value?",
+                                "title": "Repeat argument for every value?",
+                                "default": false
+                            }
+                        }
+                      },
+                        "semantics": {
+                            "type": "object",
+                            "description": "Semantic information about the input field.",
+                            "title": "Semantics",
+                            "properties": {
+                                "fileTypes": {
+                                     "type": "array",
+                                     "description": "Array of file types required for this input.",
+                                     "items": {
+                                         "type": "string"
+                                     },
+                                     "title": "File types"
+                                },
+                                "minCardinality": {
+                                    "type": "integer",
+                                    "description": "Minimum number of instances of this input per job.",
+                                    "title": "Min cardinality",
+                                    "default": 0,
+                                    "minimum": 0,
+                                    "required": false
+                                },
+                                "maxCardinality": {
+                                    "title": "Max cardinality",
+                                    "type": "integer",
+                                    "description": "Max number of instances of this input per job.",
+                                    "default": -1,
+                                    "minimum": -1,
+                                    "required": false
+                                },
+                                "ontology": {
+                                    "title": "Ontology",
+                                    "type": "array",
+                                    "description": "Array of ontology terms describing this input.",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "value": {
+                            "type": "object",
+                            "description": "Default value and validations for the parameter field.",
+                            "title": "Value",
+                            "properties": {
+                                "default": {
+                                    "type": ["number","string"],
+                                    "description": "Default value",
+                                    "title": "Default value"
+                                },
+                                "order": {
+                                    "type": "integer",
+                                    "description": "The order in which this parameter should be printed when generating an execution command for forked execution. This will also be the order in which paramters are returned in the response json.",
+                                    "title": "Order",
+                                },
+                                "validator": {
+                                    "type": "string",
+                                    "description": "The regular expression used to validate this parameter value.",
+                                    "title": "Validator regex"
+                                },
+                                "required": {
+                                    "type": "boolean",
+                                    "description": "Is this parameter required? If visible is false, this must be true.",
+                                    "title": "Required",
+                                    "default": true
+                                },
+                                "visible": {
+                                    "type": "boolean",
+                                    "description": "Should this parameter be visible? If not, there must be a default and it will be required.",
+                                    "title": "Visible",
+                                    "default": true
+                                },
+                                "enquote": {
+                                    "type": "boolean",
+                                    "description": "Should this value be double quoted prior to injection in the wrapper template.",
+                                    "title": "Visible",
+                                    "default": true,
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        },
-        //"required": ["name", "version", "label", "executionSystem", "executionType", "deploymentSystem", "deploymentPath"]//, "inputs.id", "parameters.id", "parameters[].visible", "parameters[].required"]
+        }
     };
 
 
@@ -473,21 +443,6 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
         "type": "wizard",
         "legend": "General Info",
         "tabs": [
-
-    //        {
-    //            "title": "Data Inputs",
-    //            "items": [
-    //                {
-    //                    "type": "tabarray",
-    //                    "items": [
-    //                        {
-    //                            "key": "inputs[]",
-    //                            "legend": "Input {{idx}}"
-    //                        }
-    //                    ]
-    //                }
-    //            ]
-    //        },
             {
                 "title": "Basics",
                 "items": [
@@ -523,20 +478,11 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     "shortDescription",
                     "longDescription",
                     {
-                        key: 'tags',
-                        // type: 'input',
-                        placeholder: 'One or more tags', //default will translate placeholder.select
-                        options: {
-                            tagging: true,
-                            taggingLabel: '(new)',
-                            taggingTokens: 'SPACE|ENTER|,'
-                        }
+                        "key": "tags"
                     },
                     "helpURI",
                     {
-                        key: 'ontology',
-                        placeholder: 'Semantic terms', //default will translate placeholder.select
-                        startEmpty: true
+                        "key": "ontology"
                     }
                 ]
             },
@@ -548,7 +494,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         "key": "deploymentSystem",
                         "placeholder": "storage.example.com",
                         "type": "select",
-                        titleMap: [],
+                        "titleMap": [],
                         ngModelOptions: {
                             updateOnDefault: true
                         },
@@ -564,14 +510,14 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     "templatePath",
                     "testPath",
                     {
-                        key: 'modules',
-                        startEmpty: true,
-                        placeholder: 'Module command(s)', //default will translate placeholder.select
-                        notitle: true,
-                        options: {
-                            tagging: '',
-                            taggingLabel: '(new)',
-                            taggingTokens: ',|ENTER|,'
+                        "key": "modules",
+                        "startEmpty": true,
+                        "placeholder": "Module command(s)", //default will translate placeholder.select
+                        "notitle": true,
+                        "options": {
+                            "tagging": '',
+                            "taggingLabel": "(new)",
+                            "taggingTokens": ",|ENTER|,"
                         },
                         ngModelOptions: {
                             updateOnDefault: true
@@ -583,7 +529,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 "title": "Environment",
                 "items": [
                     {
-                        key: "executionType",
+                        "key": "executionType",
                         ngModelOptions: {
                             updateOnDefault: true
                         },
@@ -600,7 +546,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         "key": "executionSystem",
                         "placeholder": "compute.example.com",
                         "type": "select",
-                        titleMap: [],
+                        "titleMap": [],
                         ngModelOptions: {
                             updateOnDefault: true
                         },
@@ -638,39 +584,36 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         "description": "Default queue to use when submitting this job if none is provided in the job request. Can be left blank and a queue will be determined at run time",
                         "type": "select",
                         "condition": "model.executionSystem !== ''",
-                        // ngModelOptions: { updateOn: 'click' },
+                        "titleMap": [],
                         ngModelOptions: {
                             updateOnDefault: true
-                        },
-                        titleMap: []
+                        }
                     },
                     "defaultNodeCount",
                     "defaultMemoryPerNode",
                     "defaultProcessorsPerNode",
                     "defaultMaxRunTime",
                     {
-                        key: "parallelism",
-                        type: "select",
-                        // ngModelOptions: { updateOn: 'click' }
+                        "key": "parallelism",
+                        "type": "select",
                         ngModelOptions: {
                             updateOnDefault: true
                         },
                     },
                     {
                         "key": "checkpointable",
-                        type: "radiobuttons",
-                        // ngModelOptions: { updateOn: 'click' },
+                        "type": "radiobuttons",
+                        "style": {
+                            "selected": "btn-success",
+                            "unselected": "btn-default"
+                        },
+                        "titleMap": [
+                            {"value": true, "name": "True"},
+                            {"value": false, "name": "False"}
+                        ],
                         ngModelOptions: {
                             updateOnDefault: true
-                        },
-                        style: {
-                            selected: "btn-success",
-                            unselected: "btn-default"
-                        },
-                        titleMap: [
-                            {value: true, name: "True"},
-                            {value: false, name: "False"}
-                        ]
+                        }
                     }
                 ]
             },
@@ -680,17 +623,16 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     {
                         "type": "tabarray",
                         "title": "{{value.id || ('Parameter ' + $index)}}",
-                        tabType: "top",
-                        key: "parameters",
-                        //remove: "Delete",
-                        style: {
-                            remove: "btn-danger"
+                        "tabType": "top",
+                        "key": "parameters",
+                        "style": {
+                            "remove": "btn-danger"
                         },
-                        add: "Add parameter",
+                        "add": "Add parameter",
+                        "startEmpty": true,
                         "items": [
                             {
-                                key: "parameters[].id",
-                                // ngModelOptions: { updateOn: 'blur' },
+                                "key": "parameters[].id",
                                 ngModelOptions: {
                                     updateOnDefault: true
                                 },
@@ -717,19 +659,19 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                     // "parameters[].details.description",
                                     {
                                         "key": "parameters[].details.showArgument",
-                                        type: "radiobuttons",
-                                        // ngModelOptions: { updateOn: 'click' },
+                                        "type": "radiobuttons",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "True"},
+                                            {"value": false, "name": "False"}
+                                        ],
                                         ngModelOptions: {
                                             updateOnDefault: true
-                                        },
-                                        style: {
-                                            selected: "btn-success",
-                                            unselected: "btn-default"
-                                        },
-                                        titleMap: [
-                                            {value: true, name: "True"},
-                                            {value: false, name: "False"}
-                                        ]
+                                        }
+
                                     },
                                     {
                                         "key": "parameters[].details.argument",
@@ -739,36 +681,34 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                     {
                                         "key": "parameters[].details.repeatArgument",
                                         "type": "radiobuttons",
-                                        // ngModelOptions: { updateOn: 'click' },
-                                        ngModelOptions: {
-                                            updateOnDefault: true
-                                        },
-
                                         "condition": "model.parameters[arrayIndex].details.showArgument",
                                         "style": {
-                                            selected: "btn-success",
-                                            unselected: "btn-default"
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
                                         },
-                                        titleMap: [
-                                            {value: true, name: "True"},
-                                            {value: false, name: "False"}
-                                        ]
+                                        "titleMap": [
+                                            {"value": true, "name": "True"},
+                                            {"value": false, "name": "False"}
+                                        ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        }
                                     }
                                 ]
                             },
                             {
                                 "key": "parameters[].semantics",
-                                type: "fieldset",
+                                "type": "fieldset",
                                 "title": "Semantics",
                                 "description": "Semantic information about the parameter field.",
                                 "items": [
                                     {
                                       "key": "parameters[].semantics.ontology",
-                                      startEmpty: true,
+                                      "startEmpty": true,
                                     },
                                     {
-                                        key: "parameters[].semantics.minCardinality",
-                                        type: "number",
+                                        "key": "parameters[].semantics.minCardinality",
+                                        "type": "number",
                                         ngModelOptions: {
                                             updateOnDefault: true
                                         },
@@ -802,8 +742,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                         },
                                     },
                                     {
-                                        key: "parameters[].semantics.maxCardinality",
-                                        type: "number",
+                                        "key": "parameters[].semantics.maxCardinality",
+                                        "type": "number",
                                         ngModelOptions: {
                                             updateOnDefault: true
                                         },
@@ -840,65 +780,31 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                 ]
                             },
                             {
-                                key: "parameters[].value",
+                                "key": "parameters[].value",
                                 "type": "fieldset",
                                 "title": "Values",
                                 "description": "Default value and validations for the parameter field.",
                                 "items": [
                                     {
-                                        key: "parameters[].value.type",
-                                        type: "select",
+                                        "key": "parameters[].value.type",
+                                        "type": "select"
 
                                     },
                                     {
-                                        key: "parameters[].value.default",
-                                        // ngModelOptions: {
-                                        //     updateOnDefault: true
-                                        // },
-                                        // validationMessage: {
-                                        //     'enumValueRequired': 'Default value must be one of the enumerated values for this parameter.',
-                                        //     'defaultRequiredWhenHidden': 'Default value is required when the parameter is hidden.',
-                                        // },
-                                        // $validators: {
-                                        //     // enumValueRequired: function (value) {
-                                        //     //     if (value && $scope.model.parameters[arrayIndex].value.type == 'enum') {
-                                        //     //         return ($scope.model.parameters[arrayIndex].value.enum_values.indexOf(value) != -1)
-                                        //     //     }
-                                        //     //     return true
-                                        //     // },
-                                        //     enumValueRequired: function (value) {
-                                        //       return value ? true : false;
-                                        //     },
-                                        //     //defaultRequiredWhenHidden: function(value) {
-                                        //     //    if (($scope.model.parameters[arrayIndex].value.type == 'bool' ||
-                                        //     //        $scope.model.parameters[arrayIndex].value.type == 'flag') || &&
-                                        //     //        $scope.model.parameters[arrayIndex].semantics.maxCardinality > 1)
-                                        //     //    {
-                                        //     //        return false;
-                                        //     //    }
-                                        //     //    return true
-                                        //     //}
-                                        // }
+                                        "key": "parameters[].value.default",
+                                        "description": "Default value",
+                                        "title": "Default value"
                                     },
                                     {
-                                        key: "parameters[].value.validator",
-                                        condition: "[string,number].indexOf(model.parameters[arrayIndex].value.type) !== -1",
+                                        "key": "parameters[].value.validator",
+                                        "condition": "[string,number].indexOf(model.parameters[arrayIndex].value.type) !== -1",
                                         ngModelOptions: {
                                             updateOnDefault: true
-                                        },
-                                        // TO-DO: Fix. This is breaking myForm.$valid
-                                        // validationMessage: {
-                                        //     'validatorNotSupported': 'Validators are not needed for enumeration, boolean, or flag parameter types',
-                                        // },
-                                        // $validators: {
-                                        //     enumValueRequired: function (value) {
-                                        //         return (value && [string, number].indexOf($scope.model.parameters[arrayIndex].value.type) !== -1);
-                                        //     },
-                                        // }
+                                        }
                                     },
                                     {
-                                        key: "parameters[].value.enum_values",
-                                        condition: "model.parameters[arrayIndex].value.type === 'enum'",
+                                        "key": "parameters[].value.enum_values",
+                                        "condition": "model.parameters[arrayIndex].value.type === 'enum'",
                                         ngModelOptions: {
                                             updateOnDefault: true
                                         },
@@ -912,51 +818,59 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                                         }
                                     },
                                     {
-                                        "key": "parameters[].value.required",
+                                        "key": "parameters[].value.visible",
                                         "type": "radiobuttons",
-                                        condition: "model.parameters[arrayIndex].value.visible",
                                         "style": {
-                                            selected: "btn-success",
-                                            unselected: "btn-default"
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
                                         },
-                                        titleMap: [
-                                            {value: true, name: "Yes"},
-                                            {value: false, name: "No"}
+                                        "titleMap": [
+                                            {"value": true, "name": "Yes"},
+                                            {"value": false, "name": "No"}
                                         ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        },
                                         onChange: function (modelValue, form) {
                                           if (typeof $scope.model.parameters !== 'undefined'){
-                                            if ($scope.model.parameters.length > 0 && typeof arrayIndex !== 'undefined'){
-                                              if (modelValue && $scope.model.parameters[arrayIndex].semantics.minCardinality == 0) {
-                                                  $scope.model.parameters[arrayIndex].semantics.minCardinality = 1;
-                                              } else if (!modelValue && $scope.model.parameters[arrayIndex].semantics.minCardinality > 0) {
-                                                  $scope.model.parameters[arrayIndex].semantics.minCardinality = 0;
+                                            if ($scope.model.parameters.length > 0 && typeof form.key !== 'undefined'){
+                                              if (!modelValue) {
+                                                  $scope.model.parameters[form.key[1]].value.required = true
                                               }
                                             }
                                           }
                                         }
                                     },
                                     {
-                                        "key": "parameters[].value.visible",
+                                        "key": "parameters[].value.required",
                                         "type": "radiobuttons",
-                                        // ngModelOptions: { updateOn: 'click' },
+                                        "condition": "model.parameters[arrayIndex].value.visible",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "Yes"},
+                                            {"value": false, "name": "No"}
+                                        ],
                                         ngModelOptions: {
                                             updateOnDefault: true
                                         },
-                                        "style": {
-                                            selected: "btn-success",
-                                            unselected: "btn-default"
-                                        },
-                                        titleMap: [
-                                            {value: true, name: "Yes"},
-                                            {value: false, name: "No"}
-                                        ],
                                         onChange: function (modelValue, form) {
-                                            if (!modelValue) {
-                                                $scope.model.parameters[arrayIndex].value.required = true
+                                          if (typeof $scope.model.parameters !== 'undefined'){
+                                            if ($scope.model.parameters.length > 0 && typeof form.key !== 'undefined'){
+                                              if (modelValue && $scope.model.parameters[form.key[1]].semantics.minCardinality == 0) {
+                                                  $scope.model.parameters[form.key[1]].semantics.minCardinality = 1;
+                                              } else if (!modelValue && $scope.model.parameters[form.key[1]].semantics.minCardinality > 0) {
+                                                  $scope.model.parameters[form.key[1]].semantics.minCardinality = 0;
+                                              }
                                             }
+                                          }
                                         }
                                     },
-                                    "order"
+                                    {
+                                      "key": "parameters[].value.order"
+                                    }
                                 ]
                             }
 
@@ -964,21 +878,247 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     }
                 ]
             },
-    //        {
-    //            "title": "Data Output Data",
-    //            "items": [
-    //                {
-    //                    "type": "tabarray",
-    //                    "items": [
-    //                        {
-    //                            "key": "outputs[]",
-    //                            "legend": "Parameter: {{idx}}"
-    //                        }
-    //                    ]
-    //                }
-    //            ]
-    //        },
+            {
+                "title": "Inputs",
+                "items": [
+                    {
+                        "type": "tabarray",
+                        "title": "{{value.id || ('Input ' + $index)}}",
+                        "tabType": "top",
+                        "key": "inputs",
+                        "style": {
+                            "remove": "btn-danger"
+                        },
+                        "add": "Add input",
+                        "startEmpty": true,
+                        "items": [
+                            {
+                                "key": "inputs[].id",
+                                ngModelOptions: {
+                                    updateOnDefault: true
+                                },
+                                ngModel: function(ngModel) {
+                                    ngModel.$validators.myMail = function(value) {
+                                        var exp = /[a-zA-Z0-9_]+/.exec(value);
+                                        if (!exp) {
+                                            return false;
+                                        }
+                                        return true;
+                                    };
+                                },
+                                validationMessage: {
+                                    'invalidCharacters': "Invalid input id. Inputs must be alphanumeric strings and may include underscores."
+                                }
+                            },
+                            {
+                                "key": "inputs[].details",
+                                "type": "fieldset",
+                                "title": "Details",
+                                "description": "Descriptive details about this app inputs used in form generation.",
+                                "items": [
+                                    {
+                                      "key": "inputs[].details.label"
+                                    },
+                                    {
+                                        "key": "inputs[].details.showArgument",
+                                        "type": "radiobuttons",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "True"},
+                                            {"value": false, "name": "False"}
+                                        ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        }
+                                    },
+                                    {
+                                        "key": "inputs[].details.argument",
+                                        "condition": "model.parameters[arrayIndex].details.showArgument",
+                                        "title": "Command line argument"
+                                    },
+                                    {
+                                        "key": "inputs[].details.repeatArgument",
+                                        "type": "radiobuttons",
+                                        "condition": "model.inputs[arrayIndex].details.showArgument",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "True"},
+                                            {"value": false, "name": "False"}
+                                        ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "inputs[].semantics",
+                                "type": "fieldset",
+                                "title": "Semantics",
+                                "description": "Semantic information about the input field.",
+                                "items": [
+                                    {
+                                      "key": "inputs[].semantics.ontology",
+                                      "startEmpty": true,
+                                    },
+                                    {
+                                        "key": "inputs[].semantics.minCardinality",
+                                        "type": "number",
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        },
+                                        validationMessage: {
+                                            'minLessThanMax': 'Minimum number of values allowed by this input must be a non-negative integer value less than or equal to the maximum number of values.',
+                                            'gtzeroWhenRequired': 'Minimum number of values allowed by this input must be greater than zero when required.',
+                                        },
+                                        $validators: {
+                                            minLessThanMax: function (value) {
+                                                if (typeof $scope.model.inputs !== 'undefined'){
+                                                  if ($scope.model.inputs.length > 0 && typeof arrayIndex !== 'undefined'){
+                                                    if (value && $scope.model.inputs[arrayIndex].semantics.maxCardinality > 0 &&
+                                                        value > $scope.model.inputs[arrayIndex].semantics.maxCardinality) {
+                                                        return false;
+                                                    }
+                                                  }
+                                                }
+                                                return true;
+                                              },
+                                              gtzeroWhenRequired: function (value) {
+                                                if (typeof $scope.model.inputs !== 'undefined'){
+                                                  if ($scope.model.inputs.length > 0 && typeof arrayIndex !== 'undefined'){
+                                                    if (value && $scope.model.inputs[arrayIndex].semantics.maxCardinality > 0 &&
+                                                        value > $scope.model.inputs[arrayIndex].semantics.maxCardinality) {
+                                                        return false;
+                                                    }
+                                                  }
+                                                }
+                                                return true;
+                                              }
+                                        },
+                                    },
+                                    {
+                                        "key": "inputs[].semantics.maxCardinality",
+                                        "type": "number",
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        },
+                                        validationMessage: {
+                                            'maxGreaterThanMax': 'Maximum number of values allowed by this parameter must be a non-negative integer value less than or equal to the maximum number of values.',
+                                            'oneWhenBoolish': 'Maximum number of values is one when parameter is of type bool or flag.',
+                                        },
+                                        $validators: {
+                                            minLessThanMax: function (value) {
+                                                if (typeof $scope.model.inputs !== 'undefined'){
+                                                  if ($scope.model.inputs.length > 0 && typeof arrayIndex !== 'undefined'){
+                                                    if (value && $scope.model.inputs[arrayIndex].semantics.maxCardinality > 0 &&
+                                                        value > $scope.model.inputs[arrayIndex].semantics.maxCardinality) {
+                                                        return false;
+                                                    }
+                                                  }
+                                                }
+                                                return true;
+                                            },
+                                            oneWhenBoolish: function (value) {
+                                              if (typeof $scope.model.inputs !== 'undefined'){
+                                                if ($scope.model.inputs.length > 0 && typeof arrayIndex !== 'undefined'){
+                                                  if (value && ($scope.model.inputs[arrayIndex].value.type == 'bool' ||
+                                                      $scope.model.inputs[arrayIndex].value.type == 'flag') &&
+                                                      $scope.model.inputs[arrayIndex].semantics.maxCardinality > 1) {
+                                                      return false;
+                                                  }
+                                                }
+                                              }
+                                              return true;
+                                            }
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "inputs[].value",
+                                "type": "fieldset",
+                                "title": "Values",
+                                "description": "Default value and validations for the input field.",
+                                "items": [
+                                    {
+                                        "key": "inputs[].value.default",
+                                        "description": "Default value",
+                                        "title": "Default value"
+                                    },
+                                    {
+                                        "key": "inputs[].value.validator",
+                                        "condition": "[string,number].indexOf(model.inputs[arrayIndex].value.type) !== -1",
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        }
+                                    },
+                                    {
+                                        "key": "inputs[].value.visible",
+                                        "type": "radiobuttons",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "Yes"},
+                                            {"value": false, "name": "No"}
+                                        ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        },
+                                        onChange: function (modelValue, form) {
+                                          if (typeof $scope.model.inputs !== 'undefined'){
+                                            if ($scope.model.inputs.length > 0 && typeof form.key !== 'undefined'){
+                                              if (!modelValue) {
+                                                  $scope.model.inputs[form.key[1]].value.required = true
+                                              }
+                                            }
+                                          }
+                                        }
+                                    },
+                                    {
+                                        "key": "inputs[].value.required",
+                                        "type": "radiobuttons",
+                                        "condition": "model.inputs[arrayIndex].value.visible",
+                                        "style": {
+                                            "selected": "btn-success",
+                                            "unselected": "btn-default"
+                                        },
+                                        "titleMap": [
+                                            {"value": true, "name": "Yes"},
+                                            {"value": false, "name": "No"}
+                                        ],
+                                        ngModelOptions: {
+                                            updateOnDefault: true
+                                        },
+                                        onChange: function (modelValue, form) {
+                                          if (typeof $scope.model.inputs !== 'undefined'){
+                                            if ($scope.model.inputs.length > 0 && typeof form.key !== 'undefined'){
+                                              if (modelValue && $scope.model.inputs[form.key[1]].semantics.minCardinality == 0) {
+                                                  $scope.model.inputs[form.key[1]].semantics.minCardinality = 1;
+                                              } else if (!modelValue && $scope.model.parameters[form.key[1]].semantics.minCardinality > 0) {
+                                                  $scope.model.inputs[form.key[1]].semantics.minCardinality = 0;
+                                              }
+                                            }
+                                          }
+                                        }
+                                    },
+                                    {
+                                      "key": "inputs[].value.order"
+                                    }
+                                ]
+                            }
 
+                        ]
+                    }
+                ]
+            }
         ]
     }];
 
@@ -999,6 +1139,9 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
        "templatePath": "wrapper.sh",
        "testPath": "test/test.sh",
        "tags": [
+         "excute", "awesome", "demo"
+       ],
+       "ontology": [
          "excute", "awesome", "demo"
        ],
        "modules": [],
@@ -1043,13 +1186,13 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 angular.forEach(systems, function (system, key) {
                     if (system.type === SystemTypeEnum.STORAGE.toString()) {
                         $scope.systems.storage[system.id] = system;
-                        $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.name });
+                        $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.id });
                         if (system.default == true) {
                             $scope.defaultSystems.storage = system;
                         }
                     } else {
                         $scope.systems.execution[system.id] = system;
-                        $scope.form[0].tabs[2].items[1].titleMap.push({ value: system.id, name: system.name });
+                        $scope.form[0].tabs[2].items[1].titleMap.push({ value: system.id, name: system.id });
                         if (system.default == true) {
                             $scope.defaultSystems.execution = system;
                         }
@@ -1230,7 +1373,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
         matchBrackets: true,
         styleActiveLine: false,
         theme:"neat",
-        mode: 'javascript',
+        mode: "javascript",
         json: true,
         statementIndent: 2,
         onLoad: $scope.codemirrorLoaded
@@ -1249,37 +1392,36 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
         if (typeof newValue === 'undefined' && $scope.model !== ''){
           $scope.model.modules = [];
         }
-        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
-          $scope.model.ontology = [];
-        }
+        // if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+        //   $scope.model.modules = [];
+        // }
     }, true);
-    //
+
     $scope.$watch('model.ontology', function(newValue, oldValue){
-        if (typeof newValue === 'undefined' && typeof $scope.model !== 'undefined'){
-          $scope.model.ontology = [];
-        }
-        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
-          $scope.model.ontology = [];
-        }
-    }, true);
-    //
-    $scope.$watch('model.parameters', function(newValue, oldValue){
         if (typeof newValue === 'undefined'){
-          $scope.model.parameters = [];
-        }
-        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
           $scope.model.ontology = [];
         }
+        // if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+        //   $scope.model.ontology = [];
+        // }
     }, true);
 
     $scope.$watch('model.tags', function(newValue, oldValue){
         if (typeof newValue === 'undefined'){
           $scope.model.tags = [];
         }
-        if (Object.prototype.toString.call( newValue ) === '[object Array]'){
-          $scope.model.ontology = [];
-        }
+        // if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+        //   $scope.model.tags = [];
+        // }
     }, true);
 
+    $scope.$watch('model.parameters', function(newValue, oldValue){
+        if (typeof newValue === 'undefined'){
+          $scope.model.parameters = [];
+        }
+        // if (Object.prototype.toString.call( newValue ) === '[object Array]'){
+        //   $scope.model.parameters = [];
+        // }
+    }, true);
 
 });

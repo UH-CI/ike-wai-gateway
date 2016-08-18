@@ -4,11 +4,12 @@ services:
   web:
     image: agaveapi/httpd:2.4
     hostname: togo.staging.agaveapi.co
-    restart: always
+    restart: on-failure
     environment:
       - 'DOCUMENT_ROOT=/var/www/html'
+      - 'LOG_TARGET_STDOUT=1'
     ports:
-      - '80'
+      - '80:80'
     volumes:
       - '.:/var/www/html:ro'
     labels:

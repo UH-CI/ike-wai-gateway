@@ -78,4 +78,16 @@ AgaveToGo.filter('propsFilter', function () {
     return function(notification) {
         return 'agave-webhooks';
     }
+}])
+.filter("fullName", [ function() {
+    return function(userProfile) {
+        if (userProfile.first_name) {
+            return userProfile.first_name + ' ' + userProfile.last_name;
+        } else if (userProfile.firstName) {
+            return userProfile.firstName + ' ' + userProfile.lastName;
+        }
+        else {
+            return userProfile.username;
+        }
+    }
 }]);
