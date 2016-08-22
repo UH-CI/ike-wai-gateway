@@ -15,137 +15,46 @@
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-            <div class="portlet-title" ng-show="!requesting">
-              <div class="caption">
-                  <i class="fa fa-bell"></i> Subscriptions Management
-              </div>
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-bell"></i> Subscriptions Management
+                </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <a href="#/system/new" class="btn btn-outline green pull-right" data-target="#add-edit-modal" role="button" data-toggle="modal">
+                      <i class="fa fa-plus"></i>
+                      <span class="hidden-480"> New System</span>
+                    </a>
+                  </div>
+                </div>
 
-              <div class="row top-buffer text-center">
-                <div class="col-md-12">
-                  <div class="btn-group">
-                    <button class="btn btn-default hidden-md hidden-lg" ng-click="showSearch = !showSearch">
-                      <i class="fa fa-filter" aria-hidden="true"></i> {{showSearch ? 'Hide Search' : 'Search'}}
-                    </button>
-                  </div>
-                  <a ui-sref="notifications-add({associatedUuid: associatedUuid, resourceType: resourceType})" class="btn btn-outline green pull-right" role="button">
-                    <i class="fa fa-plus"></i>
-                    <span class="hidden-480"> Add Notification</span>
-                  </a>
-                </div>
-              </div>
+                <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                      </div>
+                    </div>
+                    <div class="row top-buffer" ng-show="showSearch">
+                      <query-builder group="filter.group" resource="notifications"></query-builder>
+                      <div class="col-md-12 top-buffer">
 
-              <div class="row visible-on top-buffer">
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="associatedUuid" ng-model="associatedUuid">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <button type="button" class="form-control btn-default" ng-model="available" ng-click="available = !available" ng-class="available ? 'form-control btn-default active' : 'form-control btn-default'">{{available ? 'available: true' : 'available: false'}}</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="created" ng-model="created">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="event" ng-model="event">
-                    </div>
-                  </div>
-                </div>
-              </div>
+                        <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                        </div>
 
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="id" ng-model="id">
+                        <div class="btn-group">
+                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="lastSent" ng-model="lastSent">
+                    <div class="btn-group top-buffer">
+                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                      </button>
                     </div>
-                  </div>
                 </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="lastUpdated" ng-model="lastUpdated">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="owner" ng-model="owner">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="persistent" ng-model="persistent">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <button type="button" class="form-control btn-default" ng-model="status" ng-click="status = status === 'active' ? 'inactive' : 'active'" ng-class="status === 'active' ? 'form-control btn-default active' : 'form-control btn-default'">{{status === 'active' ? 'status: ACTIVE' : 'status: INACTIVE'}}</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="success" ng-model="success">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <div class="input-group">
-                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                      <input class="form-control" type="text" placeholder="url" ng-model="url">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row top-buffer text-center">
-                <div class="col-md-12">
-                  <div class="btn-group" ng-class="showSearch ? '' : 'hidden-sm hidden-xs'">
-                    <button class="btn btn-success" ng-click="search()">Filter</button>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="portlet-body">
@@ -210,7 +119,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr dir-paginate="notification in notifications | orderBy:sortType:sortReverse | itemsPerPage: limit" total-items="totalItems">
+                                <tr ng-repeat="notification in notifications | orderBy:sortType:sortReverse | filter:filter" >
                                     <td>
                                         <a ui-sref="notifications({id: notification.id})"> {{notification.id}} </a>
                                     </td>
