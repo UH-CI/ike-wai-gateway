@@ -51,10 +51,14 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
               $scope.system = '';
               $scope.requesting = false;
               var message = '';
-              if (response.errorResponse.message) {
-                message = 'Error: Could not retrieve system - ' + response.errorResponse.message
-              } else if (response.errorResponse.fault){
-                message = 'Error: Could not retrieve system - ' + response.errorResponse.fault.message;
+              if (typeof response.errorResponse !== 'undefined') {
+                if (typeof response.errorResponse.message !== 'undefined'){
+                  message = 'Error: Could not retrieve system - ' + response.errorResponse.message;
+                } else if (typeof response.errorResponse.fault !== 'undefined') {
+                  message = 'Error: Could not retrieve system - ' + response.errorResponse.fault.message;
+                } else {
+                  message = 'Error: Could not retrieve system';
+                }
               } else {
                 message = 'Error: Could not retrieve system';
               }

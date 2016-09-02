@@ -287,7 +287,7 @@
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
-                                <label>
+                                <label>mo
                                     <input type="checkbox" checked="" /> Passed</label>
                                 <label>
                                     <input type="checkbox" checked="" /> Failed</label>
@@ -311,7 +311,7 @@
                                             </div>
                                         </div>
                                         <div class="cont-col2">
-                                            <div class="desc"> <a ui-sref="systems({id: monitor.target })">{{monitor.target}}</a>
+                                            <div class="desc"> <a ui-sref="monitors-manager({systemId: monitor.target })">{{monitor.target}}</a>
                                                 <span ng-if="monitor.lastSuccess !== monitor.lastUpdated" class="label label-sm label-danger "> Take action
                                                     <i class="fa fa-share"></i>
                                                 </span>

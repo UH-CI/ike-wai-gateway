@@ -137,6 +137,23 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                       {name: 'visible'}                         // Boolean flag indicating whether or not to show deleted jobs. Defaults to false.
                     ];
                     break;
+                  case 'monitors':
+                    scope.fields = [
+                      {name: 'id'},
+                      {name: 'target'},
+                      {name: 'active'},
+                      {name: 'interval'},
+                      {name: 'updateSystemStatus'}
+                    ];
+                    break;
+                  case 'monitors-checks':
+                    scope.fields = [
+                      {name: 'id'},
+                      {name: 'type'},
+                      {name: 'result'},
+                      {name: 'message'}
+                    ];
+                    break;
                   case 'notifications':
                     scope.fields = [
                       {name: 'available'},                     // Whether the notification is available. Boolean, default true
@@ -175,7 +192,7 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                 scope.addCondition = function () {
                     scope.group.rules.push({
                         condition: '.eq=',
-                        field: 'available',
+                        field: '',
                         data: ''
                     });
                 };
@@ -200,6 +217,13 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                       scope.group.rules.push({
                           condition: '.eq=',
                           field: 'appid',
+                          data: ''
+                      });
+                      break;
+                    case 'monitors':
+                      scope.group.rules.push({
+                          condition: '.eq=',
+                          field: 'id',
                           data: ''
                       });
                       break;

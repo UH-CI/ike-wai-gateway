@@ -1,0 +1,63 @@
+<h3 class="page-title"> Monitors</h3>
+
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="portlet light bordered" id="form_wizard_1">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class=" icon-layers font-red"></i>
+            <span class="caption-subject font-red bold uppercase">
+              Monitors Edit - {{monitorId}}</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="portlet-body form">
+          <div class="row">
+            <div class="col-md-6">
+              <form
+                name="myForm"
+                sf-schema="schema"
+                sf-form="form"
+                sf-model="model"
+              >
+              </form>
+              <div class="btn btn-danger" ng-click="delete()">Delete</div>
+              <div class="btn btn-primary" ng-click="update()">Update</div>
+            </div>
+            <div class="col-md-6 text-center top-buffer">
+              <div class="btn btn-success" ng-click="test()">Test Monitor</div>
+              <div ng-if="monitorCheck" class="alert alert-success alert-dismissible top-buffer" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <dl class="dl-horizontal text-left">
+                  <dt ng-if="monitorCheck.id">ID</dt>
+                  <dd ng-if="monitorCheck.id">{{monitorCheck.id}}</dd>
+                  <dt ng-if="monitorCheck.type">Type</dt>
+                  <dd ng-if="monitorCheck.type">{{monitorCheck.type}}</dd>
+                  <dt ng-if="monitorCheck.result">Result</dt>
+                  <dd ng-if="monitorCheck.result">{{monitorCheck.result}}</dd>
+                  <dt ng-if="monitorCheck.message">Message</dt>
+                  <dd ng-if="monitorCheck.message">{{monitorCheck.message}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row top-buffer">
+    <div class="col-md-12">
+      <a href="/app/#/monitors" class="btn btn-default">Back to Monitors</a>
+    </div>
+  </div>
+</div>

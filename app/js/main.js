@@ -637,6 +637,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         insertBefore: '#ng_load_plugins_before',
                         files: [
                             'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
                             'js/controllers/notifications/NotificationsAlertsDirectoryController.js'
                         ]
                     });
@@ -677,6 +678,229 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/services/ActionsService.js',
                           'js/services/PermissionsService.js',
                           'js/controllers/notifications/resource/NotificationsResourceDetailsController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Monitors Routes                          ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        .state('monitors-noslash', {
+            url: "/monitors",
+            templateUrl: "views/monitors/manager.html",
+            data: {pageTitle: 'Monitors Manager'},
+            controller: "MonitorsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/monitors/MonitorsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('monitors-manager-noslash', {
+            url: "/monitors/manager",
+            templateUrl: "views/monitors/manager.html",
+            data: {pageTitle: 'Monitors Manager'},
+            controller: "MonitorsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/monitors/MonitorsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('monitors-manager', {
+            url: "/monitors/manager/:systemId",
+            params: {
+              systemId: ''
+            },
+            templateUrl: "views/monitors/manager.html",
+            data: {pageTitle: 'Monitors Manager'},
+            controller: "MonitorsManagerDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/monitors/MonitorsManagerDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('monitors-edit', {
+            url: "/monitors/edit/:monitorId",
+            templateUrl: "views/monitors/resource/edit.html",
+            controller: "MonitorsResourceEditController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/monitors/resource/MonitorsResourceEditController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('monitors-add-noslash', {
+            url: "/monitors/add",
+            params: {
+              associatedUuid: '',
+              resourceType: ''
+            },
+            templateUrl: "views/monitors/resource/add.html",
+            controller: "MonitorsResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/monitors/resource/MonitorsResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('monitors-add', {
+            url: "/monitors/add/:systemId",
+            params: {
+              systemId: ''
+            },
+            templateUrl: "views/monitors/resource/add.html",
+            controller: "MonitorsResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/monitors/resource/MonitorsResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('monitors-checks', {
+            url: "/monitors/checks",
+            templateUrl: "views/monitors/checks.html",
+            data: {pageTitle: 'Monitors Checks'},
+            controller: "MonitorsChecksDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/monitors/MonitorsChecksDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('monitors-checks-id', {
+            url: "/monitors/checks/:monitorId",
+            templateUrl: "views/monitors/checks.html",
+            data: {pageTitle: 'Monitors Checks'},
+            controller: "MonitorsChecksDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/monitors/MonitorsChecksDirectoryController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('monitors', {
+            abtract: true,
+            url: "/monitors/:id",
+            templateUrl: "views/monitors/resource/resource.html",
+            controller: "MonitorsResourceController",
+            resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                      files: [
+                        'js/controllers/monitors/resource/MonitorsResourceController.js'
+                      ]
+                  }
+                ]);
+              }]
+            }
+        })
+
+        .state('monitors.details', {
+            url: "",
+            templateUrl: "views/monitors/resource/details.html",
+            controller: "MonitorsResourceDetailsController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/PermissionsService.js',
+                          'js/controllers/monitors/resource/MonitorsResourceDetailsController.js'
                       ]
                     }
                   ]);

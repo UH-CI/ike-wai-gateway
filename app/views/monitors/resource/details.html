@@ -1,0 +1,93 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+
+  <div class="row">
+    <div class="col-xs-9">
+      <div ng-if="monitor" class="table-responsive">
+        <table class="table">
+          <thead class="hidden-sm hidden-xs">
+          <tr>
+             <th class="col-sm-2"></th>
+             <th class="col-sm-10"></th>
+           </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="monitor.id">
+              <td>ID</td>
+              <td><a ui-sref="monitors({id: monitor.id})"> {{monitor.id}}</a></td>
+            </tr>
+            <tr ng-if="monitor.target">
+              <td>Target</td>
+              <td><a ui-sref="systems({systemId: monitor.target})"> {{monitor.target}} </a></td>
+            </tr>
+            <tr ng-if="monitor.owner">
+              <td>Owner</td>
+              <td>{{monitor.owner}}</td>
+            </tr>
+            <tr ng-if="monitor.frequency">
+              <td>Frequency</td>
+              <td>{{monitor.frequency}}</td>
+            </tr>
+            <tr ng-if="monitor.updateSystemStatus">
+              <td>Update System Status</td>
+              <td>{{monitor.updateSystemStatus}}</td>
+            </tr>
+           <tr ng-if="monitor.internalUsername">
+             <td>Internal Username</td>
+             <td>{{monitor.internalUsername}}</td>
+           </tr>
+           <tr ng-if="monitor.lastSuccess">
+             <td>Last Success</td>
+                <td><span am-time-ago="monitor.lastSuccess" class="date"></span></td>
+           </tr>
+           <tr ng-if="monitor.lastUpdated">
+             <td>Last Updated</td>
+             <td><span am-time-ago="monitor.lastUpdated" class="date"></span></td>
+           </tr>
+           <tr ng-if="monitor.nextUpdate">
+             <td>Next Update</td>
+             <td><span am-time-ago="monitor.nextUpdate" class="date"></span></td>
+           </tr>
+           <tr ng-if="monitor.created">
+             <td>Created</td>
+             <td>{{monitor.created}}</td>
+           </tr>
+           <tr ng-if="monitor.active">
+             <td>Active</td>
+             <td>{{monitor.active}}</td>
+           </tr>
+           <tr ng-if="monitor.lastCheck">
+             <td>Last Check</td>
+             <td>
+               <json-formatter json="monitor.lastCheck" open="0"></json-formatter>
+             </td>
+           </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div ng-if="monitor" class="btn-group pull-right">
+          <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+              Actions
+              <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a ng-click="edit('monitors', monitor)" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+            </li>
+            <li>
+              <a ng-click="getNotifications('monitor', monitor)" > <i class="fa fa-bell"></i> Notifications</a>
+            </li>
+            <li>
+              <a ng-click="confirmAction('monitors', monitor, 'delete')"> <i class="fa fa-trash-o"></i> Delete </a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

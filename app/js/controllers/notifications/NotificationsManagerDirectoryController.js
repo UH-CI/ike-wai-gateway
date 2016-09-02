@@ -14,13 +14,18 @@ angular.module('AgaveToGo').controller('NotificationsManagerDirectoryController'
     $scope.sortReverse  = true;
     $scope.status = 'active';
     $scope.available = true;
-    $scope.associatedUuid = $stateParams.associatedUuid ? $stateParams.associatedUuid : null;
     $scope.resourceType = $stateParams.resourceType ? $stateParams.resourceType : null;
     $scope.query = '';
 
     $scope.refresh = function() {
       $scope.requesting = true;
       $scope[$scope._COLLECTION_NAME] = [];
+
+      // clean refresh defaults
+      if ($stateParams.associatedUuid !== null && typeof $stateParams.associatedUuid !== 'undefined'){
+        $scope.associatedUuid = $stateParams.associatedUuid;
+        $scope.query += '&associatedUuid.eq=' + $stateParams.associatedUuid;
+      }
 
       NotificationsController.searchNotifications(
         $scope.query
@@ -34,13 +39,18 @@ angular.module('AgaveToGo').controller('NotificationsManagerDirectoryController'
           },
           function(response){
             var message = '';
-            if (response.errorResponse.message) {
-              message = 'Error: Could not retrieve notifications - ' + response.errorResponse.message
-            } else if (response.errorResponse.fault){
-              message = 'Error: Could not retrieve notifications - ' + response.errorResponse.fault.message;
+            if (typeof response.errorResponse !== 'undefined') {
+              if (typeof response.errorResponse.message !== 'undefined'){
+                message = 'Error: Could not retrieve notifications - ' + response.errorResponse.message;
+              } else if (typeof response.errorResponse.fault !== 'undefined') {
+                message = 'Error: Could not retrieve notifications- ' + response.errorResponse.fault.message;
+              } else {
+                message = 'Error: Could not retrieve notifications';
+              }
             } else {
               message = 'Error: Could not retrieve notifications';
             }
+
             App.alert(
               {
                 type: 'danger',

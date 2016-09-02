@@ -21,9 +21,9 @@
                 </div>
                 <div class="row text-center">
                   <div class="col-md-12">
-                    <a href="#/system/new" class="btn btn-outline green pull-right" data-target="#add-edit-modal" role="button" data-toggle="modal">
+                    <a href="#/notifications/add" class="btn btn-outline green pull-right" role="button">
                       <i class="fa fa-plus"></i>
-                      <span class="hidden-480"> New System</span>
+                      <span class="hidden-480"> New Notification</span>
                     </a>
                   </div>
                 </div>
@@ -124,7 +124,7 @@
                                         <a ui-sref="notifications({id: notification.id})"> {{notification.id}} </a>
                                     </td>
                                     <td class="hidden-xs">
-                                        <a ui-sref="notifications({id: job.associatedUuid})"> {{notification.associatedUuid}} </a>
+                                        <span> {{notification.associatedUuid}} </a>
                                     </td>
                                     <td class="hidden-xs">
                                         <span>{{notification.event}}</span>
@@ -151,14 +151,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="text-center">
-                      <dir-pagination-controls
-                        on-page-change="getPage(newPageNumber, oldPageNumber)"
-                      >
-                      here
-                      </dir-pagination-controls>
                     </div>
                   </div>
                 </div>

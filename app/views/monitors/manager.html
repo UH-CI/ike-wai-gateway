@@ -1,0 +1,197 @@
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/monitors">Monitors</a>
+        </li>
+    </ul>
+    <div landing-start-menu></div>
+</div>
+<h3 class="page-title"> Monitors Subscriptions
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-television"></i> Subscriptions Management
+                </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <a ui-sref="monitors-add({systemId: systemId})" class="btn btn-outline green pull-right" role="button">
+                      <i class="fa fa-plus"></i>
+                      <span class="hidden-480"> Add Monitor</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                      </div>
+                    </div>
+                    <!-- <div class="row top-buffer" ng-show="showSearch">
+                      <query-builder group="filter.group" resource="monitors"></query-builder>
+                      <div class="col-md-12 top-buffer">
+
+                        <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group top-buffer">
+                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                      </button>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div ng-show="!requesting">
+                    <div ng-show="monitors.length === 0" class="text-center">
+                      <div class="row text-center">
+                        <div class="col-md-12">
+                            No monitor subscription found
+                        </div>
+                      </div>
+                      <div class="row text-center top-buffer">
+                        <div class="col-md-12">
+                          <a ui-sref="monitors-add({systemId: systemId})" class="btn btn-outline green" role="button">
+                            <i class="fa fa-plus"></i>
+                            <span class="hidden-480"> Add Monitor</span>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div ng-show="monitors.length > 0">
+                        <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection">
+                            <thead>
+                                <tr role="row" class="heading">
+                                    <th width="20%">
+                                      <a href="#" ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                                        ID
+                                        <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="20%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'target'; sortReverse = !sortReverse">
+                                        Target
+                                        <span ng-show="sortType == 'target' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'target' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="10%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'active'; sortReverse = !sortReverse">
+                                        Active
+                                        <span ng-show="sortType == 'active' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'active' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="10%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'updateSystemStatus'; sortReverse = !sortReverse">
+                                        Update System Status
+                                        <span ng-show="sortType == 'updateSystemStatus' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'updateSystemStatus' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="10%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'frequency'; sortReverse = !sortReverse">
+                                        Frequency
+                                        <span ng-show="sortType == 'frequency' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'frequency' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="10%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'lastSuccess'; sortReverse = !sortReverse">
+                                        Last Success
+                                        <span ng-show="sortType == 'lastSuccess' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'lastSuccess' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="10%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'lastUpdated'; sortReverse = !sortReverse">
+                                        Last Updated
+                                        <span ng-show="sortType == 'lastUpdated' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'lastUpdated' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="20%" class="text-center"> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="monitor in monitors | orderBy:sortType:sortReverse | filter:filter" >
+                                    <td>
+                                        <a ui-sref="monitors({id: monitor.id})"> {{monitor.id}} </a>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <a ui-sref="systems({systemId: monitor.target})"> {{monitor.target}} </a>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <span>{{monitor.active}}</span>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <span>{{monitor.updateSystemStatus}}</span>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <span> {{monitor.frequency}}</span>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <span am-time-ago="monitor.lastSuccess" class="date"></span>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        <span am-time-ago="monitor.lastUpdated" class="date"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+                                                Actions
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                              <li>
+                                                <a ui-sref="monitors-checks-id({monitorId: monitor.id})" role="button"> <i class="fa fa-check"></i> Checks</a>
+                                              </li>
+                                              <li>
+                                                <a ng-click="edit('monitors', monitor)" role="button"> <i class="fa fa-pencil"></i> Edit</a>
+                                              </li>
+                                              <li>
+                                                <a ng-click="getNotifications('monitor', monitor)" > <i class="fa fa-bell"></i> Notifications</a>
+                                              </li>
+                                              <li>
+                                                <a ng-click="confirmAction('monitors', monitor, 'delete', monitors, $index)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>
+                                              </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

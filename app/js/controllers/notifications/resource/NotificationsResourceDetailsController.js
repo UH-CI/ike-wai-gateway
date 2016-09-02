@@ -30,7 +30,7 @@ angular.module('AgaveToGo').controller('NotificationsResourceDetailsController',
           }
         );
     } else {
-      var message = response.errorResponse.message ? 'Error: Could not retrieve notification - ' + response.errorResponse.message : 'Error: Could not retrieve job';
+      var message = response.errorResponse.message ? 'Error: Could not retrieve notification - ' + response.errorResponse.message : 'Error: Could not retrieve notification';
       App.alert(
         {
           type: 'danger',
@@ -41,34 +41,6 @@ angular.module('AgaveToGo').controller('NotificationsResourceDetailsController',
     }
   };
 
-  // $scope.browse = function(id){
-  //   JobsController.getJobDetails(id)
-  //     .then(
-  //       function(data){
-  //         $state.go('data-explorer', {'systemId': data.archiveSystem, path: data.archivePath});
-  //       },
-  //       function(data){
-  //         var message = response.errorResponse.message ? 'Error: Could not retrieve notification - ' + response.errorResponse.message : 'Error: Could not retrieve job';
-  //         App.alert(
-  //           {
-  //             type: 'danger',
-  //             message: message
-  //           }
-  //         );
-  //         $scope.requesting = false;
-  //         $scope.requesting = false;
-  //       }
-  //     );
-  // }
-
-  // $scope.confirmAction = function(resourceType, resource, resourceAction, resourceIndex){
-  //   ActionsService.confirmAction(resourceType, resource, resourceAction, resourceIndex);
-  // };
-  //
-  // $scope.editPermissions = function(resource) {
-  //   PermissionsService.editPermissions(resource);
-  // }
-  //
   $scope.edit = function(resourceType, resource){
     ActionsService.edit(resourceType, resource);
   };

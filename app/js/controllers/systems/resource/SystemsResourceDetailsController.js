@@ -26,12 +26,16 @@ angular.module('AgaveToGo').controller('SystemsResourceDetailsController', funct
     RolesService.editRoles(system);
   }
 
-  $scope.confirmAction = function(resourceType, resource, resourceAction, resourceIndex){ 
+  $scope.confirmAction = function(resourceType, resource, resourceAction, resourceIndex){
     ActionsService.confirmAction(resourceType, resource, resourceAction, resourceIndex);
   };
 
   $scope.edit = function(resourceType, resource){
     ActionsService.edit(resourceType, resource);
+  };
+
+  $scope.getNotifications = function(resourceType, resource){
+    ActionsService.getNotifications(resourceType, resource);
   };
 
   $scope.getSystem();

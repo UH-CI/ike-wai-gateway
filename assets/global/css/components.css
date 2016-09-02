@@ -638,10 +638,6 @@ body {
     left: 0 !important;
     right: 0 !important; }
 
-.form-horizontal .form-group h4 {
-  color: #fff !important;
-}
-
 .md-checkbox {
   position: relative;
   /* handling click events */
@@ -6869,7 +6865,6 @@ Portlets
     .portlet > .portlet-title:after {
       clear: both; }
     .portlet > .portlet-title > .caption {
-      float: left;
       display: inline-block;
       font-size: 18px;
       line-height: 18px;

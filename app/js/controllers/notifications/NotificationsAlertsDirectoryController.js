@@ -14,35 +14,6 @@ angular.module('AgaveToGo').controller('NotificationsAlertsDirectoryController',
     $scope.sortType = 'event';
     $scope.sortReverse  = true;
 
-    // delete metadata for notifications
-// var query = "{'name':'notifications'}";
-// MetaController.listMetadata(query, 999999, 0)
-//   .then(
-//     function(response){
-//       console.log('listing success');
-//       console.log(response);
-//       angular.forEach(response.result, function(meta){
-//         console.log('deleting meta');
-//         MetaController.deleteMetadata(meta.uuid)
-//           .then(
-//             function(response){
-//               console.log('success deleting');
-//               console.log(response);
-//             },
-//             function(response){
-//               console.log('fail deleting');
-//               console.log(response);
-//             }
-//           );
-//       });
-//     },
-//     function(response){
-//       console.log('listing fail');
-//       console.log(response);
-//     }
-//   );
-
-
     $scope.refresh = function() {
       $scope.requesting = true;
 

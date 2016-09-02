@@ -56,6 +56,10 @@ angular.module('AgaveToGo').controller('AppsResourceDetailsController', function
     ActionsService.edit(resourceType, resource);
   };
 
+  $scope.getNotifications = function(resourceType, resource){
+    ActionsService.getNotifications(resourceType, resource);
+  };
+
   $scope.getApp();
 
 });

@@ -25,22 +25,22 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
               if (rwxObj.read === true && rwxObj.write === true && rwxObj.execute === true){
                 result = 'ALL';
               }
-              else if (rwxObj.read === true && rwxObj.write === false && rwxObj.execute === false){
+              else if (rwxObj.read === true && (rwxObj.write === false || typeof rwxObj.write === 'undefined') && (rwxObj.execute === false || typeof rwxObj.execute === 'undefined')){
                 result = 'READ';
               }
-              else if (rwxObj.read === false && rwxObj.write === true && rwxObj.execute === false) {
+              else if ((rwxObj.read === false || typeof rwxObj.read === 'undefined') && rwxObj.write === true && (rwxObj.execute === false || typeof rwxObj.execute === 'undefined')) {
                 result = 'WRITE';
               }
-              else if (rwxObj.read === false && rwxObj.write === false && rwxObj.execute === true) {
+              else if ((rwxObj.read === false || typeof rwxObj.read === 'undefined') && (rwxObj.write === false || typeof rwxObj.write === 'undefined') && rwxObj.execute === true) {
                 result = 'EXECUTE';
               }
-              else if (rwxObj.read === true && rwxObj.write === true && rwxObj.execute === false) {
+              else if (rwxObj.read === true && rwxObj.write === true && (rwxObj.execute === false || typeof rwxObj.execute === 'undefined')) {
                 result = 'READ_WRITE';
               }
-              else if (rwxObj.read === true && rwxObj.write === false && rwxObj.execute === true) {
+              else if (rwxObj.read === true && (rwxObj.write === false || typeof rwxObj.write === 'undefined') && rwxObj.execute === true) {
                 result = 'READ_EXECUTE';
               }
-              else if (rwxObj.read === false && rwxObj.write === true && rwxObj.execute === true) {
+              else if ((rwxObj.read === false || rwxObj.read === 'undefined') && rwxObj.write === true && rwxObj.execute === true) {
                 result = 'WRITE_EXECUTE';
               }
               else {

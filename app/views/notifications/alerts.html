@@ -15,11 +15,39 @@
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-            <div class="portlet-title" ng-show="!requesting">
-                <div class="caption">
-                    <i class="fa fa-bell"></i> Notification Alerts
-                </div>
-            </div>
+          <div class="portlet-title">
+              <div class="caption">
+                  <i class="fa fa-bell"></i> Notification Alerts
+              </div>
+
+              <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                  <div class="btn-group top-buffer">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                      <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                    </div>
+                  </div>
+                  <!-- <div class="row top-buffer" ng-show="showSearch">
+                    <query-builder group="filter.group" resource="notifications-alerts"></query-builder>
+                    <div class="col-md-12 top-buffer">
+
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                      </div>
+
+                      <div class="btn-group">
+                        <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn-group top-buffer">
+                    <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                      <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                    </button>
+                  </div> -->
+              </div>
+          </div>
 
             <div class="portlet-body">
               <div class="row text-center" ng-show="requesting">
@@ -59,7 +87,7 @@
                             <th width="20%" class="text-center"> Actions</th>
                           </tr>
                         </thead>
-                        <tbody dir-paginate="notification in notifications | orderBy:sortType:sortReverse | itemsPerPage: limit" total-items="totalItems">
+                        <tbody ng-repeat="notification in notifications | orderBy:sortType:sortReverse | filter: filter">
                           <tr>
                             <td class="hidden-xs">
                               {{notification.value.owner}}
@@ -93,12 +121,6 @@
 
                         </tbody>
                       </table>
-                    </div>
-                    <div class="text-center">
-                      <dir-pagination-controls
-                        on-page-change="getPage(newPageNumber, oldPageNumber)"
-                      >
-                      </dir-pagination-controls>
                     </div>
                   </div>
                 </div>
