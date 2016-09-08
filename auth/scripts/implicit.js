@@ -31,8 +31,8 @@ var OAuthClients = {
         "scope": "PRODUCTION"
     },
     'hawaii': {
-        'clientKey': 'AizxkAaiEczmz4IMValzo2MAMgwa',
-        'callbackUrl': 'http://ikewai-dev.its.hawaii.edu/auth',
+        'clientKey': 'Bcr8jkhENlhKOahITSdSP9cxIv0a',
+        'callbackUrl': 'http://localhost:9000/auth',
         'scope': 'PRODUCTION'
     }
 };
