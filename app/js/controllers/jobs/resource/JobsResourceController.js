@@ -18,7 +18,7 @@ angular.module('AgaveToGo').controller("JobsResourceController", function($scope
 		$scope.tabs = [
 			{ heading: "Details", route:"jobs.details", active:false },
 			{ heading: "History", route:"jobs.history", active:false },
-			{ heading: "Stats", route:"jobs.stats", active:false },
+			// { heading: "Stats", route:"jobs.stats", active:false },
 		];
 
 		$scope.$on("$stateChangeSuccess", function() {

@@ -1,4 +1,6 @@
-angular.module('AgaveToGo').controller('MonitorsManagerDirectoryController', function ($scope, $state, $stateParams, MonitorsController, ActionsService) {
+angular.module('AgaveToGo').controller('MonitorsManagerDirectoryController',
+  ['$scope', '$state', '$stateParams', '$translate', 'MonitorsController', 'ActionsService', 'MessageService',
+  function ($scope, $state, $stateParams, $translate, MonitorsController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'monitors';
     $scope._RESOURCE_NAME = 'monitor';
 
@@ -15,6 +17,10 @@ angular.module('AgaveToGo').controller('MonitorsManagerDirectoryController', fun
       $scope.requesting = true;
       $scope[$scope._COLLECTION_NAME] = [];
 
+      if ($stateParams.systemId){
+        $scope.query += 'target=' + $stateParams.systemId;
+      }
+
       MonitorsController.searchMonitors(
         $scope.query
       )
@@ -24,20 +30,7 @@ angular.module('AgaveToGo').controller('MonitorsManagerDirectoryController', fun
             $scope.requesting = false;
           },
           function(response){
-            var message = '';
-            if (response.errorResponse.message) {
-              message = 'Error: Could not retrieve monitors - ' + response.errorResponse.message
-            } else if (response.errorResponse.fault){
-              message = 'Error: Could not retrieve monitors - ' + response.errorResponse.fault.message;
-            } else {
-              message = 'Error: Could not retrieve monitors';
-            }
-            App.alert(
-              {
-                type: 'danger',
-                message: message
-              }
-            );
+            MessageService.handle(response, $translate.instant('error_monitors_search'));
             $scope.requesting = false;
           }
       );
@@ -63,4 +56,4 @@ angular.module('AgaveToGo').controller('MonitorsManagerDirectoryController', fun
       ActionsService.edit(resourceType, resource);
     };
 
-});
+}]);

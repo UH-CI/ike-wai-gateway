@@ -299,20 +299,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 					},
 					function(response){
 						$scope.requesting = false;
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not retrieve notification';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_notifications_list'));
 					}
 				);
 
@@ -321,7 +308,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 			App.alert(
 				{
 					type: 'danger',
-					message: 'Error: Could not retrieve notification'
+					message: $translate.instant('error_notifications_list')
 				}
 			);
 		};
@@ -342,25 +329,11 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 			NotificationsController.updateNotification(body, $scope.notificationId)
 				.then(
 					function(response){
-						App.alert({message: 'Success: updated ' + $scope.notificationId});
+						App.alert({message: $translate.instant('success_notifications_update') + $scope.notificationId});
 						$scope.requesting = false;
 					},
 					function(response){
-						// $scope.requesting = false;
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not retrieve notification';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_notifications_update'));
 					}
 				);
 		};
@@ -371,15 +344,10 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 			NotificationsController.fireNotification(body, $scope.notificationId)
 				.then(
 					function(response){
-						App.alert({message: 'Success: fired notification ' + $scope.notificationId});
+						App.alert({message: $translate.instant('success_notifications_test') + $scope.notificationId});
 					},
 					function(response){
-						App.alert(
-							{
-								type: 'danger',
-								message: 'Error: Testing notification failed'
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_notifications_test'));
 					}
 				);
 		}

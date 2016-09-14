@@ -7,7 +7,7 @@ angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', func
 
     $scope.query = '';
 
-    $scope.sortType = 'id';
+    $scope.sortType = 'created';
     $scope.sortReverse  = true;
 
     $scope.monitorId = $stateParams.monitorId;
@@ -19,6 +19,7 @@ angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', func
         MonitorsController.searchMonitoringTaskChecks($scope.monitorId, $scope.query)
           .then(
             function (response) {
+
               $scope.totalItems = response.result.length;
               $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
               $scope[$scope._COLLECTION_NAME] = response.result;

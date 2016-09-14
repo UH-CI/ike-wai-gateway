@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("MonitorsResourceEditController", function($scope, $state, $stateParams, MonitorsController, SystemsController, ActionsService) {
+angular.module('AgaveToGo').controller("MonitorsResourceEditController", function($scope, $state, $stateParams, $translate, MonitorsController, SystemsController, ActionsService, MessageService) {
 
 		$scope.monitorId = $stateParams.monitorId;
 
@@ -22,7 +22,7 @@ angular.module('AgaveToGo').controller("MonitorsResourceEditController", functio
 									"id": response.result.id,
 									"target": response.result.target,
 									"active": response.result.active,
-									"interval": response.result.interval,
+									"frequency": response.result.frequency,
 									"updateSystemStatus": response.result.updateSystemStatus
 								};
 
@@ -51,9 +51,7 @@ angular.module('AgaveToGo').controller("MonitorsResourceEditController", functio
 											"frequency": {
 													"type": "integer",
 													"description": "How often the monitor should run in minutes. Minimum 5, default 720 (12 hours)",
-													"title": "Frequency",
-													"default": 720,
-													"minimum": 5
+													"title": "Frequency"
 											},
 											"updateSystemStatus": {
 												"type": "boolean",
@@ -121,51 +119,17 @@ angular.module('AgaveToGo').controller("MonitorsResourceEditController", functio
 
 							},
 							function(response){
-								$scope.requesting = false;
-								var message = '';
-								if (response.errorResponse.message) {
-									message = 'Error: Could not retrieve monitor - ' + response.errorResponse.message
-								} else if (response.errorResponse.fault){
-									message = 'Error: Could not retrieve monitor - ' + response.errorResponse.fault.message;
-								} else {
-									message = 'Error: Could not retrieve monitor';
-								}
-								App.alert(
-									{
-										type: 'danger',
-										message: message
-									}
-								);
+								MessageService.handle(response, $translate.instant('error_monitors_list'));
 							}
 						);
-
-
 
 				})
 				.catch(function(response){
 					$scope.requesting = false;
-					var message = '';
-					if (response.errorResponse.message) {
-						message = 'Error: Could not retrieve monitor - ' + response.errorResponse.message
-					} else if (response.errorResponse.fault){
-						message = 'Error: Could not retrieve monitor - ' + response.errorResponse.fault.message;
-					} else {
-						message = 'Error: Could not retrieve monitor';
-					}
-					App.alert(
-						{
-							type: 'danger',
-							message: message
-						}
-					);
+					MessageService.handle(response, $translate.instant('error_monitors_list'));
 				});
 		} else {
-			App.alert(
-				{
-					type: 'danger',
-					message: 'Error: Could not retrieve monitor'
-				}
-			);
+			MessageService.handle(response, $translate.instant('error_monitors_list'));
 		};
 
 		$scope.delete = function(){
@@ -178,25 +142,12 @@ angular.module('AgaveToGo').controller("MonitorsResourceEditController", functio
 			MonitorsController.updateMonitoringTask($scope.model, $scope.model.id)
 				.then(
 					function(response){
-						App.alert({message: 'Success: updated ' + $scope.monitorId});
+						App.alert({message: $translate.instant('success_monitors_update') + $scope.monitorId});
 						$scope.requesting = false;
 					},
 					function(response){
 						$scope.requesting = false;
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not retrieve monitor - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not retrieve monitor - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not retrieve monitor';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_monitors_list'));
 					}
 				);
 		};
@@ -209,16 +160,11 @@ angular.module('AgaveToGo').controller("MonitorsResourceEditController", functio
 					function(response){
 						$scope.requesting = false;
 						$scope.monitorCheck = response.result;
-						App.alert({message: 'Success: fired monitor ' + $scope.monitorId});
+						App.alert({message: $translate.instant('success_monitors_test') + $scope.monitorId});
 					},
 					function(response){
 						$scope.requesting = false;
-						App.alert(
-							{
-								type: 'danger',
-								message: 'Error: Testing monitor failed'
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_monitors_test'));
 					}
 				);
 		}

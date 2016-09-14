@@ -9,13 +9,7 @@ angular.module('AgaveToGo').controller('JobsResourceHistoryController', function
         $scope.requesting = false;
       },
       function(response){
-        var message = response.errorResponse.message ? 'Error: Could not retrieve job - ' + response.errorResponse.message : 'Error: Could not retrieve job';
-        App.alert(
-          {
-            type: 'danger',
-            message: message
-          }
-        );
+        MessageService.handle(response, $translate.instant('error_jobs_details'));
         $scope.requesting = false;
       }
     );

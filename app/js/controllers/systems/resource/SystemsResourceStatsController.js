@@ -3,6 +3,6 @@ angular.module('AgaveToGo').controller('SystemsResourceStatsController', functio
       // TO-DO
     } else {
       $scope.$parent.error = true;
-      App.alert({type: 'danger',message: 'Error: Could not retrieve system'});
+      App.alert({type: 'danger',message: $translate.instant('error_systems_list')});
     }
 });

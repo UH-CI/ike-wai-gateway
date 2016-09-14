@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootScope', '$location', '$state', '$timeout', '$q', 'AppsController', 'ProfilesController', function($uibModal, $rootScope, $location, $state, $timeout, $q, AppsController, ProfilesController){
+angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootScope', '$location', '$state', '$timeout', '$q', '$translate', 'AppsController', 'ProfilesController', 'MessageService', function($uibModal, $rootScope, $location, $state, $timeout, $q, $translate, AppsController, ProfilesController, MessageService){
   this.editPermissions = function(resource){
       var modalInstance = $uibModal.open({
         templateUrl: 'tpl/modals/ModalPermissionManager.html',
@@ -92,120 +92,96 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
 
               AppsController.listAppPermissions($scope.resource.id, 99999, 0).then(
                 function(response) {
-                  ProfilesController.listProfiles()
-                    .then(function(profiles){
-                      $scope.profiles = profiles;
-                      $scope.model = {};
-                      $scope.tempModel = {};
+                    $scope.model = {};
+                    $scope.tempModel = {};
 
-                      $scope.schema =
-                      {
-                        "type": "object",
-                        "title": "Complex Key Support",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "title": "Name"
-                          },
-                          "permissions": {
-                            "title": "permissions by username",
-                            "type": "array",
-                            "items": {
-                              "type": "object",
-                              "properties": {
-                                "username": {
-                                  "title": " ",
-                                  "type": "string"
-                                },
-                                "permission": {
-                                  "title": " ",
-                                  "type": "string",
-                                  "enum": [
-                                    "ALL",
-                                    "READ",
-                                    "WRITE",
-                                    "EXECUTE",
-                                    "READ_WRITE",
-                                    "READ_EXECUTE",
-                                    "WRITE_EXECUTE",
-                                    "NONE"
-                                  ]
-                                }
+                    $scope.schema =
+                    {
+                      "type": "object",
+                      "title": "Complex Key Support",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "permissions": {
+                          "title": "permissions by username",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "username": {
+                                "title": " ",
+                                "type": "string"
                               },
-                            }
-                          },
-                        }
-                      };
+                              "permission": {
+                                "title": " ",
+                                "type": "string",
+                                "enum": [
+                                  "ALL",
+                                  "READ",
+                                  "WRITE",
+                                  "EXECUTE",
+                                  "READ_WRITE",
+                                  "READ_EXECUTE",
+                                  "WRITE_EXECUTE",
+                                  "NONE"
+                                ]
+                              }
+                            },
+                          }
+                        },
+                      }
+                    };
 
-                      $scope.form = [
-                        {
-                          "key": "permissions",
-                          "items": [
-                            {
-                              "type": "fieldset",
-                              "items": [
-                                  {
-                                    "type": "section",
-                                    "htmlClass": "col-xs-6",
-                                    "items": [
-                                        {
-                                          "key": "permissions[].username",
-                                          onChange: function(value, tempModel){
-                                            if ($scope.profiles.length > 0) {
-                                              tempModel.description = '<span class="text-success">'+ value + ' is a tenant user</span>';
-                                            }
-                                          },
-                                          validationMessage: {
-                                            'notavailable': '{{viewValue}} is not a tenant user'
-                                          },
-                                          $validators: {
-                                            notavailable: function(value){
-                                              var username =_.find($scope.profiles, function(profile){
-                                                if (profile.username === value){
-                                                  return true;
-                                                }
-                                              });
-                                              return username ? true : false;
-                                            }
-                                          }
-                                        }
-                                    ],
+                    $scope.form = [
+                      {
+                        "key": "permissions",
+                        "items": [
+                          {
+                            "type": "fieldset",
+                            "items": [
+                                {
+                                  "type": "section",
+                                  "htmlClass": "col-xs-6",
+                                  "items": [
+                                      {
+                                        "key": "permissions[].username"
+                                      }
+                                  ],
 
-                                  },
-                                  {
-                                    "type": "section",
-                                    "htmlClass": "col-xs-6",
-                                    "items": ["permissions[].permission"]
-                                  }
-                              ]
-                            }
-                          ]
-                        }
-                      ];
+                                },
+                                {
+                                  "type": "section",
+                                  "htmlClass": "col-xs-6",
+                                  "items": ["permissions[].permission"]
+                                }
+                            ]
+                          }
+                        ]
+                      }
+                    ];
 
-                      $scope.tempModel.permissions = [];
+                    var tempList = [];
+                    $scope.tempModel.permissions = [];
 
-                      angular.forEach(response.result, function(permission){
-                        $scope.tempModel.permissions.push({username: permission.username, permission:  $scope.transformRwxToAgave(permission.permission)});
-                      });
+                    angular.forEach(response.result, function(permission){
+                      tempList.push({username: permission.username, permission:  $scope.transformRwxToAgave(permission.permission)});
+                    });
 
-                      $scope.model.permissions = _.clone($scope.tempModel.permissions);
-                      $scope.requesting = false;
-                    })
-                    .catch(function(profiles){
-                      var message = response.errorMessage ?  "Error: " + response.errorMessage : "Error contacting the service"
-                      App.alert({
-                          type: 'danger',
-                          message: message
-                      });
-                    })
+                    // remove double listing of permissions for admin app owners
+                    var uniqueTempList = _.uniq(tempList, function(permission){
+                      return permission.username;
+                    });
+                    $scope.tempModel.permissions = angular.copy(uniqueTempList);
+
+                    $scope.model.permissions = _.clone($scope.tempModel.permissions);
+                    $scope.requesting = false;
                   },
                   function(response) {
-                      var message = response.errorMessage ?  "Error: " + response.errorMessage : "Error contacting the service"
-                      App.alert({
-                          type: 'danger',
-                          message: message
-                      });
+                      $scope.requesting = false;
+                      $modalInstance.dismiss('cancel');
+                      MessageService.handle(response, $translate.instant('error_apps_permissions'));
                   });
             };
 
@@ -235,16 +211,12 @@ angular.module('AgaveToGo').service('PermissionsService',['$uibModal', '$rootSco
 
               $q.all(promises).then(
                 function(response) {
-                    App.alert({message: "Successfully updated user permissions for " + resource.id});
+                    App.alert({message: $translate.instant('success_apps_permissions_update') + resource.id});
                     $scope.requesting = false;
                     $modalInstance.close();
                 },
                 function(response) {
-                    var message = 'Error: Could not update permissions'
-                    App.alert({
-                        type: 'danger',
-                        message: message
-                    });
+                    App.alert({message: $translate.instant('error_apps_permissions_update')});
                     $scope.requesting = false;
                     $modalInstance.close();
                 });

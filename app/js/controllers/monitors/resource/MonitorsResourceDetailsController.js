@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MonitorsResourceDetailsController', function($scope, $stateParams, $state, MonitorsController, ActionsService) {
+angular.module('AgaveToGo').controller('MonitorsResourceDetailsController', function($scope, $stateParams, $state, $translate, MonitorsController, ActionsService, MessageService) {
   $scope.monitor = null;
 
   $scope.getMonitor = function(){
@@ -11,31 +11,12 @@ angular.module('AgaveToGo').controller('MonitorsResourceDetailsController', func
             $scope.requesting = false;
           },
           function(response){
-            var message = '';
-            if (response.errorResponse.message) {
-              message = 'Error: Could not retrieve monitor - ' + response.errorResponse.message
-            } else if (response.errorResponse.fault){
-              message = 'Error: Could not retrieve monitor - ' + response.errorResponse.fault.message;
-            } else {
-              message = 'Error: Could not retrieve monitor';
-            }
-            App.alert(
-              {
-                type: 'danger',
-                message: message
-              }
-            );
+            MessageService.handle(response, $translate.instant('error_monitors_list'));
             $scope.requesting = false;
           }
         );
     } else {
-      var message = response.errorResponse.message ? 'Error: Could not retrieve monitor - ' + response.errorResponse.message : 'Error: Could not retrieve monitor';
-      App.alert(
-        {
-          type: 'danger',
-          message: message
-        }
-      );
+      MessageService.handle(response, $translate.instant('error_monitors_list'));
       $scope.requesting = false;
     }
   };

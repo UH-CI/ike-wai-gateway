@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("MonitorsResourceAddController", function($scope, $state, $stateParams, MonitorsController, SystemsController, ActionsService) {
+angular.module('AgaveToGo').controller("MonitorsResourceAddController", function($scope, $state, $stateParams, $translate, MonitorsController, SystemsController, ActionsService, MessageService) {
 		$scope.model = {};
 
 		$scope.init = function(){
@@ -101,23 +101,8 @@ angular.module('AgaveToGo').controller("MonitorsResourceAddController", function
 
 					},
 					function(response){
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not add monitor - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not add monitor - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not add monitor';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_monitors_add'));
 					});
-
-
 		};
 
 		$scope.init();
@@ -138,20 +123,7 @@ angular.module('AgaveToGo').controller("MonitorsResourceAddController", function
 					},
 					function(response){
 						$scope.requesting = false;
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not add monitor - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not add monitor - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not add monitor';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_monitors_add'));
 					}
 				);
 		};
@@ -164,16 +136,11 @@ angular.module('AgaveToGo').controller("MonitorsResourceAddController", function
 					function(response){
 						$scope.requesting = false;
 						$scope.monitorCheck = response.result;
-						App.alert({message: 'Success: fired monitor ' + $scope.monitorId});
+						App.alert({message: $translate.instant('success_monitors_test') + $scope.monitorId});
 					},
 					function(response){
 						$scope.requesting = false;
-						App.alert(
-							{
-								type: 'danger',
-								message: 'Error: Testing monitor failed'
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_monitors_test'));
 					}
 				);
 		}

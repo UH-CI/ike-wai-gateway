@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $localStorage, $location, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
+angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $localStorage, $location, $translate, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
 
     $scope.schema = {
         "type": "object",
@@ -1204,20 +1204,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 }, 0);
             },
             function(response) {
-              var message = '';
-              if (response.errorResponse.message) {
-                message = 'Error: Could not retrieve systems - ' + response.errorResponse.message
-              } else if (response.errorResponse.fault){
-                message = 'Error: Could not retrieve systems - ' + response.errorResponse.fault.message;
-              } else {
-                message = 'Error: Could not retrieve systems';
-              }
-              App.alert(
-                {
-                  type: 'danger',
-                  message: message
-                }
-              );
+                MessageService.handle(response, $translate.instant('error_systems_list'));
             }
         );
     };
@@ -1232,20 +1219,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     $scope.model = response.result;
                 },
                 function (response) {
-                  var message = '';
-                  if (response.errorResponse.message) {
-                    message = 'Error: Could not retrieve app - ' + response.errorResponse.message
-                  } else if (response.errorResponse.fault){
-                    message = 'Error: Could not retrieve app - ' + response.errorResponse.fault.message;
-                  } else {
-                    message = 'Error: Could not retrieve app';
-                  }
-                  App.alert(
-                    {
-                      type: 'danger',
-                      message: message
-                    }
-                  );
+                  MessageService.handle(response, $translate.instant('error_apps_details'));
                 });
         }
         // check if WizardHandler service has current model
@@ -1286,26 +1260,13 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 });
               },
               function(response){
-                var message = '';
-                if (response.errorResponse.message) {
-                  message = 'Error: Could not submit app - ' + response.errorResponse.message
-                } else if (response.errorResponse.fault){
-                  message = 'Error: Could not submit app - ' + response.errorResponse.fault.message;
-                } else {
-                  message = 'Error: Could not submit app';
-                }
-                App.alert(
-                  {
-                    type: 'danger',
-                    message: message
-                  }
-                );
+                MessageService.handle(response, $translate.instant('error_apps_add'));
               }
             );
         } else {
           App.alert({
             type: 'danger',
-            message: 'Error: Invalid form. Please check all fields'
+            message: $translate.instant('error_apps_form')
           });
         }
     };

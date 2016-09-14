@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('AppEditWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $location, $stateParams, $q, $uibModal, $localStorage, $location, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
+angular.module('AgaveToGo').controller('AppEditWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $location, $stateParams, $q, $uibModal, $localStorage, $location, $translate, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController, MessageService) {
 
     $scope.schema = {
         "type": "object",
@@ -1188,10 +1188,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                 }, 0);
             },
             function(response) {
-                App.alert({
-                    type: 'danger',
-                    message: "Error fetching execution systems."
-                });
+              MessageService.handle(response, $translate.instant('error_systems_list'));
             }
         );
     };
@@ -1235,7 +1232,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                             App.alert(
                               {
                                 type: 'danger',
-                                message: 'Error: User does not have permission to edit app'
+                                message: $translate.instant('error_apps_edit_permission')
                               }
                             );
                           }
@@ -1243,40 +1240,14 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                         function(permissions){
                           $scope.edit = false;
                           $scope.wizview = 'code';
-                          var message = '';
-                          if (permissions.errorResponse.message) {
-                            message = 'Error: Cannot edit app - ' + permissions.errorResponse.message
-                          } else if (permissions.errorResponse.fault){
-                            message = 'Error: Cannot edit app - ' + permissions.errorResponse.fault.message;
-                          } else {
-                            message = 'Error: Cannot edit app - ';
-                          }
-                          App.alert(
-                            {
-                              type: 'danger',
-                              message: message
-                            }
-                          );
+                          MessageService.handle(response, $translate.instant('error_apps_edit_permission'));
                         }
                       );
                 },
                 function (response) {
                   $scope.edit = false;
                   $scope.wizview = 'code';
-                  var message = '';
-                  if (response.errorResponse.message) {
-                    message = 'Error: Could not retrieve app - ' + response.errorResponse.message
-                  } else if (response.errorResponse.fault){
-                    message = 'Error: Could not retrieve app - ' + response.errorResponse.fault.message;
-                  } else {
-                    message = 'Error: Could not retrieve app';
-                  }
-                  App.alert(
-                    {
-                      type: 'danger',
-                      message: message
-                    }
-                  );
+                  MessageService.handle(response, $translate.instant('error_apps_details'));
                 });
         }
         // check if WizardHandler service has current model
@@ -1328,26 +1299,13 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                 });
               },
               function(response){
-                var message = '';
-                if (response.errorResponse.message) {
-                  message = 'Error: Could not create app - ' + response.errorResponse.message
-                } else if (response.errorResponse.fault){
-                  message = 'Error: Could not create app - ' + response.errorResponse.fault.message;
-                } else {
-                  message = 'Error: Could not create app';
-                }
-                App.alert(
-                  {
-                    type: 'danger',
-                    message: message
-                  }
-                );
+                MessageService.handle(response, $translate.instant('error_apps_edit'));
               }
             );
         } else {
           App.alert({
               type: 'danger',
-              message: "There was an error creating your app: Form is not valid. Please verify all fields."
+              message: $translate.instant('error_apps_form')
           });
         }
     };

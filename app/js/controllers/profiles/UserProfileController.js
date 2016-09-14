@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('UserProfileController', function($rootScope, $scope, $stateParams, $http, $timeout, $localStorage, Commons, ProfilesController, JobsController, AppsController, SystemsController) {
+angular.module('AgaveToGo').controller('UserProfileController', function($rootScope, $scope, $stateParams, $http, $timeout, $localStorage, $translate, Commons, ProfilesController, JobsController, AppsController, SystemsController, MessageService) {
     $scope.jobCount = '-';
     $scope.systemCount = '-';
     $scope.appCount = '-';
@@ -143,8 +143,8 @@ angular.module('AgaveToGo').controller('UserProfileController', function($rootSc
         barColor: '#35aa47',
         negBarColor: '#e02222'
     });
-    
-    $scope.$on('$viewContentLoaded', function() {   
+
+    $scope.$on('$viewContentLoaded', function() {
         App.initAjax(); // initialize core components
         Layout.setSidebarMenuActiveLink('set', $('#sidebar_menu_link_profile')); // set profile link active in sidebar menu
 
@@ -153,20 +153,7 @@ angular.module('AgaveToGo').controller('UserProfileController', function($rootSc
                 $scope.setUserProfile(data);
             },
             function(response) {
-                var message = '';
-                if (response.errorResponse.message) {
-                    message = 'Error: Could not retrieve profile for user ' + $scope.username + ' - ' + response.errorResponse.message
-                } else if (response.errorResponse.fault){
-                    message = 'Error: Could not retrieve profile for user ' + $scope.username + ' - ' + response.errorResponse.fault.message;
-                } else {
-                    message = 'Error: Could not retrieve profile for user ' + $scope.username;
-                }
-                App.alert(
-                    {
-                        type: 'danger',
-                        message: message
-                    }
-                );
+                MessageService.handle(response, $translate.instant('error_profiles_list'));
                 $scope.requesting = false;
             });
 
@@ -194,4 +181,4 @@ angular.module('AgaveToGo').controller('UserProfileController', function($rootSc
     // set sidebar closed and body solid layout mode
     $rootScope.settings.layout.pageBodySolid = true;
     $rootScope.settings.layout.pageSidebarClosed = true;
-}); 
+});

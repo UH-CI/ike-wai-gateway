@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SystemsResourceQueuesController', function($scope, $stateParams, SystemsController) {
+angular.module('AgaveToGo').controller('SystemsResourceQueuesController', function($scope, $stateParams, $translate, SystemsController, MessageService) {
   SystemsController.getSystemDetails($stateParams.systemId)
     .then(
       function(response){
@@ -7,7 +7,7 @@ angular.module('AgaveToGo').controller('SystemsResourceQueuesController', functi
       },
       function(response){
         $scope.$parent.error = true;
-        App.alert({type: 'danger',message: 'Error: Could not retrieve system'});
+        MessageService.handle(response, $translate.instant('error_systems_list'));
       }
     );
 });

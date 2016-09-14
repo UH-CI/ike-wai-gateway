@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SystemBuilderWizardController', function($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $filter, $uibModal, $localStorage, $location, Commons, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
+angular.module('AgaveToGo').controller('SystemBuilderWizardController', function($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $filter, $uibModal, $localStorage, $location, $translate, Commons, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController, MessageService) {
 
     $scope.getSystemsTitleMap = function(){
         $scope.systemsTitleMap = [];
@@ -3978,29 +3978,25 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
             SystemsController.addStorageSystem(JSON.stringify($scope.model))
               .then(
                 function (response) {
-                    $uibModal.open({
-                      templateUrl: "views/systems/submit-success.html",
-                      scope: $scope,
-                      size: 'lg',
-                      controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
-                        $scope.close = function()
-                        {
-                            $modalInstance.dismiss('cancel');
-                        };
-                        $scope.browse = function(){
-                            $location.path('/data/explorer/' + $scope.model.id);
-                        }
-                      }]
-                    });
+                  $uibModal.open({
+                    templateUrl: "views/systems/submit-success.html",
+                    scope: $scope,
+                    size: 'lg',
+                    controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
+                      $scope.close = function()
+                      {
+                          $modalInstance.dismiss('cancel');
+                      };
+                      $scope.browse = function(){
+                          $location.path('/data/explorer/' + $scope.model.id);
+                      }
+                    }]
+                  });
                 },
                 function (response) {
-                    var message = (response.errorResponse !== '') ?  "There was an error creating your system:\n" + response.errorResponse.fault.message : message = "There was an error creating your system:\n" + response.errorMessage;
-
-                    App.alert({
-                        type: 'danger',
-                        message: message
-                    });
-              });
+                  MessageService.handle(response, $translate.instant('error_systems_add'));
+                }
+              );
           }
           if ($scope.model.type === "EXECUTION"){
             SystemsController.addExecutionSystem(JSON.stringify($scope.model))
@@ -4022,18 +4018,13 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                   });
                 },
                 function (response) {
-                  var message = (response.errorResponse !== '') ?  "There was an error creating your system:\n" + response.errorResponse.fault.message : message = "There was an error creating your system:\n" + response.errorMessage;
-
-                  App.alert({
-                      type: 'danger',
-                      message: message
-                  });
+                  MessageService.handle(response, $translate.instant('error_systems_add'));
               });
           }
         } else {
           App.alert({
               type: 'danger',
-              message: "There was an error creating your system: Form is not valid. Please verify all fields."
+              message: $translate.instant('error_systems_form')
           });
         }
 

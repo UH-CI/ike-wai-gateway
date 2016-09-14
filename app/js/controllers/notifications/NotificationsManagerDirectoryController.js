@@ -38,25 +38,7 @@ angular.module('AgaveToGo').controller('NotificationsManagerDirectoryController'
             $scope.requesting = false;
           },
           function(response){
-            var message = '';
-            if (typeof response.errorResponse !== 'undefined') {
-              if (typeof response.errorResponse.message !== 'undefined'){
-                message = 'Error: Could not retrieve notifications - ' + response.errorResponse.message;
-              } else if (typeof response.errorResponse.fault !== 'undefined') {
-                message = 'Error: Could not retrieve notifications- ' + response.errorResponse.fault.message;
-              } else {
-                message = 'Error: Could not retrieve notifications';
-              }
-            } else {
-              message = 'Error: Could not retrieve notifications';
-            }
-
-            App.alert(
-              {
-                type: 'danger',
-                message: message
-              }
-            );
+            MessageService.handle(response, $translate.instant('error_notifications_search'));
             $scope.requesting = false;
           }
       );

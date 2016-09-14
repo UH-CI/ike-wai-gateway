@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('JobsResourceDetailsController', function($scope, $stateParams, $state, JobsController, ActionsService) {
+angular.module('AgaveToGo').controller('JobsResourceDetailsController', function($scope, $stateParams, $state, $translate, JobsController, ActionsService, MessageService) {
 
   $scope.job = null;
 
@@ -9,35 +9,15 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
         .then(
           function(response){
             $scope.job = response.result;
-            $scope.$parent.name = response.result.name;
             $scope.requesting = false;
           },
           function(response){
-            var message = '';
-            if (response.errorResponse.message) {
-              message = 'Error: Could not retrieve job - ' + response.errorResponse.message
-            } else if (response.errorResponse.fault){
-              message = 'Error: Could not retrieve job - ' + response.errorResponse.fault.message;
-            } else {
-              message = 'Error: Could not retrieve job';
-            }
-            App.alert(
-              {
-                type: 'danger',
-                message: message
-              }
-            );
+            MessageService.handle(response, $translate.instant('error_jobs_details'));
             $scope.requesting = false;
           }
         );
     } else {
-      var message = response.errorResponse.message ? 'Error: Could not retrieve job - ' + response.errorResponse.message : 'Error: Could not retrieve job';
-      App.alert(
-        {
-          type: 'danger',
-          message: message
-        }
-      );
+      MessageService.handle(response, $translate.instant('error_jobs_details'));
       $scope.requesting = false;
     }
   };
@@ -49,14 +29,7 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
           $state.go('data-explorer', {'systemId': data.archiveSystem, path: data.archivePath});
         },
         function(data){
-          var message = response.errorResponse.message ? 'Error: Could not retrieve job - ' + response.errorResponse.message : 'Error: Could not retrieve job';
-          App.alert(
-            {
-              type: 'danger',
-              message: message
-            }
-          );
-          $scope.requesting = false;
+          MessageService.handle(response, $translate.instant('error_jobs_details'));
           $scope.requesting = false;
         }
       );

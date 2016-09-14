@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("NotificationsResourceAddController", function($scope, $state, $stateParams, NotificationsController, ActionsService) {
+angular.module('AgaveToGo').controller("NotificationsResourceAddController", function($scope, $state, $stateParams, $translate, NotificationsController, ActionsService, MessageService) {
 		$scope.model = {};
 		if ($stateParams.associatedUuid){
 			$scope.model.associatedUuid = $stateParams.associatedUuid;
@@ -273,24 +273,11 @@ angular.module('AgaveToGo').controller("NotificationsResourceAddController", fun
 				.then(
 					function(response){
 						$scope.notificationId = response.result.id;
-						App.alert({message: 'Success: Added ' + $scope.notificationId });
+						App.alert({message: $translate.instant('success_notifications_add') + $scope.notificationId });
 						$scope.requesting = false;
 					},
 					function(response){
-						var message = '';
-						if (response.errorResponse.message) {
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.message
-						} else if (response.errorResponse.fault){
-							message = 'Error: Could not retrieve notification - ' + response.errorResponse.fault.message;
-						} else {
-							message = 'Error: Could not retrieve notification';
-						}
-						App.alert(
-							{
-								type: 'danger',
-								message: message
-							}
-						);
+						MessageService.handle(response, $translate.instant('error_notifications_add'));
 						$scope.requesting = false;
 					}
 				);
@@ -302,13 +289,13 @@ angular.module('AgaveToGo').controller("NotificationsResourceAddController", fun
 			NotificationsController.fireNotification(body, $scope.notificationId)
 				.then(
 					function(response){
-						App.alert({message: 'Success: fired notification ' + $scope.notificationId});
+						App.alert({message: $translate.instant('success_notifications_test_success') + $scope.notificationId});
 					},
 					function(response){
 						App.alert(
 							{
 								type: 'danger',
-								message: 'Error: Testing notification failed'
+								message: $translate.instant('error_notifications_test')
 							}
 						);
 					}

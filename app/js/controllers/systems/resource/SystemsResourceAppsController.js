@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SystemsResourceAppsController', function($scope, $stateParams, SystemsController, AppsController) {
+angular.module('AgaveToGo').controller('SystemsResourceAppsController', function($scope, $stateParams, $translate, SystemsController, AppsController, MessageService) {
 
   $scope.limit = 99999;
   $scope.offset = 0;
@@ -15,57 +15,18 @@ angular.module('AgaveToGo').controller('SystemsResourceAppsController', function
                 $scope.apps = response.result;
               },
               function(response){
-                var message = '';
-                if (response.errorResponse.message) {
-                  message = 'Error: Could not retrieve apps - ' + response.errorResponse.message
-                } else if (response.errorResponse.fault){
-                  message = 'Error: Could not retrieve apps - ' + response.errorResponse.fault.message;
-                } else {
-                  message = 'Error: Could not retrieve apps';
-                }
-                App.alert(
-                  {
-                    type: 'danger',
-                    message: message
-                  }
-                );
+                MessageService.handle(response, $translate.instant('error_apps_search'));
                 $scope.requesting = false;
               }
             );
         },
         function(response){
-          var message = '';
-          if (response.errorResponse.message) {
-            message = 'Error: Could not retrieve apps - ' + response.errorResponse.message
-          } else if (response.errorResponse.fault){
-            message = 'Error: Could not retrieve apps - ' + response.errorResponse.fault.message;
-          } else {
-            message = 'Error: Could not retrieve apps';
-          }
-          App.alert(
-            {
-              type: 'danger',
-              message: message
-            }
-          );
+          MessageService.handle(response, $translate.instant('error_apps_search'));
           $scope.requesting = false;
         }
       );
   } else {
-    var message = '';
-    if (response.errorResponse.message) {
-      message = 'Error: Could not retrieve apps - ' + response.errorResponse.message
-    } else if (response.errorResponse.fault){
-      message = 'Error: Could not retrieve apps - ' + response.errorResponse.fault.message;
-    } else {
-      message = 'Error: Could not retrieve apps';
-    }
-    App.alert(
-      {
-        type: 'danger',
-        message: message
-      }
-    );
+      MessageService.handle(response, $translate.instant('error_apps_search'));
       $scope.requesting = false;
   }
 

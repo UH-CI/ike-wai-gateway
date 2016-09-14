@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SystemsResourceDetailsController', function($scope, $stateParams, SystemsController, ActionsService, RolesService) {
+angular.module('AgaveToGo').controller('SystemsResourceDetailsController', function($scope, $stateParams, $translate, SystemsController, ActionsService, RolesService, MessageService) {
 
   $scope.$parent.error = false;
 
@@ -12,13 +12,12 @@ angular.module('AgaveToGo').controller('SystemsResourceDetailsController', funct
             $scope.system = response;
           },
           function(response){
-            $scope.$parent.error = true;
-            App.alert({type: 'danger',message: 'Error: Could not retrieve system'});
+            MessageService.handle(response, $translate.instant('error_systems_list'));
           }
         );
     } else {
       $scope.$parent.error = true;
-      App.alert({type: 'danger',message: 'Error: Could not retrieve system'});
+      App.alert({type: 'danger',message: $translate.instant('error_systems_list')});
     }
   }
 

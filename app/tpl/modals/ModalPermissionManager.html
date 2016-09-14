@@ -3,23 +3,25 @@
     <h4 class="modal-title">Permissions</h4>
 </div>
 <div class="modal-body">
-  <p> The current permissions are listed below. You may add, updated, or delete them as needed </p>
-
-    <div class="row text-center" ng-show="requesting">
-        <div class="col-md-12">
-          <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
-        </div>
-    </div>
-    <div class="row" ng-if="!requesting">
-        <div class="col-md-12">
-          <form
-                sf-schema="schema"
-                sf-form="form"
-                sf-model="tempModel"
-                >
-          </form>
-        </div>
-    </div>
+  <p>
+    The current permissions are listed below. You may add, updated, or delete them as needed.
+    If you're the app owner or tenant admin, permissions will not be updated on your username.
+  </p>
+  <div class="row text-center" ng-show="requesting">
+      <div class="col-md-12">
+        <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+      </div>
+  </div>
+  <div class="row" ng-if="!requesting">
+      <div class="col-md-12">
+        <form
+              sf-schema="schema"
+              sf-form="form"
+              sf-model="tempModel"
+              >
+        </form>
+      </div>
+  </div>
 </div>
 <div class="modal-footer">
     <button class="btn dark btn-outline" ng-click="cancel()">Cancel</button>
