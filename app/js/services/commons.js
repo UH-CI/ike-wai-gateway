@@ -214,7 +214,7 @@ angular.module('CommonsService', []).service('Commons', ['$rootScope', '$window'
      */
     this.getGravitarFromEmail = function (email) {
         var hash = md5.createHash(email || '');
-        return 'http://www.gravatar.com/avatar/' + hash + '.jpg?d=mm';
+        return 'https://www.gravatar.com/avatar/' + hash + '.jpg?d=mm';
     };
 
     this.formatAddress = function (address) {

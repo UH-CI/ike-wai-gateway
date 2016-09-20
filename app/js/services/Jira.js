@@ -1,7 +1,7 @@
 angular.module('JiraService', []).service('Jira', ['$rootScope', '$http', '$q',
 function ($rootScope, $http, $q) {
 
-    this.baseUrl = "http://public.agaveapi.co/servicedesk/rest/api/2/";
+    this.baseUrl = "https://public.agaveapi.co/servicedesk/rest/api/2/";
 
     this.failedPromise = function (message) {
         "use strict";

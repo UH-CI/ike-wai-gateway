@@ -1,35 +1,34 @@
 // staging
 var OAuthClients = {
-    'agave.prod': {
-        'clientKey': 'smXk8h5p1wisBsSGd04YrcRtccwa',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
+    "araport.org": {
+        "clientKey": "WrFKPGDZd6L7m2PEzTxNGw7YpyAa",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     },
-    'iplantc.org': {
-        'clientKey': 'ytgAftYbiL2sK5LJFRhIxuQzK7ga',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
+    "tacc.prod": {
+        "clientKey": "qflYPovh1XYCzrPZKf8mWWH0NtIa",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     },
-    'tacc.prod': {
-        'clientKey': '7PniwcEZF7Fx8HinIffKvTEtQ5Aa',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
+    "agave.prod": {
+        "clientKey": "ApXiZQtdxzaqN_KEWhF6vw9X4PUa",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     },
-    'araport.org': {
-        'clientKey': 'IsEfcyS73J7ApiXKE1aSADr9btUa',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
+    "iplantc.org": {
+        "clientKey": "tZAdl43gBSJjglfMEdh0KqL5SuYa",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     },
-    'designsafe': {
-        'clientKey': 'ELUMkdZ9fPu1IPRKzQPxCxL0oHsa',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
+    "designsafe": {
+        "clientKey": "oRy7dGF5zLDQdlvrMrLfcCSHZwMa",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     },
-    'dev.staging': {
-        'clientKey': 'bjmAPVYycoTuZOIYrYIXmL0vfLwa',
-        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
-        'scope': 'PRODUCTION'
-    },
+    "dev.staging": {
+        "clientKey": "fSsbB1Lj1W4qKXrDQWSk78gVuE4a",
+        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
+        "scope": "PRODUCTION"
     'hawaii': {
         'clientKey': 'Bcr8jkhENlhKOahITSdSP9cxIv0a',
         'callbackUrl': 'http://localhost:9000/auth',
@@ -38,29 +37,34 @@ var OAuthClients = {
 };
 // // production
 // var OAuthClients = {
-//     'agave.prod': {
-//         'clientKey': 'zO5DcJrf4kbgrfhHCtfOcSHgB6Ua',
-//         'callbackUrl': 'http://togo.agaveapi.co/auth',
-//         'scope': 'PRODUCTION'
+//     "araport.org": {
+//         "clientKey": "fPf99O2yKHHWUtrNq_CA2DDVemca",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
 //     },
-//     'iplantc.org': {
-//         'clientKey': '8ofQpyvZ8h9kmyDDbBHhQtAfB9Aa',
-//         'callbackUrl': 'http://togo.agaveapi.co/auth',
-//         'scope': 'PRODUCTION'
+//     "tacc.prod": {
+//         "clientKey": "Ih16PehABZcKaU7jLbN0qDVhPTka",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
 //     },
-//     'tacc.prod': {
-//         'clientKey': '81rv3Yg3KrFaJE8XU2FVlRCnktMa',
-//         'callbackUrl': 'http://togo.agaveapi.co/auth',
-//         'scope': 'PRODUCTION'
+//     "agave.prod": {
+//         "clientKey": "ZczLM77Fhrbsb_zDLpVQ9oo1xwoa",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
 //     },
-//     'araport.org': {
-//         'clientKey': 'FDuVzOSlLD7KFDPjzjYizlqlFEUa',
-//         'callbackUrl': 'http://togo.agaveapi.co/auth',
-//         'scope': 'PRODUCTION'
+//     "iplantc.org": {
+//         "clientKey": "pGhvTvzlegOlwqfGiQ849iK5M5Ia",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
 //     },
-//     'designsafe': {
-//         'clientKey': 'T5jWDj57jKDk37l31yYqhSksvWUa',
-//         'callbackUrl': 'http://togo.agaveapi.co/auth',
-//         'scope': 'PRODUCTION'
+//     "designsafe": {
+//         "clientKey": "GGocfJpzwX21H8Jp8yUv6OydfcIa",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
+//     },
+//     "dev.staging": {
+//         "clientKey": "T5zzfUqLyZQf25TF8BHo66hKIR8a",
+//         "callbackUrl": "https://togo.agaveapi.co/auth/",
+//         "scope": "PRODUCTION"
 //     }
 // };

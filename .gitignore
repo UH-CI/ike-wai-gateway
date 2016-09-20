@@ -1,4 +1,5 @@
-/auth/scripts/implicit.js
+auth/scripts/implicit.js
+rotate_keys.sh
 bower_components
 node_modules
 .idea
