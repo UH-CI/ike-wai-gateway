@@ -1125,7 +1125,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
     $scope.model = {
        "name": "shell-runner",
        "version": "0.1.0",
-       "helpURI": "http://agaveapi.co/documentation/",
+       "helpURI": "http://developer.agaveapi.co/",
        "label": "Execute a command at a shell",
        "defaultNodeCount": 1,
        "defaultMaxRunTime": "01:00:00",

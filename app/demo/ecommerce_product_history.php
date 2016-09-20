@@ -43,7 +43,7 @@
   $records["recordsTotal"] = $iTotalRecords;
   $records["recordsFiltered"] = $iTotalRecords;
 
-  // check http://datatables.net/usage/server-side for more info about ajax datatable
+  // check https://datatables.net/usage/server-side for more info about ajax datatable
   
   echo json_encode($records);
 ?>

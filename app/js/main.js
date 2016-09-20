@@ -27,7 +27,7 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'ui.select'
 ]).service('NotificationsService',['$rootScope', '$localStorage', 'MetaController', 'toastr', function($rootScope, $localStorage, MetaController, toastr){
     if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.activeProfile !== 'undefined') {
-      this.client = new Fpp.Client('http://48e3f6fe.fanoutcdn.com/fpp');
+      this.client = new Fpp.Client('https://48e3f6fe.fanoutcdn.com/fpp');
       this.channel = this.client.Channel($localStorage.tenant.code + '/' + $localStorage.activeProfile.username);
       this.channel.on('data', function (data) {
         var toastData = {};
@@ -954,6 +954,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             "../bower_components/codemirror/theme/neo.css",
                             "../bower_components/codemirror/lib/codemirror.js",
                             "../bower_components/angular-ui-codemirror/ui-codemirror.min.js",
+
                             'js/services/MessageService.js',
                             'js/controllers/apps/AppEditWizardController.js'
                         ]
@@ -980,6 +981,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             "../bower_components/codemirror/theme/neo.css",
                             "../bower_components/codemirror/lib/codemirror.js",
                             "../bower_components/angular-ui-codemirror/ui-codemirror.min.js",
+
+                            'js/services/MessageService.js',
                             'js/controllers/apps/AppBuilderWizardController.js'
                         ]
                     },

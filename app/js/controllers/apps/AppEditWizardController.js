@@ -1147,7 +1147,7 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
        "name": "foo",
        "version": "1.0",
        "label": "foo app",
-       "helpURI": "http://help.com",
+       "helpURI": "http://developer.agaveapi.co/",
        "shortDescription": "foo demo",
        "longDescription": "foo demo app"
    };

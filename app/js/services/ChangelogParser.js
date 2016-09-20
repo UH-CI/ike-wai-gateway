@@ -1,7 +1,7 @@
 angular.module('ChangelogParserService', []).service('ChangelogParser', ['$rootScope', '$http', '$q',
 function ($rootScope, $http, $q) {
 
-    this.baseUrl = "http://agaveapi.co/changelog-parser/";
+    this.baseUrl = "https://agaveapi.co/changelog-parser/";
 
     this.failedPromise = function (message) {
         "use strict";

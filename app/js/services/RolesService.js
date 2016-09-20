@@ -20,7 +20,6 @@ angular.module('AgaveToGo').service('RolesService',['$uibModal', '$rootScope', '
                   $scope.requesting = true;
                   SystemsController.listSystemRoles(system.id, 99999, 0).then(
                     function(data) {
-                      $scope.profiles = profiles;
                       $scope.model = {};
                       $scope.tempModel = {};
 
