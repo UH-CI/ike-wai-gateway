@@ -15001,3 +15001,12 @@ Color library demo
 .table td, .table th {
     word-break: break-all;
 }
+
+.agave-message {
+  color:#b4bcc8;
+}
+
+/* CodeMirror */
+.CodeMirror {
+  height: auto !important;
+}

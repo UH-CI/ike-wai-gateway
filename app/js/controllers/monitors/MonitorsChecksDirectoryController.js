@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', function ($scope, $stateParams, MonitorsController, ActionsService) {
+angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', function ($scope, $stateParams, $translate, MonitorsController, ActionsService, MessageService) {
 
     $scope._COLLECTION_NAME = 'monitors';
     $scope._RESOURCE_NAME = 'monitor';
@@ -14,32 +14,16 @@ angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', func
 
     $scope.refresh = function() {
       $scope.requesting = true;
-
       if ($scope.monitorId) {
         MonitorsController.searchMonitoringTaskChecks($scope.monitorId, $scope.query)
           .then(
             function (response) {
-
               $scope.totalItems = response.result.length;
-              $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
               $scope[$scope._COLLECTION_NAME] = response.result;
               $scope.requesting = false;
             },
             function(response){
-              var message = '';
-              if (response.errorResponse.message) {
-                message = 'Error: Could not retrieve monitors - ' + response.errorResponse.message
-              } else if (response.errorResponse.fault){
-                message = 'Error: Could not retrieve monitors - ' + response.errorResponse.fault.message;
-              } else {
-                message = 'Error: Could not retrieve monitors';
-              }
-              App.alert(
-                {
-                  type: 'danger',
-                  message: message
-                }
-              );
+              MessageService.handle(response, $translate.instant('error_monitors_checks_search'));
               $scope.requesting = false;
             }
         );
@@ -48,7 +32,7 @@ angular.module('AgaveToGo').controller('MonitorsChecksDirectoryController', func
         App.alert(
           {
             type: 'danger',
-            message: 'Error: Please provide a monitor id'
+            message: $translate.instant('error_monitors_checks_id')
           }
         );
       }

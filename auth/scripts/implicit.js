@@ -25,7 +25,7 @@ var OAuthClients = {
         "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
         "scope": "PRODUCTION"
     },
-<<<<<<< HEAD
+
     'dev.staging': {
         'clientKey': 'bjmAPVYycoTuZOIYrYIXmL0vfLwa',
         'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
@@ -35,12 +35,6 @@ var OAuthClients = {
         'clientKey': 'Bcr8jkhENlhKOahITSdSP9cxIv0a',
         'callbackUrl': 'http://localhost:9000/auth',
         'scope': 'PRODUCTION'
-=======
-    "dev.staging": {
-        "clientKey": "fSsbB1Lj1W4qKXrDQWSk78gVuE4a",
-        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
-        "scope": "PRODUCTION"
->>>>>>> 1fb5f9720faafa1fbf99ab142ff520f71cc7823d
     }
 };
 // // production

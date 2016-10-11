@@ -164,9 +164,9 @@ angular.module('AgaveToGo').controller('UserProfileController', function($rootSc
             $scope.setJobCount(jobCount);
         });
 
-        SystemsController.listSystems(9999999).then(function(data) {
-            var systemCount = data.length;
-            $scope.setSystemCount(data.length);
+        SystemsController.listSystems(9999999).then(function(response) {
+            var systemCount = response.result.length;
+            $scope.setSystemCount(response.result.length);
         });
 
         AppsController.listApps(9999999, 0, { filter: 'id' }).then(function(data) {

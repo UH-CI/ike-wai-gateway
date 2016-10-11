@@ -1,4 +1,68 @@
-angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $localStorage, $location, $translate, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController) {
+angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $localStorage, $location, $translate, Commons, AppsController, WizardHandler, SystemsController, SystemTypeEnum, Tags, FilesController, MessageService) {
+
+    $scope.app = {};
+    $scope.apps = [];
+
+    $scope.getAppTemplates = function(){
+      AppsController.listApps(99999, 0)
+        .then(
+          function(response){
+            angular.forEach(response.result, function(app){
+              $scope.apps.push({'id': app.id, 'label': app.label, 'name': app.name, 'version': app.version});
+            });
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_apps_template'));
+          }
+        );
+    };
+
+    $scope.getAppTemplates();
+
+    $scope.changeAppTemplate = function(app){
+      AppsController.getAppDetails(app.id)
+        .then(
+          function(response){
+            if (response.result.id){
+              delete response.result.id;
+            }
+            if (response.result.name){
+              delete response.result.name;
+            }
+            if (response.result.isPublic){
+              delete response.result.isPublic;
+            }
+            if (response.result.deploymentSystem){
+              delete response.result.deploymentSystem;
+            }
+            if (response.result.executionSystem){
+              delete response.result.executionSystem;
+            }
+            if (response.result.revision){
+              delete response.result.revision;
+            }
+            if (response.result.uuid){
+              delete response.result.uuid;
+            }
+            if (response.result.getContext){
+              delete response.result.getContext;
+            }
+            if (response.result._links){
+              delete response.result._links;
+            }
+            if (response.result.available){
+              delete response.result.available;
+            }
+            if (response.result.icon){
+              delete response.result.icon;
+            }
+            $scope.model = response.result;
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_apps_template'));
+          }
+        );
+    };
 
     $scope.schema = {
         "type": "object",
@@ -21,7 +85,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                 "maxLength": 16
             },
             "helpURI": {
-                "type": "string",
+                "type": [null,"string"],
                 "description": "The URL where users can go for more information about the app.",
                 "format": "url",
                 "title": "Help URL",
@@ -480,7 +544,11 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                     {
                         "key": "tags"
                     },
-                    "helpURI",
+                    {
+                      "key": "helpURI",
+                      "description": "The URL where users can go for more information about the app.",
+                      "title": "Help URL",
+                    },
                     {
                         "key": "ontology"
                     }
@@ -561,7 +629,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         onChange: function (modelValue, form) {
                             SystemsController.getSystemDetails(modelValue).then(
                                 function(response) {
-                                    $scope.systems.execution[modelValue].queues = response.queues;
+                                    $scope.systems.execution[modelValue].queues = response.result.queues;
                                     $scope.form[0].tabs[2].items[2].titleMap = [
                                         { value: '', name: 'Select queue'}
                                     ];
@@ -1182,8 +1250,8 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
 
     $scope.fetchUserSystems = function(query) {
         SystemsController.listSystems(null, null).then(
-            function(systems) {
-                angular.forEach(systems, function (system, key) {
+            function(response) {
+                angular.forEach(response.result, function (system, key) {
                     if (system.type === SystemTypeEnum.STORAGE.toString()) {
                         $scope.systems.storage[system.id] = system;
                         $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.id });
@@ -1192,6 +1260,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
                         }
                     } else {
                         $scope.systems.execution[system.id] = system;
+                        $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.id });
                         $scope.form[0].tabs[2].items[1].titleMap.push({ value: system.id, name: system.id });
                         if (system.default == true) {
                             $scope.defaultSystems.execution = system;
@@ -1238,7 +1307,6 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
     $scope.init();
 
     $scope.submit = function () {
-
         $scope.$broadcast('schemaFormValidate');
         if ($scope.myForm.$valid) {
           AppsController.addApp(JSON.stringify($scope.model))

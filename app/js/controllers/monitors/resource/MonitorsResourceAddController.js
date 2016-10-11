@@ -10,7 +10,7 @@ angular.module('AgaveToGo').controller("MonitorsResourceAddController", function
 				.then(
 					function(response){
 						$scope.systemsTitleMap = [];
-						_.each(response, function(system){
+						_.each(response.result, function(system){
 							$scope.systemsTitleMap.push({"value": system.id, "name": system.id});
 						});
 

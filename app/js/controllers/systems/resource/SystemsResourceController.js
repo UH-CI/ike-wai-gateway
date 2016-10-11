@@ -17,7 +17,7 @@ angular.module('AgaveToGo').controller("SystemsResourceController", function($sc
 		$scope.tabs = [
 			{ heading: "Details", route:"systems.details", active:false },
 			{ heading: "Queues", route:"systems.queues", active:false },
-			{ heading: "Applications", route:"systems.apps", active:false }
+			{ heading: "Apps", route:"systems.apps", active:false }
 			// { heading: "Stats", route:"systems.stats", active:false },
 		];
 

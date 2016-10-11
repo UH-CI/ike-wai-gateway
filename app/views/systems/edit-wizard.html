@@ -5,8 +5,12 @@
       <a href="/app/#/systems" class="btn btn-default">Back to Systems</a>
     </div>
 </div>
-
-<div class="row" ng-show="wizview">
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div class="row" ng-show="wizview && !requesting">
     <div class="col-md-12">
         <div class="portlet light bordered" id="form_wizard_1">
             <div class="portlet-title" ng-show="edit">

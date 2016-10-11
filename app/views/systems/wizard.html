@@ -1,10 +1,25 @@
-<!-- BEGIN PAGE BASE CONTENT -->
 <h3 class="page-title"> System Builder Wizard</h3>
 
-<div class="row">
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div class="row" ng-show="!requesting">
     <div class="col-md-12">
         <div class="portlet light bordered" id="form_wizard_1">
-            <div class="portlet-title">
+            <div ng-show="systemTemplates.length > 0">
+              <label class="control-label">You can re-use an existing System definition template and provide your own ID, Name and Auth:</label>
+              <ui-select ng-model="systemTemplate" theme="bootstrap" on-select="changeSystemTemplate($item)">
+                <ui-select-match placeholder="Search...">{{$select.selected.id}}</ui-select-match>
+                <ui-select-choices repeat="system in systemTemplates | filter: $select.search">
+                  <div ng-bind-html="system.name"></div>
+                  <div ng-bind-html="system.id"></div>
+                  <div ng-bind-html="system.type"></div>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+            <div class="portlet-title top-buffer">
                 <div class="caption">
                     <i class=" icon-layers font-red"></i>
                     <span class="caption-subject font-red bold uppercase">
@@ -47,4 +62,3 @@
     <a href="/app/#/systems" type="button" class="btn btn-primary blue">Back to Systems</a>
   </div>
 </div>
-<!-- END PAGE BASE CONTENT -->
