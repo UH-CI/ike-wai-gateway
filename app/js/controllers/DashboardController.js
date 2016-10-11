@@ -1,5 +1,5 @@
 angular.module('AgaveToGo').controller('DashboardController',
-  function($rootScope, $scope, $http, $timeout, $filter, Commons, MonitorsController, AppsController, JobsController, SystemsController, StatusIoController, moment, amMoment, Jira) {
+  function($rootScope, $scope, $http, $timeout, $filter, $localStorage, Commons, MonitorsController, AppsController, JobsController, SystemsController, StatusIoController, moment, amMoment, Jira) {
     $scope.$on('$viewContentLoaded', function () {
       // initialize core components
       App.initAjax();
@@ -149,11 +149,11 @@ angular.module('AgaveToGo').controller('DashboardController',
 
       $scope.systems = [];
       SystemsController.listSystems(9999999).then(
-          function(data) {
-              var systemCount = data.length;
+          function(response) {
+              var systemCount = response.result.length;
               $timeout(function () {
                   if (systemCount) {
-                      var systems = $filter('orderBy')(data, 'lastUpdated', true);
+                      var systems = $filter('orderBy')(response.result, 'lastUpdated', true);
                       for (var i =0; i<Math.min(systemCount, 10); i++) {
                           $scope.systems.push(systems[i]);
                       }

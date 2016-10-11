@@ -1058,7 +1058,6 @@ angular.module('CommonsService', []).service('Commons', ['$rootScope', '$window'
                     return size + '<font class="units">' + sizes[posttxt] + '</font>';
                 }
             } else {
-                console.log('Error: Not a number.');
                 return "";
             }
 
@@ -1096,7 +1095,6 @@ angular.module('CommonsService', []).service('Commons', ['$rootScope', '$window'
                     return size + '<font class="units">' + sizes[posttxt] + '</font>';
                 }
             } else {
-                console.log('Error: Not a number.');
                 return "";
             }
 

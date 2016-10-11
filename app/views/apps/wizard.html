@@ -1,17 +1,20 @@
-<!-- BEGIN PAGE BASE CONTENT -->
 <h3 class="page-title"> App Builder Wizard</h3>
 
-<div class="row">
+<div class="row top-buffer" ng-show="!requesting">
     <div class="col-md-12">
-        <!-- <div class="m-heading-1 border-green m-bordered">
-            <p>
-                This twitter bootstrap plugin builds a wizard out of a formatter tabbable structure. It allows to build a wizard functionality
-                using buttons to go through the different wizard steps and using events allows to hook into each step individually.
-            </p>
-        </div> -->
-
         <div class="portlet light bordered" id="form_wizard_1">
-            <div class="portlet-title">
+            <div ng-show="apps.length > 0">
+              <label class="control-label">You can re-use an existing App definition template and provide your own Name and Dependencies:</label>
+              <ui-select ng-model="app" theme="bootstrap" on-select="changeAppTemplate($item)">
+                <ui-select-match placeholder="Search...">{{$select.selected.id}}</ui-select-match>
+                <ui-select-choices repeat="app in apps | filter: $select.search">
+                  <div ng-bind-html="app.label"></div>
+                  <div ng-bind-html="app.name"></div>
+                  <div ng-bind-html="app.version"></div>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+            <div class="portlet-title top-buffer">
                 <div class="caption">
                     <i class=" icon-layers font-red"></i>
                     <span class="caption-subject font-red bold uppercase">
@@ -49,4 +52,3 @@
         </div>
     </div>
 </div>
-<!-- END PAGE BASE CONTENT -->

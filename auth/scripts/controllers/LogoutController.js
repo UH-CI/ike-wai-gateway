@@ -6,27 +6,11 @@ angular.module('AgaveAuth').controller('LogoutController', function ($injector, 
     //$scope.loggedIn = !!AccessToken.get();
 
     $timeout(function() {
-
         $scope.profile = $localStorage.activeProfile;
         $scope.tenant = $localStorage.tenant;
 
         delete $localStorage.activeProfile;
         delete $localStorage.token;
-        if ($scope.profile) {
-
-            if ($scope.tenant) {
-                $rootScope.$broadcast('oauth:template:update', '/auth/views/templates/oauth-ng-button.html');
-            } else {
-                $location.path("/tenants");
-                $location.replace();
-            }
-        } else if ($scope.tenant) {
-            $location.path("/login/" + $scope.tenant.code);
-            $location.replace();
-        } else {
-            $location.path("/tenants");
-            $location.replace();
-        }
     }, 50);
 
     $scope.$watch('$localStorage.profile', function(value){

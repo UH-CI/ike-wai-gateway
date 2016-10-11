@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SystemsResourceAppsController', function($scope, $stateParams, $translate, SystemsController, AppsController, MessageService) {
+angular.module('AgaveToGo').controller('SystemsResourceAppsController', function($scope, $stateParams, $translate, AppsController, MessageService) {
 
   $scope.limit = 99999;
   $scope.offset = 0;
@@ -6,19 +6,10 @@ angular.module('AgaveToGo').controller('SystemsResourceAppsController', function
   $scope.apps = null;
 
   if ($stateParams.systemId !== ''){
-    SystemsController.getSystemDetails($stateParams.systemId)
+    AppsController.listApps($scope.limit, $scope.offset, { 'executionSystem.like': $stateParams.systemId })
       .then(
         function(response){
-          AppsController.listApps($scope.limit, $scope.offset, { 'executionSystem.like': $stateParams.systemId })
-            .then(
-              function(response){
-                $scope.apps = response.result;
-              },
-              function(response){
-                MessageService.handle(response, $translate.instant('error_apps_search'));
-                $scope.requesting = false;
-              }
-            );
+          $scope.apps = response.result;
         },
         function(response){
           MessageService.handle(response, $translate.instant('error_apps_search'));
@@ -29,6 +20,4 @@ angular.module('AgaveToGo').controller('SystemsResourceAppsController', function
       MessageService.handle(response, $translate.instant('error_apps_search'));
       $scope.requesting = false;
   }
-
-
 });

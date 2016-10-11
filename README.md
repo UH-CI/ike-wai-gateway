@@ -1,17 +1,17 @@
 ## Agave ToGo
 
-Agave ToGo v2 is a full-featured web application providing a reference user interface to exercising the core 
-functionality of the Agave Platform and demonstrate some of the advanced use cases which are possible by leveraging 
+Agave ToGo v2 is a full-featured web application providing a reference user interface to exercising the core
+functionality of the Agave Platform and demonstrate some of the advanced use cases which are possible by leveraging
 the core Agave Core Science APIs and mainstream open source web technologies.
 
-This version of the web application is implemented as a client-side application using the 
-[AngularJS framework](http://angularjs.org/). It is designed to run entirely within your browser with no need for a 
-back-end server. The Aside from the Agave Platform itself, there are no external third-party 
-service dependencies. The assets produced by this project are entirely static, thus you may host this application out 
+This version of the web application is implemented as a client-side application using the
+[AngularJS framework](http://angularjs.org/). It is designed to run entirely within your browser with no need for a
+back-end server. The Aside from the Agave Platform itself, there are no external third-party
+service dependencies. The assets produced by this project are entirely static, thus you may host this application out
 of your Bitbucket, GitHub, Dropbox, Google Drive, or even a folder you published using Agave.  
 
-Agave ToGo is fully open source under the BSD 2-Clause license. We encourage you to fork the project and use it as 
-a jumping point from which you can build your own application. To contribute back enhancement and bug fixes, please 
+Agave ToGo is fully open source under the BSD 2-Clause license. We encourage you to fork the project and use it as
+a jumping point from which you can build your own application. To contribute back enhancement and bug fixes, please
 make a pull request on the branch you have forked.
 ***************************************************************************************************************************
 ## Install Agave ToGo for UH Tenant
@@ -90,16 +90,20 @@ We also use a number of node.js tools to initialize and test agave-togo. You mus
 
 Clone the agave-togo repository using [git](http://git-scm.com/):
 
+
 ``` 
 git clone git@github.com:UH-CI/uh-togo-app.git  
+
 cd agave-togo  
-``` 
+```
 
 If you just want to start a new project without the agave-togo commit history then you can do:
+
 
 ``` 
 git clone --depth=1 git@github.com:UH-CI/uh-togo-app.git <your-project-name>  
 ``` 
+
 
 The `depth=1` tells git to only pull down one commit worth of historical data.
 
@@ -112,7 +116,7 @@ We have two three of dependencies in this project: tools and Agave Platform SDKs
 
 We have pre-configured npm to automatically run bower so we can simply do:
 
-``` 
+```
 npm install
 ```  
 
@@ -125,11 +129,24 @@ Behind the scenes this will also call `bower install`. You should find that you 
 
 We have preconfigured the project with a simple development web server. The simplest way to start this server is:
 
-``` 
-npm start 
-``` 
+```
+npm start
+```
 
 Now browse to the app at [http://localhost:9000/app](http://localhost:9000/app).
 
+### Run tests (optional)
+
+Set your tenant `BASEURI` and `oAuthAccessToken` on `/bower_components/agave-angularjs-sdk/Agave/TestConfiguration.js`:
+
+```
+Configuration.BASEURI = 'https://public.agaveapi.co';
+Configuration.oAuthAccessToken = '37d51643...';
+```
+
+```
+cd agave-togo
+karma start
+```
 
 

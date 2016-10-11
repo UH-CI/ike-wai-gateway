@@ -1,4 +1,7 @@
 <div class="table-responsive">
+  <div ng-show="apps.length === 0" class="text-center">
+          No apps found
+  </div>
   <table class="table" ng-repeat="app in apps">
     <thead class="hidden-sm hidden-xs">
      <tr>
