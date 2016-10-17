@@ -17,8 +17,9 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
                         function(rootFiles){
                           $scope.path = $localStorage.activeProfile.username;
                           $stateParams.path = $scope.path;
-                          $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
-                          App.unblockUI('#agave-filemanager');
+                          if ($rootScope.locationChange){
+                            $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
+                          }
                           $scope.error = false;
                           $scope.requesting = false;
                         },
@@ -29,8 +30,9 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
                               function(usernameFiles){
                                 $scope.path = '/';
                                 $stateParams.path = $scope.path;
-                                $location.path("/data/explorer/" + $stateParams.systemId + "/");
-                                App.unblockUI('#agave-filemanager');
+                                if ($rootScope.locationChange){
+                                  $location.path("/data/explorer/" + $stateParams.systemId + "/");
+                                }
                                 $scope.error = false;
                                 $scope.requesting = false;
                               },
@@ -43,8 +45,9 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
                     );
                 } else {
                     $scope.path = $stateParams.path;
-                    $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
-                    App.unblockUI('#agave-filemanager');
+                    if ($rootScope.locationChange){
+                      $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
+                    }
                     $scope.error = false;
                     $scope.requesting = false;
                 }
@@ -60,7 +63,7 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
           );
 
     } else {
-        SystemsController.listSystems(99999, 0, true, false)
+        SystemsController.listSystems(99999, 0, true)
           .then(function (response) {
               if (response.result && response.result.length > 0) {
                   $scope.system = response.result[0];
@@ -71,8 +74,9 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
                         $scope.path = $localStorage.activeProfile.username;
                         $stateParams.path = $scope.path;
                         $stateParams.systemId = response.result[0].id;
-                        $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
-                        App.unblockUI('#agave-filemanager');
+                        if ($rootScope.locationChange){
+                          $location.path("/data/explorer/" + $stateParams.systemId + "/" + $scope.path);
+                        }
                         $scope.error = false;
                         $scope.requesting = false;
                       },
@@ -84,8 +88,9 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
                               $scope.path = '/';
                               $stateParams.path = $scope.path;
                               $stateParams.systemId = response.result[0].id;
-                              $location.path("/data/explorer/" + $stateParams.systemId + "/");
-                              App.unblockUI('#agave-filemanager');
+                              if ($rootScope.locationChange){
+                                $location.path("/data/explorer/" + $stateParams.systemId + "/");
+                              }
                               $scope.error = false;
                               $scope.requesting = false;
                             },
@@ -125,9 +130,10 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
 
                             SystemsController.updateInvokeSystemAction(body, systemId)
                               .then(function(response){
-                                $location.path("/data/explorer/" + systemId + "/" + $localStorage.activeProfile.username);
+                                if ($rootScope.locationChange){
+                                  $location.path("/data/explorer/" + systemId + "/" + $localStorage.activeProfile.username);
+                                }
                                 $scope.close();
-                                App.unblockUI('#agave-filemanager');
                               })
                               .catch(function(response){
                                 $scope.requesting = false;
@@ -154,7 +160,6 @@ angular.module('AgaveToGo').controller('FileExplorerController', function($rootS
               $scope.system = '';
               $scope.requesting = false;
               MessageService.handle(response, $translate.instant('error_systems_list'));
-              App.unblockUI('#agave-filemanager');
           }
         );
     }

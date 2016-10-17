@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("NotificationsResourceEditController", function($scope, $state, $stateParams, NotificationsController, ActionsService) {
+angular.module('AgaveToGo').controller("NotificationsResourceEditController", function($scope, $state, $stateParams, $translate, NotificationsController, ActionsService) {
 
 		$scope.notificationId = $stateParams.notificationId;
 

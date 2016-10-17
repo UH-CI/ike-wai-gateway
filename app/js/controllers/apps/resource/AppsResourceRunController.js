@@ -154,18 +154,21 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                       "model": $scope.form.model,
                       selectFile: function(key){
                         $scope.requesting = true;
-                        SystemsController.getSystemDetails($scope.app.deploymentSystem).then(
+                        // SystemsController.getSystemDetails($scope.app.deploymentSystem).then(
+                        SystemsController.listSystems(99999, 0, true, false, 'STORAGE')
+                          .then(
                             function(response) {
+                              if (response.result > 0){
                                 // check if modal already opened
                                 if (!$modalStack.getTop()){
                                   $stateParams.path = $scope.path;
 
-                                  $scope.system = response.result;
+                                  $scope.system = response.result[0];
                                   $rootScope.uploadFileContent = '';
 
                                   if (typeof $stateParams.path === 'undefined' || $stateParams.path === "" || $stateParams.path === "/") {
                                       // check if username path is browsable
-                                      FilesController.listFileItems(response.result.id, $localStorage.activeProfile.username, 1, 0)
+                                      FilesController.listFileItems(response.result[0].id, $localStorage.activeProfile.username, 1, 0)
                                         .then(
                                           function(rootFiles){
                                             $scope.path = $localStorage.activeProfile.username;
@@ -271,6 +274,123 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                                       $scope.requesting = false;
                                   }
                                 }
+                              }
+
+                              // check if modal already opened
+                              if (!$modalStack.getTop()){
+                                $stateParams.path = $scope.path;
+
+                                $scope.system = response.result[0];
+                                $rootScope.uploadFileContent = '';
+
+                                if (typeof $stateParams.path === 'undefined' || $stateParams.path === "" || $stateParams.path === "/") {
+                                    // check if username path is browsable
+                                    FilesController.listFileItems(response.result[0].id, $localStorage.activeProfile.username, 1, 0)
+                                      .then(
+                                        function(rootFiles){
+                                          $scope.path = $localStorage.activeProfile.username;
+                                          $stateParams.path = $scope.path;
+                                          $uibModal.open({
+                                            templateUrl: "views/apps/filemanager.html",
+                                            scope: $scope,
+                                            size: 'lg',
+                                            controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
+                                              $scope.cancel = function()
+                                              {
+                                                  $modalInstance.dismiss('cancel');
+                                              };
+
+                                              $scope.close = function(){
+                                                  $modalInstance.close();
+                                              }
+
+                                              $scope.$watch('uploadFileContent', function(uploadFileContent){
+                                                  if (typeof uploadFileContent !== 'undefined' && uploadFileContent !== ''){
+                                                    if (typeof $scope.form.model.inputs === 'undefined'){
+                                                      $scope.form.model.inputs = {};
+                                                    }
+                                                    $scope.form.model.inputs[key] = uploadFileContent;
+                                                    $scope.close();
+                                                  }
+                                              });
+                                            }]
+                                          });
+                                          $scope.error = false;
+                                          $scope.requesting = false;
+                                        },
+                                        function(rootFiles){
+                                          // check if / is browsable
+                                          FilesController.listFileItems(response.result[0].id, '/', 1, 0)
+                                            .then(
+                                              function(usernameFiles){
+                                                $scope.path = '/';
+                                                $stateParams.path = $scope.path;
+                                                $uibModal.open({
+                                                  templateUrl: "views/apps/filemanager.html",
+                                                  scope: $scope,
+                                                  size: 'lg',
+                                                  controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
+                                                    $scope.cancel = function()
+                                                    {
+                                                        $modalInstance.dismiss('cancel');
+                                                    };
+
+                                                    $scope.close = function(){
+                                                        $modalInstance.close();
+                                                    }
+
+                                                    $scope.$watch('uploadFileContent', function(uploadFileContent){
+                                                        if (typeof uploadFileContent !== 'undefined' && uploadFileContent !== ''){
+                                                          if (typeof $scope.form.model.inputs === 'undefined'){
+                                                            $scope.form.model.inputs = {};
+                                                          }
+                                                          $scope.form.model.inputs[key] = uploadFileContent;
+                                                          $scope.close();
+                                                        }
+                                                    });
+                                                  }]
+                                                });
+                                                $scope.error = false;
+                                                $scope.requesting = false;
+                                              },
+                                              function(response){
+                                                MessageService.handle(response, $translate.instant('error_files_list'));
+                                                $scope.requesting = false;
+                                              }
+                                            )
+                                      }
+                                    );
+                                } else {
+                                    $scope.path = $stateParams.path;
+                                    $uibModal.open({
+                                      templateUrl: "views/apps/filemanager.html",
+                                      scope: $scope,
+                                      size: 'lg',
+                                      controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
+                                        $scope.cancel = function()
+                                        {
+                                            $modalInstance.dismiss('cancel');
+                                        };
+
+                                        $scope.close = function(){
+                                            $modalInstance.close();
+                                        }
+
+                                        $scope.$watch('uploadFileContent', function(uploadFileContent){
+                                            if (typeof uploadFileContent !== 'undefined' && uploadFileContent !== ''){
+                                              if (typeof $scope.form.model.inputs === 'undefined'){
+                                                $scope.form.model.inputs = {};
+                                              }
+                                              $scope.form.model.inputs[key] = uploadFileContent;
+                                              $scope.close();
+                                            }
+                                        });
+                                      }]
+                                    });
+                                    $scope.error = false;
+                                    $scope.requesting = false;
+                                }
+                              }
                             },
                             function(response) {
                               MessageService.handle(response, $translate.instant('error_apps_details'));
@@ -297,19 +417,19 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                       "description": input.description,
                       "model": $scope.form.model,
                       selectFile: function(key){
-                        SystemsController.getSystemDetails($scope.app.deploymentSystem)
+                        // SystemsController.getSystemDetails($scope.app.deploymentSystem)
+                        SystemsController.listSystems(1, 0, true, false, 'STORAGE')
                           .then(
                             function(response) {
+                              if (response.result.length > 0){
                                 if (!$modalStack.getTop()){
                                   // $scope.path = $localStorage.activeProfile.username;
                                   $stateParams.path = $scope.path;
 
-                                  $scope.system = response.result;
+                                  $scope.system = response.result[0];
                                   $rootScope.uploadFileContent = '';
                                   $uibModal.open({
                                     templateUrl: "views/apps/filemanager.html",
-                                    // resolve: {
-                                    // },
                                     scope: $scope,
                                     size: 'lg',
                                     controller: ['$scope', '$modalInstance', function($scope, $modalInstance ) {
@@ -333,7 +453,10 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                                       });
                                     }]
                                   });
+                                } else {
+                                  MessageService.handle(response, $translate.instant('error_apps_files_select'));
                                 }
+                              }
                             },
                             function(response) {
                               MessageService.handle(response, $translate.instant('error_apps_details'));

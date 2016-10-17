@@ -1207,10 +1207,10 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
        "templatePath": "wrapper.sh",
        "testPath": "test/test.sh",
        "tags": [
-         "excute", "awesome", "demo"
+         "execute", "awesome", "demo"
        ],
        "ontology": [
-         "excute", "awesome", "demo"
+         "execute", "awesome", "demo"
        ],
        "modules": [],
        "inputs": [],
@@ -1219,7 +1219,7 @@ angular.module('AgaveToGo').controller('AppBuilderWizardController', function ($
            "details": {
              "label": "Command to run",
              "description": "This is the actual shell command you want to run",
-             "argument": "sh -c ",
+             "argument": "",
              "showArgument": true
            },
            "value": {

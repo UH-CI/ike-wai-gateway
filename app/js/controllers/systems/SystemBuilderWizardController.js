@@ -142,11 +142,19 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
             },
             "maxSystemJobs": {
                 "type": "number",
-                "title": "Maximum System Jobs"
+                "title": "Maximum System Jobs",
+                "x-schema-form": {
+                  "type": "number",
+                  "placeholder": 50
+                }
             },
             "maxSystemJobsPerUser": {
                 "type": "number",
-                "title": "Maximum Jobs Per User"
+                "title": "Maximum Jobs Per User",
+                "x-schema-form": {
+                  "type": "number",
+                  "placeholder": 5
+                }
             },
             "scratchDir": {
                 "type": "string",
@@ -206,7 +214,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                     "description": "Maximum number of nodes that can be requested for any job in this queue. -1 for no limit",
                     "x-schema-form": {
                       "type": "number",
-                      "placeholder": 1
+                      "placeholder": 128
                     }
                   },
                   "maxProcessorsPerNode": {
@@ -1012,6 +1020,37 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                     ]
                   },
 
+                  // EXECUTION.maxSystemJobsPerUser
+                  {
+                    "type": "section",
+                      "htmlClass": "col-xs-8",
+                      "condition": "model.type === 'EXECUTION'",
+                      "items": [
+                        {
+                          "key": "maxSystemJobsPerUser"
+                        }
+                      ]
+                  },
+                  {
+                     "type": "section",
+                     "htmlClass": "col-xs-4",
+                     "condition": "model.type === 'EXECUTION'",
+                     "items": [
+                       {
+                          "type": "template",
+                          "template":
+
+                          '<div class="form-group ">'+
+                           '<label class="control-label">&nbsp;</label>'+
+                           '<div class="form-control" style="border:transparent; padding-left:0px; padding-right:0px;">'+
+                             '<i class="fa fa-question-circle fa-lg" popover-placement="right" popover-trigger="mouseenter" uib-popover="Maximum number of jobs that can be queued or running on a system for an individual user across all queues at a given time. Defaults to unlimited."></i>'+
+                           '</div>'+
+                           '<div class="help-block"></div>'+
+                          '</div>',
+                       }
+                     ]
+                   },
+
                   // EXECUTION.scratchDir
                   {
                     "type": "section",
@@ -1019,7 +1058,7 @@ angular.module('AgaveToGo').controller('SystemBuilderWizardController', function
                       "condition": "model.type === 'EXECUTION'",
                       "items": [
                         {
-                          "key": "maxSystemJobs"
+                          "key": "scratchDir"
                         }
                       ]
                   },

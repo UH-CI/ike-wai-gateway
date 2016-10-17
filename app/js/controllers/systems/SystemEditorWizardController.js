@@ -43,7 +43,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
               "title": "Status"
             },
             "site": {
-                "type": "string",
+                "type": [null,"string"],
                 "format": "url",
                 "title": "Site",
             },
@@ -158,7 +158,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                     "description": "Maximum number of nodes that can be requested for any job in this queue. -1 for no limit",
                     "x-schema-form": {
                       "type": "number",
-                      "placeholder": 1
+                      "placeholder": 128
                     }
                   },
                   "maxProcessorsPerNode": {
@@ -720,7 +720,10 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                   "type": "section",
                     "htmlClass": "col-xs-8",
                     "items": [
-                       "site",
+                       {
+                         "key": "site",
+                         "title": "Site",
+                       }
                     ]
                 },
                 {
@@ -969,7 +972,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                       "condition": "model.type === 'EXECUTION'",
                       "items": [
                         {
-                          "key": "maxSystemJobs"
+                          "key": "scratchDir"
                         }
                       ]
                   },

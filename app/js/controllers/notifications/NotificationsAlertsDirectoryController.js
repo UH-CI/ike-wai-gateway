@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('NotificationsAlertsDirectoryController', function ($scope, MetaController, ActionsService) {
+angular.module('AgaveToGo').controller('NotificationsAlertsDirectoryController', function ($scope, $stateParams, MetaController, ActionsService) {
 
     $scope._COLLECTION_NAME = 'notifications';
     $scope._RESOURCE_NAME = 'notification';
@@ -16,6 +16,10 @@ angular.module('AgaveToGo').controller('NotificationsAlertsDirectoryController',
 
     $scope.refresh = function() {
       $scope.requesting = true;
+
+      if ($stateParams.id){
+        $scope.filter = $stateParams.id;
+      }
 
       MetaController.listMetadata($scope.query, null, $scope.offset)
         .then(

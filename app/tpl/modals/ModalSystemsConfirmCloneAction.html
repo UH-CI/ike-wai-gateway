@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h3 class="modal-title">Clone {{resource.id}}</h3>
+</div>
+<div class="modal-body">
+    <p ng-show="error" class="alert alert-danger top-buffer">{{error}}</p>
+    <div class="row text-center" ng-show="requesting">
+        <div class="col-md-12">
+          <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+        </div>
+    </div>
+    <div ng-show="!requesting">
+      <p>
+        Cloning an existing system will create a new system, with a new id, and all attributes copied over with the exception of the original system's authentication information and roles. You will be assigned owner of the system clone, but will still need to add your own credentials in order to do anything useful.
+      </p>
+      <p>Please provide a new Name for the clone</p>
+      <form
+          name="myForm"
+          sf-schema="schema"
+          sf-form="form"
+          sf-model="model"
+          >
+      </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="submit()">Submit</button>
+</div>

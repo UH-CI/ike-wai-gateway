@@ -135,6 +135,7 @@ AgaveToGo.config(function($translateProvider) {
     error_apps_details: 'Error: Could not retrieve app',
     error_apps_edit: 'Error: Could not edit app',
     error_apps_edit_permission: 'Error: User does not have permission to edit app',
+    error_apps_files_select: 'Could not find a default system to browse files. Please specify a default system',
     error_apps_form: 'Error: Invalid form. Please check all fields',
     error_apps_permissions: 'Error: Could not retreive app permissions',
     error_apps_permissions_update: 'Error: Could not update app permissions',
@@ -185,7 +186,9 @@ AgaveToGo.config(function($translateProvider) {
     success_notifications_test: 'Success: fired notification ',
     success_notifications_update: 'Success: updated ',
 
-    success_systems_roles: 'Success: updated roles for '
+    success_systems_roles: 'Success: updated roles for ',
+    setDefault: 'set to default',
+    unsetDefault: 'unset default'
   });
 
   $translateProvider.preferredLanguage('en');
@@ -238,7 +241,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 
 /* Setup Layout Part - Header */
 AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoController', function($scope, $localStorage, StatusIoController) {
-    $scope.showTokenCountdown = true;
+    $scope.showTokenCountdown = false;
 
     // get token countdown time
     if (typeof $localStorage.token !== 'undefined'){
@@ -531,6 +534,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         insertBefore: '#ng_load_plugins_before',
                         files: [
                             'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
                             'js/controllers/QueryBuilderController.js',
                             'js/controllers/notifications/NotificationsManagerDirectoryController.js'
                         ]
@@ -556,6 +560,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         insertBefore: '#ng_load_plugins_before',
                         files: [
                             'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
                             'js/controllers/QueryBuilderController.js',
                             'js/controllers/notifications/NotificationsManagerDirectoryController.js'
                         ]
@@ -630,6 +635,28 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       ]
                     }
                   ]);
+                }]
+            }
+        })
+
+        .state('notifications-alerts-id', {
+            url: "/notifications/alerts/:id",
+            templateUrl: "views/notifications/alerts.html",
+            data: {pageTitle: 'Notifications Alerts'},
+            controller: "NotificationsAlertsDirectoryController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before',
+                        files: [
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/notifications/NotificationsAlertsDirectoryController.js'
+                        ]
+                    });
                 }]
             }
         })
@@ -1725,8 +1752,16 @@ AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', '$
         storageMode: 'localStorage'
     });
 
-    // Check for valid token on every state change
-    $rootScope.$on('$stateChangeStart', function(){
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+        // Temp fix until I find better solution
+        // This is to avoid changing url location on filemanager promise returns
+        if ((fromState.name === 'data-explorer-noslash' || fromState.name === 'data-explorer') && (toState.name !== 'data-explorer-noslash' || toState.name !== 'data-explorer')){
+          $rootScope.locationChange = false;
+        } else {
+          $rootScope.locationChange = true;
+        }
+
         if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.token !== 'undefined'){
           var currentDate = new Date();
           var expirationDate = Date.parse($localStorage.token.expires_at);
