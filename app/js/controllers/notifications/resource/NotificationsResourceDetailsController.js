@@ -8,7 +8,6 @@ angular.module('AgaveToGo').controller('NotificationsResourceDetailsController',
         .then(
           function(response){
             $scope.notification = response.result;
-            $scope.$parent.name = response.result.name;
             $scope.requesting = false;
           },
           function(response){

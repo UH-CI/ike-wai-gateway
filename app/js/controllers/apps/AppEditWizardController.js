@@ -1170,13 +1170,13 @@ angular.module('AgaveToGo').controller('AppEditWizardController', function ($inj
                 angular.forEach(response.result, function (system, key) {
                     if (system.type === SystemTypeEnum.STORAGE.toString()) {
                         $scope.systems.storage[system.id] = system;
-                        $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.name });
+                        $scope.form[0].tabs[1].items[1].titleMap.push({ value: system.id, name: system.id });
                         if (system.default == true) {
                             $scope.defaultSystems.storage = system;
                         }
                     } else {
                         $scope.systems.execution[system.id] = system;
-                        $scope.form[0].tabs[2].items[1].titleMap.push({ value: system.id, name: system.name });
+                        $scope.form[0].tabs[2].items[1].titleMap.push({ value: system.id, name: system.id });
                         if (system.default == true) {
                             $scope.defaultSystems.execution = system;
                         }

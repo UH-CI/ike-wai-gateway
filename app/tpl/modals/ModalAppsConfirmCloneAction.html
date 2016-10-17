@@ -10,7 +10,9 @@
     </div>
     <div ng-show="!requesting">
       <p>
-        Cloning an existing system will create a new system, with a new id, and all attributes copied over with the exception of the original system's authentication information and roles. You will be assigned owner of the system clone, but will still need to add your own credentials in order to do anything useful.
+        When cloning public apps, the entire app bundle will be recreated on the <code>deploymentSystem</code> you specify or your default storage system. The same is not true for private apps.
+        Cloning a private app will copy the job description, but not the app bundle. This is to honor the original ownership of the assets and prevent them from leaking out to the public space without the owner’s permission.
+        If you need direct access to the app’s assets, request that the owner give you read access to the folder listed as the deploymentPath in the app description.
       </p>
       <p>Please provide a new ID for the clone</p>
       <form
