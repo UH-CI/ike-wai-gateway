@@ -1747,6 +1747,44 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             templateUrl: "views/projects/editor.html",
             data: {pageTitle: 'New Project'}
         })
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Metadata Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        // Metadata
+        .state('metadata-manage', {
+            url: "/metadata",
+            templateUrl: "views/metadata/manager.html",
+            data: {pageTitle: 'Jobs Manager'},
+            controller: "MetadataController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            //'../bower_components/datatables/media/css/dataTables.bootstrap.min.css',
+                            //'../bower_components/datatables/media/css/jquery.dataTables.min.css',
+                            //
+                            //'../bower_components/datatables/media/js/dataTables.bootstrap.js',
+                            //'../bower_components/datatables/media/js/jquery.dataTables.js',
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/metadata/MetadataController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
 
 }]);
 
