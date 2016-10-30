@@ -29,7 +29,7 @@
                       </div>
                     </div>
                     <div class="row top-buffer" ng-show="showSearch">
-                      <query-builder group="filter.group" resource="jobs"></query-builder>
+                      <query-builder group="filter.group" resource="metadata"></query-builder>
                       <div class="col-md-12 top-buffer">
 
                         <div class="input-group">
@@ -95,15 +95,15 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr ng-repeat="meta in metadata | orderBy:sortType:sortReverse | filter:filter">
+                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
-                                          <a ui-sref="meta({uuid: meta.uuid})"> {{meta.uuid}} </a>
+                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.uuid}} </a>
                                       </td>
                                       <td class="hidden-xs">
-                                          <a ui-sref="meta({uuid: meta.uuid})"> {{meta.name}} </a>
+                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.name}} </a>
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
-                                          {{meta.owner}}
+                                          {{metadatum.owner}}
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
@@ -113,7 +113,7 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right"> 
                                                 <li>
-                                                  <a ng-click="browse(job.id)" role="button"> <i class="fa fa-folder-open-o"></i> Browse</a>
+                                                  <a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit</a>
                                                 </li>
                                               </ul>
                                           </div>
