@@ -148,6 +148,10 @@ AgaveToGo.config(function($translateProvider) {
     error_jobs_details: 'Error: Could not retrieve job',
     error_jobs_list: 'Error: Could not retrieve jobs',
 
+    error_metadata_create: 'Error: Could not submit metadata',
+    error_metadata_details: 'Error: Could not retrieve metadata',
+    error_metadata_list: 'Error: Could not retrieve metadata',
+
     error_monitors_add: 'Error: Could not add monitor',
     error_monitors_list: 'Error: Could not retrieve monitor',
     error_monitors_search: 'Error: Could not retrieve monitors',
@@ -1757,11 +1761,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         name: 'AgaveToGo',
                         insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
                         files: [
-                            //'../bower_components/datatables/media/css/dataTables.bootstrap.min.css',
-                            //'../bower_components/datatables/media/css/jquery.dataTables.min.css',
-                            //
-                            //'../bower_components/datatables/media/js/dataTables.bootstrap.js',
-                            //'../bower_components/datatables/media/js/jquery.dataTables.js',
                             '../assets/global/scripts/datatable.js',
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
@@ -1773,6 +1772,47 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
+
+        .state("metadata", {
+          abtract: true,
+          url:"/metadata/:id",
+          templateUrl:"views/metadata/resource/resource.html",
+          controller: "MetadataResourceController",
+          resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+              return $ocLazyLoad.load([
+                {
+                  name: 'AgaveToGo',
+                    files: [
+                      'js/controllers/metadata/resource/MetadataResourceController.js'
+                    ]
+                }
+              ]);
+            }]
+          }
+        })
+
+        .state("metadata.details", {
+          url: "",
+          templateUrl: "views/metadata/resource/details.html",
+          controller: "MetadataResourceDetailsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/PermissionsService.js',
+                        'js/controllers/metadata/resource/MetadataResourceDetailsController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+        })
+
 
 
 }]);
