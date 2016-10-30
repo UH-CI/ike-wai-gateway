@@ -5,13 +5,13 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/metadata">Metadata</a>
+            <a href="#/metadataschemas">Metadata Schemas</a>
         </li>
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Metadata Management
-    <small>Manage your Metadata</small>
+<h3 class="page-title"> Metadata Schemas Management
+    <small>Manage your Metadata Schemas</small>
 </h3>
 <div class="row">
     <div class="col-md-12">
@@ -59,14 +59,14 @@
               <div class="row">
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                      <div ng-show="metadata.length === 0" class="text-center">
+                      <div ng-show="metadataschemas.length === 0" class="text-center">
                         <div class="row text-center">
                           <div class="col-md-12">
-                              No Metadata found
+                              No Metadata Schemas found
                           </div>
                         </div>
                       </div>
-                      <div ng-show="metadata.length > 0">
+                      <div ng-show="metadataschemas.length > 0">
                           <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection">
                               <thead>
                                   <tr role="row" class="heading">
@@ -95,15 +95,15 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
+                                  <tr ng-repeat="metadataschema in metadataschemas | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.uuid}} </a>
+                                          <a ui-sref="metadataschemas({id: metadataschema.uuid})"> {{metadataschema.uuid}} </a>
                                       </td>
                                       <td class="hidden-xs">
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.name}} </a>
+                                          <a ui-sref="metadataschemas({id: metadataschema.uuid})"> {{metadataschema.name}} </a>
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
-                                          {{metadatum.owner}}
+                                          {{metadataschema.owner}}
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
@@ -111,7 +111,7 @@
                                                   Actions
                                                   <i class="fa fa-angle-down"></i>
                                               </a>
-                                              <ul class="dropdown-menu pull-right"> 
+                                              <ul class="dropdown-menu pull-right">
                                                 <li>
                                                   <a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
                                                 </li>
