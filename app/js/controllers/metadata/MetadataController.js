@@ -1,6 +1,6 @@
 angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, MetaController, FilesController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
-    $scope._RESOURCE_NAME = 'metadata';
+    $scope._RESOURCE_NAME = 'metadatum';
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
@@ -32,18 +32,6 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
       $scope.refresh();
     }
 
-    $scope.browse = function(uuid){
-      MetaController.getMetadata(uuid)
-        .then(
-          function(response){
-            $state.go('data-explorer', {'systemId': response.result.archiveSystem, path: response.result.archivePath});
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_list'));
-            $scope.requesting = false;
-          }
-        );
-    }
 
     $scope.refresh();
 
