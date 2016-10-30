@@ -14,7 +14,6 @@ angular.module('AgaveToGo').controller('MetadataSchemasController', function ($s
       )
         .then(
           function (response) {
-            alert(response.result)
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
