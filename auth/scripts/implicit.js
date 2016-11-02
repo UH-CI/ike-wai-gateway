@@ -25,10 +25,12 @@ var OAuthClients = {
         "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
         "scope": "PRODUCTION"
     },
-    "dev.staging": {
-        "clientKey": "fSsbB1Lj1W4qKXrDQWSk78gVuE4a",
-        "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
-        "scope": "PRODUCTION"
+
+    'dev.staging': {
+        'clientKey': 'bjmAPVYycoTuZOIYrYIXmL0vfLwa',
+        'callbackUrl': 'http://togo.staging.agaveapi.co/auth',
+        'scope': 'PRODUCTION'
+    },
     'hawaii': {
         'clientKey': 'Bcr8jkhENlhKOahITSdSP9cxIv0a',
         'callbackUrl': 'http://localhost:9000/auth',
