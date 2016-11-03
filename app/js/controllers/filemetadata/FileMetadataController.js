@@ -6,6 +6,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.sortReverse  = true;
 
     $scope.query = '{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.schemaQuery ='';
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
 
@@ -26,6 +27,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.requesting = false;
           }
       );
+
+      MetaController.listMetadataSchema(
+        $scope.schemaQuery
+      ).then(function(response){$scope.metadataschema = response.result;})
 
     };
 

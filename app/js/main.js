@@ -1940,6 +1940,28 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }]
           }
         })
+
+
+        .state('filemetadata-add', {
+            url: "/filemetadata/add/:uuid/:schemauuid",
+            templateUrl: "views/filemetadata/resource/add.html",
+            controller: "FileMetadataResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/controllers/filemetadata/resource/FileMetadataResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
 /*
         .state("filemetadata.details", {
           url: "/:metadatauuid",
