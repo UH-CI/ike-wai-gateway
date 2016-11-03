@@ -20,6 +20,27 @@
                 <div class="caption">
                     <i class="fa fa-rocket"></i> File Metadata Management
                 </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <a href="#/filemetadata/add/{{filemetadatumUuid}}" class="btn btn-outline green pull-right" role="button">
+                      <i class="fa fa-plus"></i>
+                      <span class="hidden-480"> Add New File Metadata</span>
+                    </a>
+                    <div class="btn-group">
+                        <a class="btn green btn-outline" href="#" data-toggle="dropdown">
+                            Add New File Metadata
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                          <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+                            <a ui-sref="filemetadata-add({uuid: filemetadatumUuid, schemauuid: metadataschemata.uuid})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                          </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+
+
 
                 <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
