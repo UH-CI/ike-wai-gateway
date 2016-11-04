@@ -17,14 +17,14 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
             $scope.metadataschema = response.result[0];
             //$scope.schema = $scope.metadataschema.schema;
             var schemaproperties ={};
-            angular.forEach($scope.metadataschema.schema.properties, function(value, key) {
+            /*angular.forEach($scope.metadataschema.schema.properties, function(value, key) {
               schemaproperties[key] = {"type": value.type == 'array' ? "string" : value.type, "title": key};
             });
             $scope.schemaproperties = schemaproperties;
-            //});
+            //});*/
             formschema = {};
             formschema["type"]="object";
-            formschema["properties"] = schemaproperties
+            formschema["properties"] = $scope.metadataschema.schema.properties;//schemaproperties
             $scope.schema = formschema;
             $scope.form = [
               "*",
