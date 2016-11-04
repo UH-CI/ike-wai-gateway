@@ -20,8 +20,7 @@
                 <div class="caption">
                     <i class="fa fa-rocket"></i> Metadata Management
                 </div>
-
-                <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
@@ -111,7 +110,7 @@
                                                   Actions
                                                   <i class="fa fa-angle-down"></i>
                                               </a>
-                                              <ul class="dropdown-menu pull-right"> 
+                                              <ul class="dropdown-menu pull-right">
                                                 <li>
                                                   <a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
                                                 </li>

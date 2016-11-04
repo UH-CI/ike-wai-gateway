@@ -2,8 +2,16 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
+
+    $scope.queryLimit = 99999;
+
+    $scope.offset = 0;
+    $scope.limit = 10;
+
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
+    $scope.status = 'active';
+    $scope.available = true;
     $scope.query = '';
 
     $scope.refresh = function() {

@@ -1769,7 +1769,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
-                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/metadata/MetadataController.js'
                         ]
                     });
@@ -1842,7 +1842,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
-                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/metadataschemas/MetadataSchemasController.js'
                         ]
                     });
@@ -1914,7 +1914,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
-                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/filemetadata/FileMetadataController.js'
                         ]
                     });
