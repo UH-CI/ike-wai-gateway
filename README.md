@@ -125,6 +125,84 @@ Behind the scenes this will also call `bower install`. You should find that you 
 * `node_modules` - contains the npm packages for the tools we need
 * `bower_components` - contains the angular framework files
 
+### Configure clients
+
+You must set your own `clientKey` and `callbackUrl` in `/agave-togo/auth/scripts/implicit.js` for authentication:
+
+```
+var OAuthClients = {
+    'agave.prod': {
+        'clientKey': 'B241…’,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    },
+    'iplantc.org': {
+        'clientKey': 'USjf…’,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    },
+    'dev.staging': {
+        'clientKey': 'FxWr…,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    },
+    'tacc.prod': {
+        'clientKey': 'B4oW…’,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    },
+    'araport.org': {
+        'clientKey': 'JsKm…’,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    },
+    'designsafe': {
+        'clientKey': 'jNWc…’,
+        'callbackUrl': 'https://localhost:9000/auth/',
+        'scope': 'PRODUCTION'
+    }
+};
+```
+
+An easy way to register your client and obtain your `clientKey` and `callbackUrl` is through the CLI (https://bitbucket.org/agaveapi/cli):
+
+```
+$ tenants-init
+Please select a tenant from the following list:
+[0] agave.prod
+[1] araport.org
+[2] designsafe
+[3] iplantc.org
+[4] irec
+[5] irmacs
+[6] tacc.prod
+[7] vdjserver.org
+Your choice [3]: 0
+You are now configured to interact with the APIs at https://public.agaveapi.co/
+
+$ clients-create -N "agave_client" -C "https://localhost:9000/auth/" -S
+API username : yourusername
+API password: yourpassword
+Successfully created client agave_client
+key: 2YR...
+secret: NaH3...
+
+$ auth-check -v
+{
+  "tenantid": "agave.prod",
+  "baseurl": "https://public.agaveapi.co",
+  "devurl": "",
+  "apisecret": "NaH3...",
+  "apikey": "2YR...",
+  "username": "yourusername",
+  "access_token": "",
+  "refresh_token": "",
+  "created_at": "",
+  "expires_in": "",
+  "expires_at": ""
+}
+```
+
 ### Run the Application
 
 We have preconfigured the project with a simple development web server. The simplest way to start this server is:
