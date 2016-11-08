@@ -23,6 +23,10 @@
               <td>Name</td>
               <td>{{metadatum.name}}</td>
             </tr>
+            <tr ng-if="metadatum.schemaId">
+              <td>Schema Id</td>
+              <td>{{metadatum.schemaId}}</td>
+            </tr>
             <tr ng-if="metadatum.value">
               <td>Value</td>
               <td>{{metadatum.value}}</td>
