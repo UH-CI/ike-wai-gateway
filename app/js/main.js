@@ -1935,7 +1935,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
 
         .state("filemetadata", {
           //abtract: true,
-          url:"/filemetadata/:uuid/:id",
+          url:"/filemetadata/:id",
           templateUrl:"views/filemetadata/resource/resource.html",
           controller: "FileMetadataResourceController",
           resolve: {
@@ -1973,27 +1973,26 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
-/*
-        .state("filemetadata.details", {
-          url: "/:metadatauuid",
-          templateUrl: "views/filemetadata/resource/details.html",
-          controller: "FileMetadataResourceDetailsController",
-          resolve: {
-              deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                return $ocLazyLoad.load([
-                  {
-                    name: 'AgaveToGo',
-                    files: [
-                        'js/services/ActionsService.js',
-                        'js/services/MessageService.js',
-                        'js/services/PermissionsService.js',
-                        'js/controllers/filemetadata/resource/FileMetadataResourceDetailsController.js'
-                    ]
-                  }
-                ]);
-              }]
-          }
-        })*/
+        .state('filemetadata-edit', {
+            url: "/filemetadata/edit/:filemetadatauuid",
+            templateUrl: "views/filemetadata/resource/edit.html",
+            controller: "FileMetadataResourceEditController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/filemetadata/resource/FileMetadataResourceEditController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
 
 }]);
 
