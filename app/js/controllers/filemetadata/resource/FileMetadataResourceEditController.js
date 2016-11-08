@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService){//, MessageService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
 
 	$scope.metadataUuid = $stateParams.filemetadatauuid;
 
@@ -29,16 +29,16 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
             }
           )
         }
-        //else{
-          //MessageService.handle($translate.instant('error_metadataschemas_get'));
-        //}
+        else{
+          MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+        }
         $scope.requesting = false;
       }
       );
     }
-    //  else{
-    //    MessageService.handle($translate.instant('error_metadata_get'));
-    //  }
+    else{
+        MessageService.handle(response, $translate.instant('error_filemetadata_get'));
+    }
 
 /*	$scope.delete = function(){
 		//ActionsService.confirmAction('metadata', $scope.metadata, 'delete');
