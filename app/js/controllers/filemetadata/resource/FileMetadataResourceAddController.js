@@ -52,7 +52,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
 				body.associationIds = $scope.uuid;//$scope.model.associatedUuid;
 				body.name = $scope.metadataschema.schema.title;
 				body.value = $scope.model;
-				body.schemaId = $scope.schemauuid;
+				body.schemaId = $scope.metadataschema.uuid;
 				MetaController.addMetadata(body)
 					.then(
 						function(response){
