@@ -57,7 +57,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
 					.then(
 						function(response){
 							$scope.metadataUuid = response.result.uuid;
-							App.alert({message: $translate.instant('success_metadata_add') + $scope.notificationUuid });
+							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
 							$scope.requesting = false;
 							$state.go('metadata',{id: $scope.metadataUuid});
 						},
