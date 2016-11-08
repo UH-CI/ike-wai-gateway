@@ -1965,7 +1965,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
         .state('filemetadata-edit', {
-            url: "/filemetadata/edit/:filemetadatauuid",
+            url: "/filemetadata/edit/:uuid/:filemetadatauuid",
             templateUrl: "views/filemetadata/resource/edit.html",
             controller: "FileMetadataResourceEditController",
             resolve: {

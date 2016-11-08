@@ -1,6 +1,17 @@
 angular.module('AgaveToGo').controller("FileMetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
 
+  $scope.fileUuid = $stateParams.uuid;
 	$scope.metadataUuid = $stateParams.filemetadatauuid;
+
+/*  if($scope.fileUuid){
+      FilesController.listFileItems(fileUuid){
+        .then(function(response){
+          $scope.file = response;
+
+        })
+      }
+  }*/
+
 
   if ($scope.metadataUuid){
 		$scope.requesting = true;
@@ -37,27 +48,37 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
       );
     }
     else{
-        MessageService.handle(response, $translate.instant('error_filemetadata_get'));
+      //  MessageService.handle($translate.instant('error_filemetadata_get'));
     }
 
-/*	$scope.delete = function(){
-		//ActionsService.confirmAction('metadata', $scope.metadata, 'delete');
-	};
+//	$scope.delete = function(){
+//		//ActionsService.confirmAction('metadata', $scope.metadata, 'delete');
+//	};
 
-	$scope.update = function(){
-		/*$scope.requesting = true;
-		MonitorsController.updateMonitoringTask($scope.model, $scope.model.id)
-				.then(
-						function(response){
-							App.alert({message: $translate.instant('success_monitors_update') + $scope.monitorId});
-							$scope.requesting = false;
-						},
-						function(response){
-							$scope.requesting = false;
-							MessageService.handle(response, $translate.instant('error_monitors_list'));
-						}
-				);*/
-	//};
+  $scope.onSubmit = function(form) {
+    $scope.requesting = true;
+    $scope.$broadcast('schemaFormValidate');
+    // Then we check if the form is valid
+    if (form.$valid) {
+      var body = {};
+      body.associationIds = $scope.metadatum.associationIds;
+      body.name = $scope.metadatum.name;
+      body.value = $scope.model;
+      body.schemaId = $scope.metadatum.schemaId;
+      MetaController.updateMetadata(body,$scope.metadataUuid)
+        .then(
+          function(response){
+            App.alert({message: $translate.instant('success_metadata_update') + $scope.metadataUuid });
+            $scope.requesting = false;
+            $state.go('metadata',{id: $scope.metadataUuid});
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_metadata_update'));
+            $scope.requesting = false;
+          }
+        )
+      }
+  };
 
 
 
