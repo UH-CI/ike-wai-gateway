@@ -29,10 +29,11 @@ var OAuthClients = {
         "clientKey": "fSsbB1Lj1W4qKXrDQWSk78gVuE4a",
         "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
         "scope": "PRODUCTION"
+    },
     'hawaii': {
-        'clientKey': 'Bcr8jkhENlhKOahITSdSP9cxIv0a',
-        'callbackUrl': 'http://localhost:9000/auth',
-        'scope': 'PRODUCTION'
+        'clientKey': 'CSueXFDgXtVJXU15gorNnxsnCyEa',
+        'callbackUrl': 'https://ikewai-dev.its.hawaii.edu/auth',
+	'scope': 'PRODUCTION'
     }
 };
 // // production
