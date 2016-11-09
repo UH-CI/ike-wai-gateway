@@ -76,9 +76,16 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
+                                      <th width="20%">
+                                        <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
+                                          PATH
+                                          <span ng-show="sortType == 'path' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'path' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
                                       <th width="10%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                                          Name
+                                          TYPE
                                           <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
@@ -97,6 +104,9 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.uuid}} </a>
+                                      </td>
+                                      <td>
+                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
                                       </td>
                                       <td class="hidden-xs">
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.name}} </a>
