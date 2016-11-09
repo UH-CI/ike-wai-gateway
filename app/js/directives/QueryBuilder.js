@@ -172,6 +172,7 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                     break;
                   case 'metadata':
                     scope.fields = [
+                      {name: 'value.tags'},
                       {name: 'name'},
                       {name: 'created'},                       // The timestamp when the notification was first registered. Results are rounded by day. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
                       {name: 'associationIds'},                // The uuid of an Agave resource for which this notification will fire. Boolean, default false.
