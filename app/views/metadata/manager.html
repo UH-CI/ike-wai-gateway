@@ -109,7 +109,7 @@
                                           <a ui-sref="filemetadata({id: metadatum.associationIds[0]})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
                                       </td>
                                       <td class="hidden-xs">
-                                          <a ui-sref="metadataschema({id: metadatum.schemaId})"> {{metadatum.name}} </a>
+                                          {{metadatum.name}}
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadatum.owner}}
