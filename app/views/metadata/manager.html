@@ -106,10 +106,10 @@
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.uuid}} </a>
                                       </td>
                                       <td>
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
+                                          <a ui-sref="filemetadata({id: metadatum.associationIds[0]})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
                                       </td>
                                       <td class="hidden-xs">
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.name}} </a>
+                                          <a ui-sref="metadataschema({id: metadatum.schemaId})"> {{metadatum.name}} </a>
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadatum.owner}}
@@ -122,7 +122,12 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
+                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-folder-open-o"></i> View Metadata Record</a>
+
+                                                </li>
+                                                <li>
+                                                  <!--<a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>-->
+                                                  <a ui-sref="filemetadata({id: metadatum.associationIds[0]})" role="button"> <i class="fa fa-folder-open-o"></i> Browse File Metadata</a>
                                                 </li>
                                               </ul>
                                           </div>
