@@ -58,6 +58,11 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
 						function(response){
 							$scope.metadataUuid = response.result.uuid;
 							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
+							var pem_body = {};
+							pem_body["username"] = "public";
+							pem_body["permission"] = "READ";
+							//"{'username': 'public','permision': {'read': true,'write': false}}"
+							MetaController.addMetadataPermission(pem_body,$scope.metadataUuid);
 							$scope.requesting = false;
 							$state.go('metadata',{id: $scope.metadataUuid});
 						},
