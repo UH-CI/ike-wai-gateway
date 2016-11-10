@@ -170,6 +170,17 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                       {name: 'url'}                            // The callback url to which deliveries should be made.
                     ];
                     break;
+                  case 'metadata':
+                    scope.fields = [
+                      {name: 'value.tags'},
+                      {name: 'name'},
+                      {name: 'created'},                       // The timestamp when the notification was first registered. Results are rounded by day. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
+                      {name: 'associationIds'},                // The uuid of an Agave resource for which this notification will fire. Boolean, default false.
+                      {name: 'uuid'},                            // The unique id of a notification.
+                      {name: 'lastupdated'},                   // The timestamp of the last time the notification was updated. Results are rounded by minute. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
+                      {name: 'owner'}                         // The username of the principal who originally registered the system.
+                    ];
+                    break;
                 }
 
                 scope.conditions = [
@@ -188,6 +199,26 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                     {name: '.nlike='},
                     {name: '.between='}
                 ];
+
+                if (attrs.resource == 'metadata')
+                {
+                  scope.conditions = [
+                      {name: '$eq'},
+                      {name: '$on'},
+                      {name: '$neq'},
+                      {name: '$it'},
+                      {name: '$before'},
+                      {name: '$lte'},
+                      {name: '$gt'},
+                      {name: '$after'},
+                      {name: '$gte'},
+                      {name: '$in'},
+                      {name: '$nin'},
+                      {name: '$like'},
+                      {name: '$nlike'},
+                      {name: '$between'}
+                  ];
+                }
 
                 scope.addCondition = function () {
                     scope.group.rules.push({
@@ -231,6 +262,13 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                       scope.group.rules.push({
                           condition: '.eq=',
                           field: 'available',
+                          data: ''
+                      });
+                      break;
+                    case 'metadata':
+                      scope.group.rules.push({
+                          condition: '$eq',
+                          field: 'name',
                           data: ''
                       });
                       break;

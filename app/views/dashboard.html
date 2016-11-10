@@ -16,15 +16,10 @@
 <!-- BEGIN MAIN CONTENT -->
 <div ng-controller="DashboardController">
     <div class="note note-info">
-        <h3>Introducing the new Agave ToGo!
+        <h3>IKE WAI Platform
             <span class="close" data-close="note"></span>
         </h3>
-        <p> Agave ToGo v2 is a full-featured web application designed to show off core functionality you are familiar with in
-            the Agave Platform as well as demonstrate some of the advanced use cases which are possible leveraging
-            the core Agave Core Science APIs.</p><br>
-        <p> This application is meant to serve as a reference from which you can build your own application. Feel free to
-            fork this repository and edit as needed. To contribute back enhancement and bug fixes, please fork the repository
-            and submit a pull request.</p>
+        <p> The Integrated Knowledge Environment (IKE) Wai` (Water) Platform is designed to bring water research data together with computation and metadata tools to enable knowledge discovery.</p><br>
     </div>
     <!-- BEGIN DASHBOARD STATS -->
     <div class="row">
@@ -42,7 +37,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <!--<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="dashboard-stat red">
                 <div class="visual">
                     <i class="fa fa-exchange"></i>
@@ -55,7 +50,7 @@
                     <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
-        </div>
+        </div>-->
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="dashboard-stat green">
                 <div class="visual">
@@ -87,9 +82,9 @@
     </div>
     <!-- END DASHBOARD STATS -->
     <div class="row">
-        <div class="col-md-6 col-sm-12">
+      <!--  <div class="col-md-6 col-sm-12">-->
             <!-- BEGIN PORTLET-->
-            <div class="portlet light bordered ">
+          <!--  <div class="portlet light bordered ">
                 <div class="portlet-title">
                     <div class="caption caption-md">
                         <i class="icon-bar-chart font-red"></i>
@@ -108,9 +103,9 @@
                     <div class="row number-stats margin-bottom-30">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="stat-left">
-                                <div class="stat-chart">
+                                <div class="stat-chart">-->
                                     <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
-                                    <div id="project_sparkline_total"></div>
+                        <!--            <div id="project_sparkline_total"></div>
                                 </div>
                                 <div class="stat-number">
                                     <div class="title"> Total </div>
@@ -120,9 +115,9 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <div class="stat-right">
-                                <div class="stat-chart">
+                                <div class="stat-chart">-->
                                     <!-- do not line break "sparkline_bar" div. sparkline chart has an issue when the container div has line break -->
-                                    <div ng-show="projectStatsTimeframe == 'daily'" id="project_sparkline_day"></div>
+                    <!--                <div ng-show="projectStatsTimeframe == 'daily'" id="project_sparkline_day"></div>
                                     <div ng-show="projectStatsTimeframe == 'weekly'" id="project_sparkline_week"></div>
                                     <div ng-show="projectStatsTimeframe == 'monthly'" id="project_sparkline_month"></div>
                                 </div>
@@ -160,12 +155,12 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!-- END PORTLET-->
         </div>
-        <div class="col-md-6 col-sm-12">
+      <!--  <div class="col-md-6 col-sm-12">-->
             <!-- BEGIN PORTLET-->
-            <div class="portlet light bordered">
+          <!--  <div class="portlet light bordered">
                 <div class="portlet-title tabbable-line">
                     <div class="caption caption-md">
                         <i class="icon-globe font-green hide"></i>
@@ -183,9 +178,9 @@
                         </li>
                     </ul>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body">-->
                     <!--BEGIN TABS-->
-                    <div class="tab-content">
+                  <!--  <div class="tab-content">
                         <div class="tab-pane active" id="tab_1_1">
                             <div class="scroller" style="height: 306px;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2">
                                 <ul class="feeds">
@@ -265,7 +260,7 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>-->
                     <!--END TABS-->
                 </div>
             </div>
@@ -273,9 +268,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-sm-6">
+        <!--<div class="col-md-6 col-sm-6">-->
             <!-- BEGIN REGIONAL STATS PORTLET-->
-            <div class="portlet light bordered ">
+          <!--  <div class="portlet light bordered ">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-share font-green"></i>
@@ -324,7 +319,7 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </div>-->
                     <!--<div class="scroller-footer">-->
                         <!--<div class="btn-arrow-link pull-right">-->
                             <!--<a href="#">See All Records</a>-->
@@ -335,9 +330,9 @@
             </div>
             <!-- END REGIONAL STATS PORTLET-->
         </div>
-        <div class="col-md-6 col-sm-6">
+      <!--  <div class="col-md-6 col-sm-6">-->
             <!-- BEGIN PORTLET-->
-            <div class="portlet light bordered">
+        <!--    <div class="portlet light bordered">
                 <div class="portlet-title">
                     <div class="caption caption-md">
                         <i class="icon-bar-chart font-green"></i>
@@ -370,7 +365,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 	    <!-- END PORTLET-->
         </div>
     </div>

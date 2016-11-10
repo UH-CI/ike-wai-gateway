@@ -3,7 +3,7 @@
     <!-- BEGIN LOGO -->
     <div class="page-logo">
         <a href="#/">
-            <img src="{{settings.layoutPath}}/img/logo-big.png" alt="logo" class="logo-default" /> </a>
+            <img src="{{settings.layoutPath}}/img/ike-logo.png" alt="logo" class="logo-default" /></a>
         <div class="menu-toggler sidebar-toggler">
             <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
         </div>
@@ -11,7 +11,7 @@
     <!-- END LOGO -->
     <!-- BEGIN HEADER SEARCH BOX -->
     <!-- DOC: Apply "search-form-expanded" right after the "search-form" class to have half expanded search box -->
-    <form class="search-form" action="#" method="GET">
+    <!--<form class="search-form" action="#" method="GET">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search..." name="query">
             <span class="input-group-btn">
@@ -20,7 +20,7 @@
                 </a>
             </span>
         </div>
-    </form>
+    </form>-
     <!-- END HEADER SEARCH BOX -->
     <!-- BEGIN RESPONSIVE MENU TOGGLER -->
     <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
@@ -320,10 +320,10 @@
             <li class="dropdown dropdown-extended dropdown-status" id="header_status_bar">
                 <a href="javascript:;" ng-click="showTokenCountdown = !showTokenCountdown" class="dropdown-toggle">
                     <i class="icon fa fa-clock-o"></i>
-                    <timer class="agave-message" countdown="tokenCountdown" interval="1000" ng-show="showTokenCountdown">Token expires in {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer> 
+                    <timer class="agave-message" countdown="tokenCountdown" interval="1000" ng-show="showTokenCountdown">Token expires in {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer>
                 </a>
             </li>
-            <li class="dropdown dropdown-extended dropdown-status" id="header_status_bar">
+            <!--<li class="dropdown dropdown-extended dropdown-status" id="header_status_bar">
                 <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
                     <i class="icon fa fa-sliders"></i>
                     <span ng-if="platformStatus.statusCode == 400" class="badge badge-warning"> {{ platformStatus.issues.length }} </span>
@@ -353,7 +353,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li>-->
             <!-- END TODO DROPDOWN -->
             <!-- BEGIN LANGUAGE BAR -->
             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
@@ -392,10 +392,10 @@
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-default">
-                    <li>
+                  <!--  <li>
                         <a href="#/profile/me/account">
                             <i class="icon-user"></i> My Profile </a>
-                    </li>
+                    </li>-->
                     <!--<li>-->
                         <!--<a href="#">-->
                             <!--<i class="icon-envelope-open"></i> My Inbox-->
@@ -418,11 +418,11 @@
             <!-- END USER LOGIN DROPDOWN -->
             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-            <li class="dropdown dropdown-quick-sidebar-toggler">
+            <!--<li class="dropdown dropdown-quick-sidebar-toggler">
                 <a href="javascript:;" class="dropdown-toggle">
                     <i class="icon-logout"></i>
                 </a>
-            </li>
+            </li>-->
             <!-- END QUICK SIDEBAR TOGGLER -->
         </ul>
     </div>

@@ -1,0 +1,60 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-xs-9">
+      <div ng-if="metadataschema" class="table-responsive">
+        <table class="table">
+          <thead class="hidden-sm hidden-xs">
+          <tr>
+             <th class="col-sm-2"></th>
+             <th class="col-sm-10"></th>
+           </tr>
+          </thead>
+          <tbody>
+            <tr ng-if="metadataschema.uuid">
+              <td>UUID</td>
+              <td>{{metadataschema.uuid}}</td>
+            </tr>
+            <tr ng-if="metadataschema.schema.title">
+              <td>Title</td>
+              <td>{{metadataschema.schema.title}}</td>
+            </tr>
+            <tr ng-if="metadataschema.schema.properties">
+              <td>Properties</td>
+              <td>{{metadataschema.schema.properties}}</td>
+            </tr>
+            <tr ng-if="metadataschema.owner">
+              <td>Owner</td>
+              <td>{{metadataschema.owner}}</td>
+            </tr>
+            <tr ng-if="metadataschema.lastUpdated">
+             <td>Last Updated</td>
+             <td>{{metadataschema.lastUpdated}}</td>
+           </tr>
+           <tr ng-if="metadataschema.created">
+             <td>Created</td>
+             <td>{{metadataschema.created}}</td>
+           </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--<div class="col-xs-3">
+      <div ng-if="metadataschema" class="btn-group pull-right">
+          <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+              Actions
+              <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a ng-click="browse(metadataschema.uuid)" role="button"> <i class="fa fa-folder-open-o"></i> Browse</a>
+            </li>
+          </ul>
+      </div>
+    </div>-->
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div ng-controller="FileMetadataResourceController">
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+          <a href="#/dashboard.html">Home</a>
+          <i class="fa fa-circle"></i>
+      </li>
+      <li>
+          <a href="#/filemetadata">Fil Metadata</a>
+      </li>
+    </ul>
+  </div>
+  <h3 class="page-title"> File Metadata
+      <small>View File Metadata details</small>
+  </h3>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="portlet light bordered">
+        <div class="portlet-title tabbable-line">
+          <div class="caption">
+              <i class="fa fa-server"></i>
+              <span class="caption-subject font-dark bold uppercase"> {{ filemetadataUuid }}</span>
+          </div>
+          <uib-tabset ng-show="!error" >
+              <uib-tab
+                  ng-repeat="t in tabs"
+                  heading="{{t.heading}}"
+                  select="go(t.route)"
+                  active="t.active">
+              </uib-tab>
+          </uib-tabset>
+        </div>
+        <div class="portlet-body">
+            <div ui-view></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
