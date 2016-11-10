@@ -6,7 +6,7 @@
 <div ng-show="!requesting">
   <div class="row">
     <div class="col-xs-9">
-      <div ng-if="metadatum" class="table-responsive">
+      <div ng-if="filemetadatum" class="table-responsive">
         <table class="table">
           <thead class="hidden-sm hidden-xs">
           <tr>
@@ -15,63 +15,55 @@
            </tr>
           </thead>
           <tbody>
-            <tr ng-if="metadatum.uuid">
+            <tr ng-if="filemetadatum.uuid">
               <td>UUID</td>
-              <td>{{metadatum.uuid}}</td>
+              <td>{{filemetadatum.uuid}}</td>
             </tr>
-            <tr ng-if="metadatum.name">
+            <tr ng-if="filemetadatum.name">
               <td>Name</td>
-              <td>{{metadatum.name}}</td>
+              <td>{{filemetadatum.name}}</td>
             </tr>
-            <tr ng-if="metadatum.schemaId">
-              <td>Schema Id</td>
-              <td>{{metadatum.schemaId}}</td>
-            </tr>
-            <tr ng-if="metadatum.value">
+            <tr ng-if="filemetadatum.value">
               <td>Value</td>
-              <td>{{metadatum.value}}</td>
+              <td>{{filemetadatum.value}}</td>
             </tr>
             <tr ng-if="metadatum.associationIds">
               <td>Association IDs</td>
-              <td>{{metadatum.associationIds}}<br/>
-              {{metadatum._links["associationIds"][0].href}}</td>
+              <td>{{filemetadatum.associationIds}}</td>
             </tr>
             <tr ng-if="metadatum.owner">
               <td>Owner</td>
-              <td>{{metadatum.owner}}</td>
+              <td>{{filemetadatum.owner}}</td>
             </tr>
             <tr ng-if="metadatum.internalUsername">
               <td>Internal Username</td>
-              <td>{{metadatum.internalUsername}}</td>
+              <td>{{filemetadatum.internalUsername}}</td>
             </tr>
             <tr ng-if="metadatum.schemaId">
               <td>Schema Id</td>
-              <td>{{metadatum.schemaId}}</td>
+              <td>{{filemetadatum.schemaId}}</td>
             </tr>
             <tr ng-if="metadatum.lastUpdated">
              <td>Last Updated</td>
-             <td>{{metadatum.lastUpdated}}</td>
+             <td>{{filemetadatum.lastUpdated}}</td>
            </tr>
            <tr ng-if="metadatum.created">
              <td>Created</td>
-             <td>{{metadatum.created}}</td>
+             <td>{{filemetadatum.created}}</td>
            </tr>
           </tbody>
         </table>
       </div>
     </div>
     <div class="col-xs-3">
-      <div ng-if="metadatum" class="btn-group pull-right">
+      <div ng-if="filemetadatum" class="btn-group pull-right">
           <a class="btn red btn-outline" href="#" data-toggle="dropdown">
               Actions
               <i class="fa fa-angle-down"></i>
           </a>
           <ul class="dropdown-menu pull-right">
             <li>
-              <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})" role="button"> <i class="fa fa-folder-open-o"></i> Browse File Metadata</a>
-            </li>
-            <li>
-              <a ui-sref="filemetadata-edit({uuid: metadatum.associationIds[0],filemetadatauuid: metadatum.uuid})" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
+              <a ng-click="browse(filemetadatum.uuid)" role="button"> <i class="fa fa-folder-open-o"></i> Browse</a>
             </li>
           </ul>
       </div>

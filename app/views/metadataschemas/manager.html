@@ -10,7 +10,7 @@
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Metadata Schemas Management
+<h3 class="page-title"> Metadata Schemas Management2
     <small>Manage your Metadata Schemas</small>
 </h3>
 <div class="row">
@@ -21,7 +21,7 @@
                     <i class="fa fa-rocket"></i> Metadata Management
                 </div>
 
-                <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
@@ -91,7 +91,6 @@
                                           <span ng-show="sortType == 'owner' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="5%" class="text-center"> Actions</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -100,12 +99,12 @@
                                           <a ui-sref="metadataschemas({id: metadataschema.uuid})"> {{metadataschema.uuid}} </a>
                                       </td>
                                       <td class="hidden-xs">
-                                          <a ui-sref="metadataschemas({id: metadataschema.uuid})"> {{metadataschema.name}} </a>
+                                          <a ui-sref="metadataschemas({id: metadataschema.uuid})"> {{metadataschema.schema.title}} </a>
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadataschema.owner}}
                                       </td>
-                                      <td class="text-center">
+                                      <!--<td class="text-center">
                                           <div class="btn-group">
                                               <a class="btn red btn-outline" href="#" data-toggle="dropdown">
                                                   Actions
@@ -117,7 +116,7 @@
                                                 </li>
                                               </ul>
                                           </div>
-                                      </td>
+                                      </td>-->
                                   </tr>
                               </tbody>
                           </table>

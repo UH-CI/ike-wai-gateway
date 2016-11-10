@@ -5,14 +5,21 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/filemetadata">File Metadata</a>
+            <a href="#/metadata">Metadata</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/filemetadata/{{filemetadatumUuid}}">File Metadata</a>
         </li>
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> File Metadata Management {{filemetadatumUuid}}
+<h3 class="page-title"> File Metadata Management
     <small>Manage your File Metadata</small>
 </h3>
+<h6>
+  <small>{{filemetadatumUuid}}</small
+</h6>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -84,6 +91,7 @@
                         </div>
                       </div>
                       <div ng-show="filemetadata.length > 0">
+                        <h4>{{filemetadata[0]._links.associationIds[0].href.split("system")[1]}}</h4>
                           <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection">
                               <thead>
                                   <tr role="row" class="heading">
@@ -130,7 +138,7 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
+                                                  <a ui-sref="filemetadata-edit({uuid: filemetadatumUuid,filemetadatauuid: filemetadatum.uuid})" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>
                                                 </li>
                                               </ul>
                                           </div>

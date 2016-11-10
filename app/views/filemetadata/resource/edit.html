@@ -1,0 +1,40 @@
+<h3 class="page-title"> Edit File Metadata -{{file}} </h3>
+<h4> File-Metadata-UUID: {{metadataUuid}}</h4>
+
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="portlet light bordered" id="form_wizard_1">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class=" icon-layers font-red"></i>
+            <span class="caption-subject font-red bold uppercase">File Metadata Edit - {{metadataschema.schema.title}}</span>
+            </span>
+          </div>
+        </div>
+
+<div class="portlet-body form">
+          <form name="updateFilemetadataForm"
+           sf-schema="schema"
+           sf-form="form"
+           sf-model="model"
+           ng-submit="onSubmit(updateFilemetadataForm)"></form></div>
+    </form>
+</div>
+
+    </div>
+  </div>
+
+  <div class="row top-buffer">
+    <div class="col-md-12">
+      <a href="/app/#/filemetadata/{{uuid}}" class="btn btn-default">Back to File Metadata</a>
+    </div>
+  </div>
+</div>
