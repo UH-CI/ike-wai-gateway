@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("NotificationsResourceEditController", function($scope, $state, $stateParams, $translate, NotificationsController, ActionsService) {
+angular.module('AgaveToGo').controller("NotificationsResourceEditController", function($scope, $state, $stateParams, $translate, NotificationsController, ActionsService, MessageService) {
 
 		$scope.notificationId = $stateParams.notificationId;
 
@@ -43,7 +43,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 							"resource": resource,
 							"event": response.result.event,
 							"url": response.result.url,
-							"persistent": response.result.persistent
+							"persistent": response.result.persistent.toString()
 						};
 
 						$scope.schema = {
@@ -68,7 +68,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 										"type": "string",
 										"description": "Specifies whether the notification should fire more than once. If set to false, the notification will be removed after it is fired",
 										"enum": [
-												true, false
+												"true", "false"
 										],
 										"title": "Persistent"
 									},
@@ -333,6 +333,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceEditController", fu
 						$scope.requesting = false;
 					},
 					function(response){
+						$scope.requesting = false;
 						MessageService.handle(response, $translate.instant('error_notifications_update'));
 					}
 				);

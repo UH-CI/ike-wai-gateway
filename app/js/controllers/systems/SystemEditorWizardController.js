@@ -191,7 +191,7 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                   },
                   "customDirectives": {
                     "title": "Custom Directives",
-                    "type": "string",
+                    "type": [null,"string"],
                     "description": "Arbitrary text that will be appended to the end of the scheduler directives in a batch submit script. This could include a project number, system-specific directives, etc"
                   },
                   "default": {
@@ -1113,7 +1113,9 @@ angular.module('AgaveToGo').controller('SystemEditorWizardController', function(
                                  "queues[].maxRequestedTime",
                                  {
                                    "key": "queues[].customDirectives",
-                                   "type": "textarea"
+                                   "title": "Custom directive",
+                                   "type": "textarea",
+                                   "description": "Arbitrary text that will be appended to the end of the scheduler directives in a batch submit script. This could include a project number, system-specific directives, etc"
                                  },
 
                                  "queues[].default"
