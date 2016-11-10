@@ -6,7 +6,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.sortReverse  = true;
 
     $scope.query = '{"associationIds":"' +  $stateParams.uuid + '"}';
-    $scope.schemaQuery ='';
+    $scope.schemaQuery ="{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
 
