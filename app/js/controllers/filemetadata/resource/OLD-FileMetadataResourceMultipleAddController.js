@@ -1,16 +1,16 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceAddController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
-	$scope.model = {};
-		if ($stateParams.associatedUuid){
-			$scope.model.associatedUuid = $stateParams.uuid;
-		}
-		$scope.uuid = $stateParams.uuid;
-		$scope.schemauuid = $stateParams.schemauuid;
-		/*if ($stateParams.metadataschemaUuid){
-			$scope.model.resource = $stateParams.resourceType;
-		}*/
+angular.module('AgaveToGo').controller("FileMetadataResourceMulitpleAddController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
+  //$locationProvider.html5Mode(true);
+	//$scope.model = {};
+	//	if ($stateParams.associatedUuids){
+  //    //this is going to assign and array of ids
+	//		$scope.model.associatedUuids = $stateParams.associationIds;//uuids;
+	//	}
+	//	$scope.uuids = $location.search()['associationIds[]'];//$stateParams.associationIds;//uuids;
+	$scope.schemauuid = $stateParams.schemauuid;
 
-    $scope.query='';//"{'uuid': '"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
 
+  //  $scope.query="{'uuid': '"+$scope.schemauuid+"'}";
+/*
     $scope.fetchMetadataSchema = MetaController.listMetadataSchema($scope.query)
         .then(
           function(response){
@@ -22,7 +22,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
             });
             $scope.schemaproperties = schemaproperties;
             //});*/
-            formschema = {};
+  /*          formschema = {};
             formschema["type"]="object";
             formschema["properties"] = $scope.metadataschema.schema.properties;//schemaproperties
             $scope.schema = formschema;
@@ -35,8 +35,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
             ];
           }
 		);
-
-	  $scope.fetchFile = FilesController.listFileItems("{'uuid':'"+$scope.uuid+"'}").then(
+*/
+/*	  $scope.fetchFile = FilesController.listFileItems("{'uuid':'"+$scope.uuid+"'}").then(
 			function(response){
 				$scope.file = response.result;
 			}
@@ -73,5 +73,5 @@ angular.module('AgaveToGo').controller("FileMetadataResourceAddController", func
 					);
 				}
 		};
-
+*/
 	});
