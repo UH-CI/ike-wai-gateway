@@ -1799,6 +1799,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 {
                   name: 'AgaveToGo',
                     files: [
+                      'js/services/FilesMetadataService.js',
                       'js/controllers/metadata/resource/MetadataResourceController.js'
                     ]
                 }
