@@ -1,0 +1,85 @@
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/metadata">Metadata</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a ui-sref="filemetadata-multipleadd({'associationIds[]':fileUuids})">Mulitple File Metadata Add</a>
+        </li>
+    </ul>
+    <div landing-start-menu></div>
+</div>
+<h3 class="page-title"> Multiple File Metadata Add
+    <small>Add Metadata To Mulitple Files</small>
+</h3>
+<h6>
+  <small>{{fileUuids}}</small
+</h6>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-rocket"></i> Multiple File Metadata Add
+                </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <div class="btn-group pull-right">
+                        <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                            <i class="fa fa-plus"></i>&nbsp;Add New Metadata To Files
+                            <i class="fa fa-angle-down pull-right"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+                            <a ng-click="fetchMetadataSchema(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                          </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+
+
+
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <div ng-show="schema_selected">
+                      <div ng-show="!requesting">
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <div class="portlet light bordered" id="form_wizard_1">
+                              <div class="portlet-title">
+                                <div class="caption">
+                                  <i class=" icon-layers font-red"></i>
+                                  <span class="caption-subject font-red bold uppercase">File Metadata Add - {{metadataschema.schema.title}}</span>
+                                  </span>
+                                </div>
+                              </div>
+                      <div class="portlet-body form">
+                                <form name="addFilemetadataForm"
+                                 sf-schema="schema"
+                                 sf-form="form"
+                                 sf-model="model"
+                                 ng-submit="onSubmit(addFilemetadataForm)"></form></div>
+                          </form>
+                      </div>
+
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
