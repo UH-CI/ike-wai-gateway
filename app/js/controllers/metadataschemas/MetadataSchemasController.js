@@ -4,7 +4,7 @@ angular.module('AgaveToGo').controller('MetadataSchemasController', function ($s
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
-    $scope.query = "{'owner':'seanbc'}";
+    $scope.query = '';//"{'owner':'seanbc'}";
 
     $scope.refresh = function() {
       $scope.requesting = true;
