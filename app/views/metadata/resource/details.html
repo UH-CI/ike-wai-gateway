@@ -36,6 +36,7 @@
               <td>{{metadatum.associationIds}}<br/>
                 <div ng-repeat="associationId in metadatum._links['associationIds']">
                   {{associationId.href}}
+                  <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"download" | translate}}</button>
                 </div>
               </td>
             </tr>
