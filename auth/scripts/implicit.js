@@ -31,9 +31,9 @@ var OAuthClients = {
         "scope": "PRODUCTION"
     },
     'hawaii': {
-        'clientKey': 'CSueXFDgXtVJXU15gorNnxsnCyEa',
-        'callbackUrl': 'https://ikewai-dev.its.hawaii.edu/auth',
-	'scope': 'PRODUCTION'
+        'clientKey': 'YYqaSRRcPkFL0AdjoCkH7VzZL9Aa',
+        'callbackUrl': 'http://localhost:9000/auth',
+        'scope': 'PRODUCTION'
     }
 };
 // // production
