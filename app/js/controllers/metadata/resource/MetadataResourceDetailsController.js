@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataResourceDetailsController', function($scope, $stateParams, $state, $translate, MetaController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('MetadataResourceDetailsController', function($scope, $stateParams, $state, $translate, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
 
   $scope.metadatum = null;
 
@@ -21,6 +21,13 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
       $scope.requesting = false;
     }
   };
+
+  $scope.download = function(file_url){
+    $scope.requesting = true;
+    FilesMetadataService.downloadSelected(file_url).then(function(result){
+      $scope.requesting = false;
+    });
+  }
 
   $scope.getMetadatum();
 

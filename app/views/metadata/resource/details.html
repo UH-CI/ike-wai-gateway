@@ -34,7 +34,11 @@
             <tr ng-if="metadatum.associationIds">
               <td>Association IDs</td>
               <td>{{metadatum.associationIds}}<br/>
-              {{metadatum._links["associationIds"][0].href}}</td>
+                <div ng-repeat="associationId in metadatum._links['associationIds']">
+                  {{associationId.href}}
+                  <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"download" | translate}}</button>
+                </div>
+              </td>
             </tr>
             <tr ng-if="metadatum.owner">
               <td>Owner</td>

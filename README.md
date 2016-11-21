@@ -43,22 +43,6 @@ Now modify the auth/scripts/implicit.js file by adding:
 </pre>
 This part is necessary to add Hawaii to the list of possible tenants and set the proper connection credentials.
 
-Next modify auth/scripts/filters/filters.js by adding:
-<pre>
-else if (tenantCode === 'hawaii') {
-            return 'https://agaveauth.its.hawaii.edu/';
-}
-</pre>
-This should already be dowe but if not then add the above.  This will make the Hawaii tenant show up in the drop down list for users to select as a method to connect to now.
-
-The last file to modify in order to make ToGo utilize the Hawaii tenant is (This has to happend anytime you reinstall or update the bower component for the Agave Angular SDK)
-bower_components/agave-angularjs-sdk/Agave/Controllers/TenantsController.js
-
-Change  "var baseUri" to:
-<pre>
- var baseUri = "http://agavecore.its.hawaii.edu"
-</pre>
-
 You can add images for the drop down and tenant login with names hawaii.png and hawaii-thumb.png in auth/img/tenants/
 
 Now run the following command from the root directory of the agave togo repo:
@@ -227,4 +211,6 @@ cd agave-togo
 karma start
 ```
 
+### Workflow
 
+When you make changes, the workflow now is commit changes to dev branch, merge to test, test the changes, and finally merge to the hawaii branch.
