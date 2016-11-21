@@ -34,7 +34,10 @@
             <tr ng-if="metadatum.associationIds">
               <td>Association IDs</td>
               <td>{{metadatum.associationIds}}<br/>
-              {{metadatum._links["associationIds"][0].href}}</td>
+                <div ng-repeat="associationId in metadatum._links['associationIds']">
+                  {{associationId.href}}
+                </div>
+              </td>
             </tr>
             <tr ng-if="metadatum.owner">
               <td>Owner</td>
