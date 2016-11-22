@@ -30,7 +30,7 @@ var OAuthClients = {
         "callbackUrl": "https://togo.staging.agaveapi.co/auth/",
         "scope": "PRODUCTION"
     },
-    'hawaii': {
+   'hawaii': {
         'clientKey': 'YYqaSRRcPkFL0AdjoCkH7VzZL9Aa',
         'callbackUrl': 'http://localhost:9000/auth',
         'scope': 'PRODUCTION'
