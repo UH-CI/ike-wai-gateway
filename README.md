@@ -1,9 +1,8 @@
 ## Agave ToGo
 
-
 Agave ToGo v2 is a full-featured web application providing a reference user interface to exercising the core
 functionality of the Agave Platform and demonstrate some of the advanced use cases which are possible by leveraging
-the core Agave Core Science APIs and mainstream open source web technologies. 
+the core Agave Core Science APIs and mainstream open source web technologies.
 
 This version of the web application is implemented as a client-side application using the
 [AngularJS framework](http://angularjs.org/). It is designed to run entirely within your browser with no need for a
