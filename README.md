@@ -74,7 +74,12 @@ We also use a number of node.js tools to initialize and test agave-togo. You mus
 
 Clone the agave-togo repository using [git](http://git-scm.com/):
 
+<<<<<<< HEAD
 ```
+=======
+
+```
+>>>>>>> a86c656c9acdf37bb01ea14d59809c03b7b416d9
 git clone git@github.com:UH-CI/uh-togo-app.git  
 
 cd agave-togo  
@@ -82,9 +87,17 @@ cd agave-togo
 
 If you just want to start a new project without the agave-togo commit history then you can do:
 
+<<<<<<< HEAD
 ```
 git clone --depth=1 git@github.com:UH-CI/uh-togo-app.git <your-project-name>  
 ```
+=======
+
+```
+git clone --depth=1 git@github.com:UH-CI/uh-togo-app.git <your-project-name>  
+```
+
+>>>>>>> a86c656c9acdf37bb01ea14d59809c03b7b416d9
 
 The `depth=1` tells git to only pull down one commit worth of historical data.
 
