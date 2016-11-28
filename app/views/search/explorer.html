@@ -82,18 +82,11 @@
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="10%" class="hidden-xs">
+                                      <th width="40%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                                           VALUES
                                           <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                                        </a>
-                                      </th>
-                                      <th width="5%" class="hidden-xs hidden-sm hidden-md">
-                                        <a href="#" ng-click="sortType = 'owner'; sortReverse = !sortReverse">
-                                          Owner
-                                          <span ng-show="sortType == 'owner' && !sortReverse" class="fa fa-caret-down"></span>
-                                          <span ng-show="sortType == 'owner' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
                                       <th width="5%" class="text-center"> Actions</th>
@@ -102,16 +95,18 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
-                                          <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
+                                          <!--<a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
+-->
+                                          <div ng-repeat="associationId in metadatum._links['associationIds']">
+                                            <a ng-click="download([associationId])" class="fa fa-download"> {{associationId.href.split('system\/ike-wai-waihona\/')[1]}} </a>
+
+                                          </div>
                                       </td>
                                       <td class="hidden-xs">
                                           {{metadatum.name}}
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadatum.value}}
-                                      </td>
-                                      <td class="hidden-xs hidden-sm hidden-md">
-                                          {{metadatum.owner}}
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
@@ -125,8 +120,7 @@
 
                                                 </li>
                                                 <li>
-                                                  <!--<a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>-->
-                                                  <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})" role="button"> <i class="fa fa-folder-open-o"></i> Browse File Metadata</a>
+                                                  <a href='#' ng-click="download(metadatum._links.associationIds)"><i class="fa fa-download"></i>Download Files</a>
                                                 </li>
                                               </ul>
                                           </div>

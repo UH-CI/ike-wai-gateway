@@ -2048,6 +2048,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
+                            'js/services/FilesMetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/search/SearchController.js'
                         ]

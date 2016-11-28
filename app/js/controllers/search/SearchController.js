@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SearchController', function ($scope, $state, $translate, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('SearchController', function ($scope, $state, $translate, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -45,6 +45,19 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
+    }
+
+    //looking for an array of JSON association_Id objects
+    $scope.download = function(associationIds_array){
+      var file_urls =[];
+      angular.forEach(associationIds_array, function(value, key){
+        file_urls.push(value.href);
+      })
+      $scope.requesting = true;
+      //pass array of file hrefs
+      FilesMetadataService.downloadSelected(file_urls).then(function(result){
+        $scope.requesting = false;
+      });
     }
 
 });
