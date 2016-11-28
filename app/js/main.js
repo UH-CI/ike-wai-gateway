@@ -2023,6 +2023,38 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Search Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        // Search
+        .state('search', {
+            url: "/search",
+            templateUrl: "views/search/explorer.html",
+            data: {pageTitle: 'Ike Wai Search'},
+            controller: "SearchController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/search/SearchController.js'
+                        ]
+                    });
+                }]
+            }
+        })
 
 }]);
 
