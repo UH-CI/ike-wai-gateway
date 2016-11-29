@@ -265,13 +265,6 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                           data: ''
                       });
                       break;
-                    case 'metadata':
-                      scope.group.rules.push({
-                          condition: '$eq',
-                          field: 'name',
-                          data: ''
-                      });
-                      break;
                   }
                 };
 
