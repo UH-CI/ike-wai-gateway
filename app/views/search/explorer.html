@@ -98,7 +98,7 @@
                                           <!--<a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})"> {{metadatum._links.associationIds[0].href.split("system")[1]}} </a>
 -->
                                           <div ng-repeat="associationId in metadatum._links['associationIds']">
-                                            <a ng-click="download([associationId])" class="fa fa-download"> {{associationId.href.split('system\/ike-wai-waihona\/')[1]}} </a>
+                                            <a ng-click="download([associationId])" class="fa fa-download"> {{associationId.href.split('system\/')[1]}} </a>
 
                                           </div>
                                       </td>
