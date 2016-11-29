@@ -14,7 +14,7 @@
                 <div ng-switch-default="ng-switch-default">
                     <div class="form-inline">
                         <select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control"></select>
-                        <select ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control"></select>
+                        <select ng-options="c.value as c.name for c in conditions" ng-model="rule.condition" class="form-control"></select>
                         <input type="text" ng-model="rule.data" class="form-control"/>
                         <button ng-click="removeCondition($index)" class="btn btn-danger"><i class="fa fa-minus"></i></button>
                     </div>

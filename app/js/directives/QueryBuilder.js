@@ -181,42 +181,61 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                       {name: 'owner'}                         // The username of the principal who originally registered the system.
                     ];
                     break;
+
+                    case 'search':
+                      scope.fields = [
+                        {name: 'value.tags'},
+                        {name: 'value.name'},
+                        {name: 'value.description'},
+                        {name: 'value.latitude'},
+                        {name: 'value.longitude'},
+                        {name: 'value.county'},
+                        {name: 'value.state'},
+                      ];
+                      break;
                 }
 
                 scope.conditions = [
-                    {name: '.eq='},
-                    {name: '.on='},
-                    {name: '.neq='},
-                    {name: '.it='},
-                    {name: '.before='},
-                    {name: '.lte='},
-                    {name: '.gt='},
-                    {name: '.after='},
-                    {name: '.gte='},
-                    {name: '.in='},
-                    {name: '.nin='},
-                    {name: '.like='},
-                    {name: '.nlike='},
-                    {name: '.between='}
+                    {name: '.eq=', value: '.eq='},
+                    {name: '.on=', value:'.on='},
+                    {name: '.neq=', value:'.neq='},
+                    {name: '.it=', value:'.it='},
+                    {name: '.before=', value:'.before='},
+                    {name: '.lte=', value:'.lte='},
+                    {name: '.gt=', value:'.gt='},
+                    {name: '.after=', value:'.after='},
+                    {name: '.gte=', value:'.gte='},
+                    {name: '.in=', value:'.in='},
+                    {name: '.nin=', value:'.nin='},
+                    {name: '.like=', value:'.like='},
+                    {name: '.nlike=', value:'.nlike='},
+                    {name: '.between=', value:'.between='}
                 ];
 
                 if (attrs.resource == 'metadata')
                 {
                   scope.conditions = [
-                      {name: '$eq'},
-                      {name: '$on'},
-                      {name: '$neq'},
-                      {name: '$it'},
-                      {name: '$before'},
-                      {name: '$lte'},
-                      {name: '$gt'},
-                      {name: '$after'},
-                      {name: '$gte'},
-                      {name: '$in'},
-                      {name: '$nin'},
-                      {name: '$like'},
-                      {name: '$nlike'},
-                      {name: '$between'}
+                      {name: '$eq', value:'$eq'},
+                      {name: '$on', value:'$on'},
+                      {name: '$neq', value:'$neq'},
+                      {name: '$it', value:'$it'},
+                      {name: '$before', value:'$before'},
+                      {name: '$lte', value:'$lte'},
+                      {name: '$gt', value:'$gt'},
+                      {name: '$after', value:'$after'},
+                      {name: '$gte', value:'$gte'},
+                      {name: '$in', value:'$in'},
+                      {name: '$nin', value:'$nin'},
+                      {name: '$regex', value:'$regex'},
+                      {name: '$nlike', value:'$nlike'},
+                      {name: '$between', value:'$between'}
+                  ];
+                }
+                if(attrs.resource == 'search'){
+                  scope.conditions = [
+                      {name: 'equals', value:'$eq'},
+                      {name: 'is not equal', value:'$neq'},
+                      {name: 'contains', value: '$regex'},
                   ];
                 }
 
