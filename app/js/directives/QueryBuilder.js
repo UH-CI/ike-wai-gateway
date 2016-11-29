@@ -217,24 +217,19 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                   scope.conditions = [
                       {name: '$eq', value:'$eq'},
                       {name: '$on', value:'$on'},
-                      {name: '$neq', value:'$neq'},
-                      {name: '$it', value:'$it'},
-                      {name: '$before', value:'$before'},
+                      {name: '$ne', value:'$ne'},
                       {name: '$lte', value:'$lte'},
                       {name: '$gt', value:'$gt'},
-                      {name: '$after', value:'$after'},
                       {name: '$gte', value:'$gte'},
                       {name: '$in', value:'$in'},
                       {name: '$nin', value:'$nin'},
                       {name: '$regex', value:'$regex'},
-                      {name: '$nlike', value:'$nlike'},
-                      {name: '$between', value:'$between'}
                   ];
                 }
                 if(attrs.resource == 'search'){
                   scope.conditions = [
                       {name: 'equals', value:'$eq'},
-                      {name: 'is not equal', value:'$neq'},
+                      {name: 'is not equal', value:'$ne'},
                       {name: 'contains', value: '$regex'},
                   ];
                 }
