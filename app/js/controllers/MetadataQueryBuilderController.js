@@ -13,7 +13,9 @@ angular.module('AgaveToGo').controller('MetadataQueryBuilderCtrl', ['$scope', fu
                 computed(group.rules[i].group) :
                 "{'"+group.rules[i].field+"':{'" + htmlEntities(group.rules[i].condition)+"':'" + group.rules[i].data +"'}}";
         }
-        str = "{$or:["+str+"]}"
+        if (str != ""){
+          str = "{$and:["+str+"]}"
+        }
         return str;
     }
 
