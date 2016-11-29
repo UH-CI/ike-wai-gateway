@@ -1828,6 +1828,27 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               }]
           }
         })
+        .state('metadata-add-association', {
+            url: "/metadata/association/add/:uuid",
+            templateUrl: "views/metadata/resource/association.html",
+            controller: "MetadataResourceAddAssociationController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/metadata/resource/MetadataResourceAddAssociationController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
 
         /**********************************************************************/
         /**********************************************************************/
