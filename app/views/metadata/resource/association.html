@@ -75,7 +75,7 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="20%">
+                                      <th width="50%" class="col-md-5">
                                         <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
                                           PATH
                                           <span ng-show="sortType == 'path' && !sortReverse" class="fa fa-caret-down"></span>
@@ -98,7 +98,7 @@
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.uuid}} </a>
                                       </td>
                                       <td>
-                                          <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})"> {{metadatum.value}} </a>
+                                          <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})"> {{metadatum.value | json}}</a>
                                       </td>
                                       <td class="hidden-xs">
                                           {{metadatum.name}}
