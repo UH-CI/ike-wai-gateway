@@ -185,6 +185,14 @@ AgaveToGo.config(function($translateProvider) {
     error_systems_search: 'Error: Could not retrieve systems',
     error_systems_template: 'Error: Could not retrieve system template',
 
+    error_metadata_update_assocation: 'Error: could not update Metadata associations',
+    error_metadata_update_assocation_exists: 'Error: file is already associated with Metadata object',
+    error_metadata_update: 'Error: Could not update Metadata',
+    error_metadata_add: 'Error: Could not create Metadata objet',
+
+
+    error_metadataschemas_get: 'Error, Could not fetch Metadata Schemas',
+
     success_apps_permissions_update: 'Success: updated permissions for ',
 
     success_files_permissions_update: 'Success updating file permissions',
@@ -197,6 +205,11 @@ AgaveToGo.config(function($translateProvider) {
     success_notifications_update: 'Success: updated ',
 
     success_systems_roles: 'Success: updated roles for ',
+
+    success_metadata_update_assocation: 'Success: updated Metadata associations',
+    success_metadata_update: 'Success: updated Metadata',
+    success_metadata_add: 'Success: new Metadata created',
+
     setDefault: 'set to default',
     unsetDefault: 'unset default'
   });

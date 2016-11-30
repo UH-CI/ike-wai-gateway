@@ -10,14 +10,21 @@
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Add Association To Existing Metadata Record
+<h3 class="page-title"> Add Association To Existing Metadata Object Or Clone To New Metadata Object
+<div class='row'>
+  <div class="col-md-1">
+  </div>
+  <div class='col-md-10 bg-info'>
+    <small>Choosing "Associate" will link the file with an existing Metadata Object. </br>"Clone" will copy an existing Metadata Objects attributes, create a new Metadata Object with those attributes and then link the new object to the file.</small>
+  <div>
+</div>
 </h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-rocket"></i> Add Asscociation
+                    <i class="fa fa-rocket"></i> Choose Metadata to Associate of Clone
                 </div>
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
@@ -75,21 +82,21 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="50%" class="col-md-5">
+                                      <th width="30%" class="col-md-5">
                                         <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
                                           PATH
                                           <span ng-show="sortType == 'path' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'path' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="10%" class="hidden-xs">
+                                      <th width="5%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                                           TYPE
                                           <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="5%" class="text-center"> Actions</th>
+                                      <th width="15%" class="text-center"> Actions</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -104,9 +111,13 @@
                                           {{metadatum.name}}
                                       </td>
                                       <td class="text-center">
-                                          <div class="btn-group">
-                                              <a class="btn green btn-outline" ng-click="addAssociation(metadatum.uuid)">
-                                                  Add
+                                          <div class="btn-group pull-left">
+                                              <a class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
+                                                  Associate
+                                                  <i class="fa fa-link"></i>
+                                              </a>
+                                              <a class="btn btn-sm green btn-outline pull-right" ng-click="addClone(metadatum.uuid)">
+                                                  Clone
                                                   <i class="fa fa-plus"></i>
                                               </a>
                                           </div>

@@ -20,7 +20,6 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
 
   $scope.refresh = function() {
     $scope.requesting = true;
-
     MetaController.listMetadata(
       $scope.query
     )
@@ -67,22 +66,29 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
           $scope.metadatum = response.result;
           var body = {};
           body.associationIds = $scope.metadatum.associationIds;
-          body.associationIds.push($scope.fileUuid);
-          body.name = $scope.metadatum.name;
-          body.value = $scope.metadatum.value;
-          body.schemaId = $scope.metadatum.schemaId;
-          MetaController.updateMetadata(body,$scope.metadataUuid)
+          //check if fileUuid is already associated
+          if (body.associationIds.indexOf($scope.fileUuid) < 0) {
+            body.associationIds.push($scope.fileUuid);          
+            body.name = $scope.metadatum.name;
+            body.value = $scope.metadatum.value;
+            body.schemaId = $scope.metadatum.schemaId;
+            MetaController.updateMetadata(body,$scope.metadataUuid)
             .then(
               function(response){
-                App.alert({message: $translate.instant('success_metadata_update') + ' ' + metadatumUuid });
+                App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
                 $scope.requesting = false;
                 //$state.go('metadata',{id: $scope.metadataUuid});
               },
               function(response){
-                MessageService.handle(response, $translate.instant('error_metadata_update'));
+                MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
                 $scope.requesting = false;
               }
             )
+          }
+          else {
+            App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + metadatumUuid });
+            return
+          }
         })
        }
     else{
@@ -90,5 +96,37 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
        }
        $scope.requesting = false;
     }
+
+    $scope.addClone = function(metadatumUuid) {
+      if (metadatumUuid){
+        $scope.requesting = true;
+        MetaController.getMetadata(metadatumUuid)
+          .then(function(response){
+            $scope.metadatum = response.result;
+            var body = {};
+            body.associationIds = $scope.fileUuid;
+            body.name = $scope.metadatum.name;
+            body.value = $scope.metadatum.value;
+            body.schemaId = $scope.metadatum.schemaId;
+            MetaController.addMetadata(body)
+              .then(
+                function(response){
+                  $scope.new_metadataUuid = response.result.uuid;
+                  App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
+                  $scope.requesting = false;
+                  //$state.go('metadata',{id: $scope.metadataUuid});
+                },
+                function(response){
+                  MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  $scope.requesting = false;
+                }
+              )
+          })
+         }
+      else{
+           MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+         }
+         $scope.requesting = false;
+      }
 
 });
