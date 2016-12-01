@@ -25,7 +25,7 @@
             </tr>
             <tr ng-if="metadataschema.schema.properties">
               <td>Properties</td>
-              <td>{{metadataschema.schema.properties}}</td>
+              <td><pre>{{metadataschema.schema.properties | prettyJSON}}</pre></td>
             </tr>
             <tr ng-if="metadataschema.owner">
               <td>Owner</td>
