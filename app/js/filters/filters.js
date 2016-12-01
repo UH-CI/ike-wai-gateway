@@ -90,4 +90,10 @@ AgaveToGo.filter('propsFilter', function () {
             return userProfile.username;
         }
     }
+}])
+.filter('prettyJSON', [function () {
+    function prettyPrintJson(json) {
+      return JSON.stringify(json, null, '   ');
+    }
+    return prettyPrintJson;
 }]);
