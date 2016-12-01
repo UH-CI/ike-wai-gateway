@@ -68,11 +68,11 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
           body.associationIds = $scope.metadatum.associationIds;
           //check if fileUuid is already associated
           if (body.associationIds.indexOf($scope.fileUuid) < 0) {
-            body.associationIds.push($scope.fileUuid);          
+            body.associationIds.push($scope.fileUuid);
             body.name = $scope.metadatum.name;
             body.value = $scope.metadatum.value;
             body.schemaId = $scope.metadatum.schemaId;
-            MetaController.updateMetadata(body,$scope.metadataUuid)
+            MetaController.updateMetadata(body,metadatumUuid)
             .then(
               function(response){
                 App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
