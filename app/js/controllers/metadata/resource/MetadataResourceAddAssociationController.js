@@ -19,6 +19,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
   $scope.query = '';
 
   $scope.refresh = function() {
+    App.alert({type:'info',message: '<small>Choosing "Associate" will link the file with an existing Metadata Object. </br>"Clone" will copy an existing Metadata Objects attributes, create a new Metadata Object with those attributes and then link the new object to the file.</small>'})
     $scope.requesting = true;
     MetaController.listMetadata(
       $scope.query
