@@ -9,6 +9,7 @@ angular.module('AgaveToGo').controller('MetadataSchemasResourceDetailsController
         .then(
           function(response){
             $scope.metadataschema = response.result;
+            $scope.prettyProperties = JSON.stringify($scope.metadataschema, null, "     \n");
             $scope.requesting = false;
           },
           function(response){
