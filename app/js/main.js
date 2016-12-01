@@ -1841,6 +1841,27 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               }]
           }
         })
+        .state('metadata-add', {
+            url: "/metadata/add/object",
+            templateUrl: "views/metadata/resource/add.html",
+            controller: "MetadataResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/controllers/metadata/resource/MetadataResourceAddController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
         .state('metadata-add-association', {
             url: "/metadata/association/add/:uuid",
             templateUrl: "views/metadata/resource/association.html",
@@ -1856,6 +1877,27 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/services/MessageService.js',
                           'js/controllers/MetadataQueryBuilderController.js',
                           'js/controllers/metadata/resource/MetadataResourceAddAssociationController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
+        .state('metadata-edit', {
+            url: "/metadata/edit/:uuid",
+            templateUrl: "views/metadata/resource/edit.html",
+            controller: "MetadataResourceEditController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                           'js/services/MessageService.js',
+                          'js/controllers/metadata/resource/MetadataResourceEditController.js'
                       ]
                     }
                   ]);
