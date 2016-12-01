@@ -46,4 +46,38 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
 
+    $scope.unAssociateMetadata = function(associated_metadata_uuid){
+      if (associated_metadata_uuid){
+    		$scope.requesting = true;
+    	  MetaController.getMetadata(associated_metadata_uuid)
+          .then(function(response){
+            $scope.metadatum = response.result;
+            var body = {};
+            body.associationIds = $scope.metadatum.associationIds;
+            body.associationIds.splice(body.associationIds.indexOf($scope.fileUuid), 1);
+            body.name = $scope.metadatum.name;
+            body.value = $scope.metadatum.value;
+            body.schemaId = $scope.metadatum.schemaId;
+            MetaController.updateMetadata(body,associated_metadata_uuid)
+            .then(
+              function(response){
+                App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + $scope.metadataUuid });
+                $scope.requesting = false;
+                $scope.refresh();
+                //$state.go('metadata',{id: $scope.metadataUuid});
+              },
+              function(response){
+                MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+                $scope.requesting = false;
+              }
+            )
+          })
+         }
+      else{
+           MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+      }
+         $scope.requesting = false;
+    }
+
+
 });
