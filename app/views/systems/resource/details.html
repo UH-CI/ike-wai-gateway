@@ -88,9 +88,11 @@
               <li>
                   <a ng-click="editRoles(system)"> <i class="fa fa-share"></i> Share </a>
               </li>
+              <!-- 
               <li>
                 <a ng-click="getNotifications('systems', system)" > <i class="fa fa-bell"></i> Notifications</a>
               </li>
+              -->
               <li class="divider"> </li>
               <li ng-if="!system.available">
                   <a ng-click="confirmAction('systems', system, 'enable')" > <i class="fa fa-check"></i> Enable </a>
@@ -101,6 +103,7 @@
               <li>
                   <a ng-click="confirmAction('systems', system, 'delete')" > <i class="fa fa-trash-o"></i> Delete </a>
               </li>
+              <!-- 
               <li class="divider"> </li>
               <li ng-if="!system.public">
                   <a ng-click="confirmAction('systems', system, 'publish')"> <i class="fa fa-eye"></i> Publish </a>
@@ -108,6 +111,7 @@
               <li ng-if="system.public">
                   <a ng-click="confirmAction('systems', system, 'unpublish')" > <i class="fa fa-eye-slash"></i> Unpublish </a>
               </li>
+              -->
           </ul>
       </div>
     </div>
