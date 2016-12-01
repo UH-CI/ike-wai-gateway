@@ -130,12 +130,10 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-folder-open-o"></i> View Metadata Record</a>
-
+                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-folder-open-o"></i> View Metadata Object</a>
                                                 </li>
                                                 <li>
-                                                  <!--<a ng-click="" role="button"> <i class="fa fa-folder-open-o"></i> Edit </a>-->
-                                                  <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[0]})" role="button"> <i class="fa fa-folder-open-o"></i> Browse File Metadata</a>
+                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> View Edit Object</a>
                                                 </li>
                                               </ul>
                                           </div>
