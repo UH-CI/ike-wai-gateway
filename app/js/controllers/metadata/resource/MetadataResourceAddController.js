@@ -1,65 +1,72 @@
 angular.module('AgaveToGo').controller("MetadataResourceAddController", function($scope, $state, $stateParams, $translate, MetaController, ActionsService, MessageService) {
 
-		if ($stateParams.uuid){
-			$scope.model.associatedUuid = $stateParams.uuid;
-		}
-		if ($stateParams.metadataschemaUuid){
-			$scope.model.resource = $stateParams.resourceType;
-		}
-    $scope.fetchMetadataSchema() = function(){
-      MetaController.getMetadataSchema($stateParams.id)
-        .then(
-          function(response){
-            $scope.metadataschema = response.result;
-            //$scope.schema = $scope.metadataschema.schema;
-            var schemaproperties ={};
-            angular.forEach($scope.metadataschema.schema.properties, function(value, key) {
-              schemaproperties[key] = {"type": value.type == 'array' ? "string" : value.typ, "title": key};
-            });
-            $scope.schemaproperties = schemaproperties;
-            //});
-            formschema = {};
-            formschema["type"]="object";
-            formschema["properties"] = schemaproperties
-            $scope.schema = formschema;//{"type":"object","properties":{"tag":{"type":"string","title":"tag"}}};//JSON.stringify(formschema);
-            //{
-            //  type: "object",
-            //  properties:  JSON.stringify(schemaproperties)
-            //};
-            $scope.form = [
-              "*",
-              {
-                type: "submit",
-                title: "Save"
-              }
-            ];
-          }
-          );
-    }
-		$scope.submit = function(){
-			$scope.requesting = true;
-			var body = {};
-			body.associatedUuid = $scope.model.associatedUuid;
-			body.event = $scope.model.event;
-			body.url = $scope.model.url;
-			body.system = "SYSTEM";
-			body.path = "PATH";
-			body.filename = "FILENAME";
-			body.persistent = $scope.model.persistent;
+		$scope.model = {};
 
-			MetaController.addMetadata(body)
+		$scope.schemaQuery ='';
+
+		$scope.refresh = function() {
+			$scope.requesting = true;
+
+			MetaController.listMetadataSchema(
+				$scope.schemaQuery
+			).then(function(response){
+				$scope.metadataschema = response.result;
+				$scope.requesting = false;
+			})
+
+		};
+		$scope.refresh();
+
+		$scope.fetchMetadataSchema = function(schemauuid) {
+			$scope.requesting = true;
+			MetaController.getMetadataSchema(schemauuid)
 				.then(
 					function(response){
-						$scope.metadataUuid = response.result.uuid;
-						App.alert({message: $translate.instant('success_metadata_add') + $scope.notificationUuid });
-						$scope.requesting = false;
-					},
-					function(response){
-						MessageService.handle(response, $translate.instant('error_metadata_add'));
+						$scope.selectedmetadataschema = response.result;
+						var formschema = {};
+						formschema["type"]="object";
+						formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
+						$scope.schema = formschema;
+						$scope.form = [
+							"*",
+							{
+								type: "submit",
+								title: "Save"
+							}
+						];
+						$scope.schema_selected = true;
 						$scope.requesting = false;
 					}
-				);
-		};
+			);
+		}
 
-    $scope.model = {};
+		$scope.onSubmit = function(form) {
+			$scope.requesting = true;
+			$scope.$broadcast('schemaFormValidate');
+			// Then we check if the form is valid
+			if (form.$valid) {
+				var body = {};
+				body.name = $scope.selectedmetadataschema.schema.title;
+				body.value = $scope.model;
+				body.schemaId = $scope.selectedmetadataschema.uuid;
+				MetaController.addMetadata(body)
+					.then(
+						function(response){
+							$scope.metadataUuid = response.result.uuid;
+							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
+							var pem_body = {};
+							pem_body["username"] = "public";
+							pem_body["permission"] = "READ";
+							//"{'username': 'public','permision': {'read': true,'write': false}}"
+							MetaController.addMetadataPermission(pem_body,$scope.metadataUuid);
+							$scope.requesting = false;
+							$state.go('metadata',{id: $scope.metadataUuid});
+						},
+						function(response){
+							MessageService.handle(response, $translate.instant('error_metadata_add'));
+							$scope.requesting = false;
+						}
+					);
+				}
+		};
 	});
