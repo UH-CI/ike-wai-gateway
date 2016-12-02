@@ -20,6 +20,15 @@
                 <div class="caption">
                     <i class="fa fa-rocket"></i> Metadata Management
                 </div>
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <div class="btn-group pull-right">
+                        <a class="btn green btn-outline pull-right" ui-sref="metadata-add()" role="buton">
+                            <i class="fa fa-plus"></i>&nbsp;Add New Metadata Object
+                        </a>
+                    </div>
+                  </div>
+                </div>
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
