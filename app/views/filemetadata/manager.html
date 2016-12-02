@@ -33,20 +33,12 @@
                       <a ui-sref="metadata-add-association({uuid: filemetadatumUuid})" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate With Existing Metadata </a>
                     </div>
                     <div class="btn-group pull-right">
-                        <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                        <a class="btn green btn-outline pull-right" ui-sref="filemetadata-multipleadd({uuid: filemetadatumUuid})" role="buton">
                             <i class="fa fa-plus"></i>&nbsp;Add New File Metadata
-                            <i class="fa fa-angle-down pull-right"></i>
                         </a>
-                        <ul class="dropdown-menu">
-                          <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
-                            <a ui-sref="filemetadata-add({uuid: filemetadatumUuid, schemauuid: metadataschemata.uuid})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
-                          </li>
-                        </ul>
                     </div>
                   </div>
                 </div>
-
-
 
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
