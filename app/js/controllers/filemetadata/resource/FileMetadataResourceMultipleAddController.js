@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService) {
 	$scope.model = {};
 		if ($stateParams.associatedUuid){
 			$scope.model.associatedUuid = $stateParams.uuid;
@@ -70,11 +70,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 						function(response){
 							$scope.metadataUuid = response.result.uuid;
 							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
-							var pem_body = {};
-							pem_body["username"] = "public";
-							pem_body["permission"] = "READ";
-							//"{'username': 'public','permision': {'read': true,'write': false}}"
-							MetaController.addMetadataPermission(pem_body,$scope.metadataUuid);
+							//add the default permissions for the system in addition to the owners
+							MetadataService.addDefaultPermissions($scope.metadataUuid);
 							$scope.requesting = false;
 							$state.go('metadata',{id: $scope.metadataUuid});
 						},
