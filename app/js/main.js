@@ -1854,6 +1854,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       files: [
                           'js/services/ActionsService.js',
                           'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
                           'js/controllers/metadata/resource/MetadataResourceAddController.js'
                       ]
                     }
@@ -1896,7 +1897,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       name: 'AgaveToGo',
                       files: [
                           'js/services/ActionsService.js',
-                           'js/services/MessageService.js',
+                          'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
                           'js/controllers/metadata/resource/MetadataResourceEditController.js'
                       ]
                     }
@@ -2046,6 +2048,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       files: [
                           'js/services/ActionsService.js',
                           'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
                           'js/controllers/filemetadata/resource/FileMetadataResourceAddController.js'
                       ]
                     }
@@ -2071,6 +2074,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       files: [
                           'js/services/ActionsService.js',
                           'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
                           'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js'
                       ]
                     }

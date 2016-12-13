@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("MetadataResourceAddController", function($scope, $state, $stateParams, $translate, MetaController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("MetadataResourceAddController", function($scope, $state, $stateParams, $translate, MetaController, MetadataService, ActionsService, MessageService) {
 
 		$scope.model = {};
 
@@ -49,16 +49,15 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 				body.name = $scope.selectedmetadataschema.schema.title;
 				body.value = $scope.model;
 				body.schemaId = $scope.selectedmetadataschema.uuid;
+				//should be able to create metadata object with permissions set BUT not working at the moment
+				//body.permissions = [{"username":"public","permission":"READ"},{"username":"seanbc","permission":"ALL"},{"username":"jgeis","permission":"ALL"},{"username":"ike-admin","permission":"ALL"}];
 				MetaController.addMetadata(body)
 					.then(
 						function(response){
 							$scope.metadataUuid = response.result.uuid;
 							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
-							var pem_body = {};
-							pem_body["username"] = "public";
-							pem_body["permission"] = "READ";
-							//"{'username': 'public','permision': {'read': true,'write': false}}"
-							MetaController.addMetadataPermission(pem_body,$scope.metadataUuid);
+							//add the default permissions for the system in addition to the owners
+							MetadataService.addDefaultPermissions($scope.metadataUuid);
 							$scope.requesting = false;
 							$state.go('metadata',{id: $scope.metadataUuid});
 						},
