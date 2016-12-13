@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("MetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("MetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, MetadataService, ActionsService, MessageService) {
 
 	$scope.metadataUuid = $stateParams.uuid;
 
@@ -55,6 +55,8 @@ angular.module('AgaveToGo').controller("MetadataResourceEditController", functio
         .then(
           function(response){
             App.alert({message: $translate.instant('success_metadata_update') + $scope.metadataUuid });
+						//make sure default permissions are set
+						MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
             $state.go('metadata',{id: $scope.metadataUuid});
           },
