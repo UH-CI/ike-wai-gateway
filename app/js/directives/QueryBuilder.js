@@ -171,15 +171,27 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                     ];
                     break;
                   case 'metadata':
-                    scope.fields = [
-                      {name: 'value.tags'},
-                      {name: 'name'},
-                      {name: 'created'},                       // The timestamp when the notification was first registered. Results are rounded by day. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
-                      {name: 'associationIds'},                // The uuid of an Agave resource for which this notification will fire. Boolean, default false.
-                      {name: 'uuid'},                            // The unique id of a notification.
-                      {name: 'lastupdated'},                   // The timestamp of the last time the notification was updated. Results are rounded by minute. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
-                      {name: 'owner'}                         // The username of the principal who originally registered the system.
-                    ];
+                    scope.fields=[];
+                     MetaController.listMetadataSchema().then(
+                         function (response) {
+                            var schemas = response.result;
+                            var myfields = [];
+                            angular.forEach(schemas, function(schemaobj){
+                             angular.forEach(schemaobj.schema.properties, function(value, key){
+                               scope.fields.push({name: 'value.'+key})//value.title, value: key})
+                             });
+                           });
+                         }
+                     );
+                    // scope.fields = [
+                    //   {name: 'value.tags'},
+                    //   {name: 'name'},
+                    //   {name: 'created'},                       // The timestamp when the notification was first registered. Results are rounded by day. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
+                    //   {name: 'associationIds'},                // The uuid of an Agave resource for which this notification will fire. Boolean, default false.
+                    //   {name: 'uuid'},                            // The unique id of a notification.
+                    //   {name: 'lastupdated'},                   // The timestamp of the last time the notification was updated. Results are rounded by minute. You may specify using YYYY-MM-DD format or free form timeframes such as 'yesterday' or '3 days ago'.
+                    //   {name: 'owner'}                         // The username of the principal who originally registered the system.
+                    // ];
                     break;
 
                     case 'search':
