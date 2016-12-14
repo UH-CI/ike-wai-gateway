@@ -1,5 +1,5 @@
 // var queryBuilder = angular.module('queryBuilder', []);
-AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
+AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (MetaController, $compile) {
     return {
         restrict: 'E',
         scope: {
@@ -183,7 +183,19 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                     break;
 
                     case 'search':
-                      scope.fields = [
+                    scope.fields=[];
+                     MetaController.listMetadataSchema().then(
+                         function (response) {
+                            var schemas = response.result;
+                            var myfields = [];
+                            angular.forEach(schemas, function(schemaobj){
+                             angular.forEach(schemaobj.schema.properties, function(value, key){
+                               scope.fields.push({name: 'value.'+key})//value.title, value: key})
+                             });
+                           });
+                         }
+                     );
+                    /*  scope.fields = [
                         {name: 'value.tags'},
                         {name: 'value.name'},
                         {name: 'value.description'},
@@ -191,7 +203,7 @@ AgaveToGo.directive('queryBuilder', ['$compile', function ($compile) {
                         {name: 'value.longitude'},
                         {name: 'value.county'},
                         {name: 'value.state'},
-                      ];
+                      ];*/
                       break;
                 }
 
