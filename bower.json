@@ -141,7 +141,7 @@
     "angular-md5": "~0.1.10",
     "agave-fonticons": "git+https://bitbucket.org/agaveapi/fonticons.git",
     "faker": "Marak/faker.js#~3.0.1",
-    "angular-schema-form": "~0.8.12",
+    "angular-schema-form": "~0.8.13",
     "angular-cache": "~4.4.2",
     "Bootstrap-Confirmation": "bootstrap-confirmation#*",
     "datatables-buttons": "~1.1.0",
