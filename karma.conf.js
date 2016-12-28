@@ -50,6 +50,7 @@ module.exports = function(config){
       {pattern: './assets/global/plugins/angularjs/angular-cookies.min.js', watched: true, included: true, served: true},
       {pattern: './bower_components/ng-file-upload/ng-file-upload.min.js', watched: true, included: true, served: true},
       {pattern: './bower_components/checklist-model/checklist-model.js', watched: true, included: true, served: true},
+      {pattern: './bower_components/clipboard/dist/clipboard.min.js', watched: true, included: true, served: true},
       {pattern: './assets/global/plugins/angularjs/plugins/angular-ui-router.min.js', watched: true, included: true, served: true},
       {pattern: './assets/global/plugins/angularjs/plugins/ocLazyLoad.min.js', watched: true, included: true, served: true},
       {pattern: './assets/global/plugins/angularjs/plugins/ui-bootstrap-tpls.min.js', watched: true, included: true, served: true},
