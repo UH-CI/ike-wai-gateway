@@ -54,6 +54,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 				//check for latitude - if there then store a geojson point
 				if($scope.model.latitude){
 						body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.latitude,$scope.model.longitude]}
+						body.geospatial= true;
 				}
 
 				//should be able to create metadata object with permissions set BUT not working at the moment

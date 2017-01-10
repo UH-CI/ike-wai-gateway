@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('SearchController', function ($scope, $state, $translate, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('SearchController', function ($scope, $state, $translate,$filter, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -25,6 +25,15 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.myMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});//{ "value": {"latitude": '!!' }});
+            $scope.marks = {};
+            angular.forEach($scope.myMarkers, function(datum) {
+                if(datum.value.loc != undefined){
+                $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
+              }
+            });
+            alert(angular.toJson($scope.marks))
+            $scope.markers = $scope.marks
             $scope.requesting = false;
           },
           function(response){
@@ -59,5 +68,46 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
         $scope.requesting = false;
       });
     }
+
+    angular.extend($scope, {
+        hawaii: {
+            lat: 21.289373,
+            lng: -157.91,
+            zoom: 7
+        },
+        defaults: {
+            scrollWheelZoom: false
+        },
+    });
+    /*angular.extend($scope, {
+        markers: {
+            honoluluMarker: {
+                lat: 21.315603,
+                lng: -157.858093,
+                message: "I want to travel here!",
+                focus: true,
+                draggable: false
+            }
+        }
+    });*/
+    /*angular.extend($scope, {
+        geojson: {
+            data: {"type": "Feature",
+                "properties": {
+                    "name": "Honolulu",
+                    "popupContent": "This is where the a marker!"
+                },
+            "geometry": {"type":"Point","coordinates":[21.315603,-157.858093]}
+          },
+            style: {
+                fillColor: "green",
+                weight: 2,
+                opacity: 1,
+                color: 'white',
+                dashArray: '3',
+                fillOpacity: 0.7
+            }
+        }
+    });*/
 
 });
