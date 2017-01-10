@@ -26,6 +26,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 						var formschema = {};
 						formschema["type"]="object";
 						formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
+						formschema["required"] = $scope.selectedmetadataschema.schema.required;
 						$scope.schema = formschema;
 						$scope.form = [
 							"*",
@@ -41,14 +42,20 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 		}
 
 		$scope.onSubmit = function(form) {
-			$scope.requesting = true;
+
 			$scope.$broadcast('schemaFormValidate');
 			// Then we check if the form is valid
 			if (form.$valid) {
+				$scope.requesting = true;
 				var body = {};
 				body.name = $scope.selectedmetadataschema.schema.title;
 				body.value = $scope.model;
 				body.schemaId = $scope.selectedmetadataschema.uuid;
+				//check for latitude - if there then store a geojson point
+				if($scope.model.latitude){
+						body.value["loc"] = {"type":"point", "coordinate":[$scope.model.latitude,$scope.model.longitude]}
+				}
+
 				//should be able to create metadata object with permissions set BUT not working at the moment
 				//body.permissions = [{"username":"public","permission":"READ"},{"username":"seanbc","permission":"ALL"},{"username":"jgeis","permission":"ALL"},{"username":"ike-admin","permission":"ALL"}];
 				MetaController.addMetadata(body)
