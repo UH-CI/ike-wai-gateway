@@ -25,11 +25,18 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
-            $scope.myMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});//{ "value": {"latitude": '!!' }});
+            $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
+            $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+            //{ "value": {"latitude": '!!' }});
             $scope.marks = {};
-            angular.forEach($scope.myMarkers, function(datum) {
+            angular.forEach($scope.siteMarkers, function(datum) {
                 if(datum.value.loc != undefined){
                 $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
+              }
+            });
+            angular.forEach($scope.wellMarkers, function(datum) {
+                if(datum.value.latitude != undefined && datum.value.well_id !=undefined){
+                $scope.marks[datum.value.well_id.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Type: " + datum.value.type + "<br/>" + "Depth: " + datum.value.depth, draggable:false}
               }
             });
             alert(angular.toJson($scope.marks))
