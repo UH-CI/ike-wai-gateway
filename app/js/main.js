@@ -25,7 +25,8 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'toastr',
   'ui.bootstrap',
   'ui.router',
-  'ui.select'
+  'ui.select',
+  'ui-leaflet'
 ]).service('NotificationsService',['$rootScope', '$localStorage', 'MetaController', 'toastr', function($rootScope, $localStorage, MetaController, toastr){
     if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.activeProfile !== 'undefined') {
       this.client = new Fpp.Client('https://48e3f6fe.fanoutcdn.com/fpp');
