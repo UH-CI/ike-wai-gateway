@@ -39,7 +39,6 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
                 $scope.marks[datum.value.well_id.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Type: " + datum.value.type + "<br/>" + "Depth: " + datum.value.depth, draggable:false}
               }
             });
-            alert(angular.toJson($scope.marks))
             $scope.markers = $scope.marks
             $scope.requesting = false;
           },
