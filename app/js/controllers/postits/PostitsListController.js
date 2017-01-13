@@ -9,6 +9,7 @@ angular.module('AgaveToGo').controller('PostitsListController', function ($scope
     	postits: []	
     };
     $scope.checkAll = false;
+    $scope.postitString = '';
     
     $scope.refresh = function() {
       $scope.requesting = true;
@@ -34,9 +35,10 @@ angular.module('AgaveToGo').controller('PostitsListController', function ($scope
     	$scope.checkAll = !checkAll;
         if ($scope.checkAll){
         	$scope.postitsSelected.postits = angular.copy($scope[$scope._COLLECTION_NAME]);
+        	$scope.makeStringOfAllSelected();
         }
         else {
-        	$scope.postitsSelected.postits = [];
+        	$scope.emptySelected();
         }
     }
     
@@ -86,5 +88,26 @@ angular.module('AgaveToGo').controller('PostitsListController', function ($scope
     };
     
     
+    $scope.postitChecked = function(postit) {
+    	// todo, see if this is an 'uncheck' and if it is, rebuild from scratch
+    	// otherwise, just append the item to the string.
+    	
+    	// just rebuild the string from scratch because this gets triggered 
+    	// even when the box is being un-checked, and it would take more time
+    	// to parse that out of the string.
+    	$scope.makeStringOfAllSelected();
+    }
+    
+    $scope.makeStringOfAllSelected = function() {
+    	$scope.postitString = '';
+        angular.forEach($scope.postitsSelected.postits, function(postitInLoop){
+        	$scope.postitString += postitInLoop._links.self.href + "\n";
+        });
+    };
+    
+    $scope.emptySelected = function() {
+    	$scope.postitsSelected.postits = [];
+    	$scope.postitString = '';
+    }
     
 });

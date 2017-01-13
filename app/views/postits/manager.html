@@ -82,11 +82,10 @@
                                                 <li>
                                                   <a ng-click="emailMultiple(postitsSelected.postits)" role="button"> <i class="fa fa-share"></i></i> Email </a>
                                                 </li>
-                                                <!-- 
                                                 <li>
-                                                  <a data-clipboard-text="{{postit._links.self.href}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
+                                                  <!-- the real thing here is the copy to the clipboard, the ng-click call is to de-select all the checkboxes once the copy is done -->
+                                                  <a ng-click="emptySelected()" data-clipboard-text="{{postitString}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
                                                 </li>
-                                                 -->
                                                 <li>
                                                   <a ng-click="deletePostits(postitsSelected.postits, postits)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>
                                                 </li>
@@ -138,8 +137,9 @@
                               <tbody>
                                   <tr ng-repeat="postit in postits | orderBy:sortType:sortReverse | filter:filter">
                                       <td class="hidden-xs">
-                                          <input type="checkbox" data-checklist-model="postitsSelected.postits" data-checklist-value="postit">
+                                          <input type="checkbox" ng-click="postitChecked(postit)" data-checklist-model="postitsSelected.postits" data-checklist-value="postit">
                                       </td>
+                                       
                                       <!-- <td class="hidden-xs hidden-sm hidden-md"> -->
                                       <td class="hidden-xs">
                                           {{postit.url}}
