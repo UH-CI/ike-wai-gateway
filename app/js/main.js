@@ -9,6 +9,7 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'angularMoment',
   'angularUtils.directives.dirPagination',
   'CommonsService',
+  'checklist-model',
   'jsonFormatter',
   'JiraService',
   'ChangelogParserService',
@@ -156,6 +157,10 @@ AgaveToGo.config(function($translateProvider) {
     error_metadataschemas_create: 'Error: Could not submit metadata',
     error_metadataschemas_details: 'Error: Could not retrieve metadata',
     error_metadataschemas_list: 'Error: Could not retrieve metadata',
+
+    error_postits_create: 'Error: Could not submit postit',
+    error_postits_details: 'Error: Could not retrieve postit data',
+    error_postits_list: 'Error: Could not retrieve postit data',
 
     error_monitors_add: 'Error: Could not add monitor',
     error_monitors_list: 'Error: Could not retrieve monitor',
@@ -2105,6 +2110,84 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Postits Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        // Postits
+        .state('postits-manage', {
+            url: "/postits",
+            templateUrl: "views/postits/manager.html",
+            data: {pageTitle: 'Postits Manager'},
+            controller: "PostitsListController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            '../bower_components/clipboard/dist/clipboard.js',
+                            '../bower_components/ngclipboard/dist/ngclipboard.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/postits/PostitsListController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+        /*
+        .state("postits", {
+          abtract: true,
+          url:"/postits/:id",
+          templateUrl:"views/postits/resource/resource.html",
+          controller: "PostitsListResourceController",
+          resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+              return $ocLazyLoad.load([
+                {
+                  name: 'AgaveToGo',
+                    files: [
+                      'js/controllers/postits/resource/PostitsListResourceController.js'
+                    ]
+                }
+              ]);
+            }]
+          }
+        })
+
+        .state("postits.details", {
+          url: "",
+          templateUrl: "views/postits/resource/details.html",
+          controller: "PostitsListResourceDetailsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/PermissionsService.js',
+                        'js/controllers/postits/resource/PostitsListResourceDetailsController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+        })
+        */
+        
+        
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
