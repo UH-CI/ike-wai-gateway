@@ -3,7 +3,19 @@
 </div>
 <div class="modal-body">
     <p>Are you sure you want to {{resourceAction}} the following resource?</p>
-    <span>{{resource.id}}</span>
+     <span ng-if="resource.id">
+       {{resource.id}}
+     </span>
+     <!-- postits don't have an id, so if there isn't one, try the url -->
+     <span ng-if="!resource.id && resource.url">
+       {{resource.url}}
+     </span>
+     <!-- if there is no id or url, just show the object.  used when deleting multiple postits at once -->
+     <span ng-if="!resource.id && !resource.url">
+       {{resource}}
+     </span>
+  
+    <!-- <span>{{resource.id}}</span>  -->
 </div>
 <div class="modal-footer">
     <button class="btn btn-default" ng-click="cancel()">Cancel</button>
