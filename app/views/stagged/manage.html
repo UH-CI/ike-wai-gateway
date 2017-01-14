@@ -1,0 +1,39 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-xs-9">
+      <div ng-if="metadatum" class="table-responsive">
+        <h2>Stagged Files</h2>
+        <h4>
+          Last Updated: {{metadatum.lastUpdated}}
+        </h4>
+        {{metadatum.associationIds}}
+        <table class="table">
+          <thead class="hidden-sm hidden-xs">
+          <tr>
+             <th class="col-sm-10">File</th>
+             <th class="col-sm-2">UUID</th>
+             <th class="col-sm-2">Actions</th>
+           </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="associationId in metadatum._links['associationIds']">
+                <td><a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId.href.split('system')[1]}}</a></td>
+                <td>
+
+                </td>
+                <td>
+                  <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
+                  <button type="button" class="btn btn-success text-center"  ng-click="unAssociateMetadata(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)])"><i class="fa fa-trash"></i> Remove Association</button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

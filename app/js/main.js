@@ -2186,8 +2186,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
         */
-        
-        
+
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2220,6 +2220,35 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                     });
                 }]
             }
+        })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Stagged File Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        .state("stagged", {
+          url: "/stagged",
+          templateUrl: "views/stagged/manage.html",
+          controller: "StaggedController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/PermissionsService.js',
+                        'js/controllers/stagged/StaggedController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
         })
 
 }]);
