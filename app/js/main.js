@@ -2242,7 +2242,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                     files: [
                         'js/services/ActionsService.js',
                         'js/services/MessageService.js',
-                        'js/services/PermissionsService.js',
+                        'js/services/FilesMetadataService.js',
                         'js/controllers/stagged/StaggedController.js'
                     ]
                   }
