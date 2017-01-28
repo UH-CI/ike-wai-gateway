@@ -6,7 +6,7 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
-    $scope.limit = 100;
+    $scope.limit = 10000;
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
@@ -18,7 +18,7 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
       $scope.requesting = true;
 
       MetaController.listMetadata(
-        $scope.query
+        $scope.query,$scope.limit,$scope.offset
       )
         .then(
           function (response) {
@@ -35,8 +35,8 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
               }
             });
             angular.forEach($scope.wellMarkers, function(datum) {
-                if(datum.value.latitude != undefined && datum.value.well_id !=undefined){
-                $scope.marks[datum.value.well_id.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Type: " + datum.value.type + "<br/>" + "Depth: " + datum.value.depth, draggable:false}
+                if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name, draggable:false}
               }
             });
             $scope.markers = $scope.marks
