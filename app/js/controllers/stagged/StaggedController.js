@@ -1,7 +1,7 @@
-angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, MetaController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, MetaController, ActionsService, FilesMetadataService) {
 
   $scope.metadatum = null;
-
+  $scope.requesting = true;
   $scope.getMetadatum = function(){
     $scope.requesting = true;
     if ($stateParams.id !== ''){
@@ -22,14 +22,22 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
     }
   };
 
-  $scope.unAssociateMetadata = function(fileUuid){
+  $scope.rejectStaggingRequest = function(fileUuid){
+      $scope.requesting = true;
+    FilesMetadataService.rejectStaggingRequest("484964208339784166-242ac1110-0001-012", fileUuid).then(function(result){
+        $scope.metadatum = null;
+        //pause to let model update
+        $timeout(function(){$scope.getMetadatum()}, 500);
+        $scope.requesting = false;
+      });
+    }
+
+  $scope.publishStaggedFile = function(fileUuid, filepath){
     $scope.requesting = true;
-    FilesMetadataService.removeAssociation($scope.metadatum.uuid, fileUuid).then(function(result){
-      $scope.metadatum = null;
-      //pause to let model update
-      $timeout(function(){$scope.getMetadatum()}, 300);
-      $scope.requesting = false;
-    });
+    FilesMetadataService.publishStaggedFile(fileUuid, filepath).then(function(result){
+
+        $scope.requesting = false;
+    })
   }
 
   $scope.getMetadatum();
