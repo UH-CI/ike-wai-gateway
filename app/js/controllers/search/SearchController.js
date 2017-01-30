@@ -36,7 +36,7 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
             });
             angular.forEach($scope.wellMarkers, function(datum) {
                 if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name, draggable:false}
+                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
               }
             });
             $scope.markers = $scope.marks
