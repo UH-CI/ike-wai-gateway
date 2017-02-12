@@ -270,7 +270,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 
 /* Setup Layout Part - Header */
 AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoController', function($scope, $localStorage, StatusIoController) {
-    $scope.showTokenCountdown = false;
+    $scope.showTokenCountdown = true;
 
     // get token countdown time
     if (typeof $localStorage.token !== 'undefined'){
@@ -1799,6 +1799,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
+                            'js/services/FilesMetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/metadata/MetadataController.js'
                         ]
@@ -1840,6 +1841,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         'js/services/ActionsService.js',
                         'js/services/MessageService.js',
                         'js/services/PermissionsService.js',
+                        'js/services/FilesMetadataService.js',
                         'js/controllers/metadata/resource/MetadataResourceDetailsController.js'
                     ]
                   }
