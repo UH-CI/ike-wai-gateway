@@ -1,4 +1,4 @@
-angular.module('AgaveAuth').controller('LoginSuccessController', function ($injector, $timeout, $rootScope, $scope, $state, $window, moment, settings, $localStorage, AccessToken, $location, Alerts, ProfilesController, Configuration) {
+angular.module('AgaveAuth').controller('LoginSuccessController', function ($injector, $timeout, $rootScope, $scope, $state, $window, $location, moment, settings, $localStorage, AccessToken, $location, Alerts, ProfilesController, Configuration) {
     settings.layout.tenantPage = true;
     settings.layout.loginPage = false;
 
@@ -24,7 +24,11 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
                     $('#tokenCountdown').countdown({
                         until: tokenEndsAt
                     });
-                    $window.location.href = '/app';
+                    $timeout(function () {
+                        $window.location.href = '/app';
+                    },0);
+                      $window.location.href = '/app';
+
                 },
                 function(message) {
                     Alerts.danger({message:"Failed to fetch user profile."});
@@ -44,6 +48,7 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
         $timeout(function () {
             $scope.profile = profile;
         },0);
+        $location.href = '/app';
     });
 
 });
