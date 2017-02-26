@@ -126,7 +126,7 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
         })
 
         // Login
-        .state('tenants', {
+      /*  .state('tenants', {
             url: "/",
             templateUrl: "views/tenants.html",
             data: {pageTitle: 'Select Tenant'},
@@ -144,10 +144,10 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
                 }]
             }
         })
-
+*/
         // Login
         .state('login', {
-            url: "/login/:tenantId",
+            url: "/",//"/login/:tenantId",
             templateUrl: "views/login.html",
             data: {pageTitle: 'Login'},
             controller: "LoginController",
