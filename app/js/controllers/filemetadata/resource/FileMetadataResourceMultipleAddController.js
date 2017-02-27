@@ -3,7 +3,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		if ($stateParams.associatedUuid){
 			$scope.model.associatedUuid = $stateParams.uuid;
 		}
-		$scope.fileUuids = $stateParams['associationIds[]'];
+		$scope.fileUuids = $stateParams['fileUuids'];
+		$scope.filename = $stateParams['filename'];
 		//$scope.schemauuid = $stateParams.schemauuid;
 		/*if ($stateParams.metadataschemaUuid){
 			$scope.model.resource = $stateParams.resourceType;
@@ -11,6 +12,30 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
+
+		$scope.fetchMetadataSchema = function(schemauuid) {
+			$scope.requesting = true;
+			MetaController.getMetadataSchema(schemauuid)
+				.then(
+					function(response){
+						$scope.selectedmetadataschema = response.result;
+						var formschema = {};
+						formschema["type"]="object";
+						formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
+						$scope.schema = formschema;
+						$scope.form = [
+							"*",
+							{
+								type: "submit",
+								title: "Save"
+							}
+						];
+						$scope.schema_selected = true;
+						$scope.requesting = false;
+					}
+			);
+		}
+
     $scope.refresh = function() {
       $scope.requesting = true;
 
@@ -21,32 +46,15 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
         $scope.requesting = false;
       })
 
+			if ($stateParams.schemauuid != null) {
+					$scope.fetchMetadataSchema($stateParams.schemauuid);
+			}
+
     };
 
     $scope.refresh();
 
-    $scope.fetchMetadataSchema = function(schemauuid) {
-      $scope.requesting = true;
-      MetaController.getMetadataSchema(schemauuid)
-        .then(
-          function(response){
-            $scope.selectedmetadataschema = response.result;
-            var formschema = {};
-            formschema["type"]="object";
-            formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
-            $scope.schema = formschema;
-            $scope.form = [
-              "*",
-              {
-                type: "submit",
-                title: "Save"
-              }
-            ];
-            $scope.schema_selected = true;
-            $scope.requesting = false;
-          }
-		  );
-    }
+
 
 	  $scope.fetchFile = FilesController.listFileItems("{'uuid':'"+$scope.uuid+"'}").then(
 			function(response){
@@ -69,11 +77,11 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					.then(
 						function(response){
 							$scope.metadataUuid = response.result.uuid;
-							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
 							//add the default permissions for the system in addition to the owners
 							MetadataService.addDefaultPermissions($scope.metadataUuid);
 							$scope.requesting = false;
-							$state.go('metadata',{id: $scope.metadataUuid});
+							$state.go('filemetadata',{id: $scope.fileUuids[0]});
+							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
 						},
 						function(response){
 							MessageService.handle(response, $translate.instant('error_metadata_add'));

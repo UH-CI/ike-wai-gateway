@@ -5,33 +5,29 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/metadata">Metadata</a>
+            <a href="#/filemetadata/{{fileUuids[0]}}">FileMetadata</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a ui-sref="filemetadata-multipleadd({'associationIds[]':fileUuids})">Multiple File Metadata Add</a>
+            <a ui-sref="filemetadata-multipleadd({'associationIds[]':fileUuids})">Create File Metadata</a>
         </li>
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Multiple File Metadata Add
-    <small>Add Metadata To Multiple Files</small>
+<h3 class="page-title"> Create Metadata And Association With File:
 </h3>
-<h6>
-  <small>{{fileUuids}}</small
-</h6>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
-                <div class="caption">
-                    <i class="fa fa-rocket"></i> Multiple File Metadata Add
-                </div>
                 <div class="row text-center">
                   <div class="col-md-12">
+                    <div class="pull-left">
+                      {{ filename | decodeURL}}
+                    </div>
                     <div class="btn-group pull-right">
                         <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                            <i class="fa fa-plus"></i>&nbsp;Add New Metadata To Files
+                            <i class="fa fa-plus"></i>&nbsp;Choose New Metadata Object
                             <i class="fa fa-angle-down pull-right"></i>
                         </a>
                         <ul class="dropdown-menu">
@@ -63,7 +59,7 @@
                               <div class="portlet-title">
                                 <div class="caption">
                                   <i class=" icon-layers font-red"></i>
-                                  <span class="caption-subject font-red bold uppercase">File Metadata Add - {{selectedmetadataschema.schema.title}}</span>
+                                  <span class="caption-subject font-red bold uppercase">Create Metadata  - {{selectedmetadataschema.schema.title}}</span>
                                   </span>
                                 </div>
                               </div>
