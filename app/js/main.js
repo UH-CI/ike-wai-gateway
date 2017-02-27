@@ -2070,10 +2070,11 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         })
 
         .state('filemetadata-multipleadd', {
-            url: "/filemetadata/multiple/add/?associationIds[]",
+            url: "/filemetadata/multiple/add/:schemauuid?fileUuids?filename",
             params:{
-            //  schemauuid:'',
-             associationIds: ''//{ array: true }
+              //schemauuid:'',
+              fileUuids: { array: true },
+              filename: '',
             },
             templateUrl: "views/filemetadata/resource/multipleadd.html",
             controller: "FileMetadataResourceMultipleAddController",
