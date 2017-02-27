@@ -96,4 +96,11 @@ AgaveToGo.filter('propsFilter', function () {
       return JSON.stringify(json, null, '   ');
     }
     return prettyPrintJson;
+}])
+.filter('decodeURL', [function() {
+    return function(text) {
+        if(text) {
+            return text.split('%2F').join('/');
+        }
+    }
 }]);
