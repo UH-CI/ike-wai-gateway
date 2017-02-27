@@ -4,19 +4,6 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 
 		$scope.schemaQuery ='';
 
-		$scope.refresh = function() {
-			$scope.requesting = true;
-
-			MetaController.listMetadataSchema(
-				$scope.schemaQuery
-			).then(function(response){
-				$scope.metadataschema = response.result;
-				$scope.requesting = false;
-			})
-
-		};
-		$scope.refresh();
-
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
 			MetaController.getMetadataSchema(schemauuid)
@@ -40,6 +27,23 @@ angular.module('AgaveToGo').controller("MetadataResourceAddController", function
 					}
 			);
 		}
+
+		$scope.refresh = function() {
+			$scope.requesting = true;
+
+			MetaController.listMetadataSchema(
+				$scope.schemaQuery
+			).then(function(response){
+				$scope.metadataschema = response.result;
+				$scope.requesting = false;
+			})
+			if ($stateParams.schemauuid != null) {
+					$scope.fetchMetadataSchema($stateParams.schemauuid);
+			}
+		};
+		$scope.refresh();
+
+
 
 		$scope.onSubmit = function(form) {
 

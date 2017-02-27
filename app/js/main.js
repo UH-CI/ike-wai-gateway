@@ -1853,7 +1853,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
         .state('metadata-add', {
-            url: "/metadata/add/object",
+            url: "/metadata/add/:schemauuid",
             templateUrl: "views/metadata/resource/add.html",
             controller: "MetadataResourceAddController",
             resolve: {

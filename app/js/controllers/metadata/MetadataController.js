@@ -16,6 +16,12 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
     $scope.refresh = function() {
       $scope.requesting = true;
+      MetaController.listMetadataSchema(
+				$scope.schemaQuery
+			).then(function(response){
+				$scope.metadataschema = response.result;
+				$scope.requesting = false;
+			})
 
       MetaController.listMetadata(
         $scope.query,limit=1000,offset=0
