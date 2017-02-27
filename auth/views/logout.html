@@ -2,12 +2,9 @@
     <div class="lock-head"> Session Expired</div>
     <div class="lock-body">
         <div class="message"></div>
-        <div class="lock-avatar-block">
-            <img ng-src="http://www.gravatar.com/avatar/{{ profile.email | gravatar }}?d=mm" class="lock-avatar">
-        </div>
 
         <form class="form-horizontal expired">
-            <h4>{{profile.firstName + ' ' + profile.lastName}}</h4>
+            <h3 class="lock-head">Click Button Below To Login</h3>
             <div class="form-group">
               <oauth
                       template="/auth/views/templates/oauth-ng-button.html"
@@ -20,35 +17,7 @@
                       tenant="tenant">
               </oauth>
             </div>
-            <div class="form-group">
-                <div class="coming-soon-countdown">
-                    <div id="tokenCountdown" class="hasCountdown">
-                        <span class="countdown_row countdown_show4">
-                            <span class="countdown_section">
-                                <span class="countdown_amount">0</span>
-                                <br>Days
-                            </span>
-                           <span class="countdown_section">
-                                <span class="countdown_amount">0</span>
-                                <br>Hrs
-                            </span>
-                            <span class="countdown_section">
-                                <span class="countdown_amount">0</span>
-                                <br>Mins
-                            </span>
-                            <span class="countdown_section">
-                                <span class="countdown_amount">0</span>
-                                <br>Secs
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </div>
+            <br/><br/>
         </form>
-    </div>
-    <div class="lock-bottom">
-        <div class="row">
-          <a ui-sref="tenants" type="button" class="btn btn-default top-buffer">Back</a>
-        </div>
     </div>
 </div>

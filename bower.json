@@ -35,7 +35,7 @@
     "bootswatch": "3.3.5",
     "ng-file-upload": "^12.0.1",
     "agave-angularjs-sdk": "git+https://github.com/UH-CI/uh-agave-anguler-sdk.git#hawaii",
-    "angular-filebrowser": "git+https://github.com/UH-CI/uh-togo-angular-filemanager.git#hawaii",
+    "angular-filebrowser": "git+https://github.com/UH-CI/uh-togo-angular-filemanager.git#dev",
     "amcharts": "~3.15.2",
     "autosize": "~3.0.14",
     "jquery-backstretch": "backstretch#~2.0.4",
@@ -141,7 +141,7 @@
     "angular-md5": "~0.1.10",
     "agave-fonticons": "git+https://bitbucket.org/agaveapi/fonticons.git",
     "faker": "Marak/faker.js#~3.0.1",
-    "angular-schema-form": "~0.8.12",
+    "angular-schema-form": "~0.8.13",
     "angular-cache": "~4.4.2",
     "Bootstrap-Confirmation": "bootstrap-confirmation#*",
     "datatables-buttons": "~1.1.0",
@@ -151,7 +151,12 @@
     "angular-ui-sortable": "~0.13.4",
     "angular-schema-form-ui-select": "~0.1.1",
     "humanize-duration": "2.8.0",
-    "angular-timer": "1.3.4"
+    "angular-timer": "1.3.4",
+    "clipboard": "~1.5.16",
+    "leaflet": "~1.0.2",
+    "ui-leaflet":"~2.0.0",
+    "angular-simple-logger": "~0.1.7",
+    "ngclipboard": "1.1.1"
   },
   "resolutions": {
     "angular-cookies": "~1.3.17",

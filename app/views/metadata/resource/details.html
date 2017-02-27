@@ -44,7 +44,7 @@
                     <tr ng-repeat="associationId in metadatum._links['associationIds']">
                         <td><a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId.href.split('system')[1]}}</a></td>
                         <td>
-                          <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"download" | translate}}</button>
+                          <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
                           <button type="button" class="btn btn-success text-center"  ng-click="unAssociateMetadata(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)])"><i class="fa fa-trash"></i> Remove Association</button>
                         </td>
                       </tr>

@@ -1,9 +1,9 @@
 <div class="page-body">
-    <div class="lock-head"> Click to Complete Login</div>
+    <div class="lock-head"> Wait To Be Forwarded To Login Page</div>
     <div class="lock-body">
         <div class="message"></div>
         <div class="lock-avatar-block">
-<center>            <oauth
+<center>            <oauth id="login-button"
                     template="/auth/views/templates/oauth-ng-button.html"
                     site="tenant.baseUrl"
                     client-id="settings.oauth.clients[tenant.code].clientKey"
@@ -13,21 +13,7 @@
                     scope="{{settings.oauth.clients[tenant.code].scope}}"
                     tenant="tenant">
             </oauth>
-    </center>    </div>
+    </center>
+  <br/><br/>
+  </div>
     </div>
-    <div class="lock-bottom">
-<!--        <div class="row login-options">
-            <p class="col-xs-12 login-message">Or login with</p>
-        </div>
-        <!--<div class="row">
-          <ul class="list-inline">
-            <li ng-repeat="t in settings.tenants">
-              <a ui-sref="login({tenantId: t.code})"><img ng-src="/auth/img/tenants/{{t.code}}-icon.png" title="{{t.name}}" class="thumbnail"></a>
-            </li>
-          </ul>
-        </div>-->
-        <div class="row">
-          <a ui-sref="tenants" type="button" class="btn btn-default top-buffer">Back</a>
-        </div>
-    </div>
-</div>

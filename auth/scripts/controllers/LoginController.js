@@ -14,12 +14,12 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             client_secret: '',
             remember: 0
     };
-
-    if ($stateParams.tenantId) {
+    $scope.tenantId = 'hawaii'
+    /*if ($stateParams.tenantId) {
         $scope.tenantId = $stateParams.tenantId;
     } else {
         $state.go('tenants');
-    }
+    }*/
 
     $scope.getTenantByCode = function (tenantId) {
         var namedTenant = false;
@@ -127,5 +127,12 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 $rootScope.broadcast('oauth:denied');
             });
     };
+//forward user onto the oauth login page
+$scope.$on('oauth:loggedOut', function(event) {
+  //console.log('The user is not signed in');
+  $timeout(function() {
+    angular.element('a.btn.default.logged-out.ng-scope').trigger('click');
+  });
+});
 
 });
