@@ -15,6 +15,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh = function() {
       $scope.requesting = true;
 
+      MetaController.listMetadataSchema(
+				$scope.schemaQuery
+			).then(function(response){
+				$scope.metadataschema = response.result;
+				$scope.requesting = false;
+			})
+
       MetaController.listMetadata($scope.query,null,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
