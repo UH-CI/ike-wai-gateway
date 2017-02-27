@@ -44,4 +44,42 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       });
       return true;
     }
+    this.addAssociation = function(metadataUuid, uuidToAdd){
+      var promises = [];
+  	  MetaController.getMetadata(metadataUuid)
+        .then(function(response){
+          var metadatum = response.result;
+          var body = {};
+          body.associationIds = metadatum.associationIds;
+          if (body.associationIds.indexOf(uuidToAdd) < 0) {
+            body.associationIds.push(uuidToAdd);
+          }
+          body.name = metadatum.name;
+          body.value = metadatum.value;
+          body.schemaId = metadatum.schemaId;
+          MetaController.updateMetadata(body,metadataUuid)
+          .then(
+            function(response){
+              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+            },
+            function(response){
+              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+            }
+
+          )
+        }
+      )
+      var deferred = $q.defer();
+
+      return $q.all(promises).then(
+        function(data) {
+          deferredHandler(data, deferred);
+
+        },
+        function(data) {
+          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+
+      });
+      return true;
+    }
 }]);

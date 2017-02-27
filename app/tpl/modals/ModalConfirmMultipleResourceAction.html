@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h3 class="modal-title">Confirm {{resourceAction | translate}}</h3>
+</div>
+<div class="modal-body">
+    <p>Are you sure you want to {{resourceAction}} the following resource?</p>
+    <span>{{resourceDisplayString}}</span>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="ok()">Ok</button>
+</div>

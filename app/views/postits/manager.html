@@ -1,0 +1,190 @@
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/postits">Postits</a>
+        </li>
+    </ul>
+    <div landing-start-menu></div>
+</div>
+<h3 class="page-title"> Postits Management
+    <small>Manage your Postits</small>
+</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-rocket"></i> Postit Management
+                </div>
+
+                <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                      </div>
+                    </div>
+                    <div class="row top-buffer" ng-show="showSearch">
+                      <query-builder group="filter.group" resource="postit"></query-builder>
+                      <div class="col-md-12 top-buffer">
+
+                        <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group top-buffer">
+                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                      </button>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <div ng-show="!requesting">
+                      <div ng-show="postits.length === 0" class="text-center">
+                        <div class="row text-center">
+                          <div class="col-md-12">
+                              No Postits found
+                          </div>
+                        </div>
+                      </div>
+                      <div ng-show="postits.length > 0">
+                          <table class="table table-striped table-bordered table-hover management" style="word-wrap:break-word; table-layout: fixed;" width="100%" id="datatable_collection">
+                              <thead>
+                                  <tr role="row" class="heading">
+                                      <!-- <th class="col-md-2 text-center" width="2%"> -->
+						              <th width="3%">
+
+						                <div class="btn-group" ng-show="postitsSelected.postits.length !== 0">
+						                    <a class="btn btn-outline" href="#" data-toggle="dropdown">
+						                        <strong>Actions</strong>
+						                        <i class="fa fa-angle-down"></i>
+						                    </a>
+						                    <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                  <a ng-click="emailMultiple(postitsSelected.postits)" role="button"> <i class="fa fa-share"></i></i> Email </a>
+                                                </li>
+                                                <li>
+                                                  <!-- the real thing here is the copy to the clipboard, the ng-click call is to de-select all the checkboxes once the copy is done -->
+                                                  <a ng-click="emptySelected()" data-clipboard-text="{{postitString}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
+                                                </li>
+                                                <li>
+                                                  <a ng-click="deletePostits(postitsSelected.postits, postits)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>
+                                                </li>
+                                            </ul>
+						                </div>
+						                <input type="checkbox" ng-click="checkAllPostits(checkAll);">
+						              </th>
+                                      
+                                      <th width="15%">
+                                        <a href="#" ng-click="sortType = 'url'; sortReverse = !sortReverse">
+                                          File
+                                          <span ng-show="sortType == 'url' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'url' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      <th width="15%" class="hidden-xs">
+                                        <a href="#" ng-click="sortType = '_links.self.href'; sortReverse = !sortReverse">
+                                          Link
+                                          <span ng-show="sortType == '_links.self.href' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == '_links.self.href' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      <!-- 
+                                      <th width="5%" class="hidden-xs hidden-sm hidden-md">
+                                        <a href="#" ng-click="sortType = 'created'; sortReverse = !sortReverse">
+                                          Created
+                                          <span ng-show="sortType == 'created' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'created' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                       -->
+                                      <th width="5%" class="hidden-xs hidden-sm hidden-md">
+                                        <a href="#" ng-click="sortType = 'expires'; sortReverse = !sortReverse">
+                                          Expires
+                                          <span ng-show="sortType == 'expires' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'expires' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      <th width="3%" class="hidden-xs hidden-sm hidden-md">
+                                        <a href="#" ng-click="sortType = 'remainingUses'; sortReverse = !sortReverse">
+                                          Uses left
+                                          <span ng-show="sortType == 'remainingUses' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'remainingUses' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      <th width="5%" class="text-center"> Actions</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="postit in postits | orderBy:sortType:sortReverse | filter:filter">
+                                      <td class="hidden-xs">
+                                          <input type="checkbox" ng-click="postitChecked(postit)" data-checklist-model="postitsSelected.postits" data-checklist-value="postit">
+                                      </td>
+                                       
+                                      <!-- <td class="hidden-xs hidden-sm hidden-md"> -->
+                                      <td class="hidden-xs">
+                                          {{postit.url}}
+                                      </td>
+                                      <td class="hidden-xs">
+                                          {{postit._links.self.href}}
+                                      </td>
+                                      <!-- 
+                                      <td class="hidden-xs hidden-sm hidden-md">
+                                          {{postit.created}}
+                                      </td>
+                                       -->
+                                      <td class="hidden-xs hidden-sm hidden-md">
+                                          {{postit.expires}}
+                                      </td>
+                                      <td class="hidden-xs hidden-sm hidden-md">
+                                          {{postit.remainingUses}}
+                                      </td>
+                                      <td class="text-center">
+                                          <div class="btn-group">
+                                              <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+                                                  Actions
+                                                  <i class="fa fa-angle-down"></i>
+                                              </a>
+                                              <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                  <a ng-click="email(postit._links.self.href)" role="button"> <i class="fa fa-share"></i></i> Email </a>
+                                                </li>
+                                                <li>
+                                                  <a data-clipboard-text="{{postit._links.self.href}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
+                                                </li>
+                                                <li>
+                                                  <a ng-click="confirmAction('postit', postit, 'delete', postits)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>
+                                                </li>
+                                              </ul>
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
