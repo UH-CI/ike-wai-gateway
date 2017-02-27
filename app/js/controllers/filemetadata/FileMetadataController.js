@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -48,12 +48,16 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.unAssociateMetadata = function(metadatumUuid){
       $scope.requesting = true;
+      var unAssociate = $window.confirm('Are you absolutely sure you want to remove the association?');
+
+    if (unAssociate) {
       FilesMetadataService.removeAssociation(metadatumUuid, $scope.filemetadatumUuid).then(function(result){
         $scope.metadatum = null;
         //pause to let model update
         $timeout(function(){$scope.refresh()}, 300);
         $scope.requesting = false;
       });
+    }
     }
 
 
