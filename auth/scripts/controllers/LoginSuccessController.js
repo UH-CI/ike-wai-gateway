@@ -24,17 +24,15 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
                     $('#tokenCountdown').countdown({
                         until: tokenEndsAt
                     });
-                    $timeout(function () {
-                        $window.location.href = '/app';
-                    },0);
-                      $window.location.href = '/app';
-
                 },
                 function(message) {
                     Alerts.danger({message:"Failed to fetch user profile."});
                     $scope.requesting = false;
                 }
             );
+        }
+        else{
+          $window.location.href = '/app';
         }
     } else {
         $scope.requesting = false;
@@ -47,8 +45,8 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
         $localStorage.activeProfile = profile;
         $timeout(function () {
             $scope.profile = profile;
+            $window.location.href = '/app';
         },0);
-        $location.href = '/app';
     });
 
 });
