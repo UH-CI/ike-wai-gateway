@@ -1,0 +1,85 @@
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/studies">Studies</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/studies/add">Add Study</a>
+            <i class="fa fa-circle"></i>
+        </li>
+    </ul>
+    <div landing-start-menu></div>
+</div>
+<h3 class="page-title"> Create Study
+</h3>
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="col-md-12">
+        <div ng-show="!requesting">
+        Leaflet
+        <leaflet width="100%" height="480px" center="hawaii"  markers="markers" event-broadcast="events"></leaflet>
+      </div>
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="row text-center">
+                  <div class="col-md-12">
+                    <div class="btn-group pull-right">
+                        <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                            <i class="fa fa-plus"></i>&nbsp;Change Metadata Object Form
+                            <i class="fa fa-angle-down pull-right"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+                            <a ng-click="fetchMetadataSchema(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                          </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+
+
+
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <div ng-show="schema_selected">
+                      <div ng-show="!requesting">
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <div class="portlet light bordered" id="form_wizard_1">
+                              <div class="portlet-title">
+                                <div class="caption">
+                                  <i class=" icon-layers font-red"></i>
+                                  <span class="caption-subject font-red bold uppercase">Create - {{selectedmetadataschema.schema.title}}</span>
+                                  </span>
+                                </div>
+                              </div>
+                      <div class="portlet-body form">
+                                <form name="addFilemetadataForm"
+                                 sf-schema="schema"
+                                 sf-form="form"
+                                 sf-model="model"
+                                 ng-submit="onSubmit(addFilemetadataForm)"></form></div>
+                          </form>
+                      </div>
+
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

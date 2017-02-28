@@ -1875,7 +1875,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         })
 
         .state('metadata-add-association', {
-            url: "/metadata/association/add/:uuid",
+            url: "/metadata/association/add/:uuid?filename",
+            params:{
+              filename: '',
+            },
             templateUrl: "views/metadata/resource/association.html",
             controller: "MetadataResourceAddAssociationController",
             resolve: {
@@ -2224,6 +2227,68 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/search/SearchController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Study Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        // Studies
+        .state('studies', {
+            url: "/studies",
+            templateUrl: "views/studies/manager.html",
+            data: {pageTitle: 'Ike Wai Studies'},
+            controller: "StudiesController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/services/MetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/studies/StudiesController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        // Studies
+        .state('studies-add', {
+            url: "/studies/add",
+            templateUrl: "views/studies/resource/add.html",
+            data: {pageTitle: 'Ike Wai Add Studies'},
+            controller: "StudiesResourceAddController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/services/MetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/studies/resource/StudiesResourceAddController.js'
                         ]
                     });
                 }]
