@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('StudiesResourceDetailsController', function($scope, $stateParams, $state, $translate, $timeout, $filter, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController', function($scope, $stateParams, $state, $translate, $timeout, $filter, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
   $scope._COLLECTION_NAME = 'metadata';
   $scope._RESOURCE_NAME = 'metadatum';
 

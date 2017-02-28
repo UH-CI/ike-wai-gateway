@@ -2318,6 +2318,29 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
+        .state("study-edit-locations", {
+          url: "/studies/edit/locations/:id",
+          templateUrl: "views/studies/resource/edit-locations.html",
+          controller: "StudiesResourceEditLocationsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/PermissionsService.js',
+                        'js/services/FilesMetadataService.js',
+                        'js/services/MetadataService.js',
+                        'js/controllers/studies/resource/StudiesResourceEditLocationsController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+        })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
