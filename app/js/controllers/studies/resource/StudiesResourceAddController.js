@@ -101,16 +101,15 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
      $scope.markers = new Array();
 
     $scope.$on('leafletDirectiveMap.click', function(event, args){
-      console.log(args.leafletEvent.latlng);
-    //  $('#latitude').val(args.leafletEvent.latlng.lat);
-    //  $('#longitude').val(args.leafletEvent.latlng.lng);
-      //var newMarker = new L.marker(args.leafletEvent.latlng).addTo();
+			//clear markers
       $scope.markers=[];
+			//add marker where click occured
       $scope.markers.push({
                    lat: args.leafletEvent.latlng.lat,
                    lng: args.leafletEvent.latlng.lng,
                    message: "My Added Marker"
                });
+			//set metadata form lat and long values
 			$scope.model['longitude'] = args.leafletEvent.latlng.lng;
 			$scope.model['latitude'] = args.leafletEvent.latlng.lat;
 
