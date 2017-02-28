@@ -102,8 +102,8 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
 
     $scope.$on('leafletDirectiveMap.click', function(event, args){
       console.log(args.leafletEvent.latlng);
-      $('#latitude').val(args.leafletEvent.latlng.lat);
-      $('#longitude').val(args.leafletEvent.latlng.lng);
+    //  $('#latitude').val(args.leafletEvent.latlng.lat);
+    //  $('#longitude').val(args.leafletEvent.latlng.lng);
       //var newMarker = new L.marker(args.leafletEvent.latlng).addTo();
       $scope.markers=[];
       $scope.markers.push({
@@ -111,7 +111,9 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
                    lng: args.leafletEvent.latlng.lng,
                    message: "My Added Marker"
                });
-      //$scope.addMetadataForm.latitude.$setViewValue(args.leafletEvent.latlng.lat);
+			$scope.model['longitude'] = args.leafletEvent.latlng.lng;
+			$scope.model['latitude'] = args.leafletEvent.latlng.lat;
+
     });
 
 	});
