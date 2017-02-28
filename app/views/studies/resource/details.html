@@ -9,7 +9,7 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/study-details">{{metadatum.value.name}}</a>
+            <a href="#/studies/edit/locations/{{metadatum.uuid}}">{{metadatum.value.name}}</a>
         </li>
     </ul>
     <div landing-start-menu></div>
@@ -94,7 +94,7 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td class="hidden-xs">
-                                          {{metadatum.value.name}}
+                                          <a ui-sref="metadata({id: metadatum.uuid})" role="button"> {{metadatum.value.name}}</a>
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadatum.value.description}}
@@ -107,7 +107,7 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View Study</a>
+                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View</a>
 
                                                 </li>
                                               </ul>

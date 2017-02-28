@@ -1,6 +1,7 @@
-angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController', function($scope, $stateParams, $state, $translate, $timeout, $filter, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController', function($scope, $stateParams, $state, $translate, $timeout, $filter, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
   $scope._COLLECTION_NAME = 'metadata';
   $scope._RESOURCE_NAME = 'metadatum';
+  $scope.model = {};
 
 
   $scope.queryLimit = 99999;
@@ -15,7 +16,7 @@ angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController',
 
   $scope.metadatum = null;
   $scope.query = '';
-
+  $scope.marks={};
   $scope.fetchMetadataSchema = function(schemauuid) {
     $scope.requesting = true;
     MetaController.getMetadataSchema(schemauuid)
@@ -77,7 +78,7 @@ angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController',
       $scope.query = '{"uuid":{"$in":[]}}';
     }
     else{
-      $scope.query = '{"uuid":{"$in":'+$scope.metadatum.associationIds+'}}';
+      $scope.query = '{"uuid":{"$in":'+angular.toJson($scope.metadatum.associationIds)+'}}';
     }
     MetaController.listMetadata(
       $scope.query
@@ -93,7 +94,7 @@ angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController',
           $scope.marks = {};
           angular.forEach($scope.siteMarkers, function(datum) {
               if(datum.value.loc != undefined){
-              $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
+              $scope.marks[datum.uuid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Study Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
             }
           });
           angular.forEach($scope.wellMarkers, function(datum) {
@@ -141,4 +142,56 @@ angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController',
       },
   });
 
+  $scope.markers = new Array();
+
+ $scope.$on('leafletDirectiveMap.click', function(event, args){
+   //clear markers
+   $scope.markers=[];
+   $scope.markers = $scope.marks;
+   //add marker where click occured
+   $scope.markers['newlocation']={
+                lat: args.leafletEvent.latlng.lat,
+                lng: args.leafletEvent.latlng.lng,
+                message: "My Added Marker"
+            };
+   //set metadata form lat and long values
+   $scope.model['longitude'] = args.leafletEvent.latlng.lng;
+   $scope.model['latitude'] = args.leafletEvent.latlng.lat;
+
+ });
+
+  $scope.onSubmit = function(form) {
+
+    $scope.$broadcast('schemaFormValidate');
+    // Then we check if the form is valid
+    if (form.$valid) {
+      $scope.requesting = true;
+      var body = {};
+      body.name = $scope.selectedmetadataschema.schema.title;
+      body.value = $scope.model;
+      body.schemaId = $scope.selectedmetadataschema.uuid;
+      //check for latitude - if there then store a geojson point
+      if($scope.model.latitude){
+          body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.latitude,$scope.model.longitude]}
+          body.geospatial= true;
+      }
+      MetaController.addMetadata(body)
+        .then(
+          function(response){
+            $scope.metadataUuid = response.result.uuid;
+            App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
+            //add the default permissions for the system in addition to the owners
+            MetadataService.addDefaultPermissions($scope.metadataUuid);
+            MetadataService.addAssociation($stateParams.id, $scope.metadataUuid)
+            $scope.requesting = false;
+            $state.reload();
+            //$state.go('metadata',{id: $scope.metadataUuid});
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_metadata_add'));
+            $scope.requesting = false;
+          }
+        );
+      }
+  };
 });

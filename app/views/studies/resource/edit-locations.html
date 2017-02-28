@@ -16,7 +16,8 @@
 </div>
 <h3 class="page-title">{{metadatum.value.name}}
 </h3>
-<h4>{{metadatum.value.description}}</h4>
+<h5>{{metadatum.value.description}}</h5>
+<hr/>
 <div class="row">
     <div class="col-md-12">
       <div ng-show="!requesting">
@@ -31,8 +32,36 @@
                </li>
              </ul>
          </div>
+      Click On Map To Populate Latitude and Longitude Coordinates For A New Location Object.
       <leaflet width="100%" height="480px" center="hawaii"  markers="markers" event-broadcast="events"></leaflet>
     </div>
+    <div class="col-md-12">
+      <div ng-show="schema_selected">
+        <div ng-show="!requesting">
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="portlet light bordered" id="form_wizard_1">
+                <div class="portlet-title">
+                  <div class="caption">
+                    <i class=" icon-layers font-red"></i>
+                    <span class="caption-subject font-red bold uppercase">Create - {{selectedmetadataschema.schema.title}}</span>
+                    </span>
+                  </div>
+                </div>
+        <div class="portlet-body form">
+                  <form name="addMetadataForm"
+                   sf-schema="schema"
+                   sf-form="form"
+                   sf-model="model"
+                   ng-submit="onSubmit(addMetadataForm)"></form></div>
+            </form>
+        </div>
+
+      </div>
+    </div>
+</div>
+</div>
         <div class="portlet light portlet-fit portlet-datatable bordered" ng-show="!requesting" >
             <div class="portlet-title">
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">

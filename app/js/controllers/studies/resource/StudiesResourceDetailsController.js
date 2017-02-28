@@ -77,7 +77,7 @@ angular.module('AgaveToGo').controller('StudiesResourceDetailsController', funct
       $scope.query = '{"uuid":{"$in":[]}}';
     }
     else{
-      $scope.query = '{"uuid":{"$in":'+$scope.metadatum.associationIds+'}}';
+      $scope.query = '{"uuid":{"$in":'+angular.toJson($scope.metadatum.associationIds)+'}}';
     }
     MetaController.listMetadata(
       $scope.query
@@ -93,7 +93,7 @@ angular.module('AgaveToGo').controller('StudiesResourceDetailsController', funct
           $scope.marks = {};
           angular.forEach($scope.siteMarkers, function(datum) {
               if(datum.value.loc != undefined){
-              $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
+              $scope.marks[datum.uuid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Study Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
             }
           });
           angular.forEach($scope.wellMarkers, function(datum) {
@@ -129,12 +129,6 @@ angular.module('AgaveToGo').controller('StudiesResourceDetailsController', funct
           lat: 21.289373,
           lng: -157.91,
           zoom: 7
-      },
-      events: {
-        map: {
-          enable: ['click', 'drag', 'blur', 'touchstart'],
-          logic: 'emit'
-        }
       },
       defaults: {
           scrollWheelZoom: false
