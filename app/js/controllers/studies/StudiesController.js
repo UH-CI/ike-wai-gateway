@@ -25,18 +25,11 @@ angular.module('AgaveToGo').controller('StudiesController', function ($scope, $s
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
-            $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
-            $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
-            //{ "value": {"latitude": '!!' }});
+            $scope.studyMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Study"});
             $scope.marks = {};
-            angular.forEach($scope.siteMarkers, function(datum) {
-                if(datum.value.loc != undefined){
-                $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
-              }
-            });
-            angular.forEach($scope.wellMarkers, function(datum) {
-                if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+            angular.forEach($scope.studyMarkers, function(datum) {
+                if(datum.value.latitude != undefined){
+                $scope.marks[datum.uuid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Study Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
               }
             });
             $scope.markers = $scope.marks

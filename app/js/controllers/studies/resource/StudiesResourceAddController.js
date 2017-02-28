@@ -2,7 +2,7 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
 
 		$scope.model = {};
 
-		$scope.schemaQuery ='';
+		$scope.schemaQuery ='{$or:[{schema.title:"Well"},{schema.title:"Site"}]}';
 
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
@@ -37,9 +37,9 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
 				$scope.metadataschema =  response.result;
 				$scope.requesting = false;
 			})
-			if ($stateParams.schemauuid != null) {
-					$scope.fetchMetadataSchema($stateParams.schemauuid);
-			}
+			//if ($stateParams.schemauuid != null) {
+					$scope.fetchMetadataSchema('7652052277278085606-242ac1110-0001-013')//$stateParams.schemauuid);
+			//}
 		};
 		$scope.refresh();
 
@@ -71,7 +71,7 @@ angular.module('AgaveToGo').controller("StudiesResourceAddController", function(
 							//add the default permissions for the system in addition to the owners
 							MetadataService.addDefaultPermissions($scope.metadataUuid);
 							$scope.requesting = false;
-							$state.go('metadata',{id: $scope.metadataUuid});
+							$state.go('studies');
 						},
 						function(response){
 							MessageService.handle(response, $translate.instant('error_metadata_add'));

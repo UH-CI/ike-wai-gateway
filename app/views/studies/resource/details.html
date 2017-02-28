@@ -6,15 +6,17 @@
         </li>
         <li>
             <a href="#/studies">Studies</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/study-details">{{metadatum.value.name}}</a>
         </li>
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Ike Wai Studies
+<h3 class="page-title">{{metadatum.value.name}}
 </h3>
-<div class="btn-group pull-right">
-  <a ui-sref="studies-add()" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-plus"></i> Create New Study </a>
-</div>
+<h4>{{metadatum.value.description}}</h4>
 <div class="row">
     <div class="col-md-12">
       <div ng-show="!requesting">
@@ -92,16 +94,23 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td class="hidden-xs">
-                                          <a ui-sref="study-details({id: metadatum.uuid})">{{metadatum.value.name}}</a>
+                                          {{metadatum.value.name}}
                                       </td>
                                       <td class="hidden-xs hidden-sm hidden-md">
                                           {{metadatum.value.description}}
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
+                                              <a class="btn red btn-outline" href="#" data-toggle="dropdown">
+                                                  Actions
+                                                  <i class="fa fa-angle-down"></i>
+                                              </a>
+                                              <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View Study</a>
 
-                                                  <a ui-sref="study-details({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View Study</a>
-
+                                                </li>
+                                              </ul>
                                           </div>
                                       </td>
                                   </tr>
@@ -115,3 +124,4 @@
         </div>
     </div>
 </div>
+-->
