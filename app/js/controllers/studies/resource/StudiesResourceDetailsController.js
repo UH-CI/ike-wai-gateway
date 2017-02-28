@@ -1,7 +1,20 @@
 angular.module('AgaveToGo').controller('StudiesResourceDetailsController', function($scope, $stateParams, $state, $translate, $timeout, $filter, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+  $scope._COLLECTION_NAME = 'metadata';
+  $scope._RESOURCE_NAME = 'metadatum';
+
+
+  $scope.queryLimit = 99999;
+
+  $scope.offset = 0;
+  $scope.limit = 10000;
+
+  $scope.sortType = 'name';
+  $scope.sortReverse  = true;
+  $scope.status = 'active';
+  $scope.available = true;
 
   $scope.metadatum = null;
-$scope.query = '';
+  $scope.query = '';
   $scope.getMetadatum = function(){
     $scope.requesting = true;
     if ($stateParams.id !== ''){
@@ -61,6 +74,7 @@ $scope.query = '';
           $scope.requesting = false;
         }
     );
+
   }
 
   $scope.unAssociateMetadata = function(fileUuid){
