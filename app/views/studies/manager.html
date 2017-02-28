@@ -18,7 +18,7 @@
 <div class="row">
     <div class="col-md-12">
       <div ng-show="!requesting">
-      <leaflet width="100%" height="480px" center="hawaii"  markers="markers" event-broadcast="events"></leaflet>
+      <leaflet width="100%" height="360px" center="hawaii"  markers="markers" event-broadcast="events"></leaflet>
     </div>
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
@@ -42,11 +42,6 @@
                           <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
                         </div>
                       </div>
-                    </div>
-                    <div class="btn-group top-buffer">
-                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
-                      </button>
                     </div>
                 </div>
             </div>
@@ -99,7 +94,7 @@
                                       <td class="text-center">
                                           <div class="btn-group">
 
-                                                  <a ui-sref="study-details({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View Study</a>
+                                                  <a ui-sref="study-details({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i> View</a>
                                                   &nbsp;
                                                   <a ui-sref="study-edit-locations({id: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit/Add Locations</a>
                                           </div>
