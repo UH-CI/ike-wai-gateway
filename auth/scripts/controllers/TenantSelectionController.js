@@ -1,11 +1,11 @@
-angular.module('AgaveAuth').controller('TenantSelectionController', function ($injector, $timeout, $rootScope, $scope, $state, $location, settings, $localStorage, TenantsController, Commons, Alerts) {
+angular.module('AgaveAuth').controller('TenantSelectionController', function ($injector, $timeout, $rootScope, $scope, $state, $location, $window, settings, $localStorage, TenantsController, Commons, Alerts) {
 
-    settings.layout.tenantPage = true;
-    settings.layout.loginPage = false;
+    settings.layout.tenantPage = false;
+    settings.layout.loginPage = true;
 
-    $scope.tenant = {selected: "agave.prod", code: "agave.prod", name: "Agave Science-as-a-Service Platform"};
-    $scope.tenants = [];
-    $scope.displayTenant = undefined;
+    $scope.tenant = {selected: "hawaii", code: "hawaii", name: "UH Agave Platform"};
+    $scope.tenants = ["hawaii"];
+    $scope.displayTenant = {"id":"0001411570998814-b0b0b0bb0b-0001-016","name":"Hawaii Tenant","baseUrl":"https://agaveauth.its.hawaii.edu/","code":"hawaii","contact":[{"name":"Sean Cleveland","email":"seanbc@uhawaii.edu","url":"","type":"admin","primary":true}],"_links":{"self":{"href":"https://docker.example.com/tenants/v2/hawaii"},"publickey":{"href":"https://agaveauth.its.hawaii.edu/apim/v2/publickey"}}};
 
 
 
@@ -61,6 +61,7 @@ angular.module('AgaveAuth').controller('TenantSelectionController', function ($i
     }
 
     $scope.loadTenant = function() {
+      //alert(angular.toJson($scope.displayTenant);
         if ($scope.displayTenant && $scope.displayTenant.code) {
             $localStorage.tenant = $scope.displayTenant;
             $location.path('login/' + $scope.displayTenant.code);
@@ -69,4 +70,11 @@ angular.module('AgaveAuth').controller('TenantSelectionController', function ($i
             Alerts.danger({container: ".lock-body .message", message: "Select an organization to login."});
         }
     };
+
+    $timeout(function() {
+       $localStorage.tenant = $scope.displayTenant;
+       $location.path('login/' + $scope.displayTenant.code);
+       $location.replace();
+     });
+
 });

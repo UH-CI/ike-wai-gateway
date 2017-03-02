@@ -1,6 +1,6 @@
 angular.module('AgaveAuth').controller('LoginSuccessController', function ($injector, $timeout, $rootScope, $scope, $state, $window, $location, moment, settings, $localStorage, AccessToken, $location, Alerts, ProfilesController, Configuration) {
-    settings.layout.tenantPage = true;
-    settings.layout.loginPage = false;
+    settings.layout.tenantPage = false;
+    settings.layout.loginPage = true;
 
     // explicitely set oAuthAccessToken and BASEURI Configuration for SDK
     Configuration.oAuthAccessToken = $localStorage.token ? $localStorage.token.access_token : '';
@@ -33,6 +33,7 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
         }
         else{
           $window.location.href = '/app';
+          // $location.path('app');
         }
     } else {
         $scope.requesting = false;
@@ -45,7 +46,8 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
         $localStorage.activeProfile = profile;
         $timeout(function () {
             $scope.profile = profile;
-            $window.location.href = '/app';
+          $window.location = '/app';
+        //    $location.path('app');
         },0);
     });
 
