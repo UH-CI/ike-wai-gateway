@@ -2,7 +2,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
 
   $scope.fileUuid = $stateParams.uuid;
 	$scope.metadataUuid = $stateParams.filemetadatauuid;
-
+  $scope.filename = $stateParams['filename'];
   $scope._COLLECTION_NAME = 'metadata';
   $scope._RESOURCE_NAME = 'metadatum';
 
@@ -115,7 +115,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
                   $scope.new_metadataUuid = response.result.uuid;
                   App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
                   $scope.requesting = false;
-                  //$state.go('metadata',{id: $scope.metadataUuid});
+                  $state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
                 },
                 function(response){
                   MessageService.handle(response, $translate.instant('error_metadata_add'));
