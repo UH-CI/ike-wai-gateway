@@ -2371,6 +2371,36 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       Impersonate Routes                           ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+        .state("impersonate", {
+          url: "/impersonate",
+          templateUrl: "views/impersonate/manage.html",
+          controller: "ImpersonateController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/FilesMetadataService.js',
+                        'js/services/MetadataService.js',
+                        'js/controllers/impersonate/ImpersonateController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+        })
+
 }]);
 
 /* Init global settings and run the app */
