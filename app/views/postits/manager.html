@@ -155,7 +155,7 @@
                                       </td>
                                        -->
                                       <td class="hidden-xs">
-                                          {{postit.expires}}
+                                          {{postit.expires  | amDateFormat: 'MM/DD/YY, h:mm a' }}
                                       </td>
                                       <td class="hidden-xs">
                                           {{postit.remainingUses}}
