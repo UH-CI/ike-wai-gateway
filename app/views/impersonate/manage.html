@@ -1,0 +1,13 @@
+<h1>Impersonate User</h1>
+
+Profile: {{profile}}</br></br>
+Token: {{token}}</br></br>
+
+
+<div ng-controller="ImpersonateController">
+  <form novalidate class="form-group schema-form-text">
+    <label>Username To Impersonate: <input type="text" ng-model="user.name" /></label><br />
+    <label>New Token: <input type="text" ng-model="user.token" size="50"/></label><br />
+    <input type="submit" ng-click="update(user)" value="Save" />
+  </form>
+</div>
