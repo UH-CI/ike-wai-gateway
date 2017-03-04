@@ -5,20 +5,20 @@
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/postits">Postits</a>
+            <a href="#/postits">Share Links</a>
         </li>
     </ul>
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> Postits Management
-    <small>Manage your Postits</small>
+<h3 class="page-title"> Manage your Share Links
 </h3>
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet light portlet-fit portlet-datatable bordered">
+        <!-- <div class="portlet light portlet-fit portlet-datatable bordered"> -->
+          <!-- 
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-rocket"></i> Postit Management
+                    <i class="fa fa-rocket"></i> Share Links Management
                 </div>
 
                 <div ng-controller="QueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div>
+             -->
             <div class="portlet-body">
               <div class="row text-center" ng-show="requesting">
                   <div class="col-md-12">
@@ -62,7 +63,7 @@
                       <div ng-show="postits.length === 0" class="text-center">
                         <div class="row text-center">
                           <div class="col-md-12">
-                              No Postits found
+                              No Share Links found
                           </div>
                         </div>
                       </div>
@@ -94,14 +95,14 @@
 						                <input type="checkbox" ng-click="checkAllPostits(checkAll);">
 						              </th>
                                       
-                                      <th width="15%">
+                                      <th width="10%">
                                         <a href="#" ng-click="sortType = 'url'; sortReverse = !sortReverse">
                                           File
                                           <span ng-show="sortType == 'url' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'url' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="15%" class="hidden-xs">
+                                      <th width="10%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = '_links.self.href'; sortReverse = !sortReverse">
                                           Link
                                           <span ng-show="sortType == '_links.self.href' && !sortReverse" class="fa fa-caret-down"></span>
@@ -117,16 +118,16 @@
                                         </a>
                                       </th>
                                        -->
-                                      <th width="5%" class="hidden-xs hidden-sm hidden-md">
+                                      <th width="5%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'expires'; sortReverse = !sortReverse">
                                           Expires
                                           <span ng-show="sortType == 'expires' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'expires' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <th width="3%" class="hidden-xs hidden-sm hidden-md">
+                                      <th width="3%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'remainingUses'; sortReverse = !sortReverse">
-                                          Uses left
+                                          Uses Left
                                           <span ng-show="sortType == 'remainingUses' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'remainingUses' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
@@ -142,7 +143,8 @@
                                        
                                       <!-- <td class="hidden-xs hidden-sm hidden-md"> -->
                                       <td class="hidden-xs">
-                                          {{postit.url}}
+                                          <!-- {{postit.url}} -->
+                                          /{{((postit.url.split("//"))[2]).split("?")[0]}}
                                       </td>
                                       <td class="hidden-xs">
                                           {{postit._links.self.href}}
@@ -152,10 +154,10 @@
                                           {{postit.created}}
                                       </td>
                                        -->
-                                      <td class="hidden-xs hidden-sm hidden-md">
-                                          {{postit.expires}}
+                                      <td class="hidden-xs">
+                                          {{postit.expires  | amDateFormat: 'MM/DD/YY, h:mm a' }}
                                       </td>
-                                      <td class="hidden-xs hidden-sm hidden-md">
+                                      <td class="hidden-xs">
                                           {{postit.remainingUses}}
                                       </td>
                                       <td class="text-center">
@@ -184,7 +186,7 @@
                     </div>
                   </div>
               </div>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
 </div>
