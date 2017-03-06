@@ -4,13 +4,14 @@ angular.module('AgaveAuth').controller('LogoutController', function ($injector, 
     settings.layout.loginPage = false;
 
     //$scope.loggedIn = !!AccessToken.get();
-
+    $scope.page = true;
     $timeout(function() {
         $scope.profile = $localStorage.activeProfile;
         $scope.tenant = $localStorage.tenant;
 
         delete $localStorage.activeProfile;
         delete $localStorage.token;
+        angular.element('.loading-message').hide();
     }, 50);
 
     $scope.$watch('$localStorage.profile', function(value){
