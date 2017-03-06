@@ -7,6 +7,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     //Don't display metadata of these types
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
+    //Don't display metadata schema types as options
+    $scope.ignoreSchemaType = ['PublishedFile'];
     
     $scope.query = '{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";

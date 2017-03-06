@@ -86,7 +86,7 @@
                                 <i class="fa fa-angle-down pull-right"></i>
                             </a>
                             <ul class="dropdown-menu">
-                              <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+                              <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
                                 <a ui-sref="filemetadata-multipleadd({schemauuid: metadataschemata.uuid, fileUuids: [filemetadatumUuid], filename: filemetadata[0]._links.associationIds[0].href.split('system')[1]})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                               </li>
                             </ul>
