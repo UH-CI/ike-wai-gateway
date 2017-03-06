@@ -5,6 +5,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
 
+    //Don't display metadata of these types
+    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
+    
     $scope.query = '{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";

@@ -78,7 +78,7 @@
                           <h4>{{filemetadata[0]._links.associationIds[0].href.split("system")[1]}}</h4>
                         </div>
                         <div class="btn-group pull-right">
-                          <a ui-sref="metadata-add-association({uuid: filemetadatumUuid})" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate With Existing Metadata </a>
+                          <a ui-sref="metadata-add-association({uuid: filemetadatumUuid,filename: filemetadata[0]._links.associationIds[0].href.split('system')[1]})" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate With Existing Metadata </a>
                         </div>
                         <div class="btn-group pull-right">
                             <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
@@ -112,7 +112,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter">
+                                  <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreMetadataType.indexOf(filemetadatum.name) < 0">
                                       <td>
                                           <a ui-sref="metadata({id: filemetadatum.uuid})"> {{filemetadatum.value.well_name}}
                                            {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}} </a>
