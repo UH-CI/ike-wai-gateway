@@ -73,7 +73,7 @@
                               <i class="fa fa-angle-down pull-right"></i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+                            <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
                               <a ui-sref="metadata-add({schemauuid: metadataschemata.uuid})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                             </li>
                           </ul>
@@ -107,7 +107,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
+                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}
                                            {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}}</a>
@@ -131,7 +131,8 @@
 
                                                   <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp;
-                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+
+                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button" ng-if=""> <i class="fa fa-pencil"></i>Edit</a>
 
                                           </div>
                                       </td>

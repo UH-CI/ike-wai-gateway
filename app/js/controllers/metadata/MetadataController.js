@@ -3,6 +3,11 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope._RESOURCE_NAME = 'metadatum';
 
 
+    //Don't display metadata of these types
+    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
+    //Don't display metadata schema types as options
+    $scope.ignoreSchemaType = ['PublishedFile'];
+    
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
