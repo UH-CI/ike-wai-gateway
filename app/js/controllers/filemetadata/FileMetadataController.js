@@ -30,14 +30,23 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
         function (response) {
           $scope.fileMetadataObject = response.result;
-          $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
+
           if ($scope.fileMetadataObject == ""){
-            //we have no object so create a new on
+            //we have no object so create a new one
             $scope.createFileObject($stateParams.uuid);
           }
           else{
             //we have an object to modify our query for gettting metadata
-            $scope.fetchMetadata('{"associationIds":"' +  $scope.fileMetadataObject[0].uuid + '"}')
+            if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
+            {
+              //if filename or path is off change File metadata object
+              $scope.updateFileObject($scope.fileMetadataObject[0]);
+            }
+            else{
+              //filename & path are good fetch associated metadata
+              $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
+              $scope.fetchMetadata('{"associationIds":"' +  $scope.fileMetadataObject[0].uuid + '"}')
+            }
           }
         },
         function(response){
@@ -117,6 +126,33 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           }
         );
       }
+
+      $scope.updateFileObject = function(fileobject){
+        var body={};
+        //associate system file with this metadata File object
+        body.associationIds = fileobject.associationIds;
+        body.name = 'File';
+        body.value= {};
+        body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+        body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
+        //File Schema uuid
+        body.schemaId = '3557207775540866585-242ac1110-0001-013';
+        MetaController.updateMetadata(body,fileobject.uuid)
+          .then(
+            function(response){
+              $scope.metadataUuid = response.result.uuid;
+              App.alert({message: $translate.instant('File is ready for adding metadata') });
+              //add the default permissions for the system in addition to the owners
+              MetadataService.addDefaultPermissions($scope.metadataUuid);
+              $scope.requesting = false;
+              $scope.refresh();
+            },
+            function(response){
+              MessageService.handle(response, $translate.instant('error_metadata_add'));
+              $scope.requesting = false;
+            }
+          );
+        }
 
 
 
