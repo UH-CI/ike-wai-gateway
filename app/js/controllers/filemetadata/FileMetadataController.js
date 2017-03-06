@@ -10,7 +10,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
 
-    $scope.query = '{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = ''//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
@@ -30,9 +30,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
         function (response) {
           $scope.fileMetadataObject = response.result;
+          $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
           if ($scope.fileMetadataObject == ""){
             //we have no object so create a new on
             $scope.createFileObject($stateParams.uuid);
+          }
+          else{
+            //we have an object to modify our query for gettting metadata
+            $scope.fetchMetadata('{"associationIds":"' +  $scope.fileMetadataObject[0].uuid + '"}')
           }
         },
         function(response){
@@ -40,7 +45,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.requesting = false;
         }
       )
-      MetaController.listMetadata($scope.query,null,0).then(
+
+      MetaController.listMetadataSchema(
+        $scope.schemaQuery
+      ).then(function(response){$scope.metadataschema = response.result;})
+
+    };
+
+    $scope.fetchMetadata = function(metadata_query){
+      MetaController.listMetadata(metadata_query,100,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
@@ -52,11 +65,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.requesting = false;
           }
       );
-
-      MetaController.listMetadataSchema(
-        $scope.schemaQuery
-      ).then(function(response){$scope.metadataschema = response.result;})
-
     };
 
     $scope.searchTools = function(query){
