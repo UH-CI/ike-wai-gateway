@@ -9,6 +9,9 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
         .then(
           function(response){
             $scope.metadatum = response.result;
+            if($scope.metadatum.associationIds.length > 0){
+              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'uuid':{$in: ['"+$scope.metadatum.associationIds.join("','")+"']}}]}")
+            }
             $scope.requesting = false;
           },
           function(response){
@@ -20,6 +23,19 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
       MessageService.handle(response, $translate.instant('error_metadata_details'));
       $scope.requesting = false;
     }
+  };
+
+  $scope.fetchFileMetadata = function(metadata_query){
+    MetaController.listMetadata(metadata_query,100,0).then(
+        function (response) {
+          $scope.filemetadata = response.result;
+          $scope.requesting = false;
+        },
+        function(response){
+          MessageService.handle(response, $translate.instant('error_filemetadata_list'));
+          $scope.requesting = false;
+        }
+    );
   };
 
   $scope.download = function(file_url){

@@ -30,9 +30,8 @@
             <tr ng-if="metadatum.value" ng-repeat="(key, value) in metadatum.value">
               <td>{{key}}</td><td>{{value}}</td>
             </tr>
-            <tr ng-if="metadatum.associationIds">
-              <td>Associated Files</td>
-              <td>{{metadatum.associationIds}}<br/>
+            <tr>
+              <td>
                 <table class="table">
                   <thead class="hidden-sm hidden-xs">
                   <tr>
@@ -41,11 +40,11 @@
                    </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat="associationId in metadatum._links['associationIds']">
-                        <td><a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId.href.split('system')[1]}}</a></td>
+                    <tr ng-repeat="associationId in filemetadata">
+                        <td><a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId._links.associationIds[0].href}}</a></td>
                         <td>
-                          <button type="button" class="btn btn-success text-center"  ng-click="download([associationId.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
-                          <button type="button" class="btn btn-success text-center"  ng-click="unAssociateMetadata(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)])"><i class="fa fa-trash"></i> Remove Association</button>
+                          <button type="button" class="btn btn-success text-center"  ng-click="download([associationId._links.associationIds[0].href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
+                          <button type="button" class="btn btn-success text-center"  ng-click="unAssociateMetadata(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId.uuid)])"><i class="fa fa-trash"></i> Remove Association</button>
                         </td>
                       </tr>
                   </tbody>
