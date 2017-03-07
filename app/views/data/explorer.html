@@ -1,16 +1,22 @@
+<!-- 
 <div class="page-bar">
-    <ul class="page-breadcrumb">
+
+    <ul class="page-breadcrumb" >
         <li>
             <a href="#/dashboard">Dashboard</a>
             <i class="fa fa-circle"></i>
         </li>
         <li>
-            <a href="#/data/explorer/">My Data</a>
+            <a ng-if="system.default" href="#/data/explorer/">My Data</a>
+            <a ng-if="system.id == 'ikewai-team-data-preview'" href="#/data/explorer/ikewai-team-data-preview/">Team Data Preview</a>
         </li>
     </ul>
+
     <div landing-start-menu></div>
 </div>
-<h3 class="page-title"> My Data</h3>
+-->
+<h3 ng-if="system.default" class="page-title"> My Data</h3>
+<h3 ng-if="!system.default" class="page-title"> Team Data Preview</h3>
 
 <div class="row text-center" ng-show="requesting">
     <div class="col-md-12">
