@@ -68,7 +68,7 @@
                   <h4>{{filename}}</h4>
                 </div>
                 <div class="btn-group pull-right">
-                  <a ui-sref="metadata-add-association({uuid: fileMetadataObject[0].uuid,filename: filename})" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate With Existing Metadata </a>
+                  <a href='#' ng-click="open()" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
                 </div>
                 <div class="btn-group pull-right">
                     <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
@@ -127,7 +127,7 @@
                                                 </span>
                                                   &nbsp;
                                                   <span>
-                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"role="button"> <i class="fa fa-trash-o"></i> Remove </a>
+                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)"role="button"> <i class="fa fa-trash-o"></i> Remove </a>
                                                 </span>
                                           </div>
                                       </td>
