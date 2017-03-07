@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService) {
 	$scope.model = {};
 		if ($stateParams.associatedUuid){
 			$scope.model.associatedUuid = $stateParams.uuid;
@@ -69,7 +69,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
     // Then we check if the form is valid
 	    if (form.$valid) {
 				var body = {};
-				body.associationIds = $scope.fileUuids;//$scope.model.associatedUuid;
+				//body.associationIds = $scope.fileUuids;//$scope.model.associatedUuid;
 				body.name = $scope.selectedmetadataschema.schema.title;
 				body.value = $scope.model;
 				body.schemaId = $scope.selectedmetadataschema.uuid;
@@ -79,8 +79,10 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 							$scope.metadataUuid = response.result.uuid;
 							//add the default permissions for the system in addition to the owners
 							MetadataService.addDefaultPermissions($scope.metadataUuid);
+							MetadataService.addAssociation($scope.fileUuids[0],$scope.metadataUuid);
 							$scope.requesting = false;
-							$state.go('filemetadata',{id: $scope.fileUuids[0]});
+							//$state.go('filemetadata',{id: $scope.fileUuids[0]});
+							$window.history.back();
 							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
 						},
 						function(response){
