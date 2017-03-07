@@ -1,5 +1,21 @@
 angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope', '$localStorage', '$location', '$state', '$timeout', '$q', '$translate', 'PostitsController', 'MetaController', 'MessageService', function($uibModal, $rootScope, $localStorage, $location, $state, $timeout, $q, $translate, PostitsController, MetaController, MessageService){
 
+  function deferredHandler(data, deferred, errorMessage) {
+      if (!data || typeof data !== 'object') {
+          return deferred.reject('Bridge response error, please check the docs');
+      }
+      if (data.result && data.result.error) {
+          return deferred.reject(data);
+      }
+      if (data.error) {
+          return deferred.reject(data);
+      }
+      if (errorMessage) {
+          return deferred.reject(errorMessage);
+      }
+      return deferred.resolve(data);
+  }
+
     //For now we do this - in the future the bulk update API will make this one callback
     //Also when Groups are in place this can be simplified as well
     this.addDefaultPermissions = function(metadataUuid){
@@ -60,7 +76,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + metadataUuid });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
@@ -81,5 +97,9 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
       });
       return true;
+    }
+
+    this.getAdmins = function(){
+      return ['seanbc','jgeis'];
     }
 }]);

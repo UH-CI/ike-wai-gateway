@@ -1,14 +1,19 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService,MetadataService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
+
+    $scope.profile = $localStorage.activeProfile;
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
 
     //Don't display metadata of these types
-    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
+    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
+
+    //set admin
+    $scope.edit_perm = MetadataService.getAdmins;
 
     $scope.query = ''//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";

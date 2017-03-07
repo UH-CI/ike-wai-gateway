@@ -122,11 +122,13 @@
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
-
+                                                  <span ng-show='profile.useranme == filemetadata.owner || (edit_perm.indexOf(profile.username) > -1)'>
                                                   <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                                </span>
                                                   &nbsp;
+                                                  <span>
                                                   <a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"role="button"> <i class="fa fa-trash-o"></i> Remove </a>
-
+                                                </span>
                                           </div>
                                       </td>
                                   </tr>
