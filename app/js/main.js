@@ -269,7 +269,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 ***/
 
 /* Setup Layout Part - Header */
-AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoController', function($scope, $localStorage, StatusIoController) {
+AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', '$http', '$rootScope', 'StatusIoController', function($scope, $localStorage, $http, $rootScope, StatusIoController) {
     $scope.showTokenCountdown = true;
 
     // get token countdown time
@@ -278,9 +278,11 @@ AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoCo
       var expirationDate = Date.parse($localStorage.token.expires_at);
       var diff = Math.abs((expirationDate - currentDate) / 60000);
       $scope.tokenCountdown = diff * 60;
+      $scope.expiration = $localStorage.token.expires_at;
     }
 
     $scope.authenticatedUser = $localStorage.activeProfile;
+    $scope.tenant  = $localStorage.tenant;
     $scope.platformStatus = { status:'Up', statusCode: 100, incidents: [], issues:[]};
 
     StatusIoController.listStatuses().then(
@@ -315,6 +317,46 @@ AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', 'StatusIoCo
     $scope.$on('$includeContentLoaded', function() {
         Layout.initHeader(); // init header
     });
+
+    $scope.user = ($localStorage.client && angular.copy($localStorage.client)) || {
+            username: '',
+            password: '',
+            client_key: '',
+            client_secret: '',
+            remember: 0
+    };
+
+    $scope.refreshAuthToken = function() {
+        var data = {
+            grant_type: 'refresh_token',
+            refresh_token: $localStorage.token.refresh_token,
+            scope: 'PRODUCTION'
+        };
+
+
+        //data = queryString.stringify(data);
+
+        var options = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': btoa($scope.user.client_key + ':' + $scope.user.client_secret)
+            }
+        };
+
+        return $http.post($scope.tenant.baseUrl + '/token', data, options).then(
+            function (response) {
+                $localStorage.token = response;
+                currentDate = new Date();
+                expirationDate = Date.parse($localStorage.token.expires_at);
+                diff = Math.abs((expirationDate - currentDate) / 60000);
+                $scope.tokenCountdown = diff * 60;
+                return response;
+            },
+            function(response) {
+                //$rootScope.broadcast('oauth:denied');
+            });
+    };
+
 }]);
 
 /* Setup Layout Part - Sidebar */
