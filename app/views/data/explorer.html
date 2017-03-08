@@ -16,7 +16,8 @@
 </div>
 -->
 <h3 ng-if="system.default" class="page-title"> My Data</h3>
-<h3 ng-if="!system.default" class="page-title"> Team Data Preview</h3>
+<h3 ng-if="system.id === 'Ikewai-team-data-preview'" class="page-title"> Team Data Preview</h3>
+<h3 ng-if="system.id === 'ikewai-archive'" class="page-title"> 'Ike Wai Repository</h3>
 
 <div class="row text-center" ng-show="requesting">
     <div class="col-md-12">
