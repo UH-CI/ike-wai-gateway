@@ -95,7 +95,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.unAssociateMetadata = function(metadatum){
       $scope.requesting = true;
-      var unAssociate = $window.confirm('Are you absolutely sure you want to remove the association?');
+      var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     if (unAssociate) {
       FilesMetadataService.removeAssociation($scope.fileMetadataObject[0].uuid, metadatum.uuid).then(function(result){

@@ -321,7 +321,7 @@
                 <a href="javascript:;" ng-click="showTokenCountdown = !showTokenCountdown" class="dropdown-toggle">
                     <i class="icon fa fa-clock-o"></i>
                   <!--  <timer class="agave-message" countdown="tokenCountdown" interval="1000" ng-show="showTokenCountdown">Session expires in {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer>-->
-                    Session expire at {{expiration | date:'HH:mm'}}
+                    Session expires at {{expiration | date:'HH:mm'}}
                 </a>
             </li>
             <!--<li>
@@ -389,13 +389,21 @@
             <!-- END LANGUAGE BAR -->
             <!-- BEGIN USER LOGIN DROPDOWN -->
             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-            <li class="dropdown dropdown-user">
+            <li class="btn btn-sm"><a href="/auth/#/logout"><i class="icon-lock"></i> {{"Logout" | translate}}</a></li>
+                <!-- 
+                <a href="/auth/#/logout">
+                <button class="btn btn-sm btn-default">
+                    <i class="icon-lock"></i> {{"Logout" | translate}}
+                </button></a>
+                 -->
+            <!-- <li class="dropdown dropdown-user">
                 <a href="#" class="dropdown-toggle" dropdown-menu-hover data-toggle="dropdown" data-close-others="true">
                     <img alt="" class="img-circle" ng-src="https://www.gravatar.com/avatar/{{ authenticatedUser.email | gravatar }}" />
                     <span class="username username-hide-on-mobile"> {{ authenticatedUser.firstName }} </span>
                     <i class="fa fa-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-default">
+                 -->
                   <!--  <li>
                         <a href="#/profile/me/account">
                             <i class="icon-user"></i> My Profile </a>
@@ -412,6 +420,7 @@
                             <!--<span class="badge badge-success"> 7 </span>-->
                         <!--</a>-->
                     <!--</li>-->
+                    <!-- 
                     <li class="divider"> </li>
                     <li>
                         <a href="/auth/#/logout">
@@ -419,6 +428,7 @@
                     </li>
                 </ul>
             </li>
+             -->
             <!-- END USER LOGIN DROPDOWN -->
             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
