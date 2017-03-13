@@ -1,4 +1,4 @@
-<!-- 
+<!--
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
@@ -18,6 +18,15 @@
 -->
 <h3 class="page-title"> Create and Associate Metadata:
 </h3>
+<table>
+  <tbody>
+    <tr ng-repeat="path in filePaths track by $index| orderBy:sortType:sortReverse | filter:filter">
+        <td>
+            {{path | decodeURL}}
+        </td>
+      </tr>
+    </table>
+</table>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
