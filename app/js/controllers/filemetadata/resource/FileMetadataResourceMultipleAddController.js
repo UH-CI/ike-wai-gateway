@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
 		$scope.fileUuids = $stateParams['fileUuids'];
@@ -144,4 +144,135 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					);
 				}
 		};
-	});
+		$scope.animationsEnabled = true;
+
+/////////Modal Stuff/////////////////////
+			$scope.fetchModalMetadata = function(query){
+				MetaController.listMetadata(
+					query
+				)
+					.then(
+						function (response) {
+							$scope.metadata= response.result;
+							$scope.requesting = false;
+						},
+						function(response){
+							MessageService.handle(response, $translate.instant('error_metadata_list'));
+							$scope.requesting = false;
+						}
+				);
+
+			}
+		$scope.addAssociation = function(metadatumUuid) {
+			alert('ding assoc')
+			if (metadatumUuid){
+				$scope.requesting = true;
+				angular.forEach($scope.fileMetadataObjects, function(value, key){
+						$scope.metadatum = value;
+						var body = {};
+						body.associationIds = $scope.metadatum.associationIds;
+						//check if fileUuid is already associated
+						if (body.associationIds.indexOf(metadatumUuid) < 0) {
+							body.associationIds.push(metadatumUuid);
+							body.name = $scope.metadatum.name;
+							body.value = $scope.metadatum.value;
+							body.schemaId = $scope.metadatum.schemaId;
+							MetaController.updateMetadata(body,value.uuid)
+							.then(
+								function(response){
+									alert('associated')
+									App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
+									$scope.requesting = false;
+									$scope.refresh();
+									//$state.go('metadata',{id: $scope.metadataUuid});
+								},
+								function(response){
+									MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+									$scope.requesting = false;
+								}
+							)
+						}
+						else {
+							App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + metadatumUuid });
+							return
+						}
+					})
+				}
+			else{
+					 MessageService.handle(schema_response, $translate.instant('error_no_metadata_uuid'));
+				 }
+				 $scope.requesting = false;
+			}
+
+			$scope.addClone = function(metadatumUuid) {
+				if (metadatumUuid){
+					$scope.requesting = true;
+					MetaController.getMetadata(metadatumUuid)
+						.then(function(response){
+							$scope.metadatum = response.result;
+							var body = {};
+							body.name = $scope.metadatum.name;
+							body.value = $scope.metadatum.value;
+							body.schemaId = $scope.metadatum.schemaId;
+							MetaController.addMetadata(body)
+								.then(
+									function(response){
+										$scope.new_metadataUuid = response.result.uuid;
+										MetadataService.addDefaultPermissions($scope.new_metadataUuid);
+										App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
+										$scope.addAssociation($scope.new_metadataUuid)
+										$scope.requesting = false;
+										$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
+									},
+									function(response){
+										MessageService.handle(response, $translate.instant('error_metadata_add'));
+										$scope.requesting = false;
+									}
+								)
+						})
+					 }
+				else{
+						 MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+					 }
+					 $scope.requesting = false;
+				}
+
+				$scope.open = function (size) {
+					$scope.fetchModalMetadata();
+					var modalInstance = $uibModal.open({
+						animation: $scope.animationsEnabled,
+						templateUrl: 'views/modals/ModalAssociateMetadata.html',
+						controller: 'ModalAssociateMetadataMultiFileCtrl',
+						scope: $scope,
+						size: size,
+						resolve: {
+
+						}
+					}
+				);
+
+		};
+
+}).controller('ModalAssociateMetadataMultiFileCtrl', function ($scope, $modalInstance, MetaController) {
+	///$scope.uuid = filemetadatumUuid;
+	$scope.cancel = function () {
+		$modalInstance.close();
+	};
+
+	$scope.fetchModalMetadata = function(query){
+		MetaController.listMetadata(
+			query
+		)
+			.then(
+				function (response) {
+					$scope.metadata= response.result;
+					$scope.requesting = false;
+				},
+				function(response){
+					MessageService.handle(response, $translate.instant('error_metadata_list'));
+					$scope.requesting = false;
+				}
+		);
+
+	}
+});
