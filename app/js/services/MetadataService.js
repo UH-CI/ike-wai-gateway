@@ -38,10 +38,10 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + body.name });
             },
             function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+              MessageService.handle(response, $translate.instant('error_metadata_remove'));
             }
 
           )
@@ -55,7 +55,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
         },
         function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+          deferredHandler(data, deferred, $translate.instant('error_metadata_remove'));
 
       });
       return true;
@@ -76,10 +76,10 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name });
             },
             function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+              MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
             }
 
           )
@@ -93,7 +93,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
         },
         function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+          deferredHandler(data, deferred, $translate.instant('error_metadata_add_assocation'));
 
       });
       return true;
