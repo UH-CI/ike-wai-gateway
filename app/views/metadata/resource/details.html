@@ -72,17 +72,10 @@
       </div>
     </div>
     <div class="col-xs-3">
-      <div ng-if="metadatum" class="btn-group pull-right">
-          <a class="btn red btn-outline" href="#" data-toggle="dropdown">
-              Actions
-              <i class="fa fa-angle-down"></i>
-          </a>
-          <ul class="dropdown-menu pull-right">
-            <li>
-              <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
-            </li>
-          </ul>
-      </div>
-    </div>
+                                          
+     <div ng-if="metadatum" class="btn-group">
+         <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+     </div>
+
   </div>
 </div>

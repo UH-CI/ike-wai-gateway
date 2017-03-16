@@ -121,7 +121,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         .then(
           function(response){
             $scope.metadataUuid = response.result.uuid;
-            App.alert({message: $translate.instant('File is ready for adding metadata') });
+            //App.alert({message: $translate.instant('File is ready for adding metadata') });
             //add the default permissions for the system in addition to the owners
             MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
@@ -148,7 +148,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           .then(
             function(response){
               $scope.metadataUuid = response.result.uuid;
-              App.alert({message: $translate.instant('File is ready for adding metadata') });
+              //App.alert({message: $translate.instant('File is ready for adding metadata') });
               //add the default permissions for the system in addition to the owners
               MetadataService.addDefaultPermissions($scope.metadataUuid);
               $scope.requesting = false;
@@ -189,6 +189,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
 
         }
+        
         $scope.addAssociation = function(metadatumUuid) {
           if (metadatumUuid){
         		$scope.requesting = true;
@@ -206,7 +207,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   MetaController.updateMetadata(body,$scope.fileMetadataObject[0].uuid)
                   .then(
                     function(response){
-                      App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
+                      // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
+                      App.alert({message: $translate.instant('success_metadata_update_assocation') });
                       $scope.requesting = false;
                       $scope.refresh();
                       //$state.go('metadata',{id: $scope.metadataUuid});
@@ -218,7 +220,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   )
                 }
                 else {
-                  App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + metadatumUuid });
+                  App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') });
                   return
                 }
               })
@@ -244,7 +246,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       function(response){
                         $scope.new_metadataUuid = response.result.uuid;
                         MetadataService.addDefaultPermissions($scope.new_metadataUuid);
-                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
+                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name });
                         $scope.addAssociation($scope.new_metadataUuid)
                         $scope.requesting = false;
                         $state.go('metadata-edit',{uuid: $scope.new_metadataUuid});

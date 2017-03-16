@@ -192,9 +192,11 @@ AgaveToGo.config(function($translateProvider) {
     error_systems_template: 'Error: Could not retrieve system template',
 
     error_metadata_update_assocation: 'Error: could not update Metadata associations',
+    error_metadata_add_assocation: 'Error: could not add file/Metadata associations',
     error_metadata_update_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update: 'Error: Could not update Metadata',
-    error_metadata_add: 'Error: Could not create Metadata objet',
+    error_metadata_add: 'Error: Could not create Metadata object',
+    error_metadata_remove: 'Error: could not remove Metadata associations',
 
 
     error_metadataschemas_get: 'Error, Could not fetch Metadata Schemas',
@@ -213,8 +215,10 @@ AgaveToGo.config(function($translateProvider) {
     success_systems_roles: 'Success: updated roles for ',
 
     success_metadata_update_assocation: 'Success: updated Metadata associations',
+    success_metadata_add_assocation: 'Success: added file/Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
     success_metadata_add: 'Success: new Metadata created',
+    success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
     setDefault: 'set to default',
     unsetDefault: 'unset default'

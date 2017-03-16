@@ -99,7 +99,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
         .then(
           function(response){
             $scope.metadataUuid = response.result.uuid;
-            App.alert({message: $translate.instant('File is ready for adding metadata') });
+            //App.alert({message: $translate.instant('File is ready for adding metadata') });
             //add the default permissions for the system in addition to the owners
             MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
@@ -181,7 +181,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 							.then(
 								function(response){
 									alert('associated')
-									App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
+									App.alert({message: $translate.instant('success_metadata_update_assocation')});
 									$scope.requesting = false;
 									$scope.refresh();
 									//$state.go('metadata',{id: $scope.metadataUuid});
@@ -193,7 +193,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 							)
 						}
 						else {
-							App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + metadatumUuid });
+							App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') });
 							return
 						}
 					})

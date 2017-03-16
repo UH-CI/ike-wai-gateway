@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3 class="modal-title">Associate and Clone Metadata</h3>
+    <h3 class="modal-title"><span ng-if="fileMetadataObject[0]">Associate or </span>Clone Metadata</h3>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -86,11 +86,12 @@
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group pull-left">
-                                              <a class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
+                                              <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
+                                              <a ng-if="fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0" class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
                                                   Associate
                                                   <i class="fa fa-link"></i>
                                               </a>
-                                              <a ng-if="" class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
+                                              <a ng-if="fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum)">
                                                   Remove Association
                                                   <i class="fa fa-trash"></i>
                                               </a>
@@ -113,6 +114,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-    <button class="btn btn-primary" ng-click="submit()">Submit</button>
+    <button class="btn btn-default" ng-click="cancel()">Close</button>
+    <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
 </div>

@@ -76,7 +76,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
             MetaController.updateMetadata(body,metadatumUuid)
             .then(
               function(response){
-                App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + metadatumUuid });
+                App.alert({message: $translate.instant('success_metadata_update_assocation') + ' ' + body.value });
                 $scope.requesting = false;
                 //$state.go('metadata',{id: $scope.metadataUuid});
               },
@@ -87,7 +87,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
             )
           }
           else {
-            App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + metadatumUuid });
+            App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') + ' ' + body.value });
             return
           }
         })
@@ -113,7 +113,7 @@ angular.module('AgaveToGo').controller("MetadataResourceAddAssociationController
               .then(
                 function(response){
                   $scope.new_metadataUuid = response.result.uuid;
-                  App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
+                  App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name });
                   $scope.requesting = false;
                   $state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
                 },
