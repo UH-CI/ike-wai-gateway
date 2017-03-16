@@ -1,7 +1,9 @@
 auth/scripts/implicit.js
 rotate_keys.sh
 bower_components
-node_modules
+node_modules/
 .idea
 .project
 .settings
+node_modules
+.gitignore.swp
