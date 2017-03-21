@@ -1845,16 +1845,19 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
+                            'js/services/PermissionsService.js',
                             'js/services/MetadataService.js',
                             'js/services/FilesMetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
-                            'js/controllers/metadata/MetadataController.js'
+                            'js/controllers/metadata/MetadataController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'   
                         ]
                     });
                 }]
             }
         })
-
+/*
         .state("metadata", {
           abtract: true,
           url:"/metadata/:id",
@@ -1875,7 +1878,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }]
           }
         })
-
+*/
         .state("metadata.details", {
           url: "",
           templateUrl: "views/metadata/resource/details.html",
@@ -2067,7 +2070,9 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/FilesMetadataService.js',
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
-                            'js/controllers/filemetadata/FileMetadataController.js'
+                            'js/controllers/filemetadata/FileMetadataController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
                         ]
                     });
                 }]

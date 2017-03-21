@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <h3 class="modal-title">Edit Metadata Object</h3>
+    <h4 style="text-align:left;float:left;"> {{metadatum.value.well_name}} {{metadatum.value.wid}} 
+    {{metadatum.value.variable_name}} {{metadatum.value.description}} 
+    {{metadatum.value.tags.toString()}}</h4>
+    <h4 style="text-align:right;float:right;">Type: {{metadataschema.schema.title}}</h4>
+    <div style="clear: both;"></div>
+</div>
+<!-- <h3 class="page-title"> Edit Metadata Object</h3>-->
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="portlet light bordered" id="form_wizard_1">
+        <!-- 
+        <div class="portlet-title">
+          <div class="caption">
+            <i class=" icon-layers font-red"></i>
+            <span class="caption-subject font-red bold uppercase">Metadata Object Edit - {{metadataschema.schema.title}}</span>
+            </span>
+          </div>
+        </div>
+        -->
+		<div class="portlet-body form">
+		
+		<!-- 
+		  <form name="updateFilemetadataForm"
+           sf-schema="schema"
+           sf-form="form"
+           sf-model="model"
+           ng-submit="onSubmit(updateFilemetadataForm)">
+          </form>
+		 -->
+
+          <form name="updateFilemetadataForm">
+           <div sf-schema="schema" sf-form="form" sf-model="model"></div>
+           <input type="submit" name="saveBtn" class="btn btn-default" value="Save" ng-click="onSubmit(updateFilemetadataForm)">
+           <button class="btn" name="closeBtn"  ng-click="close()">Cancel</button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="close()">Close</button>
+</div>
+-->

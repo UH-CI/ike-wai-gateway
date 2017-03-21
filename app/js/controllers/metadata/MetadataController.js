@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, MetaController, FilesController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -49,13 +49,46 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.searchTools = function(query){
       $scope.query = query;
       $scope.refresh();
-    }
+    };
 
 
     $scope.refresh();
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
-    }
+    };
+    
+/////////Modal Stuff/////////////////////
 
+    $scope.openEdit = function (metadatumuuid, size) {
+    	$scope.metadataUuid = metadatumuuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalEditMetadata.html',
+          controller: 'ModalMetadataResourceEditController',
+          scope: $scope,
+          size: size,
+          metadataUuid: metadatumuuid,
+          resolve: {
+
+          }
+        }
+      );
+    };
+
+    $scope.openView = function (metadatumuuid, size) {
+    	$scope.metadataUuid = metadatumuuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalViewMetadata.html',
+          controller: 'ModalMetadataResourceDetailsController',
+          scope: $scope,
+          size: size,
+          metadataUuid: metadatumuuid,
+          resolve: {
+
+          }
+        }
+      );
+    };
 });

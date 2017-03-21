@@ -1,21 +1,17 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceEditController", function($scope, $state, $stateParams, $translate, WizardHandler, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", function($scope, $modalInstance, $state, $translate, $window, WizardHandler, MetaController, MetadataService, ActionsService, MessageService) {
 
-  $scope.fileUuid = $stateParams.uuid;
-	$scope.metadataUuid = $stateParams.filemetadatauuid;
+  $scope.close = function () {
+    $modalInstance.close();
+  };
 
-/*  if($scope.fileUuid){
-      FilesController.listFileItems(fileUuid){
-        .then(function(response){
-          $scope.file = response;
-
-        })
-      }
-  }*/
-
-
-  if ($scope.metadataUuid){
-		$scope.requesting = true;
-	  MetaController.getMetadata($scope.metadataUuid)
+  $scope.metadatum = null;
+  
+  $scope.getModalMetadatum = function(){
+	$scope.requesting = true;
+	var uuid = this.$parent.metadataUuid;
+    if (uuid){
+	  $scope.requesting = true;
+	  MetaController.getMetadata(uuid)
       .then(function(response){
         $scope.metadatum = response.result;
         if($scope.metadatum){
@@ -31,11 +27,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
                 $scope.model[key] = $scope.metadatum.value[key];
               });
               $scope.form = [
-                "*",
-                {
-                  type: "submit",
-                  title: "Save"
-                }
+                "*"/*,
+                { type: "submit", title: "Save" },
+                { type: "button", title: 'Cancel', onClick: "close()" }*/
               ];
             }
           )
@@ -50,10 +44,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
     else{
       //  MessageService.handle($translate.instant('error_filemetadata_get'));
     }
-
-//	$scope.delete = function(){
-//		//ActionsService.confirmAction('metadata', $scope.metadata, 'delete');
-//	};
+  }
 
   $scope.onSubmit = function(form) {
     $scope.requesting = true;
@@ -68,9 +59,12 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
       MetaController.updateMetadata(body,$scope.metadataUuid)
         .then(
           function(response){
-            App.alert({message: $translate.instant('success_metadata_update') });
+            //App.alert({message: $translate.instant('success_metadata_update') });
+			//make sure default permissions are set
+			MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
-            $state.go('metadata',{id: $scope.metadataUuid});
+			//$window.history.back();
+            //  $state.go('metadata',{id: $scope.metadataUuid});
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_metadata_update'));
@@ -78,8 +72,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceEditController", fun
           }
         )
       }
+    $scope.close();
   };
 
 
-
+  $scope.getModalMetadatum();
 });
