@@ -85,6 +85,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						$scope.metadataUuid = response.result.uuid;
 						//add the default permissions for the system in addition to the owners
 						MetadataService.addDefaultPermissions($scope.metadataUuid);
+						//check if this is for a file object or just a new metadata creation
+						if ($scope.fileMetadataObjects){
 						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
 							.then(function(response) {
 							//	need to send to modal instead
@@ -92,13 +94,15 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 								$rootScope.$broadcast('metadataUpdated');
 								$scope.refresh();
 							});
-							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
 
-					},
-					function(response){
-						MessageService.handle(response, $translate.instant('error_metadata_add'));
-						$scope.requesting = false;
-					}
+						}
+							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+						  $rootScope.$broadcast('metadataUpdated');
+						},
+						function(response){
+							MessageService.handle(response, $translate.instant('error_metadata_add'));
+							$scope.requesting = false;
+						}
 				);
 			}
 			$rootScope.$broadcast('associationsUpdated')
