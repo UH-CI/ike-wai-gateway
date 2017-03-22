@@ -92,6 +92,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $rootScope.$on("metadataUpdated", function(){
       $scope.refresh();
     });
+    
+    $rootScope.$on("associationsUpdated", function(){
+      $scope.refresh();
+    });
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
@@ -302,6 +306,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         };
 
         $scope.openViewMetadata = function (metadatumuuid, size) {
+
         	$scope.metadataUuid = metadatumuuid;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -309,6 +314,24 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               controller: 'ModalMetadataResourceDetailsController',
               scope: $scope,
               size: size,
+              resolve: {
+
+              }
+            }
+          );
+        };
+
+        $scope.openCreate = function (schemauuid, size) {
+            $scope.fileMetadataObjects = $scope.fileMetadataObject
+          $scope.selectedSchemaUuid = schemauuid;
+            var modalInstance = $uibModal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'views/modals/ModalCreateMetadata.html',
+              controller: 'ModalMetadataResourceCreateController',
+              scope: $scope,
+              size: size,
+              schemaUuid: schemauuid,
+              fileMetadataObjects: $scope.fileMetadataObjects,
               resolve: {
 
               }

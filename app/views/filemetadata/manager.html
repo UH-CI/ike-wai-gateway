@@ -1,4 +1,4 @@
-<!-- 
+<!--
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-            <!-- 
+            <!--
             <div class="portlet-title">
                 <div class="row text-center">
                   <div class="col-md-12">
@@ -53,7 +53,7 @@
                         <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
                       </button>
                     </div>
-                </div> 
+                </div>
             </div>
             -->
             <div class="portlet-body">
@@ -77,7 +77,7 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
-                        <a ui-sref="filemetadata-multipleadd({schemauuid: metadataschemata.uuid, fileUuids: [fileMetadataObject[0].uuid], filename: filename})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                        <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                       </li>
                     </ul>
                 </div>

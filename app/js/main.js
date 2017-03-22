@@ -2072,6 +2072,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/filemetadata/FileMetadataController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
                         ]

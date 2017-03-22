@@ -1,29 +1,29 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, MetaController, MetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
 
 
 	$scope.close = function () {
 	  $modalInstance.close();
 	};
-	
+
 	$scope.model = {};
-	
+
 	$scope.schemaQuery ='';
-	
+
 	var selectedSchemaUuid = '';
-	
+
 	$scope.initialize = function() {
 		selectedSchemaUuid = this.$parent.selectedSchemaUuid;
 		$scope.refresh();
 	}
-	
+
 	$scope.changeSchema = function(schemauuid) {
 		selectedSchemaUuid = schemauuid;
 		$scope.refresh();
 	}
-	
+
 	$scope.fetchMetadataSchema = function() {
 		$scope.requesting = true;
-		
+
 		MetaController.getMetadataSchema(selectedSchemaUuid)
 			.then(
 				function(response){
@@ -45,10 +45,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				}
 		);
 	}
-	
+
 	$scope.refresh = function() {
 		$scope.requesting = true;
-	
+
 		MetaController.listMetadataSchema(
 			$scope.schemaQuery
 		).then(function(response){
@@ -59,8 +59,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				$scope.fetchMetadataSchema(selectedSchemaUuid);
 		}
 	};
-	
-	
+
+
 	$scope.onSubmit = function(form) {
 		$scope.requesting = true;
 		$scope.$broadcast('schemaFormValidate');
@@ -76,20 +76,24 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.latitude,$scope.model.longitude]}
 					body.geospatial= true;
 			}
-	
+
 			//should be able to create metadata object with permissions set BUT not working at the moment
 			//body.permissions = [{"username":"public","permission":"READ"},{"username":"seanbc","permission":"ALL"},{"username":"jgeis","permission":"ALL"},{"username":"ike-admin","permission":"ALL"}];
 			MetaController.addMetadata(body)
 				.then(
 					function(response){
 						$scope.metadataUuid = response.result.uuid;
-						//var newMetadataUuid = response.result.uuid;
-						App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
 						//add the default permissions for the system in addition to the owners
 						MetadataService.addDefaultPermissions($scope.metadataUuid);
-						$scope.requesting = false;
-						//$window.history.back();
-						//$state.go('metadata',{id: $scope.metadataUuid});
+						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
+							.then(function(response) {
+							//	need to send to modal instead
+								$scope.requesting = false;
+								$rootScope.$broadcast('metadataUpdated');
+								$scope.refresh();
+							});
+							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+
 					},
 					function(response){
 						MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -97,10 +101,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					}
 				);
 			}
+			$rootScope.$broadcast('associationsUpdated')
 		$scope.close();
 		//$parent.refresh();
 	};
-	
+
 	$scope.initialize();
 });
-
