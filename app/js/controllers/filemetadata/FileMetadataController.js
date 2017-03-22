@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -88,6 +88,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
 
     $scope.refresh();
+
+    $rootScope.$on("metadataUpdated", function(){
+      $scope.refresh();
+    });
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
