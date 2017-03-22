@@ -10,7 +10,7 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
           function(response){
             $scope.metadatum = response.result;
             if($scope.metadatum.associationIds.length > 0){
-              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'uuid':{$in: ['"+$scope.metadatum.associationIds.join("','")+"']}}]}")
+              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
             }
             $scope.requesting = false;
           },
