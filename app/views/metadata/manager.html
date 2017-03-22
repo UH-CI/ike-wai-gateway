@@ -73,7 +73,7 @@
                               <i class="fa fa-angle-down pull-right"></i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
+                            <li ng-repeat="metadataschemata in metadataschema " ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
                               <a ui-sref="metadata-add({schemauuid: metadataschemata.uuid})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                             </li>
                           </ul>
