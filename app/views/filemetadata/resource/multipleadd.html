@@ -88,7 +88,7 @@
                         <tbody>
                             <tr ng-repeat="matchingMetadatum in matchingMetadata | orderBy:sortType:sortReverse | filter:filter" >
                                 <td>
-                                    <a ui-sref="metadata({id: matchingMetadatum.uuid})"> {{matchingMetadatum.value.well_name}}{{matchingMetadatum.value.path}}
+                                    <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid)"> {{matchingMetadatum.value.well_name}}{{matchingMetadatum.value.path}}
                                      {{matchingMetadatum.value.wid}} {{matchingMetadatum.value.variable_name}} {{matchingMetadatum.value.description}} {{matchingMetadatum.value.tags.toString()}} </a>
                                 </td>
                                 <td class="hidden-xs">

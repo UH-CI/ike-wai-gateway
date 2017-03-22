@@ -1851,7 +1851,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/metadata/MetadataController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
-                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'   
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
                         ]
                     });
                 }]
@@ -2145,7 +2145,9 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/services/FilesMetadataService.js',
                           'js/controllers/MetadataQueryBuilderController.js',
                           'js/services/MetadataService.js',
-                          'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js'
+                          'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
                       ]
                     }
                   ]);

@@ -247,6 +247,38 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 		};
 
+		$scope.openEditMetadata = function (metadatumuuid, size) {
+			$scope.metadataUuid = metadatumuuid;
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: 'views/modals/ModalEditMetadata.html',
+					controller: 'ModalMetadataResourceEditController',
+					scope: $scope,
+					size: size,
+					metadataUuid: metadatumuuid,
+					resolve: {
+
+					}
+				}
+			);
+		};
+		
+		$scope.openViewMetadata = function (metadatumuuid, size) {
+			$scope.metadataUuid = metadatumuuid;
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: 'views/modals/ModalViewMetadata.html',
+					controller: 'ModalMetadataResourceDetailsController',
+					scope: $scope,
+					size: size,
+					metadataUuid: metadatumuuid,
+					resolve: {
+
+					}
+				}
+			);
+		};
+
 }).controller('ModalAssociateMetadataMultiFileCtrl', function ($scope, $modalInstance, MetaController) {
 	///$scope.uuid = filemetadatumUuid;
 	$scope.cancel = function () {
