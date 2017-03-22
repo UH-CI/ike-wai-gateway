@@ -207,9 +207,16 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 										$scope.new_metadataUuid = response.result.uuid;
 										MetadataService.addDefaultPermissions($scope.new_metadataUuid);
 										App.alert({message: $translate.instant('success_metadata_add') + ' ' + $scope.new_metadataUuid });
-										$scope.addAssociation($scope.new_metadataUuid)
-										$scope.requesting = false;
-										$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
+										FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.new_metadataUuid)
+											.then(function(response) {
+												//$scope.matchingAssociationIds.push(metadatumUuid)
+												//$rootScope.$broadcast('associationsUpdated')
+
+											//	need to send to modal instead
+												$scope.requesting = false;
+												$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
+											});
+
 									},
 									function(response){
 										MessageService.handle(response, $translate.instant('error_metadata_add'));

@@ -86,22 +86,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="mathingMetadatum in matchingMetadata | orderBy:sortType:sortReverse | filter:filter" >
+                            <tr ng-repeat="matchingMetadatum in matchingMetadata | orderBy:sortType:sortReverse | filter:filter" >
                                 <td>
-                                    <a ui-sref="metadata({id: mathingMetadatum.uuid})"> {{mathingMetadatum.value.well_name}}{{mathingMetadatum.value.path}}
-                                     {{mathingMetadatum.value.wid}} {{mathingMetadatum.value.variable_name}} {{mathingMetadatum.value.description}} {{mathingMetadatum.value.tags.toString()}} </a>
+                                    <a ui-sref="metadata({id: matchingMetadatum.uuid})"> {{matchingMetadatum.value.well_name}}{{matchingMetadatum.value.path}}
+                                     {{matchingMetadatum.value.wid}} {{matchingMetadatum.value.variable_name}} {{matchingMetadatum.value.description}} {{matchingMetadatum.value.tags.toString()}} </a>
                                 </td>
                                 <td class="hidden-xs">
-                                    <a ui-sref="metadata({id: mathingMetadatum.uuid})"> {{mathingMetadatum.name}} </a>
+                                    <a ui-sref="metadata({id: matchingMetadatum.uuid})"> {{matchingMetadatum.name}} </a>
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                            <span ng-show='profile.useranme == mathingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
-                                            <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                            <span ng-show='profile.useranme == matchingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
+                                            <a ui-sref="metadata-edit({uuid:matchingMetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
                                           </span>
                                             &nbsp;
                                             <span>
-                                            <a href="#" ng-click="unAssociateMetadata(mathingMetadatum)" role="button"> <i class="fa fa-trash-o"></i> Remove </a>
+                                            <a href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove </a>
                                           </span>
                                     </div>
                                 </td>
