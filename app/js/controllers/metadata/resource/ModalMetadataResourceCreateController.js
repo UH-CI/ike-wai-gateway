@@ -1,0 +1,106 @@
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, MetaController, MetadataService, ActionsService, MessageService) {
+
+
+	$scope.close = function () {
+	  $modalInstance.close();
+	};
+	
+	$scope.model = {};
+	
+	$scope.schemaQuery ='';
+	
+	var selectedSchemaUuid = '';
+	
+	$scope.initialize = function() {
+		selectedSchemaUuid = this.$parent.selectedSchemaUuid;
+		$scope.refresh();
+	}
+	
+	$scope.changeSchema = function(schemauuid) {
+		selectedSchemaUuid = schemauuid;
+		$scope.refresh();
+	}
+	
+	$scope.fetchMetadataSchema = function() {
+		$scope.requesting = true;
+		
+		MetaController.getMetadataSchema(selectedSchemaUuid)
+			.then(
+				function(response){
+					$scope.selectedmetadataschema = response.result;
+					var formschema = {};
+					formschema["type"]="object";
+					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
+					formschema["required"] = $scope.selectedmetadataschema.schema.required;
+					$scope.schema = formschema;
+					$scope.form = [
+						"*"/*,
+						{
+							type: "submit",
+							title: "Save"
+						}*/
+					];
+					$scope.schema_selected = true;
+					$scope.requesting = false;
+				}
+		);
+	}
+	
+	$scope.refresh = function() {
+		$scope.requesting = true;
+	
+		MetaController.listMetadataSchema(
+			$scope.schemaQuery
+		).then(function(response){
+			$scope.metadataschema = response.result;
+			$scope.requesting = false;
+		})
+		if (selectedSchemaUuid != null) {
+				$scope.fetchMetadataSchema(selectedSchemaUuid);
+		}
+	};
+	
+	
+	$scope.onSubmit = function(form) {
+		$scope.requesting = true;
+		$scope.$broadcast('schemaFormValidate');
+		// Then we check if the form is valid
+		if (form.$valid) {
+
+			var body = {};
+			body.name = $scope.selectedmetadataschema.schema.title;
+			body.value = $scope.model;
+			body.schemaId = $scope.selectedmetadataschema.uuid;
+			//check for latitude - if there then store a geojson point
+			if($scope.model.latitude){
+					body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.latitude,$scope.model.longitude]}
+					body.geospatial= true;
+			}
+	
+			//should be able to create metadata object with permissions set BUT not working at the moment
+			//body.permissions = [{"username":"public","permission":"READ"},{"username":"seanbc","permission":"ALL"},{"username":"jgeis","permission":"ALL"},{"username":"ike-admin","permission":"ALL"}];
+			MetaController.addMetadata(body)
+				.then(
+					function(response){
+						$scope.metadataUuid = response.result.uuid;
+						//var newMetadataUuid = response.result.uuid;
+						App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+						//add the default permissions for the system in addition to the owners
+						MetadataService.addDefaultPermissions($scope.metadataUuid);
+						$scope.requesting = false;
+						//$window.history.back();
+						//$state.go('metadata',{id: $scope.metadataUuid});
+					},
+					function(response){
+						MessageService.handle(response, $translate.instant('error_metadata_add'));
+						$scope.requesting = false;
+					}
+				);
+			}
+		$scope.close();
+		//$parent.refresh();
+	};
+	
+	$scope.initialize();
+});
+

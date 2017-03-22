@@ -74,7 +74,7 @@
                           </a>
                           <ul class="dropdown-menu">
                             <li ng-repeat="metadataschemata in metadataschema " ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
-                              <a ui-sref="metadata-add({schemauuid: metadataschemata.uuid})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                              <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
                             </li>
                           </ul>
                       </div>

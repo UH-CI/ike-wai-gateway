@@ -64,6 +64,23 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
 /////////Modal Stuff/////////////////////
 
+    
+    $scope.openCreate = function (schemauuid, size) {
+    	$scope.selectedSchemaUuid = schemauuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalCreateMetadata.html',
+          controller: 'ModalMetadataResourceCreateController',
+          scope: $scope,
+          size: size,
+          schemaUuid: schemauuid,
+          resolve: {
+
+          }
+        }
+      );
+    };
+    
     $scope.openEdit = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;
         var modalInstance = $uibModal.open({
@@ -72,7 +89,6 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           controller: 'ModalMetadataResourceEditController',
           scope: $scope,
           size: size,
-          metadataUuid: metadatumuuid,
           resolve: {
 
           }
@@ -88,7 +104,6 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           controller: 'ModalMetadataResourceDetailsController',
           scope: $scope,
           size: size,
-          metadataUuid: metadatumuuid,
           resolve: {
 
           }

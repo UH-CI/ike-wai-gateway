@@ -294,7 +294,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               controller: 'ModalMetadataResourceEditController',
               scope: $scope,
               size: size,
-              metadataUuid: metadatumuuid,
               resolve: {
 
               }
@@ -310,7 +309,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               controller: 'ModalMetadataResourceDetailsController',
               scope: $scope,
               size: size,
-              metadataUuid: metadatumuuid,
               resolve: {
 
               }

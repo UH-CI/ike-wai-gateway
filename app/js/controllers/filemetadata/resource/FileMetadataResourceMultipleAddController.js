@@ -112,14 +112,14 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$rootScope.$on("associationsUpdated", function(){
 			$scope.fetchModalMetadata();
 			$scope.fetchFileMetadataObjects();
-			$scope.populateAssociatedMetadata
+			$scope.populateAssociatedMetadata();
 			$scope.requesting = false;
 		});
 
 		$rootScope.$on("metadataUpdated", function(){
 			$scope.fetchModalMetadata();
 			$scope.fetchFileMetadataObjects();
-			$scope.populateAssociatedMetadata
+			$scope.populateAssociatedMetadata();
 			$scope.requesting = false;
 		});
 
