@@ -1,11 +1,10 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
 		$scope.fileUuids = $stateParams['fileUuids'];
 		$scope.filePaths = $stateParams['filePaths'];
 		$scope.filename = $stateParams['filename'];
 		$scope.schemauuid = $stateParams.schemauuid;
-
 
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
@@ -38,6 +37,52 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			}
 		}
 
+		$scope.populateAssociatedMetadata = function(){
+			$scope.allAssociationIds = []
+			angular.forEach($scope.fileMetadataObjects, function(value, key) {
+				$scope.allAssociationIds.push(value.associationIds)
+			})
+			if ($scope.allAssociationIds.length > 0){
+				$scope.matchingAssociationIds = $scope.allAssociationIds.shift().filter(function(v) {
+					return $scope.allAssociationIds.every(function(a) {
+							return a.indexOf(v) !== -1;
+					});
+				});
+			}
+			//alert(angular.toJson($scope.matchingAssociationIds))
+			$scope.matchingMetadata =[];
+			MetaController.listMetadata("{'uuid':{$in :['"+$scope.matchingAssociationIds.join("','")+"']}}").then(function(response){
+				$scope.matchingMetadata = response.result;
+			})
+		}
+
+		$scope.fetchFileMetadataObjects = function(){
+			MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
+
+				function (response) {
+					$scope.fileMetadataObjects = response.result;
+					//alert($scope.fileMetadataObjects.length +" : "+$scope.fileUuids+" : " + $scope.fileUuids.length)
+					if ($scope.fileMetadataObjects.length < $scope.fileUuids.length){
+						//we have object mistmatch so figure our which are missing
+						/*FilesMetadataService.createFileMetadataObjects($scope.fileUuids).then(
+							MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
+								function(resp){
+									$scope.fileMetadataObjects = resp.result;
+									$scope.populateAssociatedMetadata();
+								}
+							)
+						)*/
+					}
+					else{
+						//do nothing
+						$scope.populateAssociatedMetadata();
+					}
+				}
+			)
+		}
+
+		$scope.loadedOnce = false;
+
     $scope.refresh = function() {
       $scope.requesting = true;
 
@@ -51,66 +96,27 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			if ($stateParams.schemauuid != null) {
 					$scope.fetchMetadataSchema($stateParams.schemauuid);
 			}
-
-			//fetch File metadata objects
-			MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
-
-        function (response) {
-          $scope.fileMetadataObjects = response.result;
-					if ($scope.fileMetadataObjects.length < $scope.fileUuids.length){
-            //we have object mistmatch so figure our which are missing
-						angular.forEach($scope.fileUuids, function(value, key) {
-							MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+value+"'}]}").then(
-								function(resp){
-									$scope.fileobj = resp.result;
-									if ($scope.fileobj == ""){
-										$scope.createFileObject(value);
-									}
-							  }
-  						)
-						})
-						//objects should be created fetch them all now
-						MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$stateParams.fileUuids.join("','")+"']}}]}").then(
-							function(resp){
-						  	$scope.fileMetadataObjects = resp.result;
-							}
-						)
-          }
-					else{
-						//do nothing
-					}
-				}
-			)
     };
 
     $scope.refresh();
 
+		$scope.fetchFileObjects = function(){
+			//fetch File metadata objects
+			if ($scope.loadedOnce == false){
+				$scope.loadedOnce == true;
+				$scope.fetchFileMetadataObjects();
+			}
+		}
+		$scope.fetchFileObjects();
+
+		$rootScope.$on("associationsUpdated", function(){
+			$scope.fetchModalMetadata();
+			$scope.fetchFileMetadataObjects();
+			$scope.populateAssociatedMetadata
+			$scope.requesting = false;
+		});
 
 
-		$scope.createFileObject = function(fileUuid){
-      var body={};
-      //associate system file with this metadata File object
-      body.associationIds = [fileUuid];
-      body.name = 'File';
-      body.value = {};
-      //File Schema uuid
-      body.schemaId = '3557207775540866585-242ac1110-0001-013';
-      MetaController.addMetadata(body)
-        .then(
-          function(response){
-            $scope.metadataUuid = response.result.uuid;
-            //App.alert({message: $translate.instant('File is ready for adding metadata') });
-            //add the default permissions for the system in addition to the owners
-            MetadataService.addDefaultPermissions($scope.metadataUuid);
-            $scope.requesting = false;
-            $scope.refresh();
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_add'));
-            $scope.requesting = false;
-          }
-        );
-      }
 		//$scope.submit = function(){
 		$scope.onSubmit = function(form) {
 			$scope.requesting = true;
@@ -134,7 +140,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 							});
 							$scope.requesting = false;
 							//$state.go('filemetadata',{id: $scope.fileUuids[0]});
-							$window.history.back();
+							//$window.history.back();
 							App.alert({message: $translate.instant('success_metadata_add') + $scope.metadataUuid });
 						},
 						function(response){
@@ -164,45 +170,22 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 			}
 		$scope.addAssociation = function(metadatumUuid) {
-			alert('ding assoc')
-			if (metadatumUuid){
-				$scope.requesting = true;
-				angular.forEach($scope.fileMetadataObjects, function(value, key){
-						$scope.metadatum = value;
-						var body = {};
-						body.associationIds = $scope.metadatum.associationIds;
-						//check if fileUuid is already associated
-						if (body.associationIds.indexOf(metadatumUuid) < 0) {
-							body.associationIds.push(metadatumUuid);
-							body.name = $scope.metadatum.name;
-							body.value = $scope.metadatum.value;
-							body.schemaId = $scope.metadatum.schemaId;
-							MetaController.updateMetadata(body,value.uuid)
-							.then(
-								function(response){
-									alert('associated')
-									App.alert({message: $translate.instant('success_metadata_update_assocation')});
-									$scope.requesting = false;
-									$scope.refresh();
-									//$state.go('metadata',{id: $scope.metadataUuid});
-								},
-								function(response){
-									MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
-									$scope.requesting = false;
-								}
-							)
-						}
-						else {
-							App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') });
-							return
-						}
-					})
-				}
-			else{
-					 MessageService.handle(schema_response, $translate.instant('error_no_metadata_uuid'));
-				 }
-				 $scope.requesting = false;
-			}
+			FilesMetadataService.addAssociations($scope.fileMetadataObjects, metadatumUuid)
+				.then(function(response) {
+					//$scope.matchingAssociationIds.push(metadatumUuid)
+					$rootScope.$broadcast('associationsUpdated')
+				});
+		}
+
+		$scope.unAssociateMetadata = function(metadatumUuid){
+			FilesMetadataService.removeAssociations($scope.fileMetadataObjects, metadatumUuid)
+				.then(function(response) {
+					//remove uuid of unassociated metadata object
+					//var index = $scope.matchingAssociationIds.indexOf(metadatumUuid);
+					//$scope.matchingAssociationIds.splice(index, 1);
+					$rootScope.$broadcast('associationsUpdated')
+				});
+		}
 
 			$scope.addClone = function(metadatumUuid) {
 				if (metadatumUuid){
