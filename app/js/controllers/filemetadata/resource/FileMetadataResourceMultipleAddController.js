@@ -178,6 +178,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		}
 
 		$scope.unAssociateMetadata = function(metadatumUuid){
+			var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
+      //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
+    	if (unAssociate) {
 			FilesMetadataService.removeAssociations($scope.fileMetadataObjects, metadatumUuid)
 				.then(function(response) {
 					//remove uuid of unassociated metadata object
@@ -185,6 +188,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					//$scope.matchingAssociationIds.splice(index, 1);
 					$rootScope.$broadcast('associationsUpdated')
 				});
+			}
 		}
 
 			$scope.addClone = function(metadatumUuid) {

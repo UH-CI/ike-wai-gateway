@@ -93,12 +93,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
 
-    $scope.unAssociateMetadata = function(metadatum){
+    $scope.unAssociateMetadata = function(metadatumUuid){
       $scope.requesting = true;
       var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     if (unAssociate) {
-      FilesMetadataService.removeAssociation($scope.fileMetadataObject[0].uuid, metadatum.uuid).then(function(result){
+      FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
         $scope.metadatum = null;
         //pause to let model update
         $timeout(function(){$scope.refresh()}, 300);
@@ -189,7 +189,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
 
         }
-        
+
         $scope.addAssociation = function(metadatumUuid) {
           if (metadatumUuid){
         		$scope.requesting = true;
@@ -263,9 +263,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                }
                $scope.requesting = false;
             }
-          
+
   /////////Modal Stuff/////////////////////
-          
+
         $scope.open = function (size) {
 
             var modalInstance = $uibModal.open({
@@ -281,7 +281,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
           $scope.fetchModalMetadata();
         };
-        
+
         $scope.openEditMetadata = function (metadatumuuid, size) {
         	$scope.metadataUuid = metadatumuuid;
             var modalInstance = $uibModal.open({
@@ -297,7 +297,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
-        
+
         $scope.openViewMetadata = function (metadatumuuid, size) {
         	$scope.metadataUuid = metadatumuuid;
             var modalInstance = $uibModal.open({
@@ -313,7 +313,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
-        
+
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
       ///$scope.uuid = filemetadatumUuid;
       $scope.cancel = function () {
