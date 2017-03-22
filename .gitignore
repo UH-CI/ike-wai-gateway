@@ -7,3 +7,5 @@ node_modules/
 .settings
 node_modules
 .gitignore.swp
+
+*.lock
