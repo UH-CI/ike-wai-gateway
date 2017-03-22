@@ -67,7 +67,7 @@
                                       </th>
                                       <th width="5%" class="hidden-xs">
                                         <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                                          TYPE
+                                          Type
                                           <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
@@ -79,7 +79,8 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}} </a>
+                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} 
+                                           {{metadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">
                                           {{metadatum.name}}

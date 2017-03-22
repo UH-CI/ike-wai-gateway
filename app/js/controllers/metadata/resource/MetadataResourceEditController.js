@@ -54,7 +54,7 @@ angular.module('AgaveToGo').controller("MetadataResourceEditController", functio
       MetaController.updateMetadata(body,$scope.metadataUuid)
         .then(
           function(response){
-            App.alert({message: $translate.instant('success_metadata_update') + $scope.metadataUuid });
+            App.alert({message: $translate.instant('success_metadata_update') });
 						//make sure default permissions are set
 						MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;

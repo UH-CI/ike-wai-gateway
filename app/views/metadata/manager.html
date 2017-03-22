@@ -109,7 +109,7 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}
+                                          <a href='#' ng-click="openView(metadatum.uuid)"> {{metadatum.value.well_name}}
                                            {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}}</a>
                                       </td>
                                       <td>
@@ -129,10 +129,16 @@
                                       <td class="text-center">
                                           <div class="btn-group">
 
-                                                  <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i>View </a>
+													<!--  metadata and metadata-edit are both found in main.js -->
+                                                  <!-- <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp;
+                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  -->
+                                                  <!-- decided to hide the button as the user can just click on the name to get the details -->
+                                                  <!-- <a href='#' ng-click="openView(metadatum.uuid)" role="button"> <i class="fa fa-eye"></i>View </a>
+                                                  &nbsp; -->
 
-                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button" ng-if=""> <i class="fa fa-pencil"></i>Edit</a>
+                                                  <a href='#' ng-click="openEdit(metadatum.uuid)" role="button"> <i class="fa fa-pencil"></i>Edit</a>
 
                                           </div>
                                       </td>
