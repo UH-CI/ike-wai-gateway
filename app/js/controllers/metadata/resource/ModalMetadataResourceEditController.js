@@ -1,11 +1,11 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", function($scope, $modalInstance, $state, $translate, $window, WizardHandler, MetaController, MetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, WizardHandler, MetaController, MetadataService, ActionsService, MessageService) {
 
   $scope.close = function () {
     $modalInstance.close();
   };
 
   $scope.metadatum = null;
-  
+
   $scope.getModalMetadatum = function(){
 	$scope.requesting = true;
 	var uuid = this.$parent.metadataUuid;
@@ -63,6 +63,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
 			//make sure default permissions are set
 			MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
+            $rootScope.$broadcast('metadataUpdated');
 			//$window.history.back();
             //  $state.go('metadata',{id: $scope.metadataUuid});
           },

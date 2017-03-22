@@ -116,6 +116,12 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			$scope.requesting = false;
 		});
 
+		$rootScope.$on("metadataUpdated", function(){
+			$scope.fetchModalMetadata();
+			$scope.fetchFileMetadataObjects();
+			$scope.populateAssociatedMetadata
+			$scope.requesting = false;
+		});
 
 		//$scope.submit = function(){
 		$scope.onSubmit = function(form) {
@@ -262,7 +268,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				}
 			);
 		};
-		
+
 		$scope.openViewMetadata = function (metadatumuuid, size) {
 			$scope.metadataUuid = metadatumuuid;
 				var modalInstance = $uibModal.open({

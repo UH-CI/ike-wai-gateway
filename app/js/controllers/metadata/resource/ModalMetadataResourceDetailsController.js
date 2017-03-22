@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $rootScope, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
 
   $scope.close = function () {
     $modalInstance.close($scope.model);
@@ -42,7 +42,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
         }
     );
   };
-  
+
   $scope.openEdit = function (metadatumuuid, size) {
 	  //$scope.close(); // if I close this modal, the new one's buttons don't work
       $uibModal.open({
@@ -58,7 +58,11 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
       }
     );
   };
-  
+
   $scope.getModalMetadatum();
+
+  $rootScope.$on("metadataUpdated", function(){
+    $scope.getModalMetadatum();
+  });
 
 });
