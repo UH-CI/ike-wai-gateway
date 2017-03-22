@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, $rootScope, MetaController, FilesController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -7,7 +7,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    
+
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -54,10 +54,14 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
     $scope.refresh();
 
+    $rootScope.$on("metadataUpdated", function(){
+      $scope.refresh();
+    });
+
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     };
-    
+
 /////////Modal Stuff/////////////////////
 
     $scope.openEdit = function (metadatumuuid, size) {
