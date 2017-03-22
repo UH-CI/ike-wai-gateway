@@ -22,7 +22,7 @@
   <tbody>
     <tr ng-repeat="path in filePaths track by $index| orderBy:sortType:sortReverse | filter:filter">
         <td>
-            {{path | decodeURL}}
+            <i class="fa fa-file-o">{{path | decodeURL}}</i>
         </td>
       </tr>
     </table>
