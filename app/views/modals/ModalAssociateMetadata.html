@@ -79,7 +79,7 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
                                           <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} 
+                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}}
                                            {{metadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">
@@ -115,6 +115,6 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-default" ng-click="cancel()">Close</button>
+    <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
     <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
 </div>
