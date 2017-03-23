@@ -47,7 +47,7 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
 
   $scope.unAssociateMetadata = function(fileUuid){
     $scope.requesting = true;
-    FilesMetadataService.removeAssociation($scope.metadatum.uuid, fileUuid).then(function(result){
+    FilesMetadataService.removeAssociations($scope.metadatum.uuid, fileUuid).then(function(result){
       $scope.metadatum = null;
       //pause to let model update
       $timeout(function(){$scope.getMetadatum()}, 300);
