@@ -74,7 +74,6 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
 
   $scope.removeMetadataAssociation = function(fileobject){
     $scope.requesting = true;
-    alert(angular.toJson(fileobject))
     var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
     //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     if (unAssociate) {
@@ -82,6 +81,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
         $scope.metadatum = null;
         //pause to let model update
         $rootScope.$broadcast('associationsUpdated')
+        $rootScope.$broadcast('metadataUpdated')
         $timeout(function(){$scope.getModalMetadatum()}, 300);
         $scope.requesting = false;
       });
