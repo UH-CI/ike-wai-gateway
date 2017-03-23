@@ -83,7 +83,7 @@
                 </div>
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                      <div ng-show="filemetadata.length === 0" class="text-center">
+                      <div ng-show="filmetadata || filemetadata.length === 0" class="text-center">
                         <div class="row text-center">
                           <div class="col-md-12">
                               No File Metadata found
@@ -122,13 +122,13 @@
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
-                                                  <span ng-show='profile.useranme == filemetadata.owner || (edit_perm.indexOf(profile.username) > -1)'>
+                                                  <span ng-show='profile.username == filemetadata.owner || edit_perm'>
                                                   <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
                                                   <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
                                                 </span>
                                                   &nbsp;
                                                   <span>
-                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)" role="button"> <i class="fa fa-trash-o"></i> Remove </a>
+                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
                                                 </span>
                                           </div>
                                       </td>
