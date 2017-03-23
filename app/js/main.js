@@ -2126,9 +2126,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         })
 
         .state('filemetadata-multipleadd', {
-            url: "/filemetadata/multiple/add/:schemauuid?fileUuids?filePaths",
+            url: "/filemetadata/multiple/add/?fileUuids?filePaths}",
             params:{
               //schemauuid:'',
+              //fileObjs: null
               fileUuids: { array: true },
               filePaths: { array: true }
             },
