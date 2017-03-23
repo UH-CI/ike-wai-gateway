@@ -220,7 +220,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 											//	need to send to modal instead
 												$scope.requesting = false;
-												$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
+												$scope.openEditMetadata($scope.new_metadataUuid, 'lg')
+											//	$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
 											});
 
 									},

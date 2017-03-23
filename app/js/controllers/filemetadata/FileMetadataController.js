@@ -92,7 +92,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $rootScope.$on("metadataUpdated", function(){
       $scope.refresh();
     });
-    
+
     $rootScope.$on("associationsUpdated", function(){
       $scope.refresh();
     });
@@ -257,7 +257,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                         App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name });
                         $scope.addAssociation($scope.new_metadataUuid)
                         $scope.requesting = false;
-                        $state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
+                        $scope.openEditMetadata($scope.new_metadataUuid,'lg')
+                        //$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
                       },
                       function(response){
                         MessageService.handle(response, $translate.instant('error_metadata_add'));
