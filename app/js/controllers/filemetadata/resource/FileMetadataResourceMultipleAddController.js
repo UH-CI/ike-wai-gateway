@@ -118,7 +118,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				$scope.fetchFileMetadataObjects();
 			}
 		}
-		alert("called")
+
 		$scope.fetchFileObjects();
 
 		$rootScope.$on("associationsUpdated", function(){
