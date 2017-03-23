@@ -1,0 +1,91 @@
+<div class="modal-header">
+	<h3 class="modal-title">Create Metadata Object</h3>
+</div>
+<div class="row text-center" ng-show="requesting">
+	<div class="col-md-12">
+		<div class="loading-message">
+			<div class="block-spinner-bar">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light portlet-fit ">
+			<div class="portlet-title">
+				<div class="row text-center">
+					<div class="col-md-12">
+						<div class="pull-left">
+								<h4>{{selectedmetadataschema.schema.title}}</h4>
+						</div>
+						<div class="btn-group pull-right">
+							<a class="btn green btn-outline pull-right" href="#"
+								data-toggle="dropdown"> <i class="fa fa-plus"></i>&nbsp;Change
+								Metadata Object Form <i class="fa fa-angle-down pull-right"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li
+									ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
+									<a ng-click="changeSchema(metadataschemata.uuid)"
+									role="button"> <i class="fa fa-tag"></i>
+										{{metadataschemata.schema.title}}
+								</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="portlet-body">
+					<div class="row text-center" ng-show="requesting">
+						<div class="col-md-12">
+							<div class="loading-message">
+								<div class="block-spinner-bar">
+									<div class="bounce1"></div>
+									<div class="bounce2"></div>
+									<div class="bounce3"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div ng-show="schema_selected">
+								<div ng-show="!requesting">
+									<div class="row">
+										<div class="col-md-12">
+
+											<div class="" id="form_wizard_1">
+
+
+												<div class=" form pre-scrollable">
+													<form name="addMetadataForm">
+														<div sf-schema="schema" sf-form="form" sf-model="model"></div>
+
+													</form>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<input type="submit" name="saveBtn"
+		class="btn btn-primary" value="Save"
+		ng-click="onSubmit(addMetadataForm)">
+	<button class="btn btn-default pull-left" name="closeBtn" ng-click="close()">Cancel</button>
+</div>

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
@@ -20,7 +20,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-            <!-- 
+            <!--
             <div class="portlet-title">
                 <div class="row text-center">
                   <div class="col-md-12">
@@ -53,7 +53,7 @@
                         <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
                       </button>
                     </div>
-                </div> 
+                </div>
             </div>
             -->
             <div class="portlet-body">
@@ -68,7 +68,7 @@
                   <h4>{{filename}}</h4>
                 </div>
                 <div class="btn-group pull-right">
-                  <a href='#' ng-click="open()" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
+                  <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
                 </div>
                 <div class="btn-group pull-right">
                     <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
@@ -77,13 +77,13 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
-                        <a ui-sref="filemetadata-multipleadd({schemauuid: metadataschemata.uuid, fileUuids: [fileMetadataObject[0].uuid], filename: filename})" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                        <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                       </li>
                     </ul>
                 </div>
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                      <div ng-show="filemetadata.length === 0" class="text-center">
+                      <div ng-show="filmetadata || filemetadata.length === 0" class="text-center">
                         <div class="row text-center">
                           <div class="col-md-12">
                               No File Metadata found
@@ -114,7 +114,7 @@
                               <tbody>
                                   <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreMetadataType.indexOf(filemetadatum.name) < 0">
                                       <td>
-                                          <a ui-sref="metadata({id: filemetadatum.uuid})"> {{filemetadatum.value.well_name}}
+                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')"> {{filemetadatum.value.well_name}}
                                            {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">
@@ -122,12 +122,13 @@
                                       </td>
                                       <td class="text-center">
                                           <div class="btn-group">
-                                                  <span ng-show='profile.useranme == filemetadata.owner || (edit_perm.indexOf(profile.username) > -1)'>
-                                                  <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                                  <span ng-show='profile.username == filemetadata.owner || edit_perm'>
+                                                  <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
+                                                  <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
                                                 </span>
                                                   &nbsp;
                                                   <span>
-                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)"role="button"> <i class="fa fa-trash-o"></i> Remove </a>
+                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
                                                 </span>
                                           </div>
                                       </td>

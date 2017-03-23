@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, $rootScope, MetaController, FilesController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -7,7 +7,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    
+
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -49,13 +49,65 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.searchTools = function(query){
       $scope.query = query;
       $scope.refresh();
-    }
+    };
 
 
     $scope.refresh();
 
+    $rootScope.$on("metadataUpdated", function(){
+      $scope.refresh();
+    });
+
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
-    }
+    };
 
+/////////Modal Stuff/////////////////////
+
+    
+    $scope.openCreate = function (schemauuid, size) {
+    	$scope.selectedSchemaUuid = schemauuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalCreateMetadata.html',
+          controller: 'ModalMetadataResourceCreateController',
+          scope: $scope,
+          size: size,
+          schemaUuid: schemauuid,
+          resolve: {
+
+          }
+        }
+      );
+    };
+    
+    $scope.openEdit = function (metadatumuuid, size) {
+    	$scope.metadataUuid = metadatumuuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalEditMetadata.html',
+          controller: 'ModalMetadataResourceEditController',
+          scope: $scope,
+          size: size,
+          resolve: {
+
+          }
+        }
+      );
+    };
+
+    $scope.openView = function (metadatumuuid, size) {
+    	$scope.metadataUuid = metadatumuuid;
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/modals/ModalViewMetadata.html',
+          controller: 'ModalMetadataResourceDetailsController',
+          scope: $scope,
+          size: size,
+          resolve: {
+
+          }
+        }
+      );
+    };
 });

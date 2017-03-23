@@ -192,9 +192,11 @@ AgaveToGo.config(function($translateProvider) {
     error_systems_template: 'Error: Could not retrieve system template',
 
     error_metadata_update_assocation: 'Error: could not update Metadata associations',
+    error_metadata_add_assocation: 'Error: could not add file/Metadata associations',
     error_metadata_update_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update: 'Error: Could not update Metadata',
-    error_metadata_add: 'Error: Could not create Metadata objet',
+    error_metadata_add: 'Error: Could not create Metadata object',
+    error_metadata_remove: 'Error: could not remove Metadata associations',
 
 
     error_metadataschemas_get: 'Error, Could not fetch Metadata Schemas',
@@ -213,8 +215,10 @@ AgaveToGo.config(function($translateProvider) {
     success_systems_roles: 'Success: updated roles for ',
 
     success_metadata_update_assocation: 'Success: updated Metadata associations',
+    success_metadata_add_assocation: 'Success: added file/Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
     success_metadata_add: 'Success: new Metadata created',
+    success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
     setDefault: 'set to default',
     unsetDefault: 'unset default'
@@ -1841,16 +1845,20 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/holderjs/holder.js',
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
+                            'js/services/PermissionsService.js',
                             'js/services/MetadataService.js',
                             'js/services/FilesMetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
-                            'js/controllers/metadata/MetadataController.js'
+                            'js/controllers/metadata/MetadataController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
                         ]
                     });
                 }]
             }
         })
-
+/*
         .state("metadata", {
           abtract: true,
           url:"/metadata/:id",
@@ -1871,7 +1879,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }]
           }
         })
-
+*/
         .state("metadata.details", {
           url: "",
           templateUrl: "views/metadata/resource/details.html",
@@ -2063,7 +2071,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/FilesMetadataService.js',
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
-                            'js/controllers/filemetadata/FileMetadataController.js'
+                            'js/controllers/filemetadata/FileMetadataController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
                         ]
                     });
                 }]
@@ -2115,11 +2126,12 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         })
 
         .state('filemetadata-multipleadd', {
-            url: "/filemetadata/multiple/add/:schemauuid?fileUuids?filename",
+            url: "/filemetadata/multiple/add/?fileUuids?filePaths}",
             params:{
               //schemauuid:'',
+              //fileObjs: null
               fileUuids: { array: true },
-              filename: '',
+              filePaths: { array: true }
             },
             templateUrl: "views/filemetadata/resource/multipleadd.html",
             controller: "FileMetadataResourceMultipleAddController",
@@ -2133,7 +2145,13 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/services/ActionsService.js',
                           'js/services/MessageService.js',
                           'js/services/MetadataService.js',
-                          'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js'
+                          'js/services/FilesMetadataService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/services/MetadataService.js',
+                          'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
                       ]
                     }
                   ]);

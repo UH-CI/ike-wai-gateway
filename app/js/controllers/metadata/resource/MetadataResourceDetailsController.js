@@ -10,7 +10,7 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
           function(response){
             $scope.metadatum = response.result;
             if($scope.metadatum.associationIds.length > 0){
-              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'uuid':{$in: ['"+$scope.metadatum.associationIds.join("','")+"']}}]}")
+              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
             }
             $scope.requesting = false;
           },
@@ -47,7 +47,7 @@ angular.module('AgaveToGo').controller('MetadataResourceDetailsController', func
 
   $scope.unAssociateMetadata = function(fileUuid){
     $scope.requesting = true;
-    FilesMetadataService.removeAssociation($scope.metadatum.uuid, fileUuid).then(function(result){
+    FilesMetadataService.removeAssociations($scope.metadatum.uuid, fileUuid).then(function(result){
       $scope.metadatum = null;
       //pause to let model update
       $timeout(function(){$scope.getMetadatum()}, 300);

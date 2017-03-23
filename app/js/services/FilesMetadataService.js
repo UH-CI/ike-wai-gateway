@@ -19,6 +19,89 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
   this.broadcastMe = function(){
    $rootScope.$broadcast('broadcastUpdate');
   };
+  this.updateFileObject = function(fileobject){
+    var body={};
+    //associate system file with this metadata File object
+    body.associationIds = fileobject.associationIds;
+    body.name = 'File';
+    body.value= {};
+    body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+    body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
+    //File Schema uuid
+    body.schemaId = '3557207775540866585-242ac1110-0001-013';
+    MetaController.updateMetadata(body,fileobject.uuid)
+      .then(
+        function(response){
+          //ok
+        },
+        function(response){
+          MessageService.handle(response, $translate.instant('error_metadata_add'));
+          $scope.requesting = false;
+        }
+      );
+  }
+
+  this.createFileMetadataObject = function(fileUuid, callback){
+    var self = this;
+    MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+fileUuid+"'}]}").then(
+      function(resp){
+        var fileobj = resp.result;
+        //check if fileobj is empty if so the create new obj
+        if (fileobj == ""){
+          alert(angular.toJson(fileobj))
+          alert("creating")
+          var body={};
+          //associate system file with this metadata File object
+          body.associationIds = [fileUuid];
+          body.name = 'File';
+          body.value = {};
+          //File Schema uuid
+          body.schemaId = '3557207775540866585-242ac1110-0001-013';
+          MetaController.addMetadata(body)
+            .then(
+              function(response){
+                //add the default permissions for the system in addition to the owners
+                MetadataService.addDefaultPermissions(response.result.uuid);
+                self.updateFileObject(response.result)
+                return callback(response.data);
+              },
+              function(response){
+                MessageService.handle(response, "Error creating metadata file object!");
+              }
+            );
+        }
+      }
+    )
+  }
+
+
+
+
+  this.createFileMetadataObjects = function(fileUuids, broadcastEvent ='doNothing'){
+    var self = this;
+    var promises = [];
+    angular.forEach(fileUuids, function(fileUuid){
+      promises.push(
+        self.createFileMetadataObject(fileUuid, function(value){
+        })
+      );
+    });
+
+    var deferred = $q.defer();
+
+    return $q.all(promises).then(
+      function(data) {
+        deferredHandler(data, deferred);
+        if (broadcastEvent != 'doNothing'){
+          $rootScope.$broadcast(broadcastEvent,{message:"Files Associated Successfully."});
+        }
+      },
+      function(data) {
+        deferredHandler(data, deferred, "Error Creating File Metadata Objects");
+
+    });
+    return true;
+  };
 
   this.download = function(file_href, callback) {
 
@@ -73,8 +156,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       return true;
     };
 
-    this.removeAssociation = function(metadataUuid, uuidToRemove){
-      var promises = [];
+    this.removeAssociation = function(metadataUuid, uuidToRemove, callback){
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -85,33 +167,14 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.value = metadatum.value;
           body.schemaId = metadatum.schemaId;
           MetaController.updateMetadata(body,metadataUuid)
-          .then(
-            function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
-            }
-
-          )
+          .then(function(resp) {
+            return callback(resp.data);
+          })
         }
       )
-      var deferred = $q.defer();
-
-      return $q.all(promises).then(
-        function(data) {
-          deferredHandler(data, deferred);
-
-        },
-        function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
-
-      });
-      return true;
     }
 
     this.addAssociation = function(metadataUuid, uuidToAdd){
-      var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -126,27 +189,62 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_add_assocation') });
             },
             function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+              MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
             }
 
           )
         }
       )
-      var deferred = $q.defer();
+    }
 
-      return $q.all(promises).then(
-        function(data) {
-          deferredHandler(data, deferred);
+    this.addAssociations = function(fileObjects, metadatumUuid){
 
-        },
-        function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+        var self = this;
+        var promises = [];
+        angular.forEach(fileObjects, function(value, key){
+          promises.push(
+            self.addAssociation(value.uuid, metadatumUuid, function(value){
+            })
+          );
+        });
 
-      });
-      return true;
+        var deferred = $q.defer();
+
+        return $q.all(promises).then(
+          function(data) {
+            deferredHandler(data, deferred);
+            $rootScope.$broadcast('associationsUpdated',{message:"Files Associated Successfully."});
+          },
+          function(data) {
+            deferredHandler(data, deferred, "Error Creating File Metadata Associations");
+        });
+        return true;
+    }
+
+    this.removeAssociations = function(fileObjects, metadatumUuid){
+        var self = this;
+        var promises = [];
+        angular.forEach(fileObjects, function(value, key){
+          promises.push(
+            self.removeAssociation(value.uuid, metadatumUuid, function(value){
+            })
+          );
+        });
+
+        var deferred = $q.defer();
+
+        return $q.all(promises).then(
+          function(data) {
+            deferredHandler(data, deferred);
+            $rootScope.$broadcast('associationsUpdated',{message:"File Associations Removed Successfully."});
+          },
+          function(data) {
+            deferredHandler(data, deferred, "Error Removing File Metadata Associations");
+        });
+        return true;
     }
 
     this.addPublishedAssociation = function(metadataUuid, uuidToAdd){
@@ -166,7 +264,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_update_assocation') });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
@@ -183,7 +281,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
         },
         function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+          deferredHandler(data, deferred, $translate.instant('error_metadata_update_assocation'));
 
       });
       return true;
@@ -202,7 +300,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,'4516085960163594726-242ac1110-0001-012')
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_update') });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
@@ -219,7 +317,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
         },
         function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+          deferredHandler(data, deferred, $translate.instant('error_metadata_update_assocation'));
 
       });
       return true;
@@ -323,7 +421,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') + ' ' + metadataUuid });
+              App.alert({message: $translate.instant('success_metadata_update') });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
@@ -339,7 +437,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           deferredHandler(data, deferred);
         },
         function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_association'));
+          deferredHandler(data, deferred, $translate.instant('error_metadata_update_assocation'));
 
       });
       return true;
