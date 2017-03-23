@@ -1,7 +1,7 @@
 <div class="modal-header">
     <h3 class="modal-title">Edit Metadata Object</h3>
-    <h4 style="text-align:left;float:left;"> {{metadatum.value.well_name}} {{metadatum.value.wid}} 
-    {{metadatum.value.variable_name}} {{metadatum.value.description}} 
+    <h4 style="text-align:left;float:left;"> {{metadatum.value.well_name}} {{metadatum.value.wid}}
+    {{metadatum.value.variable_name}} {{metadatum.value.description}}
     {{metadatum.value.tags.toString()}}</h4>
     <h4 style="text-align:right;float:right;">Type: {{metadataschema.schema.title}}</h4>
     <div style="clear: both;"></div>
@@ -18,7 +18,7 @@
     <div class="col-md-12">
 
       <div class="portlet light bordered" id="form_wizard_1">
-        <!-- 
+        <!--
         <div class="portlet-title">
           <div class="caption">
             <i class=" icon-layers font-red"></i>
@@ -28,8 +28,8 @@
         </div>
         -->
 		<div class="portlet-body form">
-		
-		<!-- 
+
+		<!--
 		  <form name="updateFilemetadataForm"
            sf-schema="schema"
            sf-form="form"
@@ -40,8 +40,7 @@
 
           <form name="updateFilemetadataForm">
            <div sf-schema="schema" sf-form="form" sf-model="model"></div>
-           <input type="submit" name="saveBtn" class="btn btn-default" value="Save" ng-click="onSubmit(updateFilemetadataForm)">
-           <button class="btn" name="closeBtn"  ng-click="close()">Cancel</button>
+
           </form>
 
         </div>
@@ -49,8 +48,8 @@
     </div>
   </div>
 </div>
-<!-- 
+
 <div class="modal-footer">
-    <button class="btn btn-default" ng-click="close()">Close</button>
+  <input type="submit" name="saveBtn" class="btn btn-default" value="Save" ng-click="onSubmit(updateFilemetadataForm)">
+  <button class="btn pull-left" name="closeBtn"  ng-click="close()">Cancel</button>
 </div>
--->
