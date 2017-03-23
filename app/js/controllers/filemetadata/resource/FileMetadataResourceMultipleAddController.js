@@ -1,11 +1,20 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
 		$scope.fileUuids = $stateParams['fileUuids'];
 		$scope.filePaths = $stateParams['filePaths'];
-		$scope.filename = $stateParams['filename'];
-		$scope.schemauuid = $stateParams.schemauuid;
+		//$scope.filename = $stateParams['filename'];
+		//$scope.schemauuid = $stateParams.schemauuid;
+		/*$scope.fileObjs = JSON.parse($stateParams.fileObjs);
 
+		$scope.populateFileIds = function(){
+			angular.forEach($scope.fileObjs, function(value, key) {
+				$scope.fileUuids.push(key);
+				$scope.filePaths.push(value)
+			});
+		}
+		$scope.populateFileIds();*/
+		//alert($scope.fileObjs)
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
 
@@ -51,9 +60,11 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			}
 			//alert(angular.toJson($scope.matchingAssociationIds))
 			$scope.matchingMetadata =[];
-			MetaController.listMetadata("{'uuid':{$in :['"+$scope.matchingAssociationIds.join("','")+"']}}").then(function(response){
-				$scope.matchingMetadata = response.result;
-			})
+			if ($scope.matchingAssociationIds){
+				MetaController.listMetadata("{'uuid':{$in :['"+$scope.matchingAssociationIds.join("','")+"']}}").then(function(response){
+					$scope.matchingMetadata = response.result;
+				})
+		  }
 		}
 
 		$scope.fetchFileMetadataObjects = function(){
@@ -64,14 +75,14 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					//alert($scope.fileMetadataObjects.length +" : "+$scope.fileUuids+" : " + $scope.fileUuids.length)
 					if ($scope.fileMetadataObjects.length < $scope.fileUuids.length){
 						//we have object mistmatch so figure our which are missing
-						/*FilesMetadataService.createFileMetadataObjects($scope.fileUuids).then(
+					   FilesMetadataService.createFileMetadataObjects($scope.fileUuids).then(
 							MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
 								function(resp){
 									$scope.fileMetadataObjects = resp.result;
 									$scope.populateAssociatedMetadata();
 								}
 							)
-						)*/
+						)
 					}
 					else{
 						//do nothing
@@ -107,6 +118,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				$scope.fetchFileMetadataObjects();
 			}
 		}
+		alert("called")
 		$scope.fetchFileObjects();
 
 		$rootScope.$on("associationsUpdated", function(){
@@ -158,6 +170,80 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		};
 		$scope.animationsEnabled = true;
 
+
+		$scope.createFileObject = function(fileUuid){
+			MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
+				function(resp){
+					//if still empty createFileObject
+				if (resp.result == ""){
+					var body={};
+					//associate system file with this metadata File object
+					body.associationIds = [fileUuid];
+					body.name = 'File';
+					body.value = {};
+					//File Schema uuid
+					body.schemaId = '3557207775540866585-242ac1110-0001-013';
+					MetaController.addMetadata(body)
+						.then(
+							function(response){
+								$scope.metadataUuid = response.result.uuid;
+								//App.alert({message: $translate.instant('File is ready for adding metadata') });
+								//add the default permissions for the system in addition to the owners
+								MetadataService.addDefaultPermissions($scope.metadataUuid);
+								$scope.updateFileObject(response.result)
+								$scope.requesting = false;
+								$scope.refresh();
+							},
+							function(response){
+								MessageService.handle(response, $translate.instant('error_metadata_add'));
+								$scope.requesting = false;
+							}
+						);
+					}
+				})
+			}
+
+			$scope.updateFileObject = function(fileobject){
+				var body={};
+				//associate system file with this metadata File object
+				body.associationIds = fileobject.associationIds;
+				body.name = 'File';
+				body.value= {};
+				body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+				body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
+				//File Schema uuid
+				body.schemaId = '3557207775540866585-242ac1110-0001-013';
+				MetaController.updateMetadata(body,fileobject.uuid)
+					.then(
+						function(response){
+							$scope.metadataUuid = response.result.uuid;
+							//App.alert({message: $translate.instant('File is ready for adding metadata') });
+							//add the default permissions for the system in addition to the owners
+							MetadataService.addDefaultPermissions($scope.metadataUuid);
+							$scope.requesting = false;
+							$scope.refresh();
+						},
+						function(response){
+							MessageService.handle(response, $translate.instant('error_metadata_add'));
+							$scope.requesting = false;
+						}
+					);
+				}
+
+				//if file metadata objects are missing create them
+				$scope.checkFileMetadata = function(){
+					if ($scope.fileMetadataObjects.length < $scope.fileUuids.length){
+						FilesMetadataService.createFileMetadataObjects($scope.fileUuids).then(
+						 MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
+							 function(resp){
+								 $scope.fileMetadataObjects = resp.result;
+								 $scope.populateAssociatedMetadata();
+								 $scope.fetchModalMetadata();
+							 }
+						 )
+					  )
+					 }
+				}
 /////////Modal Stuff/////////////////////
 			$scope.fetchModalMetadata = function(query){
 				MetaController.listMetadata(
@@ -198,6 +284,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		}
 
 			$scope.addClone = function(metadatumUuid) {
+				$scope.checkFileMetadata()
 				if (metadatumUuid){
 					$scope.requesting = true;
 					MetaController.getMetadata(metadatumUuid)
@@ -238,20 +325,18 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					 $scope.requesting = false;
 				}
 
-				$scope.open = function (size) {
-					$scope.fetchModalMetadata();
-					var modalInstance = $uibModal.open({
-						animation: $scope.animationsEnabled,
-						templateUrl: 'views/modals/ModalAssociateMetadata.html',
-						controller: 'ModalAssociateMetadataMultiFileCtrl',
-						scope: $scope,
-						size: size,
-						resolve: {
+		$scope.open = function (size) {
+				$scope.fetchModalMetadata();
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: 'views/modals/ModalAssociateMetadata.html',
+					controller: 'ModalAssociateMetadataMultiFileCtrl',
+					scope: $scope,
+					size: size,
+					resolve: {
 
-						}
 					}
-				);
-
+				});
 		};
 
 		$scope.openEditMetadata = function (metadatumuuid, size) {
@@ -287,21 +372,25 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		};
 
 		$scope.openCreate = function (schemauuid, size) {
-			$scope.selectedSchemaUuid = schemauuid;
-				var modalInstance = $uibModal.open({
-					animation: $scope.animationsEnabled,
-					templateUrl: 'views/modals/ModalCreateMetadata.html',
-					controller: 'ModalMetadataResourceCreateController',
-					scope: $scope,
-					size: size,
-					schemaUuid: schemauuid,
-					fileMetadataObjects: $scope.fileMetadataObjects,
-					resolve: {
+			//check if file ojects all exist - wait to open modal until they do
+				$scope.selectedSchemaUuid = schemauuid;
+				$scope.modalSize = size;
+				$scope.fetchModalMetadata();
+				 var modalInstance = $uibModal.open({
+					 animation: $scope.animationsEnabled,
+					 templateUrl: 'views/modals/ModalCreateMetadata.html',
+					 controller: 'ModalMetadataResourceCreateController',
+					 scope: $scope,
+					 size: $scope.modalSize ,
+					 schemaUuid: $scope.selectedSchemaUuid,
+					 fileMetadataObjects: $scope.fileMetadataObjects,
+					 resolve: {
 
-					}
-				}
-			);
+					 }
+				 }
+			 );
 		};
+
 
 }).controller('ModalAssociateMetadataMultiFileCtrl', function ($scope, $modalInstance, MetaController) {
 	///$scope.uuid = filemetadatumUuid;

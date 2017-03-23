@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
 
 
 	$scope.close = function () {
@@ -90,9 +90,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
 							.then(function(response) {
 							//	need to send to modal instead
+							$timeout(function(){
 								$scope.requesting = false;
 								$rootScope.$broadcast('metadataUpdated');
-								$scope.refresh();
+								//$rootScope.$broadcast('associationsUpdated');
+							}, 500);
 							});
 
 						}
@@ -105,7 +107,6 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						}
 				);
 			}
-			$rootScope.$broadcast('associationsUpdated')
 		$scope.close();
 		//$parent.refresh();
 	};

@@ -19,17 +19,36 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
   this.broadcastMe = function(){
    $rootScope.$broadcast('broadcastUpdate');
   };
+  this.updateFileObject = function(fileobject){
+    var body={};
+    //associate system file with this metadata File object
+    body.associationIds = fileobject.associationIds;
+    body.name = 'File';
+    body.value= {};
+    body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+    body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
+    //File Schema uuid
+    body.schemaId = '3557207775540866585-242ac1110-0001-013';
+    MetaController.updateMetadata(body,fileobject.uuid)
+      .then(
+        function(response){
+          //ok
+        },
+        function(response){
+          MessageService.handle(response, $translate.instant('error_metadata_add'));
+          $scope.requesting = false;
+        }
+      );
+  }
 
-  this.createFileMetadataObject = function(fileUuid){
+  this.createFileMetadataObject = function(fileUuid, callback){
+    var self = this;
     MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+fileUuid+"'}]}").then(
       function(resp){
         var fileobj = resp.result;
-        alert(angular.toJson(fileobj))
         //check if fileobj is empty if so the create new obj
-        if (fileobj.length > 0){
-          //do nothing
-        }
-        else{
+        if (fileobj == ""){
+          alert(angular.toJson(fileobj))
           alert("creating")
           var body={};
           //associate system file with this metadata File object
@@ -43,10 +62,11 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
               function(response){
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions(response.result.uuid);
-                return response;
+                self.updateFileObject(response.result)
+                return callback(response.data);
               },
               function(response){
-                MessageService.handle(response, "Error creating metadat file object!");
+                MessageService.handle(response, "Error creating metadata file object!");
               }
             );
         }
@@ -54,7 +74,10 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
     )
   }
 
-  this.createFileMetadataObjects = function(fileUuids){
+
+
+
+  this.createFileMetadataObjects = function(fileUuids, broadcastEvent ='doNothing'){
     var self = this;
     var promises = [];
     angular.forEach(fileUuids, function(fileUuid){
@@ -69,7 +92,9 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
     return $q.all(promises).then(
       function(data) {
         deferredHandler(data, deferred);
-
+        if (broadcastEvent != 'doNothing'){
+          $rootScope.$broadcast(broadcastEvent,{message:"Files Associated Successfully."});
+        }
       },
       function(data) {
         deferredHandler(data, deferred, "Error Creating File Metadata Objects");
