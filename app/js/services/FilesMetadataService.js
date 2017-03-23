@@ -48,8 +48,6 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
         var fileobj = resp.result;
         //check if fileobj is empty if so the create new obj
         if (fileobj == ""){
-          alert(angular.toJson(fileobj))
-          alert("creating")
           var body={};
           //associate system file with this metadata File object
           body.associationIds = [fileUuid];
