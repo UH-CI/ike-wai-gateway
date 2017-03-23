@@ -68,7 +68,7 @@
                   <h4>{{filename}}</h4>
                 </div>
                 <div class="btn-group pull-right">
-                  <a href='#' ng-click="open()" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
+                  <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
                 </div>
                 <div class="btn-group pull-right">
                     <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
@@ -77,7 +77,7 @@
                     </a>
                     <ul class="dropdown-menu">
                       <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
-                        <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                        <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                       </li>
                     </ul>
                 </div>
