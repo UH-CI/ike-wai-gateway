@@ -69,10 +69,7 @@
 												<div class="portlet-body form">
 													<form name="addMetadataForm">
 														<div sf-schema="schema" sf-form="form" sf-model="model"></div>
-														<input type="submit" name="saveBtn"
-															class="btn btn-default" value="Save"
-															ng-click="onSubmit(addMetadataForm)">
-														<button class="btn" name="closeBtn" ng-click="close()">Cancel</button>
+
 													</form>
 												</div>
 											</div>
@@ -88,8 +85,10 @@
 		</div>
 	</div>
 </div>
-<!-- 
+
 <div class="modal-footer">
-    <button class="btn btn-default" ng-click="close()">Close</button>
+	<input type="submit" name="saveBtn"
+		class="btn btn-default" value="Save"
+		ng-click="onSubmit(addMetadataForm)">
+	<button class="btn pull-left" name="closeBtn" ng-click="close()">Cancel</button>
 </div>
--->
