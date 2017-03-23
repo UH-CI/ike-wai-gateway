@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $rootScope, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $window, $rootScope, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
 
   $scope.close = function () {
     $modalInstance.close($scope.model);
@@ -64,5 +64,29 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
   $rootScope.$on("metadataUpdated", function(){
     $scope.getModalMetadatum();
   });
+
+  $scope.download = function(file_url){
+    $scope.requesting = true;
+    FilesMetadataService.downloadSelected(file_url).then(function(result){
+      $scope.requesting = false;
+    });
+  }
+
+  $scope.removeMetadataAssociation = function(fileobject){
+    $scope.requesting = true;
+    alert(angular.toJson(fileobject))
+    var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
+    //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
+    if (unAssociate) {
+      FilesMetadataService.removeAssociations([fileobject], this.$parent.metadataUuid).then(function(result){
+        $scope.metadatum = null;
+        //pause to let model update
+        $rootScope.$broadcast('associationsUpdated')
+        $timeout(function(){$scope.getModalMetadatum()}, 300);
+        $scope.requesting = false;
+      });
+    }
+  }
+
 
 });
