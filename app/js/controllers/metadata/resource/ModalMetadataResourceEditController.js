@@ -30,7 +30,6 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
               formschema["properties"] = $scope.metadataschema.schema.properties;
               $scope.schema = formschema;
               $scope.model ={};
-              alert(angular.toJson($scope.metadatum))
               angular.forEach($scope.metadataschema.schema.properties, function(value, key) {
                 if($scope.metadataschema.schema.properties[key].type == "number"){
                   if($scope.metadatum.value[key] == '' || $scope.metadatum.value[key] == null || $scope.metadatum.value[key] == "na"){
