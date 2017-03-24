@@ -15,6 +15,13 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
       .then(function(response){
         $scope.metadatum = response.result;
         if($scope.metadatum){
+          $scope.metadatum = response.result;
+          if ($scope.metadatum.schemaId == null){
+            console.log("missing schemaId")
+            if($scope.metadatum.name == 'Well'){
+            $scope.metadatum.schemaId = '5711039176026484250-242ac1110-0001-013'
+            }
+          }
           MetaController.getMetadataSchema($scope.metadatum.schemaId)
             .then(function(schema_response){
               $scope.metadataschema = schema_response.result;
@@ -23,8 +30,29 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
               formschema["properties"] = $scope.metadataschema.schema.properties;
               $scope.schema = formschema;
               $scope.model ={};
+              alert(angular.toJson($scope.metadatum))
               angular.forEach($scope.metadataschema.schema.properties, function(value, key) {
-                $scope.model[key] = $scope.metadatum.value[key];
+                if($scope.metadataschema.schema.properties[key].type == "number"){
+                  if($scope.metadatum.value[key] == '' || $scope.metadatum.value[key] == null || $scope.metadatum.value[key] == "na"){
+                    //$scope.model[key] = null;
+                    //do nothing
+                  }
+                  else{
+                    $scope.model[key] = Number($scope.metadatum.value[key]);
+                  }
+                }
+                else if ($scope.metadataschema.schema.properties[key].type == "string"){
+                  if($scope.metadatum.value[key] == '' || $scope.metadatum.value[key] == null ){
+                    $scope.model[key] = "";
+                    //do nothing
+                  }
+                  else{
+                    $scope.model[key] = String($scope.metadatum.value[key]);
+                  }
+                }
+                else{
+                  $scope.model[key] = $scope.metadatum.value[key];
+                }
               });
               $scope.form = [
                 "*"/*,
@@ -48,7 +76,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
 
   $scope.onSubmit = function(form) {
     $scope.requesting = true;
-    $scope.$broadcast('schemaFormValidate');
+    //$scope.$broadcast('schemaFormValidate');
     // Then we check if the form is valid
     if (form.$valid) {
       var body = {};
@@ -56,6 +84,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
       body.name = $scope.metadatum.name;
       body.value = $scope.model;
       body.schemaId = $scope.metadatum.schemaId;
+      if (body.schemaId == null){
+        if(body.name == 'Well'){
+        body.schemaId = '5711039176026484250-242ac1110-0001-013'
+        }
+      }
       MetaController.updateMetadata(body,$scope.metadataUuid)
         .then(
           function(response){
