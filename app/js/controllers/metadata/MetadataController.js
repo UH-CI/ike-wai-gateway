@@ -1,7 +1,13 @@
-angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, $rootScope, MetaController, FilesController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
+    $scope.profile = $localStorage.activeProfile;
+    $scope.get_editors = function(){
+      $scope.editors = MetadataService.getAdmins();
+      $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
+    }
+    $scope.get_editors();
 
     //Don't display metadata of these types
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];

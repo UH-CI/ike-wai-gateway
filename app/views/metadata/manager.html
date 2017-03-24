@@ -156,7 +156,7 @@
                                                   <!-- <a href='#' ng-click="openView(metadatum.uuid)" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp; -->
 
-                                                  <a href='#' ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
 
                                           </div>
                                       </td>
