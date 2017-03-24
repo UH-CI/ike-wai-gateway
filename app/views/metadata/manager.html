@@ -75,7 +75,7 @@
                               <i class="fa fa-angle-down pull-right"></i>
                           </a>
                           <ul class="dropdown-menu">
-                            <li ng-repeat="metadataschemata in metadataschema " ng-show="ignoreSchemaType.indexOf(metadataschemata.schema.title) < 0">
+                            <li ng-repeat="metadataschemata in metadataschema " ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
                               <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
                             </li>
                           </ul>
