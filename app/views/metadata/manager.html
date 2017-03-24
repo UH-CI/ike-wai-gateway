@@ -12,7 +12,7 @@
     <div landing-start-menu></div>
 </div>
 -->
-<h3 class="page-title"> Manage your Metadata</h3>
+<h3 class="page-title"> Browse Metadata</h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -26,9 +26,15 @@
                     <div class="btn-group top-buffer">
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                        <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                        <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter">
                       </div>
-                      <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+                      <br/>
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
+                        <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+                        <div class="input-group-addon"><span class="input-group pull-left" aria-hidden="true"><input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;<input type="checkbox" ng-model="schemaBox.val2" />Search Wells</span></div>
+
                       <br/>
                     </div>
                     <div class="row top-buffer" ng-show="showSearch">
