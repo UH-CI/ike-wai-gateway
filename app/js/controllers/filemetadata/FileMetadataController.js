@@ -352,6 +352,50 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
         };
 
+///////Assoc modal search////////
+$scope.schemaBox = {val1:true,val2:true};
+$scope.wellbox = true;
+$scope.searchField = {value:''}
+$scope.searchAll = function(){
+  //alert($scope.filter)
+  $scope.requesting = true;
+    var orquery = {}
+    var andquery = {}
+    var queryarray = []
+    var andarray = []
+    var innerquery = {}
+    var typearray = []
+    if ($scope.searchField.value != ''){
+      angular.forEach($scope.metadataschema, function(value, key){
+        //alert(angular.toJson(value))
+        if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+          angular.forEach(value.schema.properties, function(val, key){
+            var valquery = {}
+            valquery['value.'+key] = {$regex: $scope.searchField.value}
+            queryarray.push(valquery)
+          })
+        }
+      })
+      orquery['$or'] = queryarray;
+   }
+    var typequery = {}
+
+    if ($scope.schemaBox.val1){
+      typearray.push('Site')
+    }
+    if ($scope.schemaBox.val2){
+      typearray.push('Well')
+    }
+    typequery['name'] = {'$in': typearray}
+    andarray.push(typequery)
+    andarray.push(orquery)
+    andquery['$and'] = andarray;
+    $scope.query = JSON.stringify(andquery);
+
+    $scope.fetchModalMetadata();
+}
+
+
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
       ///$scope.uuid = filemetadatumUuid;
       $scope.cancel = function () {
