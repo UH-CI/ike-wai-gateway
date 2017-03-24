@@ -19,7 +19,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = ''//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
@@ -87,7 +87,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.searchTools = function(query){
       $scope.query = query;
-      $scope.refresh();
+      $scope.fetchModalMetadata()
+      //$scope.refresh();
     }
 
 
@@ -194,7 +195,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 /////////Modal Stuff/////////////////////
         $scope.fetchModalMetadata = function(query){
           MetaController.listMetadata(
-            query
+            $scope.query
           )
             .then(
               function (response) {
@@ -359,7 +360,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
       $scope.fetchModalMetadata = function(query){
         MetaController.listMetadata(
-          query
+          $scope.query
         )
           .then(
             function (response) {
