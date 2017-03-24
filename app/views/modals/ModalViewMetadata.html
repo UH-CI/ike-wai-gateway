@@ -58,7 +58,7 @@
                 <td><!--<a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId._links.associationIds[0].href.split('system')[1]}}</a></td>-->
                 <span>{{associationId.value.path}}</span><span ng-show="associationId.value.path ==''">{{associationId._links.associationIds[0].href.split('system')[1]}}</span>
                 <br/><button type="button" class="btn btn-success text-center"  ng-click="download([associationId._links.associationIds[0].href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
-                  <button type="button" class="btn btn-success text-center"  ng-click="removeMetadataAssociation(associationId)"><i class="fa fa-trash"></i> Remove Association</button>
+                  <span ng-show='profile.username == associationId.owner || edit_perm'><button  type="button" class="btn btn-success text-center"  ng-click="removeMetadataAssociation(associationId)"><i class="fa fa-trash"></i> Remove Association</button></span>
                 </td>
               </tr>
           </tbody>

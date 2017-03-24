@@ -1,4 +1,10 @@
-angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $window, $rootScope, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $window, $rootScope, $localStorage, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+  $scope.profile = $localStorage.activeProfile;
+  $scope.get_editors = function(){
+    $scope.editors = MetadataService.getAdmins();
+    $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
+  }
+  $scope.get_editors();
 
   $scope.close = function () {
     $modalInstance.close($scope.model);
