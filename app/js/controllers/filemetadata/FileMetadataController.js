@@ -86,8 +86,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     };
 
     $scope.searchTools = function(query){
-      $scope.query = query;
-      $scope.refresh();
+      //$scope.query = query;
+      $scope.fetchModalMetadata(query)
+      //$scope.refresh();
     }
 
 
