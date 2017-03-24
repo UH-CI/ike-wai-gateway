@@ -29,6 +29,7 @@
                         <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
                       </div>
                       <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+                      <span class="input-group pull-left" aria-hidden="true"><input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;<input type="checkbox" ng-model="schemaBox.val2" />Search Wells</span>
                       <br/>
                     </div>
                     <div class="row top-buffer" ng-show="showSearch">

@@ -20,7 +20,8 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-
+    $scope.schemaBox = {val1:true,val2:true};
+    $scope.wellbox = true;
     $scope.searchAll = function(){
       //alert($scope.filter)
       $scope.requesting = true;
@@ -29,14 +30,13 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         var queryarray = []
         var andarray = []
         var innerquery = {}
+        var typearray = []
       //  innerquery['name'] = {'$in':$scope.approvedSchema};
       //  queryarray.push(innerquery)
         angular.forEach($scope.metadataschema, function(value, key){
           //alert(angular.toJson(value))
           if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-            console.log(value.schema.title);
             angular.forEach(value.schema.properties, function(val, key){
-              console.log(key)
               var valquery = {}
               valquery['value.'+key] = {$regex: $scope.filter}
               queryarray.push(valquery)
@@ -45,7 +45,14 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         })
         orquery['$or'] = queryarray;
         var typequery = {}
-        typequery['name'] = {'$in': $scope.approvedSchema}
+
+        if ($scope.schemaBox.val1){
+          typearray.push('Site')
+        }
+        if ($scope.schemaBox.val2){
+          typearray.push('Well')
+        }
+        typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)
         andquery['$and'] = andarray;
