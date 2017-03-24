@@ -18,7 +18,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.status = 'active';
     $scope.available = true;
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
-    $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
+    //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
 
     $scope.searchAll = function(){
@@ -47,7 +47,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         andarray.push(orquery)
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
-        
+
         MetaController.listMetadata($scope.query,limit=1000,offset=0).then(
           function (response) {
             $scope.totalItems = response.result.length;
