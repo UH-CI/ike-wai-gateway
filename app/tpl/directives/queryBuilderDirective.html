@@ -1,6 +1,7 @@
 <div class="text-center">
     <div class="form-inline">
         <!-- <select ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control input-sm"></select> -->
+        <h3>Combine Attributes To Build A Query</h3>
         <button ng-click="addCondition()" class="btn btn-success"><i class="fa fa-plus"></i> Add Attribute</button>
         <!-- <button style="margin-left: 5px" ng-click="addGroup()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Group</button>
         <button style="margin-left: 5px" ng-click="removeGroup()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span> Remove Group</button> -->
@@ -13,7 +14,7 @@
                 </div>
                 <div ng-switch-default="ng-switch-default">
                     <div class="form-inline">
-                        <select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control"></select>
+                        <select ng-options="t.name as t.title for t in fields" ng-model="rule.field" class="form-control"></select>
                         <select ng-options="c.value as c.name for c in conditions" ng-model="rule.condition" class="form-control"></select>
                         <input type="text" ng-model="rule.data" class="form-control"/>
                         <button ng-click="removeCondition($index)" class="btn btn-danger"><i class="fa fa-minus"></i></button>
