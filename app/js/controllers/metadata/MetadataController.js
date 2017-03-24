@@ -22,6 +22,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
     $scope.schemaBox = {val1:true,val2:true};
     $scope.wellbox = true;
+    $scope.searchField = {value:''}
     $scope.searchAll = function(){
       //alert($scope.filter)
       $scope.requesting = true;
@@ -31,19 +32,19 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         var andarray = []
         var innerquery = {}
         var typearray = []
-      //  innerquery['name'] = {'$in':$scope.approvedSchema};
-      //  queryarray.push(innerquery)
-        angular.forEach($scope.metadataschema, function(value, key){
-          //alert(angular.toJson(value))
-          if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-            angular.forEach(value.schema.properties, function(val, key){
-              var valquery = {}
-              valquery['value.'+key] = {$regex: $scope.filter}
-              queryarray.push(valquery)
-            })
-          }
-        })
-        orquery['$or'] = queryarray;
+        if ($scope.searchField.value != ''){
+          angular.forEach($scope.metadataschema, function(value, key){
+            //alert(angular.toJson(value))
+            if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+              angular.forEach(value.schema.properties, function(val, key){
+                var valquery = {}
+                valquery['value.'+key] = {$regex: $scope.searchField.value}
+                queryarray.push(valquery)
+              })
+            }
+          })
+          orquery['$or'] = queryarray;
+       }
         var typequery = {}
 
         if ($scope.schemaBox.val1){
@@ -58,7 +59,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
 
-        MetaController.listMetadata($scope.query,limit=1000,offset=0).then(
+        MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
