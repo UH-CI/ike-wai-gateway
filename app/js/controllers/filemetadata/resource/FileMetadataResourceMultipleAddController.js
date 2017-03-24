@@ -1,8 +1,16 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, $localStorage, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
 		$scope.fileUuids = $stateParams['fileUuids'];
 		$scope.filePaths = $stateParams['filePaths'];
+		$scope.profile = $localStorage.activeProfile;
+
+		$scope.query = "{'name':{$in:['Well','Site']}}"
+		$scope.get_editors = function(){
+			$scope.editors = MetadataService.getAdmins();
+			$scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
+		}
+		$scope.get_editors();
 		//$scope.filename = $stateParams['filename'];
 		//$scope.schemauuid = $stateParams.schemauuid;
 		/*$scope.fileObjs = JSON.parse($stateParams.fileObjs);
@@ -18,7 +26,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
 		$scope.approvedSchema = ['Well','Site'];
-		
+
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
 			if (schemauuid) {
@@ -111,6 +119,12 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
     };
 
     $scope.refresh();
+
+		$scope.searchTools = function(query){
+			$scope.query = query;
+			$scope.fetchModalMetadata($scope.query)
+			//$scope.refresh();
+		}
 
 		$scope.fetchFileObjects = function(){
 			//fetch File metadata objects
@@ -246,9 +260,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					 }
 				}
 /////////Modal Stuff/////////////////////
-			$scope.fetchModalMetadata = function(query){
+			$scope.fetchModalMetadata = function(){
 				MetaController.listMetadata(
-					query
+					$scope.query
 				)
 					.then(
 						function (response) {
@@ -365,6 +379,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					scope: $scope,
 					size: size,
 					metadataUuid: metadatumuuid,
+					profile: $scope.profile,
 					resolve: {
 
 					}
@@ -399,9 +414,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$modalInstance.close();
 	};
 
-	$scope.fetchModalMetadata = function(query){
+	$scope.fetchModalMetadata = function(){
 		MetaController.listMetadata(
-			query
+			$scope.query
 		)
 			.then(
 				function (response) {
