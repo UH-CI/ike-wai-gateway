@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-
+    $scope.approvedSchema = ['Well','Site'];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
