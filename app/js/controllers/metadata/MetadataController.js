@@ -23,6 +23,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
     $scope.searchAll = function(){
       //alert($scope.filter)
+      $scope.requesting = true;
         var orquery = {}
         var andquery = {}
         var queryarray = []
@@ -33,9 +34,11 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         angular.forEach($scope.metadataschema, function(value, key){
           //alert(angular.toJson(value))
           if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+            console.log(value.schema.title);
             angular.forEach(value.schema.properties, function(val, key){
+              console.log(key)
               var valquery = {}
-              valquery['value.'+key] = {'$regex': $scope.filter}
+              valquery['value.'+key] = {$regex: $scope.filter}
               queryarray.push(valquery)
             })
           }
@@ -61,6 +64,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           }
       );
     }
+
     $scope.refresh = function() {
       $scope.requesting = true;
       MetaController.listMetadataSchema(
