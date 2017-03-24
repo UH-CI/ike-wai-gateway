@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
 
 
 	$scope.close = function () {
@@ -8,7 +8,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.model = {};
 
 	$scope.schemaQuery ='';
-
+	$scope.approvedSchema = ["Well","Site"]
 	var selectedSchemaUuid = '';
 
 	$scope.initialize = function() {
@@ -52,7 +52,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		MetaController.listMetadataSchema(
 			$scope.schemaQuery
 		).then(function(response){
-			$scope.metadataschema = response.result;
+			$scope.metadataschema = 	$filter('filter')(response.result, function(item){
+				return $scope.approvedSchema.indexOf(item.schema.title) > -1;
+			}
+		  );
 			$scope.requesting = false;
 		})
 		if (selectedSchemaUuid != null) {
