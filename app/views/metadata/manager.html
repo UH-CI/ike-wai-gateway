@@ -28,6 +28,8 @@
                         <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
                         <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
                       </div>
+                      <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+                      <br/>
                     </div>
                     <div class="row top-buffer" ng-show="showSearch">
                       <query-builder group="filter.group" resource="metadata"></query-builder>
@@ -45,7 +47,7 @@
                     </div>
                     <div class="btn-group top-buffer">
                       <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Open Advanced Search Tools'}}
                       </button>
                     </div>
                 </div>
@@ -89,7 +91,7 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      <!-- 
+                                      <!--
                                       <th width="20%">
                                         <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
                                           Associated Files
@@ -114,7 +116,7 @@
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
                                            {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}}</a>
                                       </td>
-                                      <!-- 
+                                      <!--
                                       <td>
                                           <div ng-repeat="associationId in metadatum._links['associationIds']">
 

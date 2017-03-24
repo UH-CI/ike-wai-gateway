@@ -7,7 +7,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-
+    $scope.approvedSchema = ['Well','Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -17,8 +17,50 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.sortReverse  = true;
     $scope.status = 'active';
     $scope.available = true;
-    $scope.query = '';
+    $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
+    $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
+
+    $scope.searchAll = function(){
+      //alert($scope.filter)
+        var orquery = {}
+        var andquery = {}
+        var queryarray = []
+        var andarray = []
+        var innerquery = {}
+      //  innerquery['name'] = {'$in':$scope.approvedSchema};
+      //  queryarray.push(innerquery)
+        angular.forEach($scope.metadataschema, function(value, key){
+          //alert(angular.toJson(value))
+          if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+            angular.forEach(value.schema.properties, function(val, key){
+              var valquery = {}
+              valquery['value.'+key] = {'$regex': $scope.filter}
+              queryarray.push(valquery)
+            })
+          }
+        })
+        orquery['$or'] = queryarray;
+        var typequery = {}
+        typequery['name'] = {'$in': $scope.approvedSchema}
+        andarray.push(typequery)
+        andarray.push(orquery)
+        andquery['$and'] = andarray;
+        $scope.query = JSON.stringify(andquery);
+        
+        MetaController.listMetadata($scope.query,limit=1000,offset=0).then(
+          function (response) {
+            $scope.totalItems = response.result.length;
+            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
+            $scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.requesting = false;
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_metadata_list'));
+            $scope.requesting = false;
+          }
+      );
+    }
     $scope.refresh = function() {
       $scope.requesting = true;
       MetaController.listMetadataSchema(
@@ -64,7 +106,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 
 /////////Modal Stuff/////////////////////
 
-    
+
     $scope.openCreate = function (schemauuid, size) {
     	$scope.selectedSchemaUuid = schemauuid;
         var modalInstance = $uibModal.open({
@@ -80,7 +122,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         }
       );
     };
-    
+
     $scope.openEdit = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;
         var modalInstance = $uibModal.open({
