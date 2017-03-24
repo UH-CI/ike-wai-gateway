@@ -17,7 +17,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		//alert($scope.fileObjs)
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
-
+		$scope.approvedSchema = ['Well','Site'];
+		
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
 			if (schemauuid) {
