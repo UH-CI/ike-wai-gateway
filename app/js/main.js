@@ -193,6 +193,7 @@ AgaveToGo.config(function($translateProvider) {
 
     error_metadata_update_assocation: 'Error: could not update Metadata associations',
     error_metadata_add_assocation: 'Error: could not add file/Metadata associations',
+    error_metadata_add_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update: 'Error: Could not update Metadata',
     error_metadata_add: 'Error: Could not create Metadata object',
