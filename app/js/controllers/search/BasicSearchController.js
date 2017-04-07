@@ -55,7 +55,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
             MetaController.listMetadata($scope.filequery,limit=10000,offset=0).then(
                 function (response) {
                   $scope.filemetadata= response.result;
-                  angular.extend($scope.filemetadata, $scope.medata);
+                  //angular.extend($scope.filemetadata, $scope.metadata);
                   $scope.parseFiles();
                 }
             )
@@ -124,8 +124,16 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
 
     $scope.searchTools = function(query){
       $scope.requesting = true;
-      $scope.query = query;
-      $scope.filequery = query;
+      if (query !=''){
+        $scope.query = query;
+        jsonquery = angular.fromJson(query.replace(/'/g, '"'))
+        jsonquery['$and'][0]['name']['$in']=['PublishedFile'];
+        $scope.filequery = JSON.stringify(jsonquery);
+      }
+      else{
+        $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }},{'_links.associationIds':1,'value.name':1,'name':1,'value.well_name':1,'value.wid':1}";
+        $scope.filequery ="{'name':'PublishedFile'}"
+      }
       $scope.doSearch();
     };
 
