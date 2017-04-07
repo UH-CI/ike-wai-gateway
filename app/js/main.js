@@ -193,6 +193,7 @@ AgaveToGo.config(function($translateProvider) {
 
     error_metadata_update_assocation: 'Error: could not update Metadata associations',
     error_metadata_add_assocation: 'Error: could not add file/Metadata associations',
+    error_metadata_add_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update_assocation_exists: 'Error: file is already associated with Metadata object',
     error_metadata_update: 'Error: Could not update Metadata',
     error_metadata_add: 'Error: Could not create Metadata object',
@@ -2287,6 +2288,34 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/search/SearchController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
+        .state('basic-search', {
+            url: "/basic-search",
+            templateUrl: "views/search/basic-search.html",
+            data: {pageTitle: 'Search Ike'},
+            controller: "BasicSearchController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/PermissionsService.js',
+                            'js/services/MetadataService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/search/BasicSearchController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
                         ]
                     });
                 }]

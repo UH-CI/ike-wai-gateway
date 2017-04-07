@@ -112,6 +112,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     if (unAssociate) {
       FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
+    	App.alert({message: $translate.instant('success_metadata_assocation_removed') });
         $scope.metadatum = null;
         //pause to let model update
         $timeout(function(){$scope.refresh()}, 300);
@@ -228,19 +229,19 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   .then(
                     function(response){
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
-                      App.alert({message: $translate.instant('success_metadata_update_assocation') });
+                      App.alert({message: $translate.instant('success_metadata_add_assocation') });
                       $scope.requesting = false;
                       $scope.refresh();
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
                     function(response){
-                      MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+                      MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
                       $scope.requesting = false;
                     }
                   )
                 }
                 else {
-                  App.alert({type: 'danger',message: $translate.instant('error_metadata_update_assocation_exists') });
+                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists') });
                   return
                 }
               })
