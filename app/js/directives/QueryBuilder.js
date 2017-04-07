@@ -270,7 +270,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                     {name: 'is less than or equal to', value:'$lte'},
                     {name: 'is greater than', value:'$gt'},
                     {name: 'is greater than or equal to', value:'$gte'},
-                    {name: 'contains', value: '$regex'},
+                    {name: 'contains', value: '$options'+"'"+': '+"'i','"+ '$regex'},
                   ];
                 }
 
