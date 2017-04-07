@@ -203,11 +203,15 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];
+                            var approvedSchema = ['Well','Site']
                             angular.forEach(schemas, function(schemaobj){
-                             angular.forEach(schemaobj.schema.properties, function(value, key){
-                               scope.fields.push({name: 'value.'+key})//value.title, value: key})
-                             });
+                              if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
+                                 angular.forEach(schemaobj.schema.properties, function(value, key){
+                                   scope.fields.push({name: 'value.'+key, title: key})
+                                 });
+                              }
                            });
+                           scope.fields.push({name: 'value.filename', title: "filename"})
                          }
                      );
                     /*  scope.fields = [
@@ -261,9 +265,12 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                 }
                 if(attrs.resource == 'search'){
                   scope.conditions = [
-                      {name: 'equals', value:'$eq'},
-                      {name: 'is not equal', value:'$ne'},
-                      {name: 'contains', value: '$regex'},
+                    {name: 'equals', value:'$eq'},
+                    {name: 'is not equal', value:'$ne'},
+                    {name: 'is less than or equal to', value:'$lte'},
+                    {name: 'is greater than', value:'$gt'},
+                    {name: 'is greater than or equal to', value:'$gte'},
+                    {name: 'contains', value: '$regex'},
                   ];
                 }
 

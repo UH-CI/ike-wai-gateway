@@ -84,12 +84,12 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
             if($scope.approvedSchema.indexOf(value.schema.title) > -1){
               angular.forEach(value.schema.properties, function(val, key){
                 var valquery = {}
-                valquery['value.'+key] = {$regex: $scope.searchField.value}
+                valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
                 queryarray.push(valquery)
               })
             }
           })
-          queryarray.push({'value.filename':{$regex: $scope.searchField.value}})
+          queryarray.push({'value.filename':{$regex: $scope.searchField.value, '$options':'i'}})
           orquery['$or'] = queryarray;
        }
         var typequery = {}
@@ -104,11 +104,11 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         andarray.push(typequery)
         andarray.push(orquery)
         andquery['$and'] = andarray;
-        $scope.query = JSON.stringify(andquery);
+        $scope.query = JSON.stringify(andquery).replace(/"/g, "'");
         fileandarray.push({'name':'PublishedFile'})
         fileandarray.push(orquery)
         fileandquery['$and'] = fileandarray;
-        $scope.filequery = JSON.stringify(fileandquery);
+        $scope.filequery = JSON.stringify(fileandquery).replace(/"/g, "'");
         $scope.doSearch();
     }
 
@@ -125,6 +125,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.searchTools = function(query){
       $scope.requesting = true;
       $scope.query = query;
+      $scope.filequery = query;
       $scope.doSearch();
     };
 
