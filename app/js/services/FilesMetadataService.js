@@ -290,7 +290,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       });
       return true;
     }
-    
+
     this.createPublishedFileMetadata = function(newfile_uuid, newpath, oldfile_uuid, associations){
       var promises = [];
       MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
@@ -347,7 +347,6 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.listMetadata('{$and: [{"name":"File"},{"associationIds":"' +  fileUuid+ '"}]}',1000,0)
             .then(function(response){
               angular.forEach(response.result, function(value){
-                  //associations = associations.concat(value.associationIds)
                   //loop through File metadata associations
                   angular.forEach(value.associationIds, function(val,index){
                     //associate newfile with oldfiles metadatum object
@@ -356,22 +355,8 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
                      self.addPublishedAssociation(val, newfile_uuid);
                    }
                  })
-                    //self.addPublishedAssociation(val, newfile_uuid);
-                //    associations.push[val]
-                //  })
-                //old the original File metadata object as association with Published File
-                //associations.push[response.result.uuid]
               })
               //create a a File Metadata Object, assocaiate metadata objects
-              //self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations);
-              //add original file to Published object
-              //self.addAssociation('4516085960163594726-242ac1110-0001-012',fileUuid);
-              //remove original file from Stagged object
-              //self.removeAssociation('484964208339784166-242ac1110-0001-012', fileUuid)
-            //  unique = associations.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
-          //    stagged_index = unique.indexOf('484964208339784166-242ac1110-0001-012')
-          //    unique.splice(stagged_index)
-          //    alert(angular.toJson(unique))
               promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
               promises.push(
                 MetadataService.fetchSystemMetadataUuid('published')
