@@ -19,6 +19,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
   this.broadcastMe = function(){
    $rootScope.$broadcast('broadcastUpdate');
   };
+
   this.updateFileObject = function(fileobject){
     var body={};
     //associate system file with this metadata File object
@@ -28,7 +29,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
     body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
     body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
     //File Schema uuid
-    body.schemaId = '3557207775540866585-242ac1110-0001-013';
+    body.schemaId = fileobject.schemaId;
     MetaController.updateMetadata(body,fileobject.uuid)
       .then(
         function(response){
@@ -43,33 +44,38 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
   this.createFileMetadataObject = function(fileUuid, callback){
     var self = this;
-    MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+fileUuid+"'}]}").then(
-      function(resp){
-        var fileobj = resp.result;
-        //check if fileobj is empty if so the create new obj
-        if (fileobj == ""){
-          var body={};
-          //associate system file with this metadata File object
-          body.associationIds = [fileUuid];
-          body.name = 'File';
-          body.value = {};
-          //File Schema uuid
-          body.schemaId = '3557207775540866585-242ac1110-0001-013';
-          MetaController.addMetadata(body)
-            .then(
-              function(response){
-                //add the default permissions for the system in addition to the owners
-                MetadataService.addDefaultPermissions(response.result.uuid);
-                self.updateFileObject(response.result)
-                return callback(response.data);
-              },
-              function(response){
-                MessageService.handle(response, "Error creating metadata file object!");
-              }
-            );
+    MetadataService.fetchSystemMetadataSchemaUuid('File')
+    .then(function(file_schema_uuid){
+      MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+fileUuid+"'}]}").then(
+        function(resp){
+          var fileobj = resp.result;
+          //check if fileobj is empty if so the create new obj
+          if (fileobj == ""){
+            var body={};
+            //associate system file with this metadata File object
+            body.associationIds = [fileUuid];
+            body.name = 'File';
+            body.value = {};
+            //File Schema uuid
+            body.schemaId = file_schema_uuid;
+            MetaController.addMetadata(body)
+              .then(
+                function(response){
+                  //add the default permissions for the system in addition to the owners
+                  MetadataService.addDefaultPermissions(response.result.uuid);
+                  self.updateFileObject(response.result)
+                  return callback(response.data);
+                },
+                function(response){
+                  MessageService.handle(response, "Error creating metadata file object!");
+                }
+              );
+          }
         }
-      }
-    )
+      )
+    },function(response){
+      App.alert(response, "Erorr Fetch System Metadata Schema UUID.")
+    });
   }
 
 
@@ -330,7 +336,6 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.name = "PublishedFile";
           body.associationIds = associations;
           body.associationIds.push(newfile_uuid);
-          body.associationIds.push(oldfile_uuid);
           body.value= {"file-uuid":newfile_uuid,"oldfile-uuid":oldfile_uuid,"filename":split_filepath[split_filepath.length -1],"path":newpath};
           body.schemaId = published_schema_uuid;
           body.published="True";
@@ -404,8 +409,20 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           //    unique.splice(stagged_index)
           //    alert(angular.toJson(unique))
               promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
-              promises.push(self.addAssociation('4516085960163594726-242ac1110-0001-012',fileUuid));
-              promises.push(self.removeAssociation('484964208339784166-242ac1110-0001-012', fileUuid));
+              promises.push(
+                MetadataService.fetchSystemMetadataUuid('published')
+                  .then(function(published_uuid){
+                    self.addAssociation(published_uuid,fileUuid);
+                  }
+                )
+              );
+              promises.push(
+                MetadataService.fetchSystemMetadataUuid('stagged')
+                  .then(function(stagged_uuid){
+                    self.removeAssociation(stagged_uuid, fileUuid);
+                  }
+                )
+              );
             })
         },
         function(response){
