@@ -1,11 +1,11 @@
-angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, MetaController, ActionsService, FilesMetadataService) {
+angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, $localStorage, MetaController, ActionsService, FilesMetadataService, MetadataService) {
 
   $scope.metadatum = null;
   $scope.requesting = true;
   $scope.getMetadatum = function(){
     $scope.requesting = true;
     if ($stateParams.id !== ''){
-      MetaController.getMetadata("484964208339784166-242ac1110-0001-012")
+      MetaController.getMetadata(MetadataService.fetchSystemMetadataUuid('stagged'))
         .then(
           function(response){
             $scope.metadatum = response.result;
@@ -24,7 +24,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
 
   $scope.rejectStaggingRequest = function(fileUuid){
       $scope.requesting = true;
-    FilesMetadataService.rejectStaggingRequest("484964208339784166-242ac1110-0001-012", fileUuid).then(function(result){
+      FilesMetadataService.rejectStaggingRequest(MetadataService.fetchSystemMetadataUuid('stagged'), fileUuid).then(function(result){
         $scope.metadatum = null;
         //pause to let model update
         $timeout(function(){$scope.getMetadatum()}, 300);
