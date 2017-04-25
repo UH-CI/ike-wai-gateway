@@ -154,7 +154,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       return true;
     };
 
-    this.removeAssociation = function(metadataUuid, uuidToRemove, callback){
+    this.removeAssociation = function(metadataUuid, uuidToRemove){
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -166,7 +166,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.schemaId = metadatum.schemaId;
           MetaController.updateMetadata(body,metadataUuid)
           .then(function(resp) {
-            return callback(resp.data);
+            //return callback(resp.data);
           })
         }
       )
@@ -323,28 +323,40 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
     this.createPublishedFileMetadata = function(newfile_uuid, newpath, oldfile_uuid, associations){
       var promises = [];
-      body = {};
-      split_filepath = newpath.split("/");
-      body.name = "PublishedFile";
-      body.associationIds = associations;
-      body.associationIds.push(newfile_uuid);
-      body.associationIds.push(oldfile_uuid);
-      body.value= {"file-uuid":newfile_uuid,"oldfile-uuid":oldfile_uuid,"filename":split_filepath[split_filepath.length -1],"path":newpath};
-      body.schemaId = '6890279147825992166-242ac1110-0001-013';
-      body.published="True";
-      MetaController.addMetadata(body)
-        .then(
-          function(response){
-            metadataUuid = response.result.uuid;
-            App.alert({message: $translate.instant('success_metadata_add') + metadataUuid });
-            //add the default permissions for the system in addition to the owners
-            MetadataService.addDefaultPermissions(metadataUuid);
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_add'));
-          }
-        );
+      MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
+        .then(function(published_schema_uuid){
+          body = {};
+          split_filepath = newpath.split("/");
+          body.name = "PublishedFile";
+          body.associationIds = associations;
+          body.associationIds.push(newfile_uuid);
+          body.associationIds.push(oldfile_uuid);
+          body.value= {"file-uuid":newfile_uuid,"oldfile-uuid":oldfile_uuid,"filename":split_filepath[split_filepath.length -1],"path":newpath};
+          body.schemaId = published_schema_uuid;
+          body.published="True";
+          promises.push(MetaController.addMetadata(body)
+            .then(
+              function(response){
+                metadataUuid = response.result.uuid;
+                App.alert({message: $translate.instant('success_metadata_add') + metadataUuid });
+                //add the default permissions for the system in addition to the owners
+                MetadataService.addDefaultPermissions(metadataUuid);
+              },
+              function(response){
+                MessageService.handle(response, $translate.instant('error_metadata_add'));
+              }
+            ));
+          });
+        var deferred = $q.defer();
 
+        return $q.all(promises).then(
+          function(data) {
+
+          },
+          function(data) {
+            deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
+
+        });
     }
 
     this.publishStaggedFile = function(fileUuid, filepath)
@@ -355,29 +367,45 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       newpath = "new_data/" + filename;
       var promises = [];
       var associations = [];
+
       FilesController.importFileItem(filepath, newpath, "ikewai-archive")
         .then(function(response){
           //success - get the newfiles uuid
           newfile_uuid = response.result.uuid;
           console.log("new-uuid: " + newfile_uuid )
           console.log("old-uuid: " + fileUuid)
-          //fetch all metadata objects associated with oldfile
-          MetaController.listMetadata('{"associationIds":"' +  fileUuid+ '"}',1000,0)
+          //fetch all file objects associated with oldfile
+          MetaController.listMetadata('{$and: [{"name":"File"},{"associationIds":"' +  fileUuid+ '"}]}',1000,0)
             .then(function(response){
-              angular.forEach(response.result, function(metadatum){
-                console.log(metadatum.name)
-                if(metadatum.name != 'stagged'){
-                  //associate newfile with oldfiles metadatum object
-                  self.addPublishedAssociation(metadatum.uuid, newfile_uuid);
-                  associations.push[metadatum.uuid]
-                }
+              angular.forEach(response.result, function(value){
+                  //associations = associations.concat(value.associationIds)
+                  //loop through File metadata associations
+                  angular.forEach(value.associationIds, function(val,index){
+                    //associate newfile with oldfiles metadatum object
+                    if( associations.indexOf(val) < 0){
+                     associations.push(val)
+                     self.addPublishedAssociation(val, newfile_uuid);
+                   }
+                 })
+                    //self.addPublishedAssociation(val, newfile_uuid);
+                //    associations.push[val]
+                //  })
+                //old the original File metadata object as association with Published File
+                //associations.push[response.result.uuid]
               })
               //create a a File Metadata Object, assocaiate metadata objects
-              self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations);
+              //self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations);
               //add original file to Published object
-              self.addAssociation('4516085960163594726-242ac1110-0001-012',fileUuid);
+              //self.addAssociation('4516085960163594726-242ac1110-0001-012',fileUuid);
               //remove original file from Stagged object
-              self.removeAssociation('484964208339784166-242ac1110-0001-012', fileUuid)
+              //self.removeAssociation('484964208339784166-242ac1110-0001-012', fileUuid)
+            //  unique = associations.filter(function(item, i, ar){ return ar.indexOf(item) === i; });
+          //    stagged_index = unique.indexOf('484964208339784166-242ac1110-0001-012')
+          //    unique.splice(stagged_index)
+          //    alert(angular.toJson(unique))
+              promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
+              promises.push(self.addAssociation('4516085960163594726-242ac1110-0001-012',fileUuid));
+              promises.push(self.removeAssociation('484964208339784166-242ac1110-0001-012', fileUuid));
             })
         },
         function(response){
@@ -396,7 +424,6 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           deferredHandler(data, deferred, $translate.instant('error_file_publish'));
 
       });
-      return true;
     }
 
     this.rejectStaggingRequest = function(metadataUuid, uuidToReject){
