@@ -290,43 +290,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       });
       return true;
     }
-    this.setFilePublished = function(fileUuid){
-      var promises = [];
-      //fetch published metadata record
-      MetaController.getMetadata('4516085960163594726-242ac1110-0001-012')
-        .then(function(response){
-          var metadatum = response.result;
-          var body = {};
-          body.associationIds = metadatum.associationIds;
-          if (body.associationIds.indexOf(fileUuid) < 0) {
-            body.associationIds.push(fileUuid);
-          }
-          MetaController.updateMetadata(body,'4516085960163594726-242ac1110-0001-012')
-          .then(
-            function(response){
-              App.alert({message: $translate.instant('success_metadata_update') });
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
-            }
-
-          )
-        }
-      )
-      var deferred = $q.defer();
-
-      return $q.all(promises).then(
-        function(data) {
-          deferredHandler(data, deferred);
-
-        },
-        function(data) {
-          deferredHandler(data, deferred, $translate.instant('error_metadata_update_assocation'));
-
-      });
-      return true;
-    }
-
+    
     this.createPublishedFileMetadata = function(newfile_uuid, newpath, oldfile_uuid, associations){
       var promises = [];
       MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
