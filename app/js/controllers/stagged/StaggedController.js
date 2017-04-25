@@ -53,6 +53,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
            //pause to let model update
            $timeout(function(){$scope.getMetadatum()}, 300);
             $scope.requesting = false;
+            App.alert( "File Published");
         })
       },function(){
         MessageService.handle(response, $translate.instant('error_fetching_metadata_schema'));
@@ -61,7 +62,6 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
   }
   $scope.$on('broadcastUpdate', function(event, args){
     $scope.getMetadatum();
-    alert(angular.toJson(args))
     App.alert(args);
   });
 
