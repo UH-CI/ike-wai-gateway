@@ -16,6 +16,36 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       return deferred.resolve(data);
   }
 
+    //return the value for the system metatdata (stagged, rejected, published) uuid
+    //store it in $localStorage so we can cache it
+    this.fetchSystemMetadataUuid = function(type){
+      if ($localStorage[type] == null){
+          MetaController.listMetadata("{'name':'"+type+"'}",limit=1,offset=0)
+          .then(function(response){
+            $localStorage[type] = response.result[0].uuid;
+            return $localStorage[type];
+          },function(response){
+              MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata: '+type));
+          })
+      }else {
+        return $localStorage[type];
+      }
+    }
+
+    //return the value for the system metatdata (File, Well etc) uuid
+    this.fetchSystemMetadataSchemaUuid = function(type){
+      if ($localStorage[type]== null){
+          MetaController.listMetadataSchema("{'title':'"+type+"'}",limit=1,offset=0)
+          .then(function(response){
+            $localStorage[type] = response.result[0].uuid;
+            return $localStorage
+          },function(response){
+              MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
+          })
+      }else {
+        return $localStorage[type];
+      }
+    }
     //For now we do this - in the future the bulk update API will make this one callback
     //Also when Groups are in place this can be simplified as well
     this.addDefaultPermissions = function(metadataUuid){
