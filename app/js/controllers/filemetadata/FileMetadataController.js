@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site'];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -35,7 +35,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 				$scope.requesting = false;
 			})
       //check if default filemetadata object exists
-      MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
 
         function (response) {
           $scope.fileMetadataObject = response.result;
@@ -43,18 +43,27 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           if ($scope.fileMetadataObject == ""){
             //we have no object so create a new one
             $scope.createFileObject($stateParams.uuid);
+
           }
           else{
             //we have an object to modify our query for gettting metadata
-            if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
+            if ($scope.fileMetadataObject[0].name == "PublishedFile"){
+              //filename & path are good fetch associated metadata
+              $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
+              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+              alert(angular.toJson($scope.fileMetadataObject[0]))
+            }
+            else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
             {
               //if filename or path is off change File metadata object
               $scope.updateFileObject($scope.fileMetadataObject[0]);
+
             }
             else{
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
               $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+
             }
           }
         },

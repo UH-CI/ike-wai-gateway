@@ -16,6 +16,55 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       return deferred.resolve(data);
   }
 
+    //return the value for the system metatdata (stagged, rejected, published) uuid
+    //store it in $localStorage so we can cache it
+    this.fetchSystemMetadataUuid = function(type){
+      var promises = [];
+      if ($localStorage[type] == null){
+          promises.push(MetaController.listMetadata("{'name':'"+type+"'}",limit=1,offset=0)
+          .then(function(response){
+            $localStorage[type] = response.result[0].uuid;
+            return $localStorage[type];
+          },function(response){
+              MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata: '+type));
+          }));
+      }
+
+      var deferred = $q.defer();
+
+      return $q.all(promises).then(
+        function(data) {
+          return $localStorage[type];
+        },
+        function(data) {
+          deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
+
+      });
+    }
+
+    //return the value for the system metatdata (File, Well etc) uuid
+    this.fetchSystemMetadataSchemaUuid = function(type){
+      var promises = [];
+      if ($localStorage[type]== null){
+          promises.push(MetaController.listMetadataSchema("{'schema.title':'"+type+"'}",limit=1,offset=0)
+          .then(function(response){
+            $localStorage[type] = response.result[0].uuid;
+          },function(response){
+              MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
+          }));
+      }
+
+      var deferred = $q.defer();
+
+      return $q.all(promises).then(
+        function(data) {
+          return $localStorage[type];
+        },
+        function(data) {
+          deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
+
+      });
+    }
     //For now we do this - in the future the bulk update API will make this one callback
     //Also when Groups are in place this can be simplified as well
     this.addDefaultPermissions = function(metadataUuid){
