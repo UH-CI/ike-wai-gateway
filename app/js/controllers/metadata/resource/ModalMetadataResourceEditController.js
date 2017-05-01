@@ -49,6 +49,15 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
                     $scope.model[key] = String($scope.metadatum.value[key]);
                   }
                 }
+                else if ($scope.metadataschema.schema.properties[key].format == "date-time"){
+                  if($scope.metadatum.value[key] == ''){
+                    //$scope.model[key] = null;
+                    //do nothing
+                  }
+                  else{
+                    $scope.model[key] = null;
+                  }
+                }
                 else{
                   $scope.model[key] = $scope.metadatum.value[key];
                 }
@@ -83,6 +92,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
       body.name = $scope.metadatum.name;
       body.value = $scope.model;
       body.schemaId = $scope.metadatum.schemaId;
+      if(body.value.end_date ==''){
+        body.value.end_date = null;
+      }
       if (body.schemaId == null){
         if(body.name == 'Well'){
         body.schemaId = '5711039176026484250-242ac1110-0001-013'

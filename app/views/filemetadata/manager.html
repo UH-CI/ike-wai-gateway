@@ -114,7 +114,7 @@
                               <tbody>
                                   <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreMetadataType.indexOf(filemetadatum.name) < 0">
                                       <td>
-                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')"> {{filemetadatum.value.well_name}}
+                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')"> {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                            {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">
