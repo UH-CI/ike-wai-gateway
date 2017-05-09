@@ -47,18 +47,11 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     }
 
      $scope.doSearch = function(){
-        MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
-          function (response) {
-            $scope.totalItems = response.result.length;
-            //$scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope.metadata= response.result;
-            MetaController.listMetadata($scope.filequery,limit=10000,offset=0).then(
-                function (response) {
-                  $scope.filemetadata= response.result;
-                  //angular.extend($scope.filemetadata, $scope.metadata);
-                  $scope.parseFiles();
-                }
-            )
+       MetaController.listMetadata($scope.filequery,limit=10000,offset=0).then(
+           function (response) {
+             $scope.filemetadata= response.result;
+             //angular.extend($scope.filemetadata, $scope.metadata);
+             $scope.parseFiles();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_metadata_list'));
