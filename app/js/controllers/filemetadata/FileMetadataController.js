@@ -51,7 +51,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
               $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
-              alert(angular.toJson($scope.fileMetadataObject[0]))
+
             }
             else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
             {
@@ -367,7 +367,6 @@ $scope.schemaBox = {val1:true,val2:true};
 $scope.wellbox = true;
 $scope.searchField = {value:''}
 $scope.searchAll = function(){
-  //alert($scope.filter)
   $scope.requesting = true;
     var orquery = {}
     var andquery = {}
@@ -377,7 +376,6 @@ $scope.searchAll = function(){
     var typearray = []
     if ($scope.searchField.value != ''){
       angular.forEach($scope.metadataschema, function(value, key){
-        //alert(angular.toJson(value))
         if($scope.approvedSchema.indexOf(value.schema.title) > -1){
           angular.forEach(value.schema.properties, function(val, key){
             var valquery = {}
