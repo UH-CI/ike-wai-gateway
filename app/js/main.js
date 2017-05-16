@@ -418,7 +418,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
     function regexpMatches(val) { /*jshint validthis:true */ return this.pattern.test(val); }
 
     // Redirect any unmatched url
-    $urlRouterProvider.otherwise("/dashboard");
+    $urlRouterProvider.otherwise("/data/explorer/");
 
     $urlRouterProvider.rule(function ($injector, $location) {
        var path = $location.path().replace(/\/\/+/g, '/');
