@@ -1,5 +1,5 @@
 angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
-    $scope._COLLECTION_NAME = 'metadata';
+      $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
     $scope.profile = $localStorage.activeProfile;
@@ -13,7 +13,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
+
     $scope.approvedSchema = ['DataDescriptor','Well','Site']
+
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
