@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site']
+    $scope.approvedSchema = ['DataDescriptor','Well','Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -26,7 +26,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val3:true}};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.searchAll = function(){
@@ -52,11 +52,13 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           orquery['$or'] = queryarray;
        }
         var typequery = {}
-
         if ($scope.schemaBox.val1){
-          typearray.push('Site')
+            typearray.push('DataDescriptor')
         }
         if ($scope.schemaBox.val2){
+          typearray.push('Site')
+        }
+        if ($scope.schemaBox.val3){
           typearray.push('Well')
         }
         typequery['name'] = {'$in': typearray}

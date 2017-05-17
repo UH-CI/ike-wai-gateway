@@ -2505,6 +2505,23 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
+    
+	    .state('walkthrough', {
+	        url: "/walkthrough",
+	        templateUrl: "views/help/walkthrough.html",
+	        data: {pageTitle: 'Walkthrough'},
+	        controller: "GeneralPageController",
+	        resolve: {
+	            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+	                return $ocLazyLoad.load([{
+	                    name: 'AgaveToGo',
+	                    files: [
+	                        'js/controllers/GeneralPageController.js'
+	                    ]
+	                }]);
+	            }]
+	        }
+	    })
 
 }]);
 
