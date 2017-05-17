@@ -392,9 +392,8 @@ AgaveToGo.controller('QuickSidebarController', ['$scope', '$localStorage', 'Chan
             QuickSidebar.init(); // init quick sidebar
 
         }, 2000)
-
-
     });
+
 }]);
 
 /* Setup Layout Part - Theme Panel */
@@ -2489,6 +2488,40 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               }]
           }
         })
+
+        .state('help', {
+            url: "/help",
+            templateUrl: "views/help/help.html",
+            data: {pageTitle: 'Help'},
+            controller: "GeneralPageController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'AgaveToGo',
+                        files: [
+                            'js/controllers/GeneralPageController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
+    
+	    .state('walkthrough', {
+	        url: "/walkthrough",
+	        templateUrl: "views/help/walkthrough.html",
+	        data: {pageTitle: 'Walkthrough'},
+	        controller: "GeneralPageController",
+	        resolve: {
+	            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+	                return $ocLazyLoad.load([{
+	                    name: 'AgaveToGo',
+	                    files: [
+	                        'js/controllers/GeneralPageController.js'
+	                    ]
+	                }]);
+	            }]
+	        }
+	    })
 
 }]);
 

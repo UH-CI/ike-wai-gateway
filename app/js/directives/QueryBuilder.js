@@ -176,7 +176,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];
-                            var approvedSchema = ['Well','Site']
+                            var approvedSchema = ['DataDescriptor','Well','Site']
                             angular.forEach(schemas, function(schemaobj){
                               if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
                                  angular.forEach(schemaobj.schema.properties, function(value, key){
@@ -203,7 +203,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];
-                            var approvedSchema = ['Well','Site']
+                            var approvedSchema = ['DataDescriptor','Well','Site']
                             angular.forEach(schemas, function(schemaobj){
                               if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
                                  angular.forEach(schemaobj.schema.properties, function(value, key){
