@@ -19,7 +19,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = "{'name':{$in:['DataDescriptor','Well','Site']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
@@ -345,39 +345,21 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         };
 
         $scope.openCreate = function (schemauuid, size) {
-            $scope.fileMetadataObjects = $scope.fileMetadataObject;
-            $scope.selectedSchemaUuid = schemauuid;
-            // if this is a Data Descriptor, bring up the custom modal
-            /*
-            if (schemauuid === "4635683822558122471-242ac1110-0001-013") {
-	            var modalInstance = $uibModal.open({
-		              animation: $scope.animationsEnabled,
-		              templateUrl: 'views/modals/ModalCreateDataDescriptorMetadata.html',
-		              controller: 'ModalMetadataResourceCreateController',
-		              scope: $scope,
-		              size: size,
-		              schemaUuid: schemauuid,
-		              fileMetadataObjects: $scope.fileMetadataObjects,
-		              resolve: {
-		
-		              }
-		            });
+            $scope.fileMetadataObjects = $scope.fileMetadataObject
+          $scope.selectedSchemaUuid = schemauuid;
+            var modalInstance = $uibModal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'views/modals/ModalCreateMetadata.html',
+              controller: 'ModalMetadataResourceCreateController',
+              scope: $scope,
+              size: size,
+              schemaUuid: schemauuid,
+              fileMetadataObjects: $scope.fileMetadataObjects,
+              resolve: {
+
+              }
             }
-            else {
-            */
-	            var modalInstance = $uibModal.open({
-	              animation: $scope.animationsEnabled,
-	              templateUrl: 'views/modals/ModalCreateMetadata.html',
-	              controller: 'ModalMetadataResourceCreateController',
-	              scope: $scope,
-	              size: size,
-	              schemaUuid: schemauuid,
-	              fileMetadataObjects: $scope.fileMetadataObjects,
-	              resolve: {
-	
-	              }
-	            });
-            //}
+          );
         };
 
 ///////Assoc modal search////////
