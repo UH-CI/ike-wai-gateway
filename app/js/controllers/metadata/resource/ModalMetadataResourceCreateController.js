@@ -8,7 +8,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.model = {};
 
 	$scope.schemaQuery ='';
-	$scope.approvedSchema = ["DataDescriptor","Well","Site"]
+	$scope.approvedSchema = ["Well","Site"]
 	var selectedSchemaUuid = '';
 
 	$scope.initialize = function() {
@@ -33,81 +33,13 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
 					formschema["required"] = $scope.selectedmetadataschema.schema.required;
 					$scope.schema = formschema;
-					if (schemauuid === "4635683822558122471-242ac1110-0001-013") {
-						  $scope.form = [
-
-							    "test", {
-							      key: "title"
-							      //, feedback: "{ 'glyphicon': true, 'glyphicon-asterisk': form.required && !hasSuccess() && !hasError() ,'glyphicon-ok': hasSuccess(), 'glyphicon-remove': hasError() }"
-
-							    }, 
-							    {
-							      key: "author",
-							      placeholder: "user's name"
-							      //, feedback: "{ 'glyphicon': true, 'glyphicon-asterisk': form.required && !hasSuccess() && !hasError() ,'glyphicon-ok': hasSuccess(), 'glyphicon-remove': hasError() }"
-
-							    }, 
-							    {
-							      key: "format",
-							      //type: "textarea",
-							      //placeholder: "Make a comment"
-							      //, feedback: "{ 'glyphicon': true, 'glyphicon-asterisk': form.required && !hasSuccess() && !hasError() ,'glyphicon-ok': hasSuccess(), 'glyphicon-remove': hasError() }"
-							    }, 
-							    {
-							      key: "rights"
-							    },
-							    {
-							      key: "subject"
-							    },
-							    { 
-							      type: 'conditional', 
-							      condition: 'model.is_date_range === "no"',
-							      items: [
-							        { 
-								        key: "start_date",
-								        name: "Date",
-								        placeholder: "modelData.start_date",
-								        format: "date"
-							        },
-							      ]
-							    },
-					            { 
-					              type: 'conditional', 
-							      condition: 'model.is_date_range == "yes"',
-						          items: [
-							        {
-							          key: "start_date",
-							          placeholder: "model.start_date",
-							          format: "date"
-							        },
-							        {
-							          key: "end_date",
-							          placeholder: "model.start_date",
-							          format: "date"
-							        }
-						          ]
-						        },
-						        {
-						          key: "is_date_range",
-						          type: "radios",
-						          titleMap: [
-						            { value: "no", name: "single date" },
-						            { value: "yes", name: "date range" }
-						          ]
-						        }
-							    
-							    
-							  ];
-					}
-					else {
-						$scope.form = [
-							"*"/*,
-							{
-								type: "submit",
-								title: "Save"
-							}*/
-						];
-					}
+					$scope.form = [
+						"*"/*,
+						{
+							type: "submit",
+							title: "Save"
+						}*/
+					];
 					$scope.schema_selected = true;
 					$scope.requesting = false;
 				}
