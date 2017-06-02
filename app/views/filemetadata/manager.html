@@ -117,12 +117,12 @@
                           <div class="col-md-12">
                           <h3 class="pull-left">Create Data Descriptor </h3>
                         </div>
-                            <div class="col-md-12">
+                            <div class="col-md-11">
 
                           <form>
                             <div class="form-group">
                               <label class="control-label pull-left" for="Title" data-toggle="tooltip" title="The title of this data object.">Title:</label><button type="button"  data-toggle="popover" title="Title Field" data-content="The title of this data object."class="btn btn-info btn-circle pull-left"><i class="glyphicon glyphicon-question-sign"></i></button>
-                              <input class="form-control" type='text'/>
+                              <input class="form-control" type='text' value="{{filename.split('/').slice(-1)[0]}}"/>
                               <script>
                                 $(document).ready(function(){
                                     $('[data-toggle="popover"]').popover();
@@ -139,7 +139,7 @@
                             </div>
                             <div class="form-group">
                               <label class="control-label pull-left" for="Title">Participant Institution:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
-                              <input  class="form-control" type="text"/>
+                              <input  class="form-control" type="text" value="University of Hawaii"/>
                             </div>
                             <div class="form-group">
                               <label class="control-label pull-left" for="Title">Description:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
@@ -160,11 +160,27 @@
                             </div>
                             <div class="form-group">
                               <label class="control-label pull-left" for="Title">Start Date:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
-                              <input class="form-control" type='text'/>
+                              <br/>
+                            </div>
+                            <div class="form-group">
+                              <div class='input-group date' id='datetimepicker1'>
+                                  <input type='text' class="form-control" />
+                                  <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar"></span>
+                                  </span>
+                              </div>
                             </div>
                             <div class="form-group">
                               <label class="control-label pull-left" for="Title">End Date:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
-                              <input class="form-control" type='text'/>
+                              <br/>
+                            </div>
+                            <div class="form-group">
+                              <div class='input-group date' id='datetimepicker1'>
+                                  <input type='text' class="form-control" />
+                                  <span class="input-group-addon">
+                                      <span class="glyphicon glyphicon-calendar"></span>
+                                  </span>
+                              </div>
                             </div>
                             <div class="form-group">
                               <button class="btn btn-success" ng-click="open('lg')">Choose Location(s)</button>
@@ -220,7 +236,7 @@
                               </div>
                             </div>
                             <div class="form-group">
-                              <button  class="btn btn-primary" type="submit">Submit</button>
+                              <button  class="btn btn-primary" type="submit">Save Data Descriptor</button>
                             </div>
                           </div>
                           </form>
