@@ -16,10 +16,37 @@
     <div landing-start-menu></div>
 </div>
  -->
+<style>
+.btn-circle {
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  padding: 0 0;
+  font-size: 11px;
+  line-height: .514;
+  border-radius: 5px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}</style>
 <h3 class="page-title"> Manage your File Metadata</h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
+
             <!--
             <div class="portlet-title">
                 <div class="row text-center">
@@ -67,26 +94,136 @@
                 <div class=" pull-left">
                   <h4>{{filename}}</h4>
                 </div>
-                <div class="btn-group pull-right">
-                  <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
-                </div>
-                <div class="btn-group pull-right">
-                    <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                        <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
-                        <i class="fa fa-angle-down pull-right"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
-                        <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
-                      </li>
-                    </ul>
+                <div ng-show="filemetadata.length > 0">
+                  <div class="btn-group pull-right" >
+                    <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
+                  </div>
+                  <div class="btn-group pull-right">
+                      <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                          <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
+                          <i class="fa fa-angle-down pull-right"></i>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
+                          <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+                        </li>
+                      </ul>
+                  </div>
                 </div>
                   <div class="col-md-12">
                     <div ng-show="!requesting">
                       <div ng-show="filmetadata || filemetadata.length === 0" class="text-center">
-                        <div class="row text-center">
+                        <div class="row ">
                           <div class="col-md-12">
-                              No File Metadata found
+                          <h3 class="pull-left">Create Data Descriptor </h3>
+                        </div>
+                            <div class="col-md-12">
+
+                          <form>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title" data-toggle="tooltip" title="The title of this data object.">Title:</label><button type="button"  data-toggle="popover" title="Title Field" data-content="The title of this data object."class="btn btn-info btn-circle pull-left"><i class="glyphicon glyphicon-question-sign"></i></button>
+                              <input class="form-control" type='text'/>
+                              <script>
+                                $(document).ready(function(){
+                                    $('[data-toggle="popover"]').popover();
+                                });
+                              </script>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Format:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Format Field" data-content="The format of this data file.">?</button>
+                              <input class="form-control" type='text'/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Author:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input class="form-control" type="text"/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Participant Institution:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input  class="form-control" type="text"/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Description:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input  class="form-control" type="text"/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Rights:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <select class="form-control">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Subject:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input class="form-control" type='text'/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">Start Date:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input class="form-control" type='text'/>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="Title">End Date:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                              <input class="form-control" type='text'/>
+                            </div>
+                            <div class="form-group">
+                              <button class="btn btn-success" ng-click="open('lg')">Choose Location(s)</button>
+                            </div>
+                            <div class="form-group">
+                              <button  class="btn btn-success" ng-click="open('lg')">Choose Variable(s)</button>
+                            </div>
+                            <div class="panel-group" id="accordion">
+                              <div class="panel panel-default">
+                                <div class="panel-heading">
+                                  <h4 class="panel-title">
+                                    <a href="javascript:;" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                                      Optional
+                                    </a>
+                                  </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse">
+                                  <div class="panel-body">
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Project Type</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      <input  class="form-control" type="text"/>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Publisher:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      <input  class="form-control" type="text"/>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Date of Publication:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      </br>
+                                    </div>
+                                    <div class="form-group">
+                                      <div class='input-group date' id='datetimepicker1'>
+                                          <input type='text' class="form-control" />
+                                          <span class="input-group-addon">
+                                              <span class="glyphicon glyphicon-calendar"></span>
+                                          </span>
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Funding Agency And Award Number</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      <input  class="form-control" type="text"/>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Relations:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      <input class="form-control" type='text'/>
+                                    </div>
+                                    <div class="form-group">
+                                      <label class="control-label pull-left" for="Title">Language:</label><button type="button" class="btn btn-info btn-xs pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object.">?</button>
+                                      <input class="form-control" type='text'/>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <button  class="btn btn-primary" type="submit">Submit</button>
+                            </div>
+                          </div>
+                          </form>
                           </div>
                         </div>
                       </div>
