@@ -68,11 +68,23 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     //For now we do this - in the future the bulk update API will make this one callback
     //Also when Groups are in place this can be simplified as well
     this.addDefaultPermissions = function(metadataUuid){
-      MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',metadataUuid);
+      user = $localStorage.activeProfile;
+      if (this.getAdmins().indexOf(user.username) > -1) {
+        MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',metadataUuid);
+      }
+      else {
+        //add this to unapproved if user is not an admin
+        this.fetchSystemMetadataUuid('unapproved')
+          .then(function(response){
+            addAssociation(response, metadataUuid)
+          })
+      }
       MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
+      MetaController.addMetadataPermission('{"username":"omeier","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
     }
+
     this.removeAssociation = function(metadataUuid, uuidToRemove){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
@@ -109,6 +121,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       });
       return true;
     }
+    
     this.addAssociation = function(metadataUuid, uuidToAdd){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
@@ -149,6 +162,26 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     }
 
     this.getAdmins = function(){
-      return ['seanbc','jgeis'];
+      return ['seanbc','jgeis','omeier'];
+    }
+
+    //For now we do this - in the future the bulk update API will make this one callback
+    //Also when Groups are in place this can be simplified as well
+    this.addDefaultPermissions = function(metadataUuid){
+      user = $localStorage.activeProfile;
+      if (this.getAdmins().indexOf(user.username) > -1) {
+        MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',metadataUuid);
+      }
+      else {
+        //add this to unapproved if user is not an admin
+        this.fetchSystemMetadataUuid('unapproved')
+          .then(function(response){
+            this.addAssociation(response, metadataUuid)
+          })
+      }
+      MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
+      MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
+      MetaController.addMetadataPermission('{"username":"omeier","permission":"ALL"}',metadataUuid);
+      MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
     }
 }]);
