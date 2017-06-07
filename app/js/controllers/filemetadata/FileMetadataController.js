@@ -305,7 +305,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                }
                $scope.requesting = false;
             }
-
+        $scope.locFilter = function(item){
+           if (item.name === 'Well' || item.name === 'Site'){
+            return item;// || item.name === 'Site';
+            alert('filtering')
+          }
+        }
   /////////Modal Stuff/////////////////////
 
         $scope.open = function (size,types) {
@@ -316,7 +321,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               controller: 'ModalAssociateMetadatCtrl',
               scope: $scope,
               size: size,
-              types: types,
               resolve: {
 
               }
