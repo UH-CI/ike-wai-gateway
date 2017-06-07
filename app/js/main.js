@@ -1971,6 +1971,28 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('metadata-unapproved', {
+            url: "/metadata/unapproved",
+            templateUrl: "views/metadata/resource/unapproved.html",
+            controller: "MetadataResourceUnapprovedController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
+                          'js/controllers/metadata/resource/MetadataResourceUnapprovedController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2505,7 +2527,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
-    
+
 	    .state('walkthrough', {
 	        url: "/walkthrough",
 	        templateUrl: "views/help/walkthrough.html",
