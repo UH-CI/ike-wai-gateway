@@ -8,10 +8,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.sortReverse  = true;
     $scope.has_data_descriptor = false;
     //Don't display metadata of these types
-    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
+    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Variable'];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -308,7 +308,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
   /////////Modal Stuff/////////////////////
 
-        $scope.open = function (size) {
+        $scope.open = function (size,types) {
 
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -316,6 +316,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               controller: 'ModalAssociateMetadatCtrl',
               scope: $scope,
               size: size,
+              types: types,
               resolve: {
 
               }
