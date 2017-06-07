@@ -6,7 +6,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
-
+    $scope.has_data_descriptor = false;
     //Don't display metadata of these types
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
     //Don't display metadata schema types as options
@@ -85,7 +85,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
+            angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
+              if(value.name =='DataDescriptor'){
+                $scope.has_data_descriptor = true;
+              }
+            })
             $scope.requesting = false;
+          //  $scope.$apply();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -119,17 +125,20 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       $scope.requesting = true;
       var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
-    if (unAssociate) {
-      FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
-    	App.alert({message: $translate.instant('success_metadata_assocation_removed') });
-        $scope.metadatum = null;
-        //pause to let model update
-        $timeout(function(){$scope.refresh()}, 300);
+      if (unAssociate) {
+        FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
+      	  App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+          $scope.metadatum = null;
+          //pause to let model update
+          $timeout(function(){
+            //$scope.refresh()
+              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+          }, 300);
+          $scope.requesting = false;
+        });
+      }else{
         $scope.requesting = false;
-      });
-    }else{
-      $scope.requesting = false;
-    }
+      }
     }
 
     $scope.createFileObject = function(fileUuid){
@@ -240,7 +249,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
                       App.alert({message: $translate.instant('success_metadata_add_assocation') });
                       $scope.requesting = false;
-                      $scope.refresh();
+                      //$scope.refresh();
+                      alert('fetchMe')
+                      $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
                     function(response){
