@@ -1,6 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataResourceUnapprovedController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
-    $scope._COLLECTION_NAME = 'metadata';
-    $scope._RESOURCE_NAME = 'metadatum';
+angular.module('AgaveToGo').controller('MetadataResourceUnapprovedController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService) {
 
     $scope.profile = $localStorage.activeProfile;
     $scope.get_editors = function(){
@@ -21,14 +19,22 @@ angular.module('AgaveToGo').controller('MetadataResourceUnapprovedController', f
 
     $scope.refresh = function() {
       $scope.requesting = true;
+
       MetaController.listMetadata(
         $scope.query,limit=1000,offset=0
       )
         .then(
           function (response) {
-            $scope.totalItems = response.result.length;
-            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.unapproved = response.result[0];
+            var assocIds = [];
+            angular.forEach($scope.unapproved.associationIds, function(value, key){
+              assocIds.push(value)
+            })
+            //alert(assocIds)
+            MetaController.listMetadata("{'uuid':{'$in': ['" + assocIds.join("','") +"'] }}",limit=1000,offset=0)
+              .then(function(resp){
+                $scope.metadata = resp.result
+            })
             $scope.requesting = false;
           },
           function(response){

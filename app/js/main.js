@@ -1985,7 +1985,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/services/ActionsService.js',
                           'js/services/MessageService.js',
                           'js/services/MetadataService.js',
-                          'js/controllers/metadata/resource/MetadataResourceUnapprovedController.js'
+                          'js/controllers/metadata/resource/MetadataResourceUnapprovedController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                          'js/services/FilesMetadataService.js'
                       ]
                     }
                   ]);
