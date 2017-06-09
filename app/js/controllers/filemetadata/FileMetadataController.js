@@ -24,6 +24,33 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
 
+    $scope.selected = {};
+    $scope.selected.subjects = [];
+    $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
+    
+    $scope.selected.people = [];
+    $scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
+    
+    $scope.selected.contributingPeople = [];
+    $scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    
+    $scope.selected.formats = [];
+    $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
+    
+    $scope.selected.languages = [];
+    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];    
+    
+    /*
+    $scope.tagTransformPerson = function (newTag) {
+        var item = {
+            name: newTag,
+            email: newTag.toLowerCase()+'@email.com',
+            age: 'unknown',
+            country: 'unknown'
+        };
+    */
+
     $scope.filemetadatumUuid = $stateParams.uuid;
 
     $scope.refresh = function() {
