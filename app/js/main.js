@@ -222,7 +222,25 @@ AgaveToGo.config(function($translateProvider) {
     success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
     setDefault: 'set to default',
-    unsetDefault: 'unset default'
+    unsetDefault: 'unset default',
+
+    creator: 'The main researchers involved in producing the data, or the authors of the publication, in priority order.',
+    title: 'A name given to the resource.  Typically, a Title will be a name by which the resource is formally known.',
+    publisher: 'The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role.',
+    publicationDate: 'The year when the data was or will be made publicly available.',
+    subject: 'The topic of the resource.  Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary.',
+    contributorPerson: 'People responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    contributorAgency: 'Institutions responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    dates: 'Different dates relevant to the work.',
+    language: 'A language of the resource.  Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].',
+    format: 'The file format, physical medium, or dimensions of the resource.  Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME].',
+    version: 'The version number of the resource.',
+    rightsLicense: 'Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.',
+    rightsPermissions: 'Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.',
+    descriptor: 'All additional information that does not fit in any of the other categories. May be used for technical information.',
+    location: 'Spatial region or named place where the data was gathered or about which the data is focused.',
+    relations: 'Related resources.  Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.'
+
   });
 
   $translateProvider.preferredLanguage('en');
@@ -2517,6 +2535,23 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         .state('help', {
             url: "/help",
             templateUrl: "views/help/help.html",
+            data: {pageTitle: 'Help'},
+            controller: "GeneralPageController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'AgaveToGo',
+                        files: [
+                            'js/controllers/GeneralPageController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
+
+        .state('feedback', {
+            url: "/feedback",
+            templateUrl: "views/help/feedback.html",
             data: {pageTitle: 'Help'},
             controller: "GeneralPageController",
             resolve: {
