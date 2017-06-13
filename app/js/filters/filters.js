@@ -103,4 +103,11 @@ AgaveToGo.filter('propsFilter', function () {
             return text.split('%2F').join('/');
         }
     }
+}]).filter('locationFilter', [function() {
+    return function(item){
+       if (item.name === 'Well'){// || item.name === 'Site'){
+        return item;// || item.name === 'Site';
+        alert('filtering')
+      }
+    }
 }]);

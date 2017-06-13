@@ -6,12 +6,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.sortType = 'name';
     $scope.sortReverse  = true;
-
+    $scope.has_data_descriptor = false;
     //Don't display metadata of these types
-    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File'];
+    $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Variable'];
+    $scope.modalSchemas = [''];
+    $scope.selectedSchema = [''];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -23,6 +25,33 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
+
+    $scope.selected = {};
+    $scope.selected.subjects = [];
+    $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
+
+    $scope.selected.people = [];
+    $scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
+
+    $scope.selected.contributingPeople = [];
+    $scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+
+    $scope.selected.formats = [];
+    $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
+
+    $scope.selected.languages = [];
+    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];
+
+    /*
+    $scope.tagTransformPerson = function (newTag) {
+        var item = {
+            name: newTag,
+            email: newTag.toLowerCase()+'@email.com',
+            age: 'unknown',
+            country: 'unknown'
+        };
+    */
 
     $scope.filemetadatumUuid = $stateParams.uuid;
 
@@ -85,7 +114,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
+            angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
+              if(value.name =='DataDescriptor'){
+                $scope.has_data_descriptor = true;
+              }
+            })
             $scope.requesting = false;
+          //  $scope.$apply();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -119,17 +154,20 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       $scope.requesting = true;
       var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
-    if (unAssociate) {
-      FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
-    	App.alert({message: $translate.instant('success_metadata_assocation_removed') });
-        $scope.metadatum = null;
-        //pause to let model update
-        $timeout(function(){$scope.refresh()}, 300);
+      if (unAssociate) {
+        FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
+      	  App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+          $scope.metadatum = null;
+          //pause to let model update
+          $timeout(function(){
+            //$scope.refresh()
+              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+          }, 300);
+          $scope.requesting = false;
+        });
+      }else{
         $scope.requesting = false;
-      });
-    }else{
-      $scope.requesting = false;
-    }
+      }
     }
 
     $scope.createFileObject = function(fileUuid){
@@ -240,7 +278,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
                       App.alert({message: $translate.instant('success_metadata_add_assocation') });
                       $scope.requesting = false;
-                      $scope.refresh();
+                      //$scope.refresh();
+                      alert('fetchMe')
+                      $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
                     function(response){
@@ -294,11 +334,19 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                }
                $scope.requesting = false;
             }
-
+        $scope.locFilter = function(item){
+           if (item.name === 'Well' || item.name === 'Site'){
+            return item;// || item.name === 'Site';
+            alert('filtering')
+          }
+        }
   /////////Modal Stuff/////////////////////
 
-        $scope.open = function (size) {
-
+        $scope.open = function (size, types, title) {
+            //Set the
+            $scope.modalSchemas = types.slice(0);
+             $scope.selectedSchema = types.slice(0);
+            $scope.modalTitle = title;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'views/modals/ModalAssociateMetadata.html',
@@ -310,7 +358,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
             }
           );
-          $scope.fetchModalMetadata();
+          //$scope.fetchModalMetadata();
+          $scope.searchAll();
         };
 
         $scope.openEditMetadata = function (metadatumuuid, size) {
@@ -374,26 +423,23 @@ $scope.searchAll = function(){
     var andarray = []
     var innerquery = {}
     var typearray = []
-    if ($scope.searchField.value != ''){
-      angular.forEach($scope.metadataschema, function(value, key){
-        if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-          angular.forEach(value.schema.properties, function(val, key){
-            var valquery = {}
-            valquery['value.'+key] = {$regex: $scope.searchField.value}
-            queryarray.push(valquery)
-          })
-        }
-      })
-      orquery['$or'] = queryarray;
-   }
     var typequery = {}
 
-    if ($scope.schemaBox.val1){
-      typearray.push('Site')
-    }
-    if ($scope.schemaBox.val2){
-      typearray.push('Well')
-    }
+    angular.forEach($scope.metadataschema, function(value, key){
+      if($scope.selectedSchema.indexOf(value.schema.title) > -1){
+        //set the schema name(s) to search across
+        typearray.push(value.schema.title);
+        //add schema properties to search across
+        if ($scope.searchField.value != ''){
+          angular.forEach(value.schema.properties, function(val, key){
+            var valquery = {}
+            valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
+            queryarray.push(valquery)
+          })
+          orquery['$or'] = queryarray;
+        }
+      }
+    })
     typequery['name'] = {'$in': typearray}
     andarray.push(typequery)
     andarray.push(orquery)
@@ -403,6 +449,21 @@ $scope.searchAll = function(){
     $scope.fetchModalMetadata();
 }
 
+// Toggle selection for a given fruit by name
+  $scope.toggleSelectedSchema = function(title) {
+    var idx = $scope.selectedSchema.indexOf(title);
+
+    // Is currently selected
+    if (idx > -1) {
+      $scope.selectedSchema.splice(idx, 1);
+    }
+
+    // Is newly selected
+    else {
+      $scope.selectedSchema.push(title);
+    }
+    $scope.modalSchemas = $scope.modalSchemas
+  };
 
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
       ///$scope.uuid = filemetadatumUuid;
