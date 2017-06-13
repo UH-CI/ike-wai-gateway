@@ -69,7 +69,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		$scope.$broadcast('schemaFormValidate');
 		// Then we check if the form is valid
 		if (form.$valid) {
-
+			alert("HEY")
 			var body = {};
 			body.name = $scope.selectedmetadataschema.schema.title;
 			body.value = $scope.model;
@@ -97,12 +97,21 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 								$scope.requesting = false;
 								$rootScope.$broadcast('metadataUpdated');
 								//$rootScope.$broadcast('associationsUpdated');
+								$scope.close();
 							}, 500);
 							});
 
 						}
+						else{
 							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
 						  $rootScope.$broadcast('metadataUpdated');
+							$timeout(function(){
+								$scope.requesting = false;
+								$rootScope.$broadcast('metadataUpdated');
+								//$rootScope.$broadcast('associationsUpdated');
+								$scope.close();
+							}, 500);
+							}
 						},
 						function(response){
 							MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -110,7 +119,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						}
 				);
 			}
-		$scope.close();
+			else{
+				$scope.requesting = false;
+			}
 		//$parent.refresh();
 	};
 

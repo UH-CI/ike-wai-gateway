@@ -90,7 +90,7 @@
     "jquery.uniform": "~2.1.2",
     "angularjs-oauth2": "angularjs-oauth2#*",
     "bootstrap-datetimepicker": "smalot/bootstrap-datetimepicker",
-    "bootstrap-datetimepicker-2": "eonasdan/bootstrap-datetimepicker",
+    "eonasdan-bootstrap-datetimepicker": "*",
     "bootstrap-toastr": "codeseven/toastr",
     "boostrap-confirmation": "tavicu/bs-confirmation#~1.0.5",
     "mjolnic-bootstrap-colorpicker": "~2.3.0",
