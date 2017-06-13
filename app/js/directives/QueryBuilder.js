@@ -4,7 +4,8 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
         restrict: 'E',
         scope: {
             resource: '=',
-            group: '='
+            group: '=',
+            schemas: '='
         },
         templateUrl: 'tpl/directives/queryBuilderDirective.html',
         compile: function (element, attrs) {
@@ -176,7 +177,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];
-                            var approvedSchema = ['Well','Site']
+                            var approvedSchema = scope.$parent.selectedSchema;
                             angular.forEach(schemas, function(schemaobj){
                               if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
                                  angular.forEach(schemaobj.schema.properties, function(value, key){
@@ -260,7 +261,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                       {name: 'is less than or equal to', value:'$lte'},
                       {name: 'is greater than', value:'$gt'},
                       {name: 'is greater than or equal to', value:'$gte'},
-                      {name: 'contains', value: '$regex'},
+                      {name: 'contains', value: '$options'+"'"+': '+"'i','"+ '$regex'},
                   ];
                 }
                 if(attrs.resource == 'search'){

@@ -118,8 +118,8 @@
                       </ul>
                   </div>
                 </div>
-                
-                
+
+
                 <!--  DATA DESCRIPTOR -->
                   <div class="col-md-12">
                     <div ng-show="!requesting">
@@ -130,15 +130,15 @@
                         </div>
                         <div class="col-md-11">
                           <form>
-                          
+
                             <!-- CREATOR -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Creator:</label>
                               <button type="button" data-toggle="popover" title="Creator Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <br />          
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->                    
+                              <br />
+                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.people" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
 				                <ui-select-match placeholder="Select people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
 				                <ui-select-choices repeat="person in people | filter: $select.search">
@@ -149,7 +149,7 @@
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
                               <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Creator</button>
                             </div>
-				            
+
                             <!-- TITLE -->
                             <br />
                             <div class="form-group">
@@ -164,13 +164,13 @@
                                 });
                               </script>
                             </div>
-                            
+
                             <!-- RIGHTS - LICENSE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>                                  
+                              </button>
                               <select class="form-control">
                                 <option value="other">Other</option>
                                 <option value="1">1</option>
@@ -178,28 +178,28 @@
                                 <option value="3">3</option>
                               </select>
                             </div>
-                            
+
                             <!-- RIGHTS - PERMISSIONS -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>License - Permissions:</label>
                               <button type="button" data-toggle="popover" title="Permission Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
-                              <br /> 
+                              </button>
+                              <br />
                               <select class="form-control">
                                 <option value="1">Public</option>
                                 <option value="2">Public after one year</option>
                                 <option value="3">Private</option>
                                 <option value="0">Other</option>
                               </select>
-                            </div>                            
-                            
+                            </div>
+
                             <!-- SUBJECT -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="subject" data-toggle="tooltip" title='{{"subject" | translate}}'>Subject:</label>
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
+                              </button>
                               <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
 				                <ui-select-match placeholder="Select subjects...">{{$item}}</ui-select-match>
@@ -209,8 +209,8 @@
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                             </div>
-                            
-                            
+
+
                              <!-- START DATE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="startDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Start Date:</label>
@@ -227,7 +227,7 @@
                                   </span>
                               </div>
                             </div>
-                            
+
                              <!-- END DATE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="endDate" data-toggle="tooltip" title='{{"dates" | translate}}'>End Date:</label>
@@ -244,14 +244,14 @@
                                   </span>
                               </div>
                             </div>
-                            
+
                              <!-- FORMAT -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>
                               <button type="button" data-toggle="popover" title="Format Field" data-content='{{"format" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
-                              <br />                           
+                              </button>
+                              <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats">
 				                <ui-select-match placeholder="Select formats...">{{$item}}</ui-select-match>
 				                <ui-select-choices repeat="format in formats | filter: $select.search">
@@ -259,15 +259,15 @@
 				                </ui-select-choices>
 				              </ui-select>
                             </div>
-                            
+
                             <!-- CONTRIBUTING PERSON -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="contributorPerson" data-toggle="tooltip" title='{{"contributorPerson" | translate}}'>Contributor - Person:</label>
                               <button type="button" data-toggle="popover" title="Contributing Person Field" data-content='{{"contributorPerson" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>   
-                              <br />    
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->                    
+                              </button>
+                              <br />
+                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.contributingPeople" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
 				                <ui-select-match placeholder="Select contributing people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
 				                <ui-select-choices repeat="person in contributingPeople | filter: $select.search">
@@ -278,7 +278,7 @@
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
                               <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Contributing People</button>
                             </div>
-                            
+
                             <!-- CONTRIBUTING AGENCIES -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
@@ -287,14 +287,14 @@
                               </button>
                               <input  class="form-control" type="text"/>
                             </div>
-                            
+
                             <!-- LANGUAGE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="language" data-toggle="tooltip" title='{{"language" | translate}}'>Languages:</label>
                               <button type="button" data-toggle="popover" title="Languages Field" data-content='{{"language" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
-                              <br />                              
+                              </button>
+                              <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.languages" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose languages">
 				                <ui-select-match placeholder="Select languages...">{{$item}}</ui-select-match>
 				                <ui-select-choices repeat="language in languages | filter: $select.search">
@@ -302,19 +302,19 @@
 				                </ui-select-choices>
 				              </ui-select>
                             </div>
-                            
+
                             <!-- VERSION -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="version" data-toggle="tooltip" title='{{"version" | translate}}'>Version:</label>
                               <button type="button" data-toggle="popover" title="Version Field" data-content='{{"version" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>   
+                              </button>
                               <input  class="form-control" type="text"/>
                             </div>
-                            
+
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group">
-                              <button class="btn btn-success pull-left form-control" ng-click="open('lg')">Choose Location(s)</button>
+                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Choose Location(s)</button>
                             </div>
                             <div>
                               <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: locFilter" ng-click="unAssociateMetadata(filemetadatum.uuid)">
@@ -323,10 +323,10 @@
                                        <i class="glyphicon glyphicon-remove-sign"></i>
                               </button>
                             </div></br>
-                          
+
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group">
-                              <button  class="btn btn-success pull-left form-control" ng-click="open('lg')">Choose Variable(s)</button>
+                              <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Choose Variable(s)</button>
                             </div>
                             <div>
                               <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid)">
@@ -335,23 +335,23 @@
                                      <i class="glyphicon glyphicon-remove-sign"></i>
                               </button>
                             </div></br>
-                            
+
                             <!-- PUBLISHER -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="publisher" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
                               <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
+                              </button>
                               <input  class="form-control" type="text"/>
                             </div>
-                            
+
                             <!-- PUBLICATION DATE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="publicationDate" data-toggle="tooltip" title='{{"publicationDate" | translate}}'>Date of Publication:</label>
                               <button type="button" data-toggle="popover" title="Publication Date Field" data-content='{{"publicationDate" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button> 
-                              <br />   
+                              </button>
+                              <br />
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker3'>
@@ -361,7 +361,7 @@
                                 </span>
                               </div>
                             </div>
-                            
+
                             <!-- DESCRIPTION -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
@@ -370,7 +370,7 @@
                               </button>
                               <input class="form-control" type='textarea' rows="2"/>
                             </div>
-                            
+
                             <!-- RELATED -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Relations:</label>
@@ -379,11 +379,11 @@
                               </button>
                               <input class="form-control" type='textarea' rows="2"/>
                             </div>
-                            
-                            
-                                                        
+
+
+
                             <!-- copied from app/views/systems/wizard.html -->
-                              <!-- 
+                              <!--
                               <ui-select ng-model="systemTemplate" theme="bootstrap" on-select="changeSystemTemplate($item)">
 				                <ui-select-match placeholder="Search...">{{$select.selected.id}}</ui-select-match>
 				                <ui-select-choices repeat="system in systemTemplates | filter: $select.search">
@@ -393,7 +393,7 @@
 				                </ui-select-choices>
 				              </ui-select>
 				               -->
-                 
+
                             <div class="panel-group" id="accordion">
                               <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -405,7 +405,7 @@
                                 </div>
                                 <div id="collapseOne" class="panel-collapse collapse">
                                   <div class="panel-body">
-                                   
+
                                     <div class="form-group">
                                       <label class="control-label pull-left" for="Title">Project Type</label><button type="button" class="btn btn-info btn-circle pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object."><i class="glyphicon glyphicon-question-sign"></i></button>
                                       <input  class="form-control" type="text"/>
@@ -418,7 +418,7 @@
                                       <label class="control-label pull-left" for="Title">Participant Institution:</label><button type="button" class="btn btn-info btn-circle pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object."><i class="glyphicon glyphicon-question-sign"></i></button>
                                       <input  class="form-control" type="text" value="University of Hawaii"/>
                                     </div>
-                                   
+
                                   </div>
                                 </div>
                               </div>

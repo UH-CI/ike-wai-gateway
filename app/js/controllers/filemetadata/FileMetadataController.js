@@ -12,6 +12,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
     $scope.approvedSchema = ['DataDescriptor','Well','Site','Variable'];
+    $scope.modalSchemas = [''];
+    $scope.selectedSchema = [''];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -27,20 +29,20 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selected = {};
     $scope.selected.subjects = [];
     $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
-    
+
     $scope.selected.people = [];
     $scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
     //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
-    
+
     $scope.selected.contributingPeople = [];
     $scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
-    
+
     $scope.selected.formats = [];
     $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
-    
+
     $scope.selected.languages = [];
-    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];    
-    
+    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];
+
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -340,8 +342,11 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
   /////////Modal Stuff/////////////////////
 
-        $scope.open = function (size,types) {
-
+        $scope.open = function (size, types, title) {
+            //Set the
+            $scope.modalSchemas = types.slice(0);
+             $scope.selectedSchema = types.slice(0);
+            $scope.modalTitle = title;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'views/modals/ModalAssociateMetadata.html',
@@ -353,7 +358,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
             }
           );
-          $scope.fetchModalMetadata();
+          //$scope.fetchModalMetadata();
+          $scope.searchAll();
         };
 
         $scope.openEditMetadata = function (metadatumuuid, size) {
@@ -417,26 +423,23 @@ $scope.searchAll = function(){
     var andarray = []
     var innerquery = {}
     var typearray = []
-    if ($scope.searchField.value != ''){
-      angular.forEach($scope.metadataschema, function(value, key){
-        if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-          angular.forEach(value.schema.properties, function(val, key){
-            var valquery = {}
-            valquery['value.'+key] = {$regex: $scope.searchField.value}
-            queryarray.push(valquery)
-          })
-        }
-      })
-      orquery['$or'] = queryarray;
-   }
     var typequery = {}
 
-    if ($scope.schemaBox.val1){
-      typearray.push('Site')
-    }
-    if ($scope.schemaBox.val2){
-      typearray.push('Well')
-    }
+    angular.forEach($scope.metadataschema, function(value, key){
+      if($scope.selectedSchema.indexOf(value.schema.title) > -1){
+        //set the schema name(s) to search across
+        typearray.push(value.schema.title);
+        //add schema properties to search across
+        if ($scope.searchField.value != ''){
+          angular.forEach(value.schema.properties, function(val, key){
+            var valquery = {}
+            valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
+            queryarray.push(valquery)
+          })
+          orquery['$or'] = queryarray;
+        }
+      }
+    })
     typequery['name'] = {'$in': typearray}
     andarray.push(typequery)
     andarray.push(orquery)
@@ -446,6 +449,21 @@ $scope.searchAll = function(){
     $scope.fetchModalMetadata();
 }
 
+// Toggle selection for a given fruit by name
+  $scope.toggleSelectedSchema = function(title) {
+    var idx = $scope.selectedSchema.indexOf(title);
+
+    // Is currently selected
+    if (idx > -1) {
+      $scope.selectedSchema.splice(idx, 1);
+    }
+
+    // Is newly selected
+    else {
+      $scope.selectedSchema.push(title);
+    }
+    $scope.modalSchemas = $scope.modalSchemas
+  };
 
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
       ///$scope.uuid = filemetadatumUuid;
