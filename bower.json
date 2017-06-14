@@ -164,7 +164,7 @@
     "owl-carousel": "~1.3.2",
     "bootstrap": "~3.3.5",
     "moment": "^2.10.6",
-    "moment-timezonDate": "^0.3.0",
+    "moment-timezone": "^0.3.0",
     "bootstrap-datepicker": "~1.5.0",
     "angular": "~1.3.20",
     "select2": "~3.4",

@@ -41,14 +41,37 @@
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
-}</style>
+}
+</style>
+
+
 <script>
-  $( document ).ready(function() {
-    $('#datetimepicker1').datetimepicker()
-    $('#datetimepicker2').datetimepicker()
-    $('#datetimepicker3').datetimepicker()
+jQuery.noConflict()(function ($) {
+  $(document).ready(function() {
+    $('#datetimepicker1').datetimepicker();
+    $('#datetimepicker2').datetimepicker();
+    $('#datetimepicker3').datetimepicker();
   });
+});
 </script>
+
+<!-- 
+<script type="text/javascript">
+jQuery.noConflict()(function ($) {
+	  $(document).ready(function() {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'ru'
+        });
+        $('#datetimepicker2').datetimepicker({
+            locale: 'ru'
+        });
+        $('#datetimepicker3').datetimepicker({
+            locale: 'ru'
+        });
+	  });
+});
+</script>
+ -->
 
 <h3 class="page-title">File Annotations</h3>
 <div class="row">
@@ -148,6 +171,11 @@
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
                               <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Creator</button>
+                              <script>
+                                 $(document).ready(function(){
+                                     $('[data-toggle="popover"]').popover();
+                                 });
+                               </script>
                             </div>
 
                             <!-- TITLE -->
@@ -158,11 +186,6 @@
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <input class="form-control" type='text' value="{{filename.split('/').slice(-1)[0]}}"/>
-                              <script>
-                                $(document).ready(function(){
-                                    $('[data-toggle="popover"]').popover();
-                                });
-                              </script>
                             </div>
 
                             <!-- RIGHTS - LICENSE -->
@@ -170,12 +193,16 @@
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
+                              </button>             
+                              <!-- Licenses from: https://creativecommons.org/licenses/ -->                     
                               <select class="form-control">
+                                <option value="1">Creative Commons Attribution CC BY</option>
+                                <option value="2">Creative Commons Attribution-ShareAlike CC BY-SA</option>
+                                <option value="3">Creative Commons Attribution-NoDerivs CC BY-ND</option>
+                                <option value="4">Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA</option>
+                                <option value="5">Creative Commons Attribution-NoCommercial CC BY-NC</option>
+                                <option value="6">Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND</option>                               
                                 <option value="other">Other</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
                               </select>
                             </div>
 
@@ -184,16 +211,24 @@
                               <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>License - Permissions:</label>
                               <button type="button" data-toggle="popover" title="Permission Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
+                              </button> 
+                              <br /> 
                               <br />
-                              <select class="form-control">
-                                <option value="1">Public</option>
-                                <option value="2">Public after one year</option>
-                                <option value="3">Private</option>
-                                <option value="0">Other</option>
-                              </select>
-                            </div>
-
+                              <div class="btn-group pull-left" role="group">
+	                              <button id="btn-public" data-toggle="tooltip" data-placement="auto"
+	                                 title='{{"rightsPermissionsPublic" | translate}}' type="submit" class="btn btn-default">
+	                                 Public
+	                              </button>
+	                              <button id="btn-private" data-toggle="tooltip" data-placement="auto"
+	                                 title='{{"rightsPermissionsPrivate" | translate}}' type="submit"
+	                                 class="btn btn-default active">
+	                                 Private
+	                              </button>
+                              </div>
+                              <br />
+                              <br />
+                            </div>     
+                            
                             <!-- SUBJECT -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="subject" data-toggle="tooltip" title='{{"subject" | translate}}'>Subject:</label>
@@ -237,12 +272,20 @@
                               <br />
                             </div>
                             <div class="form-group">
+                                 <div class='input-group date' id='datetimepicker2'>
+				                    <input type='text' class="form-control" />
+				                    <span class="input-group-addon">
+				                        <span class="glyphicon glyphicon-calendar"></span>
+				                    </span>
+				                </div>
+                            <!-- 
                               <div class='input-group date' id='datetimepicker2'>
                                   <input type='text' class="form-control" />
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
                                   </span>
                               </div>
+                              -->
                             </div>
 
                              <!-- FORMAT -->
