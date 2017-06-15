@@ -96,6 +96,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							$timeout(function(){
 								$scope.requesting = false;
 								$rootScope.$broadcast('metadataUpdated');
+								$scope.close();
 								//$rootScope.$broadcast('associationsUpdated');
 							}, 500);
 							});
@@ -110,8 +111,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						}
 				);
 			}
-		$scope.close();
-		//$parent.refresh();
+			else{
+				$scope.requesting = false;
+			}
 	};
 
 	$scope.initialize();
