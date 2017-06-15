@@ -1,5 +1,17 @@
 <div class="modal-header">
-    <h3 class="page-title"><span ng-if="fileMetadataObject[0]"></span>{{modalTitle}}</h3>
+    <h3 class="page-title">{{modalTitle}}</h3>
+
+</div>
+<div class="btn-group pull-right">
+    <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+        <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
+        <i class="fa fa-angle-down pull-right"></i>
+    </a>
+    <ul class="dropdown-menu">
+      <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="modalSchemas.indexOf(metadataschemata.schema.title) > -1">
+        <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+      </li>
+    </ul>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -15,7 +27,7 @@
                     <div class="input-group">
                       <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                       <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
-                      <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+
                       <div class="input-group-addon">
                         <span class="input-group pull-left" aria-hidden="true">
                           <label ng-repeat="schema in modalSchemas">
@@ -29,7 +41,7 @@
                           </label>
                         </span>
                       </div>
-
+                      <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
                     <br/>
                     <div class="row top-buffer" ng-show="showSearch">
                       <query-builder group="filter.group" resource="metadata" schemas="selectedSchema.join(',')"></query-builder>
@@ -45,9 +57,10 @@
                         </div>
                       </div>
                     </div>
+                    <hr/>
                     <div class="btn-group top-buffer">
                       <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Show Advanced Search Tools'}}
                       </button>
                     </div>
                 </div>
