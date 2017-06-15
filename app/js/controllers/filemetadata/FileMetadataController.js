@@ -42,7 +42,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.selected.languages = [];
     $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];
-
+    $scope.datadescriptor = {};
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -239,8 +239,58 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
         }
 
+        $scope.saveDataDescriptor = function(){
+          $scope.requesting = true;
+      		$scope.$broadcast('schemaFormValidate');
+      		// Then we check if the form is valid
+      	//	if (form.$valid) {
+          MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+          .then(function(response){
+            alert(response)
+      			var body = {};
+      			body.name = "DataDescriptor";
+      			body.value = $scope.datadescriptor;
+      			body.schemaId = response;
+
+      			MetaController.addMetadata(body)
+      				.then(
+      					function(response){
+      						$scope.metadataUuid = response.result.uuid;
+      						//add the default permissions for the system in addition to the owners
+      						MetadataService.addDefaultPermissions($scope.metadataUuid);
+      						//check if this is for a file object or just a new metadata creation
+      						if ($scope.fileMetadataObjects){
+      						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
+      							.then(function(response) {
+      							//	need to send to modal instead
+      							$timeout(function(){
+      								$scope.requesting = false;
+      								$rootScope.$broadcast('metadataUpdated');
+      								$scope.close();
+      								//$rootScope.$broadcast('associationsUpdated');
+      							}, 500);
+      							});
+
+      						}
+      							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+      						  $rootScope.$broadcast('metadataUpdated');
+      						},
+      						function(response){
+      							MessageService.handle(response, $translate.instant('error_metadata_add'));
+      							$scope.requesting = false;
+      						}
+      				);
+      			//}
+      			//else{
+      			//	$scope.requesting = false;
+      			//}
+          })
+
+        }
 
         $scope.animationsEnabled = true;
+
+
 
 /////////Modal Stuff/////////////////////
         $scope.fetchModalMetadata = function(query){
@@ -342,6 +392,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             alert('filtering')
           }
         }
+
+
   /////////Modal Stuff/////////////////////
 
         $scope.open = function (size, types, title) {
