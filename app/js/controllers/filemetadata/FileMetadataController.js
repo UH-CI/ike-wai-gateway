@@ -107,7 +107,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
       $scope.getPeople();
       $scope.getOrgs();
-      
+
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
@@ -115,12 +115,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       jQuery('#datetimepicker2').datetimepicker();
       jQuery('#datetimepicker3').datetimepicker();
     };
-    
+
     $scope.getPeople = function(){
         $scope.requesting = true;
         $scope.fetchMetadata("{'name':'Person'}");
     };
-    
+
     $scope.getOrgs = function(){
         $scope.requesting = true;
         $scope.fetchMetadata("{'name':'Organization'}");
@@ -308,8 +308,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       			//}
           })
 
-        }        
-        
+        }
+
         $scope.animationsEnabled = true;
 
 
@@ -352,8 +352,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
                       App.alert({message: $translate.instant('success_metadata_add_assocation') });
                       $scope.requesting = false;
-                      //$scope.refresh();
-                      alert('fetchMe')
+
                       $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
