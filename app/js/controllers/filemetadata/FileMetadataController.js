@@ -11,9 +11,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Variable'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Variable','Tag'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
+
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -21,7 +22,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = "{'name':{$in:['Well','Site']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
   //  $scope.query["associationIds"] = $stateParams.uuid;
@@ -31,11 +32,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
     $scope.selected.people = [];
-    $scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    $scope.people = [];
+    $scope.orgs = [];
+    //$scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
     //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
 
-    $scope.selected.contributingPeople = [];
-    $scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    //$scope.selected.contributingPeople = [];
+    //$scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
 
     $scope.selected.formats = [];
     $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
@@ -79,7 +82,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             if ($scope.fileMetadataObject[0].name == "PublishedFile"){
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
 
             }
             else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
@@ -91,7 +94,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             else{
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
 
             }
           }
@@ -102,12 +105,25 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
       )
 
+      $scope.getPeople();
+      $scope.getOrgs();
+      
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
       jQuery('#datetimepicker1').datetimepicker();
       jQuery('#datetimepicker2').datetimepicker();
       jQuery('#datetimepicker3').datetimepicker();
+    };
+    
+    $scope.getPeople = function(){
+        $scope.requesting = true;
+        $scope.fetchMetadata("{'name':'Person'}");
+    };
+    
+    $scope.getOrgs = function(){
+        $scope.requesting = true;
+        $scope.fetchMetadata("{'name':'Organization'}");
     };
 
     $scope.fetchMetadata = function(metadata_query){
@@ -120,7 +136,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               if(value.name =='DataDescriptor'){
                 $scope.has_data_descriptor = true;
               }
-            })
+              if(value.name =='Person'){
+              	$scope.people.push(value.value);
+              }
+              if(value.name =='Organization'){
+                	$scope.orgs.push(value.value);
+              }
+            });
             $scope.requesting = false;
           //  $scope.$apply();
           },
@@ -286,8 +308,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       			//}
           })
 
-        }
-
+        }        
+        
         $scope.animationsEnabled = true;
 
 
