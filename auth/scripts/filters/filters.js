@@ -42,8 +42,8 @@ angular.module('AgaveAuth')
             return 'https://tacc.utexas.edu/';
         } else if (tenantCode === 'designsafe') {
             return 'https://designsafe-ci.org/';
-        } else if (tenantCode === 'hawaii') {
-            return 'https://agaveauth.its.hawaii.edu/';
+        } else if (tenantCode === 'ikewai') {
+            return 'https://ikeauth.its.hawaii.edu/';
 	} else {
             return defaultUrl;
         }
