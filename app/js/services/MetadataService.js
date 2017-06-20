@@ -48,7 +48,6 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       if ($localStorage["schema_"+type]== null){
           promises.push(MetaController.listMetadataSchema("{'schema.title':'"+type+"'}",limit=1,offset=0)
           .then(function(response){
-            alert(response.result[0].uuid)
             $localStorage["schema_"+type] = response.result[0].uuid;
           },function(response){
               MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
