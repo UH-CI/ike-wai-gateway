@@ -154,8 +154,7 @@ jQuery.noConflict()(function ($) {
                               </button>
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
-                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.person" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
-                              <!-- <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.people" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">  -->
+                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.creators" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
 				                <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
 				                <ui-select-choices repeat="person in people | filter: $select.search">
 				                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
@@ -163,7 +162,7 @@ jQuery.noConflict()(function ($) {
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-							  <button class="fa fa-plus pull-right" ng-click="open('lg' ,['Person'],'Select People')">Add Creator</button>
+                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Creator</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
@@ -188,7 +187,7 @@ jQuery.noConflict()(function ($) {
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <!-- Licenses from: https://creativecommons.org/licenses/ -->
-                              <select class="form-control" ng-model="datadescriptor.license">
+                              <select class="form-control" ng-model="datadescriptor.license_rights">
                                 <option value="1">Creative Commons Attribution CC BY</option>
                                 <option value="2">Creative Commons Attribution-ShareAlike CC BY-SA</option>
                                 <option value="3">Creative Commons Attribution-NoDerivs CC BY-ND</option>
@@ -217,6 +216,7 @@ jQuery.noConflict()(function ($) {
 	                                 class="btn btn-default active">
 	                                 Private
 	                              </button>
+                                <input type="text" ng-model="datadescriptor.license_permission"/>
                               </div>
                               <br />
                               <br />
@@ -289,7 +289,6 @@ jQuery.noConflict()(function ($) {
                               </button>
                               <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats">
-                              <!-- <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats"> -->
 				                <ui-select-match placeholder="Select formats...">{{$item}}</ui-select-match>
 				                <ui-select-choices repeat="format in formats | filter: $select.search">
 				                  <span ng-bind-html="format"></span>
@@ -306,15 +305,14 @@ jQuery.noConflict()(function ($) {
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.contributors" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
-                              <!-- <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.contributingPeople" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people"> -->
-				                <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-				                <ui-select-choices repeat="person in people | filter: $select.search">
-				                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+				                <ui-select-match placeholder="Select contributing people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
+				                <ui-select-choices repeat="person in contributingPeople | filter: $select.search">
+				                  <span ng-bind-html="person.lastName"></span>, <span ng-bind-html="person.firstName">
 				                </ui-select-choices>
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="open('lg' ,['Person'],'Select People')">Add Contributing People</button>
+                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Contributing People</button>
                             </div>
 
                             <!-- CONTRIBUTING AGENCIES -->
@@ -323,15 +321,7 @@ jQuery.noConflict()(function ($) {
                               <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <br />
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
-                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.organizations" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
-                              <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
-				                <ui-select-choices repeat="org in orgs | filter: $select.search">
-				                  <span ng-bind-html="org.name"></span>
-				                </ui-select-choices>
-				              </ui-select>
-                              <button class="fa fa-plus pull-right" ng-click="open('lg' ,['Organization'],'Select Organizations')">Add Contributing Organizations</button>
+                              <input  class="form-control" type="text"/>
                             </div>
 
                             <!-- LANGUAGE -->
@@ -342,7 +332,6 @@ jQuery.noConflict()(function ($) {
                               </button>
                               <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.languages" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose languages">
-                              <!-- <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.languages" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose languages"> -->
 				                <ui-select-match placeholder="Select languages...">{{$item}}</ui-select-match>
 				                <ui-select-choices repeat="language in languages | filter: $select.search">
 				                  <span ng-bind-html="language"></span>
@@ -506,7 +495,7 @@ jQuery.noConflict()(function ($) {
                               <tbody>
                                   <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreMetadataType.indexOf(filemetadatum.name) < 0">
                                       <td>
-                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')"> {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">  {{filemetadatum.uuid}}{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                            {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">
