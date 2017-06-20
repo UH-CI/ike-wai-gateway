@@ -138,9 +138,11 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
               if(value.name =='Person'){
               	$scope.people.push(value.value);
+                $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
               }
               if(value.name =='Organization'){
                 	$scope.orgs.push(value.value);
+                  $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
               }
             });
             $scope.requesting = false;
@@ -268,7 +270,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       	//	if (form.$valid) {
           MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
           .then(function(response){
-            alert(response)
       			var body = {};
       			body.name = "DataDescriptor";
       			body.value = $scope.datadescriptor;
@@ -410,7 +411,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.locFilter = function(item){
            if (item.name === 'Well' || item.name === 'Site'){
             return item;// || item.name === 'Site';
-            alert('filtering')
+
           }
         }
 

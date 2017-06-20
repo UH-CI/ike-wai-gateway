@@ -45,10 +45,11 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     //return the value for the system metatdata (File, Well etc) uuid
     this.fetchSystemMetadataSchemaUuid = function(type){
       var promises = [];
-      if ($localStorage[type]== null){
+      if ($localStorage["schema_"+type]== null){
           promises.push(MetaController.listMetadataSchema("{'schema.title':'"+type+"'}",limit=1,offset=0)
           .then(function(response){
-            $localStorage[type] = response.result[0].uuid;
+            alert(response.result[0].uuid)
+            $localStorage["schema_"+type] = response.result[0].uuid;
           },function(response){
               MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
           }));
@@ -58,7 +59,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
       return $q.all(promises).then(
         function(data) {
-          return $localStorage[type];
+          return $localStorage["schema_"+type];
         },
         function(data) {
           deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
