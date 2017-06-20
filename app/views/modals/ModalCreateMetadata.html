@@ -59,7 +59,9 @@
 								<div ng-show="!requesting">
 									<div class="row">
 										<div class="col-md-12">
-
+											<div ng-show="schema.properties.hasOwnProperty('latitude')">Click Map To Select Latitude and Longitude
+								        <leaflet width="100%" height="240px" center="hawaii"  markers="markers" event-broadcast="events"></leaflet>
+								      </div>
 											<div class="" id="form_wizard_1">
 
 
@@ -77,6 +79,7 @@
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>

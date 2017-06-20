@@ -116,5 +116,41 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			}
 	};
 
+
+	angular.extend($scope, {
+			hawaii: {
+					lat: 21.289373,
+					lng: -157.91,
+					zoom: 7
+			},
+			events: {
+				map: {
+					enable: ['click', 'drag', 'blur', 'touchstart'],
+					logic: 'emit'
+				}
+			},
+			defaults: {
+					scrollWheelZoom: false
+			},
+	});
+
+	$scope.markers = new Array();
+
+	$scope.$on('leafletDirectiveMap.click', function(event, args){
+	 //clear markers
+	 $scope.markers=[];
+	 //$scope.markers = $scope.marks;
+	 //add marker where click occured
+	 $scope.markers.push({
+								lat: args.leafletEvent.latlng.lat,
+								lng: args.leafletEvent.latlng.lng,
+								message: "My Added Marker"
+						});
+	 //set metadata form lat and long values
+	 $scope.model['longitude'] = args.leafletEvent.latlng.lng;
+	 $scope.model['latitude'] = args.leafletEvent.latlng.lat;
+
+	});
+
 	$scope.initialize();
 });
