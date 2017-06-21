@@ -8,7 +8,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.model = {};
 
 	$scope.schemaQuery ='';
-	$scope.approvedSchema = ["Well","Site"]
+	$scope.approvedSchema = ['Well','Site','Person','Organization','Location','Variable'];
 	var selectedSchemaUuid = '';
 
 	$scope.initialize = function() {
@@ -88,9 +88,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						$scope.metadataUuid = response.result.uuid;
 						//add the default permissions for the system in addition to the owners
 						MetadataService.addDefaultPermissions($scope.metadataUuid);
+						var metaName = response.result.name;
 						//check if this is for a file object or just a new metadata creation
-						if ($scope.fileMetadataObjects){
-						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
+						// don't do associations for any person or organization metadata objects
+						if ($scope.fileMetadataObjects && metaName != "Person" && metaName != "Organization"){
+						  FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
 							.then(function(response) {
 							//	need to send to modal instead
 							$timeout(function(){
@@ -99,16 +101,25 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 								$scope.close();
 								//$rootScope.$broadcast('associationsUpdated');
 							}, 500);
-							});
-
+						  });
 						}
+						if (metaName != "Person" && metaName != "Organization") {
 							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
-						  $rootScope.$broadcast('metadataUpdated');
-						},
-						function(response){
-							MessageService.handle(response, $translate.instant('error_metadata_add'));
-							$scope.requesting = false;
+							$rootScope.$broadcast('metadataUpdated');
+							$scope.close();
 						}
+					    
+						if (metaName === "Person" || metaName === "Organization" ) {
+							$rootScope.$broadcast('metadataUpdated', { type: metaName, value: response.result });
+						    $scope.close();
+						}
+						
+						
+					},
+					function(response){
+						MessageService.handle(response, $translate.instant('error_metadata_add'));
+						$scope.requesting = false;
+					}
 				);
 			}
 			else{

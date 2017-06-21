@@ -162,7 +162,7 @@ jQuery.noConflict()(function ($) {
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Creator</button>
+							  <button class="fa fa-plus pull-right" ng-click="openCreatePerson('lg')">Add Creator</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
@@ -312,7 +312,7 @@ jQuery.noConflict()(function ($) {
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Contributing People</button>
+                              <button class="fa fa-plus pull-right" ng-click="openCreatePerson('lg', true)">Add Contributing People</button>
                             </div>
 
                             <!-- CONTRIBUTING AGENCIES -->
@@ -321,7 +321,16 @@ jQuery.noConflict()(function ($) {
                               <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input  class="form-control" type="text"/>
+                              <br />
+                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
+                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.organizations" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
+                              <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
+				                <ui-select-choices repeat="org in orgs | filter: $select.search">
+				                  <span ng-bind-html="org.name"></span>
+				                </ui-select-choices>
+				              </ui-select>
+                              <button class="fa fa-plus pull-right" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
+                              <!-- <p>Selected: {{datadescriptor.organizations}}</p> -->
                             </div>
 
                             <!-- LANGUAGE -->
@@ -430,6 +439,7 @@ jQuery.noConflict()(function ($) {
 				              </ui-select>
 				               -->
 
+                            <!-- 
                             <div class="panel-group" id="accordion">
                               <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -459,6 +469,7 @@ jQuery.noConflict()(function ($) {
                                 </div>
                               </div>
                             </div>
+                             -->
                             <div class="form-group">
                               <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
                             </div>
