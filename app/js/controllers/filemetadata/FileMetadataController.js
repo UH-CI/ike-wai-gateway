@@ -34,18 +34,52 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selected.people = [];
     $scope.people = [];
     $scope.orgs = [];
-    //$scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
-    //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
-
-    //$scope.selected.contributingPeople = [];
-    //$scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
 
     $scope.selected.formats = [];
-    $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
-
+    $scope.formats = [
+    	".aiff - audio interchange file format",
+    	".bmp - bit map",
+    	".cdf - common data format, netCDF",
+    	".csv - comma-separated value",
+    	".docx - Word document",
+    	".gif - graphics interchange format",
+    	".ipynb - Jupyter notebook",
+    	".jpg - joint photographic experts group",
+    	".json - geospatial javascript object notation",
+    	".json - javascript object notation",
+    	".kml - keyhole markup language",
+    	".kmz - keyhole markup language, zipped",
+    	".mov - QuickTime movie",
+    	".mp3 - moving picture experts group",
+    	".mp4 - moving picture experts group",
+    	".odp - OpenDocument presentation",
+    	".ods - OpenDocument spreadsheet",
+    	".odt - OpenDocument text",
+    	".pdf - Adobe portable document format",
+    	".png - portable network graphics",
+    	".pptx - PowerPoint",
+    	".py - Python",
+    	".r - R code and files",
+    	".rtf - rich text format",
+    	".shp .shx .dbf .prj .xml plus - shapefile (submit together as zip)",
+    	".svg - scalable vector graphics",
+    	".tex - LaTeX",
+    	".tiff - tagged image file format",
+    	".tiff - geoTIFF (geospatial tagged image file format)",
+    	".tsv - tab-separated value",
+    	".txt - plain text or other content",
+    	".xlsx - Excel workbook",
+    	".xml - extensible markup language",
+    	".zip - zip compression",
+    	".mat - Matlab file",
+    	".fasta - biological sequence text",
+    	".fastq - biological sequence text, Illumina"];
+    
+    
     $scope.selected.languages = [];
-    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];
+    $scope.languages = ['English', 'Hawaiian'];
     $scope.datadescriptor = {};
+    $scope.datadescriptor.organizations = [];
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -60,6 +94,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.refresh = function() {
       $scope.requesting = true;
+  	  $scope.people.length = 0;
+	  $scope.orgs.length = 0;
       MetaController.listMetadataSchema(
 				$scope.schemaQuery
 			).then(function(response){
@@ -78,12 +114,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
           }
           else{
-            //we have an object to modify our query for gettting metadata
+            //we have an object to modify our query for getting metadata
             if ($scope.fileMetadataObject[0].name == "PublishedFile"){
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
               $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
-
+              $scope.getPeople();
+              $scope.getOrgs();
             }
             else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
             {
@@ -95,6 +132,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
               $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+              $scope.getPeople();
+              $scope.getOrgs();
 
             }
           }
@@ -105,9 +144,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
       )
 
-      $scope.getPeople();
-      $scope.getOrgs();
-
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
@@ -116,13 +152,22 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       jQuery('#datetimepicker3').datetimepicker();
     };
 
+    /*
+    $scope.testClick = function() {
+    	console.log($scope.datadescriptor.organizations);
+        angular.forEach($scope.datadescriptor.organizations, function(value, key){
+        	console.log("value: " + value.name + ", " + value.uuid + ", key: " + key);
+        });
+    }
+    */
+    
     $scope.getPeople = function(){
-        $scope.requesting = true;
+        $scope.people.length = 0;
         $scope.fetchMetadata("{'name':'Person'}");
     };
 
     $scope.getOrgs = function(){
-        $scope.requesting = true;
+        $scope.orgs.length = 0;
         $scope.fetchMetadata("{'name':'Organization'}");
     };
 
@@ -136,17 +181,17 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               if(value.name =='DataDescriptor'){
                 $scope.has_data_descriptor = true;
               }
-              if(value.name =='Person'){
+              if(value.name === 'Person'){
               	$scope.people.push(value.value);
                 $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
               }
               if(value.name =='Organization'){
-                	$scope.orgs.push(value.value);
+                  $scope.orgs.push(value.value);
                   $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
               }
             });
             $scope.requesting = false;
-          //  $scope.$apply();
+            //  $scope.$apply();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -164,8 +209,24 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.refresh();
 
-    $rootScope.$on("metadataUpdated", function(){
-      $scope.refresh();
+    //$rootScope.$on("metadataUpdated", function(){
+    //  $scope.refresh();
+    //});
+    
+    // TODO: add an "on-click" event and see what's happening, then get my action to match it
+    
+    $rootScope.$on("metadataUpdated", function (event, args) {
+        $scope.requesting = false;
+    	if (args.type === "Person") {
+    		//$scope
+    		// TODO: How do I know if this is a creator or a contributor?
+    	}
+    	else if (args.type === "Organization") {
+    		var str = {"name":args.value.value.name,"uuid":args.value.uuid};
+    		$scope.datadescriptor.organizations.push(str);
+    	}
+    	console.log("collab: " + args.isCollab);
+        $scope.refresh();
     });
 
     $rootScope.$on("associationsUpdated", function(){
@@ -468,9 +529,68 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
-
+        
+        
+        /*
+        // open the modal to create a new person schema object
+        $scope.openCreatePerson = function (size) {
+            $scope.requesting = true;
+            // get the uuid for the person schema instead of hard-coding it
+        	MetaController.listMetadataSchema("{'schema.title':'Person'}", 1, 0)
+              .then(function(response){
+                var uuid = response.result[0].uuid;
+                //$scope.openCreate(uuid, size, false);
+                $scope.openCreate(uuid, size);
+              });
+        	$scope.requesting = false;
+        	//$scope.refresh();
+        };
+        
+        // open the modal to create a new organization schema object
+        $scope.openCreateOrg = function (size) {
+            $scope.requesting = true;
+            // get the uuid for the organization schema instead of hard-coding it
+        	MetaController.listMetadataSchema("{'schema.title':'Organization'}", 1, 0)
+              .then(function(response){
+                var uuid = response.result[0].uuid;
+                //$scope.openCreate(uuid, size, false);
+                //$scope.openCreate(uuid, size, "Organization");
+                $scope.openCreate(uuid, size);
+              });
+        	$scope.requesting = false;
+        	//$scope.refresh();
+        };
+        */
+        
+        $scope.openCreateType = function (size, schemaType) {
+            $scope.requesting = true;
+            // get the uuid for the schema
+            var typeString = "{'schema.title':'" + schemaType + "'}";
+            MetaController.listMetadataSchema(typeString, 1, 0)
+              .then(function(response){
+                var uuid = response.result[0].uuid;
+                console.log("uuid: " + uuid);
+                $scope.openCreate(uuid, size);
+              });
+        	$scope.requesting = false;
+        };
+        
+        // open the modal to create a new person schema object
+        $scope.openCreatePerson = function (size) {
+        	 $scope.openCreateType(size,"Person");
+        };
+        
+        // open the modal to create a new organization schema object
+        $scope.openCreateOrg = function (size) {
+        	 $scope.openCreateType(size,"Organization");
+        };
+        
+        //$scope.openCreate = function (schemauuid, size, assoc = true) {
         $scope.openCreate = function (schemauuid, size) {
-            $scope.fileMetadataObjects = $scope.fileMetadataObject
+        //$scope.openCreate = function (schemauuid, size, isCollab) {
+          // with people and orgs, we don't want to do any associations, so wipe out fileMetadataObjects to prevent it. 
+          //if (assoc) {}
+          $scope.fileMetadataObjects = $scope.fileMetadataObject;
           $scope.selectedSchemaUuid = schemauuid;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -486,7 +606,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
-
+        
 ///////Assoc modal search////////
 $scope.schemaBox = {val1:true,val2:true};
 $scope.wellbox = true;
