@@ -10,7 +10,6 @@
                   </div>
                 </div>
 
-                {{metadata}}
             <div class="portlet-body">
               <div class="row text-center" ng-show="requesting">
                   <div class="col-md-12">
@@ -18,10 +17,7 @@
                   </div>
               </div>
               <div class="btn-group pull-right">
-                  <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                      <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
-                      <i class="fa fa-angle-down pull-right"></i>
-                  </a>
+
                   <ul class="dropdown-menu">
                     <li ng-repeat="metadataschemata in metadataschema " ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
                       <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
@@ -98,13 +94,13 @@
 													<!--  metadata and metadata-edit are both found in main.js -->
                                                   <!-- <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp;
-                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+
                                                   -->
                                                   <!-- decided to hide the button as the user can just click on the name to get the details -->
                                                   <!-- <a href='#' ng-click="openView(metadatum.uuid)" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp; -->
 
-                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="approveMetadata(metadatum.uuid)" role="button"> <i class="fa fa-check"></i>Approve</a>
 
                                           </div>
                                       </td>

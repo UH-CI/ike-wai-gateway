@@ -45,7 +45,6 @@ angular.module('AgaveToGo').controller('MetadataResourceUnapprovedController', f
 
     };
 
-
     $scope.refresh();
 
     $rootScope.$on("metadataUpdated", function(){
@@ -55,6 +54,15 @@ angular.module('AgaveToGo').controller('MetadataResourceUnapprovedController', f
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     };
+
+    $scope.approveMetadata = function(metadtaUuid){
+      //An admin doing this will remove the unapproved association and add public access
+      MetadataService.addDefaultPermissions(metadtaUuid)
+        .then(function(response){
+          $scope.refresh();
+        }
+      )
+    }
 
 /////////Modal Stuff/////////////////////
 
