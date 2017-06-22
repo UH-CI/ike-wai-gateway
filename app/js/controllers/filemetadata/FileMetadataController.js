@@ -228,7 +228,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $rootScope.$on("metadataUpdated", function(){
        $scope.refreshMetadata();
-       //$scope.refresh();
+       $scope.refresh();
     });
     
     $rootScope.$on("metadataPersonOrOrgUpdated", function (event, args) {
