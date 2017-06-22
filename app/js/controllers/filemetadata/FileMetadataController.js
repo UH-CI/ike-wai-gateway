@@ -85,6 +85,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.creators = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
+    $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publishers','publication_date','description','relations']
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
