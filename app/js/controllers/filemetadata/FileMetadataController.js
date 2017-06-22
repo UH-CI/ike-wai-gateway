@@ -428,10 +428,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
         $scope.animationsEnabled = true;
 
-
         $scope.editDataDescriptor = function(){
           $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
           $scope.edit_data_descriptor = true;
+        }
+
+        $scope.cancelEditDataDescriptor = function(){
+          $scope.edit_data_descriptor = false;
         }
 /////////Modal Stuff/////////////////////
         $scope.fetchModalMetadata = function(query){

@@ -117,8 +117,11 @@ jQuery.noConflict()(function ($) {
                 <div class=" pull-left">
                   <h4>{{filename}}</h4>
                 </div>
-                <div class="pull-right">
+                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
+                </div>
+                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
+                  <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
                 <!--<div ng-show="has_data_descriptor == true">
                   <div class="btn-group pull-right" >
