@@ -103,11 +103,28 @@ AgaveToGo.filter('propsFilter', function () {
             return text.split('%2F').join('/');
         }
     }
+}]).filter('capitalize', [function() {
+    return function(item) {
+        if (item!=null){
+            item = item.toLowerCase();
+            return item.substring(0,1).toUpperCase()+item.substring(1);
+        }
+    }
+}]).filter('capitalize_with_space', [function() {
+    return function(item) {
+        if (item!=null){
+            item = item.toLowerCase();
+            subitem = item.split('_')
+            for(i=0;i<subitem.length;i++){
+                subitem[i] = subitem[i].substring(0,1).toUpperCase()+subitem[i].substring(1);
+            }
+            return subitem.join(' ')
+        }
+    }
 }]).filter('locationFilter', [function() {
     return function(item){
        if (item.name === 'Well'){// || item.name === 'Site'){
         return item;// || item.name === 'Site';
-        alert('filtering')
       }
     }
 }]);

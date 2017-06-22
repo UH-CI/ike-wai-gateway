@@ -98,7 +98,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.refreshMetadata = function(){
       //refetch the file metadata object to ensure the latest associtionIds are in place
-      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}")
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}",)
         .then(function(response){
           $q.when()
             .then(function () {
@@ -198,6 +198,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
               if(value.name === 'DataDescriptor'){
                 $scope.has_data_descriptor = true;
+                $scope.data_descriptor_metadatum = value;
               }
               else if(value.name === 'Person'){
                   $scope.people.push(value.value);
