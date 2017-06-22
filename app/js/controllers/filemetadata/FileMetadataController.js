@@ -86,12 +86,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.creators = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
-<<<<<<< Updated upstream
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publishers','publication_date','description','relations']
-=======
     $scope.datadescriptor.license_permission = "private";
     $scope.datadescriptor.title = "";
->>>>>>> Stashed changes
+
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
