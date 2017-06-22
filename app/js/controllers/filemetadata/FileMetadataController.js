@@ -369,23 +369,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       			MetaController.addMetadata(body)
       				.then(
       					function(response){
-      						$scope.metadataUuid = response.result.uuid;
-      						//add the default permissions for the system in addition to the owners
-      						MetadataService.addDefaultPermissions($scope.metadataUuid);
-      						//check if this is for a file object or just a new metadata creation
-      						if ($scope.fileMetadataObjects){
-      						FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
-      							.then(function(response) {
-      							//	need to send to modal instead
-      							$timeout(function(){
-      								$scope.requesting = false;
-      								$rootScope.$broadcast('metadataUpdated');
-      								$scope.close();
-      								//$rootScope.$broadcast('associationsUpdated');
-      							}, 500);
-      							});
-
-      						}
+                    $scope.metadataUuid = response.result.uuid;
+                    //add the default permissions for the system in addition to the owners
+                    MetadataService.addDefaultPermissions($scope.metadataUuid);
+                    $scope.addAssociation($scope.metadataUuid)
       							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name,closeInSeconds: 5  });
       						  $rootScope.$broadcast('metadataUpdated');
       						},
@@ -445,7 +432,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
                       $scope.requesting = false;
 
-                      $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+                      //$scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+                      $scope.refreshMetadata();
                       $scope.matchingAssociationIds.push(metadatumUuid)
                       $scope.removedAssociationIds.splice($scope.removedAssociationIds.indexOf(metadatumUuid))
                       //$state.go('metadata',{id: $scope.metadataUuid});
