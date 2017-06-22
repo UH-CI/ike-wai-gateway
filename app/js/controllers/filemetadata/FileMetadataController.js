@@ -16,6 +16,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
     $scope.removedAssociationIds = [''];
+
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -35,7 +36,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selected.people = [];
     $scope.people = [];
     $scope.orgs = [];
-    $scope.contributors = [];
+    //$scope.contributors = [];
 
     $scope.selected.formats = [];
     $scope.formats = [
@@ -85,7 +86,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.creators = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
+<<<<<<< Updated upstream
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publishers','publication_date','description','relations']
+=======
+    $scope.datadescriptor.license_permission = "private";
+    $scope.datadescriptor.title = "";
+>>>>>>> Stashed changes
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -160,6 +166,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
             }
           }
+          $scope.setTitle();
         },
         function(response){
           MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -179,7 +186,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       $scope.refreshMetadata();
     };
 
-    
+    $scope.setTitle = function() {
+      if (!$scope.datadescriptor.title && $scope.filename) {
+        $scope.datadescriptor.title = $scope.filename.split('/').slice(-1)[0];
+      }
+    }
+
     $scope.getPeople = function(){
         $scope.people.length = 0;
         $scope.fetchMetadata("{'name':'Person'}");
@@ -264,8 +276,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
-
-    
 
     $scope.unAssociateMetadata = function(metadatumUuid){
       $scope.requesting = true;
@@ -545,7 +555,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.open = function (size, types, title) {
             //Set the
             $scope.modalSchemas = types.slice(0);
-             $scope.selectedSchema = types.slice(0);
+            $scope.selectedSchema = types.slice(0);
             $scope.modalTitle = title;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
