@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -14,7 +14,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Variable','Tag'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
-
+    $scope.matchingAssociationIds = [''];
+    $scope.removedAssociationIds = [''];
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -92,6 +93,23 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.filemetadatumUuid = $stateParams.uuid;
 
+    $scope.refreshMetadata = function(){
+      //refetch the file metadata object to ensure the latest associtionIds are in place
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}")
+        .then(function(response){
+          $q.when()
+            .then(function () {
+              var deferred = $q.defer();
+              $scope.fileMetadataObject = response.result;
+              deferred.resolve($scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}"));
+              return deferred.promise;
+            })
+        }
+      )
+    }
+
+
+
     $scope.refresh = function() {
       $scope.requesting = true;
   	  $scope.people.length = 0;
@@ -118,7 +136,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             if ($scope.fileMetadataObject[0].name == "PublishedFile"){
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+             // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+              $scope.refreshMetadata()
               $scope.getPeople();
               $scope.getOrgs();
             }
@@ -131,7 +150,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             else{
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+             // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+              $scope.refreshMetadata()
               $scope.getPeople();
               $scope.getOrgs();
 
@@ -150,6 +170,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       jQuery('#datetimepicker1').datetimepicker();
       jQuery('#datetimepicker2').datetimepicker();
       jQuery('#datetimepicker3').datetimepicker();
+      $scope.refreshMetadata();
     };
 
     /*
@@ -176,7 +197,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
+            //$scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.filemetadata = response.result;
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
               if(value.name =='DataDescriptor'){
                 $scope.has_data_descriptor = true;
@@ -191,7 +213,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
             });
             $scope.requesting = false;
-            //  $scope.$apply();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -216,7 +237,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     // TODO: add an "on-click" event and see what's happening, then get my action to match it
     
     $rootScope.$on("metadataUpdated", function (event, args) {
-        $scope.requesting = false;
+      $scope.requesting = false;
     	if (args.type === "Person") {
     		//$scope
     		// TODO: How do I know if this is a creator or a contributor?
@@ -226,16 +247,22 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     		$scope.datadescriptor.organizations.push(str);
     	}
     	console.log("collab: " + args.isCollab);
-        $scope.refresh();
+       // $scope.refresh();
+       // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+       $scope.refreshMetadata();
     });
 
     $rootScope.$on("associationsUpdated", function(){
-      $scope.refresh();
+     // $scope.refresh();
+     $scope.refreshMetadata()
+     // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
     });
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
+
+    
 
     $scope.unAssociateMetadata = function(metadatumUuid){
       $scope.requesting = true;
@@ -243,12 +270,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
       if (unAssociate) {
         FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
-      	  App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+      	  App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
           $scope.metadatum = null;
           //pause to let model update
           $timeout(function(){
             //$scope.refresh()
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+              $scope.refreshMetadata();
+              $scope.matchingAssociationIds.splice($scope.matchingAssociationIds.indexOf(metadatumUuid))
+              $scope.removedAssociationIds.push(metadatumUuid)
+              //$scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
           }, 300);
           $scope.requesting = false;
         });
@@ -356,7 +386,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       							});
 
       						}
-      							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+      							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name,closeInSeconds: 5  });
       						  $rootScope.$broadcast('metadataUpdated');
       						},
       						function(response){
@@ -412,10 +442,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   .then(
                     function(response){
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
-                      App.alert({message: $translate.instant('success_metadata_add_assocation') });
+                      App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
                       $scope.requesting = false;
 
                       $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+                      $scope.matchingAssociationIds.push(metadatumUuid)
+                      $scope.removedAssociationIds.splice($scope.removedAssociationIds.indexOf(metadatumUuid))
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
                     function(response){
@@ -425,7 +457,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   )
                 }
                 else {
-                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists') });
+                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists'),closeInSeconds: 5  });
                   return
                 }
               })
@@ -451,7 +483,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       function(response){
                         $scope.new_metadataUuid = response.result.uuid;
                         MetadataService.addDefaultPermissions($scope.new_metadataUuid);
-                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name });
+                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name ,closeInSeconds: 5 });
                         $scope.addAssociation($scope.new_metadataUuid)
                         $scope.requesting = false;
                         $scope.openEditMetadata($scope.new_metadataUuid,'lg')
@@ -471,8 +503,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
         $scope.locFilter = function(item){
            if (item.name === 'Well' || item.name === 'Site'){
-            return item;// || item.name === 'Site';
-
+            return item;
           }
         }
 

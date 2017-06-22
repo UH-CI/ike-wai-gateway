@@ -120,11 +120,11 @@
                                       <td class="text-center">
                                           <div class="btn-group pull-left">
                                               <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
-                                              <a ng-if="fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0 || matchingAssociationIds.indexOf(metadatum.uuid) < 0 " class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
+                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0 && matchingAssociationIds.indexOf(metadatum.uuid) < 0) || removedAssociationIds.indexOf(metadatum.uuid) > -1 " class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
                                                   Associate
                                                   <i class="fa fa-link"></i>
                                               </a>
-                                              <a ng-if="fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) > -1 || matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid)">
+                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) > -1 && removedAssociationIds.indexOf(metadatum.uuid) < 0)|| matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid)">
                                                   Remove Association
                                                   <i class="fa fa-trash"></i>
                                               </a>
