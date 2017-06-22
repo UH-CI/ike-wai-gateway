@@ -84,6 +84,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.organizations = [];
     $scope.datadescriptor.creators = [];
     $scope.datadescriptor.contributors = [];
+    $scope.edit_data_descriptor = false;
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -376,6 +377,41 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                     $scope.addAssociation($scope.metadataUuid)
       							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name,closeInSeconds: 5  });
       						  $rootScope.$broadcast('metadataUpdated');
+                    $scope.edit_data_descriptor = false;
+      						},
+      						function(response){
+      							MessageService.handle(response, $translate.instant('error_metadata_add'));
+      							$scope.requesting = false;
+      						}
+      				);
+      			//}
+      			//else{
+      			//	$scope.requesting = false;
+      			//}
+          })
+
+        }
+
+        $scope.updateDataDescriptor = function(){
+          $scope.requesting = true;
+      		$scope.$broadcast('schemaFormValidate');
+      		// Then we check if the form is valid
+      	//	if (form.$valid) {
+          MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+          .then(function(response){
+      			var body = {};
+      			body.name = $scope.data_descriptor_metadatum.name;
+      			body.value = $scope.datadescriptor;
+      			body.schemaId = $scope.data_descriptor_metadatum.schemaId;
+
+      			MetaController.updateMetadata(body,$scope.data_descriptor_metadatum.uuid)
+      				.then(
+      					function(response){
+                    $scope.metadataUuid = response.result.uuid;
+
+      							App.alert({message: $translate.instant('success_metadata_edit') + " Annotations" ,closeInSeconds: 5  });
+      						  $rootScope.$broadcast('metadataUpdated');
+                    $scope.edit_data_descriptor = false;
       						},
       						function(response){
       							MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -393,7 +429,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.animationsEnabled = true;
 
 
-
+        $scope.editDataDescriptor = function(){
+          $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+          $scope.edit_data_descriptor = true;
+        }
 /////////Modal Stuff/////////////////////
         $scope.fetchModalMetadata = function(query){
           MetaController.listMetadata(

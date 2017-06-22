@@ -117,6 +117,9 @@ jQuery.noConflict()(function ($) {
                 <div class=" pull-left">
                   <h4>{{filename}}</h4>
                 </div>
+                <div class="pull-right">
+                  <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
+                </div>
                 <!--<div ng-show="has_data_descriptor == true">
                   <div class="btn-group pull-right" >
                     <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
@@ -138,7 +141,7 @@ jQuery.noConflict()(function ($) {
                 <!--  DATA DESCRIPTOR -->
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                      <div ng-show="has_data_descriptor == false || edit_data_descriptor==true" class="text-center">
+                      <div ng-show="has_data_descriptor == false || edit_data_descriptor == true" class="text-center">
                         <div class="row ">
                           <div class="col-md-12">
                           <h3 class="pull-left">Create Data Descriptor </h3>
@@ -470,15 +473,18 @@ jQuery.noConflict()(function ($) {
                               </div>
                             </div>
                              -->
-                            <div class="form-group">
+                            <div ng-if="has_data_descriptor == false"class="form-group">
                               <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
+                            </div>
+                            <div ng-if="has_data_descriptor == true"class="form-group">
+                              <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Edit Data Descriptor</button>
                             </div>
                           </div>
                           </form>
                           </div>
                         </div>
                       </div>
-                      <div ng-show="has_data_descriptor == true">
+                      <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
                         <!--<span ng-repeat="filemetadatum in filemetadata">
                                  {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                  {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
