@@ -35,6 +35,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selected.people = [];
     $scope.people = [];
     $scope.orgs = [];
+    $scope.contributors = [];
 
     $scope.selected.formats = [];
     $scope.formats = [
@@ -81,6 +82,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.languages = ['English', 'Hawaiian'];
     $scope.datadescriptor = {};
     $scope.datadescriptor.organizations = [];
+    $scope.datadescriptor.creators = [];
+    $scope.datadescriptor.contributors = [];
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -113,7 +116,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh = function() {
       $scope.requesting = true;
   	  $scope.people.length = 0;
-	  $scope.orgs.length = 0;
+	    $scope.orgs.length = 0;
+
       MetaController.listMetadataSchema(
 				$scope.schemaQuery
 			).then(function(response){
@@ -137,9 +141,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
              // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
-              $scope.refreshMetadata()
-              $scope.getPeople();
-              $scope.getOrgs();
+              $scope.refreshMetadata();
             }
             else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
             {
@@ -151,9 +153,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
              // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
-              $scope.refreshMetadata()
-              $scope.getPeople();
-              $scope.getOrgs();
+              $scope.refreshMetadata();
+
 
             }
           }
@@ -164,6 +165,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
       )
 
+      $scope.getPeople();
+      $scope.getOrgs();
+
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
@@ -173,14 +177,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       $scope.refreshMetadata();
     };
 
-    /*
-    $scope.testClick = function() {
-    	console.log($scope.datadescriptor.organizations);
-        angular.forEach($scope.datadescriptor.organizations, function(value, key){
-        	console.log("value: " + value.name + ", " + value.uuid + ", key: " + key);
-        });
-    }
-    */
     
     $scope.getPeople = function(){
         $scope.people.length = 0;
@@ -200,14 +196,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             //$scope[$scope._COLLECTION_NAME] = response.result;
             $scope.filemetadata = response.result;
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
-              if(value.name =='DataDescriptor'){
+              if(value.name === 'DataDescriptor'){
                 $scope.has_data_descriptor = true;
               }
-              if(value.name === 'Person'){
-              	$scope.people.push(value.value);
-                $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
+              else if(value.name === 'Person'){
+                  $scope.people.push(value.value);
+                  $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
               }
-              if(value.name =='Organization'){
+              else if(value.name === 'Organization'){
                   $scope.orgs.push(value.value);
                   $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
               }
@@ -230,26 +226,30 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.refresh();
 
-    //$rootScope.$on("metadataUpdated", function(){
-    //  $scope.refresh();
-    //});
-    
-    // TODO: add an "on-click" event and see what's happening, then get my action to match it
-    
-    $rootScope.$on("metadataUpdated", function (event, args) {
-      $scope.requesting = false;
-    	if (args.type === "Person") {
-    		//$scope
-    		// TODO: How do I know if this is a creator or a contributor?
-    	}
-    	else if (args.type === "Organization") {
-    		var str = {"name":args.value.value.name,"uuid":args.value.uuid};
-    		$scope.datadescriptor.organizations.push(str);
-    	}
-    	console.log("collab: " + args.isCollab);
-       // $scope.refresh();
-       // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+    $rootScope.$on("metadataUpdated", function(){
        $scope.refreshMetadata();
+       //$scope.refresh();
+    });
+    
+    $rootScope.$on("metadataPersonOrOrgUpdated", function (event, args) {
+      $scope.requesting = false;
+      if (args.type === "Person") {
+        var str = {"first_name":args.value.value.first_name,"last_name":args.value.value.last_name,"uuid":args.value.uuid};
+        // this person is a contributor, not a creator
+        if ($scope.isContrib) {
+          $scope.datadescriptor.contributors.push(str);
+        }
+        // this person is a creator
+        else {
+          $scope.datadescriptor.creators.push(str);
+        }
+      }
+      else if (args.type === "Organization") {
+        var str = {"name":args.value.value.name,"uuid":args.value.uuid};
+        $scope.datadescriptor.organizations.push(str);
+      }
+      //$scope.refresh();
+      $rootScope.$broadcast('metadataUpdated');
     });
 
     $rootScope.$on("associationsUpdated", function(){
@@ -561,46 +561,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
         };
         
-        
-        /*
-        // open the modal to create a new person schema object
-        $scope.openCreatePerson = function (size) {
-            $scope.requesting = true;
-            // get the uuid for the person schema instead of hard-coding it
-        	MetaController.listMetadataSchema("{'schema.title':'Person'}", 1, 0)
-              .then(function(response){
-                var uuid = response.result[0].uuid;
-                //$scope.openCreate(uuid, size, false);
-                $scope.openCreate(uuid, size);
-              });
-        	$scope.requesting = false;
-        	//$scope.refresh();
-        };
-        
-        // open the modal to create a new organization schema object
-        $scope.openCreateOrg = function (size) {
-            $scope.requesting = true;
-            // get the uuid for the organization schema instead of hard-coding it
-        	MetaController.listMetadataSchema("{'schema.title':'Organization'}", 1, 0)
-              .then(function(response){
-                var uuid = response.result[0].uuid;
-                //$scope.openCreate(uuid, size, false);
-                //$scope.openCreate(uuid, size, "Organization");
-                $scope.openCreate(uuid, size);
-              });
-        	$scope.requesting = false;
-        	//$scope.refresh();
-        };
-        */
-        
-        $scope.openCreateType = function (size, schemaType) {
+        $scope.openCreateType = function (size, schemaType, isContrib = false) {
             $scope.requesting = true;
             // get the uuid for the schema
             var typeString = "{'schema.title':'" + schemaType + "'}";
             MetaController.listMetadataSchema(typeString, 1, 0)
               .then(function(response){
                 var uuid = response.result[0].uuid;
-                console.log("uuid: " + uuid);
+                //console.log("uuid: " + uuid);
+                $scope.isContrib = isContrib;
                 $scope.openCreate(uuid, size);
               });
         	$scope.requesting = false;
@@ -610,17 +579,17 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.openCreatePerson = function (size) {
         	 $scope.openCreateType(size,"Person");
         };
+
+        $scope.openCreateContribPerson = function (size) {
+        	 $scope.openCreateType(size,"Person", true);
+        };
         
         // open the modal to create a new organization schema object
         $scope.openCreateOrg = function (size) {
         	 $scope.openCreateType(size,"Organization");
         };
         
-        //$scope.openCreate = function (schemauuid, size, assoc = true) {
         $scope.openCreate = function (schemauuid, size) {
-        //$scope.openCreate = function (schemauuid, size, isCollab) {
-          // with people and orgs, we don't want to do any associations, so wipe out fileMetadataObjects to prevent it. 
-          //if (assoc) {}
           $scope.fileMetadataObjects = $scope.fileMetadataObject;
           $scope.selectedSchemaUuid = schemauuid;
             var modalInstance = $uibModal.open({

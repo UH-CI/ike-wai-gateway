@@ -305,14 +305,14 @@ jQuery.noConflict()(function ($) {
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.contributors" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
-				                <ui-select-match placeholder="Select contributing people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
-				                <ui-select-choices repeat="person in contributingPeople | filter: $select.search">
-				                  <span ng-bind-html="person.lastName"></span>, <span ng-bind-html="person.firstName">
+				                <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+				                <ui-select-choices repeat="person in people | filter: $select.search">
+				                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
 				                </ui-select-choices>
 				              </ui-select>
 				              <!-- <p>Selected: {{selected.people}}</p> -->
                               <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="openCreatePerson('lg', true)">Add Contributing People</button>
+                              <button class="fa fa-plus pull-right" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
                             </div>
 
                             <!-- CONTRIBUTING AGENCIES -->
