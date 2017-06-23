@@ -20,11 +20,18 @@
       <div ng-if="metadatum" class="portlet light table-responsive pre-scrollable">
         <table class="table table-striped table-bordered">
           <tbody>
-            <tr ng-if="metadatum.value" ng-repeat="(key, value) in metadatum.value">
-              <td>{{key | capitalize_with_space}}</td><td>{{value}}</td>
+            <tr ng-repeat="(ind, key) in order[metadatum.name]">
+              <td>
+                {{key | capitalize_with_space}}
+              </td>
+              <td>
+                {{metadatum.value[key]}}
+              </td>
             </tr>
+            
           </tbody>
         </table>
+
         
         <b>Metadata creation information</b>
         <table class="table table-striped table-bordered">

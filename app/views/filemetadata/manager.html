@@ -128,7 +128,7 @@ jQuery.noConflict()(function ($) {
                 <!--  DATA DESCRIPTOR -->
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                                            <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
+                      <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
                           <div>
                             <div ng-if="data_descriptor_metadatum" class="portlet light table-responsive">
                               <table class="table table-striped table-bordered">
@@ -136,9 +136,9 @@ jQuery.noConflict()(function ($) {
                                   <tr ng-repeat="(ind, key) in data_descriptor_order">
                                     <td>
                                       <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{key | capitalize_with_space}}</label>
-                                      <button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
+                                      <!--<button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
                                         <i class="glyphicon glyphicon-question-sign"></i>
-                                      </button>
+                                      </button>-->
                                     </td>
                                     <td ng-if="key=='creators' || key=='contributors' || key=='publishers' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
