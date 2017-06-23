@@ -216,7 +216,7 @@ AgaveToGo.config(function($translateProvider) {
     success_systems_roles: 'Success: updated roles for ',
 
     success_metadata_update_assocation: 'Success: updated Metadata associations',
-    success_metadata_add_assocation: 'Success: added file/Metadata associations ',
+    success_metadata_add_assocation: 'Success: added Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
     success_metadata_add: 'Success: new Metadata created',
     success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
