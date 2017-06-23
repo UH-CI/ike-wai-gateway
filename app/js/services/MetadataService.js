@@ -51,9 +51,11 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     this.fetchSystemMetadataSchemaUuid = function(type){
       var promises = [];
       if ($localStorage["schema_"+type]== null){
-          promises.push(MetaController.listMetadataSchema("{'schema.title':'"+type+"'}",limit=1,offset=0)
+          promises.push(MetaController.listMetadataSchema()
           .then(function(response){
-            $localStorage["schema_"+type] = response.result[0].uuid;
+            angular.forEach(response.result, function(value, key){
+              $localStorage["schema_"+value.schema.title] = value.uuid;
+            })
           },function(response){
               MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
           }));
@@ -85,7 +87,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+              App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_remove'));
@@ -125,7 +127,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name });
+              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
@@ -171,7 +173,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
                     MetaController.updateMetadata(body,resp)
                     .then(
                       function(response){
-                        App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+                        App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
                       },
                       function(response){
                         MessageService.handle(response, $translate.instant('error_metadata_remove'));
@@ -201,7 +203,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
                     MetaController.updateMetadata(body,metadataUuid)
                     .then(
                       function(response){
-                        App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name });
+                        App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
                       },
                       function(response){
                         MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
