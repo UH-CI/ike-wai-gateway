@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -116,8 +116,42 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
       )
     }
+    //MAP STUFF
+    $scope.data_descriptor_markers = {};
 
+    $scope.makeLocationMarkers = function(metadata){
+        $scope.siteMarkers = $filter('filter')(metadata, {name: "Site"});
+        $scope.wellMarkers = $filter('filter')(metadata, {name: "Well"});
+        $scope.marks = {};
+        angular.forEach($scope.siteMarkers, function(datum) {
+            if(datum.value.loc != undefined){
+            $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+        });
+        angular.forEach($scope.wellMarkers, function(datum) {
+            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+        });
+        $scope.data_descriptor_markers = $scope.marks
+    }
 
+    angular.extend($scope, {
+        hawaii: {
+            lat: 21.289373,
+            lng: -157.91,
+            zoom: 7
+        },
+        events: {
+          map: {
+            enable: ['click', 'drag', 'blur', 'touchstart'],
+            logic: 'emit'
+          }
+        },
+        defaults: {
+            scrollWheelZoom: false
+        },
+    });
 
     $scope.refresh = function() {
       $scope.requesting = true;
@@ -205,6 +239,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             //$scope[$scope._COLLECTION_NAME] = response.result;
             $scope.filemetadata = response.result;
+            $scope.makeLocationMarkers($scope.filemetadata);
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
               if(value.name === 'DataDescriptor'){
                 $scope.has_data_descriptor = true;
