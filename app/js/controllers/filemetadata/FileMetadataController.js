@@ -128,11 +128,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-				$scope.requesting = false;
 			})
       //check if default filemetadata object exists
       MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
-
         function (response) {
           $scope.fileMetadataObject = response.result;
 
@@ -384,7 +382,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                     //add the default permissions for the system in addition to the owners
                     MetadataService.addDefaultPermissions($scope.metadataUuid);
                     $scope.addAssociation($scope.metadataUuid)
-      							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name,closeInSeconds: 5  });
+      							App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
       						  $rootScope.$broadcast('metadataUpdated');
                     $scope.edit_data_descriptor = false;
       						},
@@ -417,8 +415,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       				.then(
       					function(response){
                     $scope.metadataUuid = response.result.uuid;
-
-      							App.alert({message: $translate.instant('success_metadata_edit') + " Annotations" ,closeInSeconds: 5  });
+                    App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
       						  $rootScope.$broadcast('metadataUpdated');
                     $scope.edit_data_descriptor = false;
       						},
