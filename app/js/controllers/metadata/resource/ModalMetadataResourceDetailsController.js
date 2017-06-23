@@ -1,5 +1,14 @@
 angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController', function($scope, $uibModal, $modalInstance, $state, $translate, $timeout, $window, $rootScope, $localStorage, MetaController, PostitsController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
   $scope.profile = $localStorage.activeProfile;
+
+    //Set the order fields should display
+  $scope.order={};
+  $scope.order['Variable'] =['variable_name','category','site_type','sample_medium','data_type','speciation','unit','value_type']
+  $scope.order['Well'] =['']
+  $scope.order['Site'] =['name','latitude','longitude','description','county','state']
+  $scope.order['Person'] =['first_name','last_name','email','organization','address','phone','url']
+  $scope.order['Organization'] = ['name','email','address','phone','url']
+
   $scope.get_editors = function(){
     $scope.editors = MetadataService.getAdmins();
     $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
