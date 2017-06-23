@@ -3,6 +3,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
   this.getAdmins = function(){
     return ['seanbc','jgeis','omeier'];
   }
+  
 
   function deferredHandler(data, deferred, errorMessage) {
       if (!data || typeof data !== 'object') {
@@ -109,6 +110,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
     this.addAssociation = function(metadataUuid, uuidToAdd, callback){
       var promises = [];
+      var self = this;
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -147,14 +149,15 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     }
 
     this.resolveApprovedStatus = function(uuidToAdd){
+      var self = this;
       user = $localStorage.activeProfile;
-      MetaController.getMetadata("{'uuid':'"+uuidToAdd+"'}")
+      MetaController.getMetadata(uuidToAdd)
       .then(function(response){
         //Ignore DataDescriptors - we don't want these added to unapproved because they are not public until published as annotated
-        if(response.result[0].name != 'DataDescriptor'){
-          if (this.getAdmins().indexOf(user.username) > -1) {
+        if(response.result.name != 'DataDescriptor'){
+          if (self.getAdmins().indexOf(user.username) > -1) {
             MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',uuidToAdd);
-            this.fetchSystemMetadataUuid('unapproved')
+            self.fetchSystemMetadataUuid('unapproved')
               .then(function(resp){
                 MetaController.getMetadata(resp)
                   .then(function(response){
@@ -181,7 +184,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           }
           else {
             //add this to unapproved if user is not an admin
-            this.fetchSystemMetadataUuid('unapproved')
+            self.fetchSystemMetadataUuid('unapproved')
               .then(function(response){
                 metadataUuid = response
                 MetaController.getMetadata(metadataUuid)
