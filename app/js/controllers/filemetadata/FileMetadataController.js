@@ -16,7 +16,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
     $scope.removedAssociationIds = [''];
-
+    $scope.limit = 1000;
+    $scope.offset = 0;
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -478,13 +479,42 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.edit_data_descriptor = false;
         }
 /////////Modal Stuff/////////////////////
-        $scope.fetchModalMetadata = function(query){
+        $scope.fetchMoreModalMetadata = function(){
+          $scope.offset = $scope.offset + $scope.limit
+          $scope.requesting = true
           MetaController.listMetadata(
-            $scope.query
+            $scope.query,$scope.limit,$scope.offset
+          )
+            .then(
+              function (response) {
+                //$scope.metadata = angular.extend($scope.metadata,response.result);
+                //$scope.newmetadata. = Object.assign({},$scope.metadata, response.result);
+                if (response.result.length == $scope.limit){
+                  $scope.can_fetch_more = true;
+                }
+                else{
+                  $scope.can_fetch_more = false;
+                }
+                $scope.metadata = $scope.metadata.concat(response.result)
+                $scope.requesting = false;
+              },
+              function(response){
+                MessageService.handle(response, $translate.instant('error_metadata_list'));
+                $scope.requesting = false;
+              }
+          );
+        }
+        $scope.fetchModalMetadata = function(query){
+          $scope.can_fetch_more = false;
+          MetaController.listMetadata(
+            $scope.query,$scope.limit,$scope.offset
           )
             .then(
               function (response) {
                 $scope.metadata= response.result;
+                if ($scope.metadata.length == $scope.limit){
+                  $scope.can_fetch_more = true;
+                }
                 $scope.requesting = false;
               },
               function(response){
@@ -714,6 +744,7 @@ $scope.searchAll = function(){
     andquery['$and'] = andarray;
     $scope.query = JSON.stringify(andquery);
 
+    $scope.offset=0;
     $scope.fetchModalMetadata();
 }
 
@@ -739,9 +770,9 @@ $scope.searchAll = function(){
         $modalInstance.close();
       };
 
-      $scope.fetchModalMetadata = function(query){
+      $scope.fetchModalMetadata = function(){
         MetaController.listMetadata(
-          $scope.query
+          $scope.query,$scope.limit,$scope.offset
         )
           .then(
             function (response) {

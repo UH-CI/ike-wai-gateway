@@ -83,8 +83,10 @@
                         </div>
                       </div>
                       <div ng-show="metadata.length > 0" >
+                                                  
                         <div class="caption">
-                            {{ filename | decodeURL}}
+                            Total Objects: {{ metadata.length}}
+                            <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreModalMetadata()'>Fetch More Results</button>
                         </div>
                         <div class="pre-scrollable" style="max-height:200px;">
                           <table class="table table-striped table-bordered table-hover management" width="100%"  id="datatable_collection" class="pre-scrollable">
