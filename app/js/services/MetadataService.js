@@ -173,10 +173,10 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
                     MetaController.updateMetadata(body,resp)
                     .then(
                       function(response){
-                        App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
+                       // App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
                       },
                       function(response){
-                        MessageService.handle(response, $translate.instant('error_metadata_remove'));
+                       // MessageService.handle(response, $translate.instant('error_metadata_remove'));
                       }
 
                     )
@@ -203,10 +203,10 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
                     MetaController.updateMetadata(body,metadataUuid)
                     .then(
                       function(response){
-                        App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
+                       // App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
                       },
                       function(response){
-                        MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
+                       // MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
                       }
 
                     )
