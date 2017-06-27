@@ -490,6 +490,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
         $scope.cancelEditDataDescriptor = function(){
           $scope.edit_data_descriptor = false;
+          $scope.refreshMetadata();
         }
 /////////Modal Stuff/////////////////////
         $scope.fetchMoreModalMetadata = function(){
