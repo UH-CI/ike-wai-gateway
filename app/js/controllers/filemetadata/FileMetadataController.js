@@ -91,6 +91,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.license_permission = "private";
     $scope.datadescriptor.title = "";
 
+
+    $scope.data_descriptor
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -402,70 +404,81 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.saveDataDescriptor = function(){
           $scope.requesting = true;
       		$scope.$broadcast('schemaFormValidate');
-      		// Then we check if the form is valid
-      	//	if (form.$valid) {
-          MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-          .then(function(response){
-      			var body = {};
-      			body.name = "DataDescriptor";
-      			body.value = $scope.datadescriptor;
-      			body.schemaId = response;
+          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
+            // Then we check if the form is valid
+          //	if (form.$valid) {
+            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+            .then(function(response){
+              var body = {};
+              body.name = "DataDescriptor";
+              body.value = $scope.datadescriptor;
+              body.schemaId = response;
 
-      			MetaController.addMetadata(body)
-      				.then(
-      					function(response){
-                    $scope.metadataUuid = response.result.uuid;
-                    //add the default permissions for the system in addition to the owners
-                    MetadataService.addDefaultPermissions($scope.metadataUuid);
-                    $scope.addAssociation($scope.metadataUuid)
-      							App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
-      						  $rootScope.$broadcast('metadataUpdated');
-                    $scope.edit_data_descriptor = false;
-      						},
-      						function(response){
-      							MessageService.handle(response, $translate.instant('error_metadata_add'));
-      							$scope.requesting = false;
-      						}
-      				);
-      			//}
-      			//else{
-      			//	$scope.requesting = false;
-      			//}
-          })
+              MetaController.addMetadata(body)
+                .then(
+                  function(response){
+                      $scope.metadataUuid = response.result.uuid;
+                      //add the default permissions for the system in addition to the owners
+                      MetadataService.addDefaultPermissions($scope.metadataUuid);
+                      $scope.addAssociation($scope.metadataUuid)
+                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
+                      $rootScope.$broadcast('metadataUpdated');
+                      $scope.edit_data_descriptor = false;
+                    },
+                    function(response){
+                      MessageService.handle(response, $translate.instant('error_metadata_add'));
+                      $scope.requesting = false;
+                    }
+                );
+              //}
+              //else{
+              //	$scope.requesting = false;
+              //}
+            })
+          }else{
+            $scope.requesting = false;
+            App.alert({type:'danger', message: "Creator, Title, Licence Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+          }
 
         }
 
         $scope.updateDataDescriptor = function(){
           $scope.requesting = true;
       		$scope.$broadcast('schemaFormValidate');
-      		// Then we check if the form is valid
-      	//	if (form.$valid) {
-          MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-          .then(function(response){
-      			var body = {};
-      			body.name = $scope.data_descriptor_metadatum.name;
-      			body.value = $scope.datadescriptor;
-      			body.schemaId = $scope.data_descriptor_metadatum.schemaId;
 
-      			MetaController.updateMetadata(body,$scope.data_descriptor_metadatum.uuid)
-      				.then(
-      					function(response){
-                    $scope.metadataUuid = response.result.uuid;
-                    App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
-      						  $rootScope.$broadcast('metadataUpdated');
-                    $scope.edit_data_descriptor = false;
-      						},
-      						function(response){
-      							MessageService.handle(response, $translate.instant('error_metadata_add'));
-      							$scope.requesting = false;
-      						}
-      				);
-      			//}
-      			//else{
-      			//	$scope.requesting = false;
-      			//}
-          })
+          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
+           
+            // Then we check if the form is valid
+          //	if (form.$valid) {
+            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+            .then(function(response){
+              var body = {};
+              body.name = $scope.data_descriptor_metadatum.name;
+              body.value = $scope.datadescriptor;
+              body.schemaId = $scope.data_descriptor_metadatum.schemaId;
 
+              MetaController.updateMetadata(body,$scope.data_descriptor_metadatum.uuid)
+                .then(
+                  function(response){
+                      $scope.metadataUuid = response.result.uuid;
+                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
+                      $rootScope.$broadcast('metadataUpdated');
+                      $scope.edit_data_descriptor = false;
+                    },
+                    function(response){
+                      MessageService.handle(response, $translate.instant('error_metadata_add'));
+                      $scope.requesting = false;
+                    }
+                );
+              //}
+              //else{
+              //	$scope.requesting = false;
+              //}
+            })
+          }else{
+            $scope.requesting = false;
+            App.alert({type:'danger', message: "Creator, Title, Licence Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+          }
         }
 
         $scope.animationsEnabled = true;
