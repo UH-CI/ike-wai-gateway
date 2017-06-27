@@ -30,7 +30,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
           function(response){
             $scope.metadatum = response.result;
               $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
-
+              $scope.makeLocationMarkers($scope.metadatum)
             $scope.requesting = false;
           },
           function(response){
@@ -101,6 +101,39 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
       });
     }
   }
+
+  //MAP STUFF
+    $scope.metadata_markers = {};
+
+    $scope.makeLocationMarkers = function(datum){
+        $scope.marks = {};
+        if(datum.value.loc != undefined){
+          if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }else{
+            $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+       }
+
+        $scope.metadata_markers = $scope.marks
+    }
+
+    angular.extend($scope, {
+        hawaii: {
+            lat: 21.289373,
+            lng: -157.91,
+            zoom: 7
+        },
+        events: {
+          map: {
+            enable: ['click', 'drag', 'blur', 'touchstart'],
+            logic: 'emit'
+          }
+        },
+        defaults: {
+            scrollWheelZoom: false
+        },
+    });
 
 
 });
