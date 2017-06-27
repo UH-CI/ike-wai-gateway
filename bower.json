@@ -153,8 +153,8 @@
     "humanize-duration": "2.8.0",
     "angular-timer": "1.3.4",
     "clipboard": "~1.5.16",
-    "leaflet": "~1.0.2",
-    "ui-leaflet": "~2.0.0",
+    "leaflet": "~0.7.7",
+    "ui-leaflet": "~1.0.3",
     "angular-simple-logger": "~0.1.7",
     "ngclipboard": "1.1.1"
   },
