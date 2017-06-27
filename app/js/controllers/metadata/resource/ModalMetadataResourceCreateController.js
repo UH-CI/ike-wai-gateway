@@ -104,12 +104,13 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 									}, 500);
 								});
 							}
-							App.alert({message: $translate.instant('success_metadata_add') + " " + response.result.value.name });
+							App.alert({message: "Successfully Created "+ " " + metaName,closeInSeconds: 5  });
 							$rootScope.$broadcast('metadataUpdated');
 							//$scope.close();
 						}
 						else if (metaName === "Person" || metaName === "Organization" ) {
 							$rootScope.$broadcast('metadataPersonOrOrgUpdated', { type: metaName, value: response.result});
+							App.alert({message: "Successfully Created "+ " " + metaName,closeInSeconds: 5  });
 						    $scope.close();
 						}
 					},
