@@ -156,7 +156,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       MetaController.getMetadata(uuidToAdd)
       .then(function(response){
         //Ignore DataDescriptors - we don't want these added to unapproved because they are not public until published as annotated
-        if(response.result.name != 'DataDescriptor'){
+        if(response.result.name != 'DataDescriptor' && response.result.name != 'File' && response.result.name != 'AnnotatedFile'){
           if (self.getAdmins().indexOf(user.username) > -1) {
             MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',uuidToAdd);
             self.fetchSystemMetadataUuid('unapproved')
