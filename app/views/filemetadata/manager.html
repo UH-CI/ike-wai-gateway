@@ -225,7 +225,13 @@ jQuery.noConflict()(function ($) {
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.creators" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
                                 <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
                                 <ui-select-choices repeat="person in people | filter: $select.search">
-                                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+                                  <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
+                                  <!--
+                                  <small>
+                                    email: {{person.email}}
+                                  </small>
+                                  -->
+
                                 </ui-select-choices>
                               </ui-select>
                               <!-- <p>Selected: {{selected.people}}</p> -->
@@ -422,10 +428,10 @@ jQuery.noConflict()(function ($) {
                             <!-- VERSION -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="version" data-toggle="tooltip" title='{{"version" | translate}}'>Version:</label>
-                              <button type="button" data-toggle="popover" title="Version Field" data-content='{{"version" | translate}}' class="btn btn-info btn-circle pull-left" ng-model="datadescriptor.version">
+                              <button type="button" data-toggle="popover" title="Version Field" data-content='{{"version" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input  class="form-control" type="text"/>
+                              <input ng-model="datadescriptor.version" class="form-control" type='text'/>
                             </div>
 
                             <!-- CHOOSE LOCATIONS -->
@@ -453,14 +459,6 @@ jQuery.noConflict()(function ($) {
                             </div></br>
 
                             <!-- PUBLISHER -->
-                            <!--<div class="form-group">
-                              <label class="control-label pull-left" for="publisher" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
-                              <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <input  ng-model="datadescriptor.publisher" class="form-control" type="text"/>
-                            </div>-->
-                            </br>
                            <div class="form-group">
                             <label class="control-label pull-left" for="publisher" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
                               <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
@@ -468,16 +466,12 @@ jQuery.noConflict()(function ($) {
                               </button>
                               <br /></div>
                                <div class="form-group">
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.publishers" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose publishers">
-				                <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-				                <ui-select-choices repeat="person in people | filter: $select.search">
-				                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
-				                </ui-select-choices>
-				              </ui-select></div>
-
-
-
+                              <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                              <ui-select-choices repeat="person in people | filter: $select.search">
+                                <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+                              </ui-select-choices>
+                            </ui-select></div>
 
                             <!-- PUBLICATION DATE -->
                             <div class="form-group">
@@ -563,7 +557,7 @@ jQuery.noConflict()(function ($) {
                               <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
                             </div>
                             <div ng-if="has_data_descriptor == true"class="form-group">
-                              <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Edit Data Descriptor</button>
+                              <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
                             </div>
                           </div>
                           </form>
