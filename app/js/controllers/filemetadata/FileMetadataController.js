@@ -667,9 +667,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.requesting = true;
             // get the uuid for the schema
             var typeString = "{'schema.title':'" + schemaType + "'}";
-            MetaController.listMetadataSchema(typeString, 1, 0)
+            MetadataService.fetchSystemMetadataSchemaUuid(schemaType)
               .then(function(response){
-                var uuid = response.result[0].uuid;
+                alert(angular.toJson(response))
+                var uuid = response;
                 //console.log("uuid: " + uuid);
                 $scope.isContrib = isContrib;
                 $scope.openCreate(uuid, size);
