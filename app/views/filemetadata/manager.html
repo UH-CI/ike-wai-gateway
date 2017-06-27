@@ -42,6 +42,10 @@
   line-height: 1.33;
   border-radius: 35px;
 }
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
 </style>
 
 
@@ -215,7 +219,7 @@ jQuery.noConflict()(function ($) {
                           <form novalidate class="simple-form" name="dataDescriptorForm">
 
                             <!-- CREATOR -->
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Creator:</label>
                               <button type="button" data-toggle="popover" title="Creator Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -245,7 +249,7 @@ jQuery.noConflict()(function ($) {
 
                             <!-- TITLE -->
                             <br />
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"title" | translate}}'>Title:</label>
                               <button type="button"  data-toggle="popover" title="Title Field" data-content='{{"title" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -254,25 +258,25 @@ jQuery.noConflict()(function ($) {
                             </div>
 
                             <!-- RIGHTS - LICENSE -->
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <!-- Licenses from: https://creativecommons.org/licenses/ -->
-                              <select class="form-control" ng-model="datadescriptor.license_rights">
-                                <option value="1">Creative Commons Attribution CC BY</option>
-                                <option value="2">Creative Commons Attribution-ShareAlike CC BY-SA</option>
-                                <option value="3">Creative Commons Attribution-NoDerivs CC BY-ND</option>
-                                <option value="4">Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA</option>
-                                <option value="5">Creative Commons Attribution-NoCommercial CC BY-NC</option>
-                                <option value="6">Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND</option>
+                              <select class="form-control" ng-model="datadescriptor.license_rights" >
+                                <option value="Creative Commons Attribution CC BY" selected="selected">Creative Commons Attribution CC BY</option>
+                                <option value="Creative Commons Attribution-ShareAlike CC BY-SA">Creative Commons Attribution-ShareAlike CC BY-SA</option>
+                                <option value="Creative Commons Attribution-NoDerivs CC BY-ND">Creative Commons Attribution-NoDerivs CC BY-ND</option>
+                                <option value="Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA">Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA</option>
+                                <option value="Creative Commons Attribution-NoCommercial CC BY-NC">Creative Commons Attribution-NoCommercial CC BY-NC</option>
+                                <option value="Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND">Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND</option>
                                 <option value="other">Other</option>
                               </select>
                             </div>
 
                             <!-- ACCESS RIGHTS -->
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>Access Rights:</label>
                               <button type="button" data-toggle="popover" title="Access Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -284,7 +288,7 @@ jQuery.noConflict()(function ($) {
                                   Private   
                                 </label>
                                 <label class="pull-left" >
-                                  <input type="radio" ng-model="datadescriptor.license_permission" value="public">
+                                  <input  type="radio" ng-model="datadescriptor.license_permission" value="public">
                                   Public
                                 </label><br/>
                                 <!--<tt>color = {{datadescriptor.license_permission | json}}</tt><br/>-->
