@@ -492,6 +492,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.edit_data_descriptor = false;
           $scope.refreshMetadata();
         }
+
+        $scope.doTheBack = function() {
+          window.history.back();
+        };
 /////////Modal Stuff/////////////////////
         $scope.fetchMoreModalMetadata = function(){
           $scope.offset = $scope.offset + $scope.limit
