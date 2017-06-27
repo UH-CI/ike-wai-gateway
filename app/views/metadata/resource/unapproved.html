@@ -69,7 +69,7 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
-                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}{{metadatum.value.first_name}}{{metadatum.value.last_name}}{{metadatum.value.name}}{{metadatum.value.path}}
                                            {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}}</a>
                                       </td>
                                       <!--
