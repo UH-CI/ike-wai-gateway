@@ -1,5 +1,10 @@
 angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope', '$localStorage', '$location', '$state', '$timeout', '$q', '$translate', 'PostitsController', 'MetaController', 'MessageService', function($uibModal, $rootScope, $localStorage, $location, $state, $timeout, $q, $translate, PostitsController, MetaController, MessageService){
 
+  this.getAdmins = function(){
+    return ['seanbc','jgeis','omeier'];
+  }
+
+
   function deferredHandler(data, deferred, errorMessage) {
       if (!data || typeof data !== 'object') {
           return deferred.reject('Bridge response error, please check the docs');
@@ -45,10 +50,12 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     //return the value for the system metatdata (File, Well etc) uuid
     this.fetchSystemMetadataSchemaUuid = function(type){
       var promises = [];
-      if ($localStorage[type]== null){
-          promises.push(MetaController.listMetadataSchema("{'schema.title':'"+type+"'}",limit=1,offset=0)
+      if ($localStorage["schema_"+type]== null){
+          promises.push(MetaController.listMetadataSchema()
           .then(function(response){
-            $localStorage[type] = response.result[0].uuid;
+            angular.forEach(response.result, function(value, key){
+              $localStorage["schema_"+value.schema.title] = value.uuid;
+            })
           },function(response){
               MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
           }));
@@ -58,7 +65,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
 
       return $q.all(promises).then(
         function(data) {
-          return $localStorage[type];
+          return $localStorage["schema_"+type];
         },
         function(data) {
           deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
@@ -80,7 +87,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+              App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_remove'));
@@ -100,13 +107,14 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           deferredHandler(data, deferred, $translate.instant('error_metadata_remove'));
 
       });
-      return true;
+      //return true;
     }
 
 
     this.addAssociation = function(metadataUuid, uuidToAdd, callback){
 
       var promises = [];
+      var self = this;
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -121,7 +129,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name });
+              App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
@@ -141,76 +149,85 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           deferredHandler(data, deferred, $translate.instant('error_metadata_add_assocation'));
 
       });
-      return true;
+      //return true;
     }
 
-    this.getAdmins = function(){
-      return ['seanbc','jgeis','omeier'];
-    }
 
-    //For now we do this - in the future the bulk update API will make this one callback
-    //Also when Groups are in place this can be simplified as well
-    this.addDefaultPermissions = function(metadataUuid){
+    this.resolveApprovedStatus = function(uuidToAdd){
+      var self = this;
       user = $localStorage.activeProfile;
-      if (this.getAdmins().indexOf(user.username) > -1) {
-        MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',metadataUuid);
-      }
-      else {
-        //add this to unapproved if user is not an admin
-        this.fetchSystemMetadataUuid('unapproved')
-          .then(function(response){
-            this.addAssociation(response, metadataUuid)
-          })
-      }
-      MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
-      MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
-      MetaController.addMetadataPermission('{"username":"omeier","permission":"ALL"}',metadataUuid);
-      MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
-    }
+      MetaController.getMetadata(uuidToAdd)
+      .then(function(response){
+        //Ignore DataDescriptors - we don't want these added to unapproved because they are not public until published as annotated
+        if(response.result.name != 'DataDescriptor' && response.result.name != 'File' && response.result.name != 'AnnotatedFile'){
+          if (self.getAdmins().indexOf(user.username) > -1) {
+            MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',uuidToAdd);
+            self.fetchSystemMetadataUuid('unapproved')
+              .then(function(resp){
+                MetaController.getMetadata(resp)
+                  .then(function(response){
+                    var metadatum = response.result;
+                    var body = {};
+                    body.associationIds = metadatum.associationIds;
+                    body.associationIds.splice(body.associationIds.indexOf(uuidToAdd), 1);
+                    body.name = metadatum.name;
+                    body.value = metadatum.value;
+                    body.schemaId = metadatum.schemaId;
+                    MetaController.updateMetadata(body,resp)
+                    .then(
+                      function(response){
+                       // App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5 });
+                      },
+                      function(response){
+                       // MessageService.handle(response, $translate.instant('error_metadata_remove'));
+                      }
 
-    this.addUnapprovedAssociation = function(uuidToAdd){
-      user = $localStorage.activeProfile;
-      if (this.getAdmins().indexOf(user.username) > -1) {
-        MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',uuidToAdd);
-      }
-      else {
-        //add this to unapproved if user is not an admin
-        this.fetchSystemMetadataUuid('unapproved')
-          .then(function(response){
-            metadataUuid = response
-            MetaController.getMetadata(metadataUuid)
-              .then(function(response){
-                var metadatum = response.result;
-                var body = {};
-                body.associationIds = metadatum.associationIds;
-                if (body.associationIds.indexOf(uuidToAdd) < 0) {
-                  body.associationIds.push(uuidToAdd);
-                }
-                body.name = metadatum.name;
-                body.value = metadatum.value;
-                body.schemaId = metadatum.schemaId;
-                MetaController.updateMetadata(body,metadataUuid)
-                .then(
-                  function(response){
-                    App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name });
-                  },
-                  function(response){
-                    MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
+                    )
                   }
-
                 )
-              }
-            )
-          })
-      }
+              })
+          }
+          else {
+            //add this to unapproved if user is not an admin
+            self.fetchSystemMetadataUuid('unapproved')
+              .then(function(response){
+                metadataUuid = response
+                MetaController.getMetadata(metadataUuid)
+                  .then(function(response){
+                    var metadatum = response.result;
+                    var body = {};
+                    body.associationIds = metadatum.associationIds;
+                    if (body.associationIds.indexOf(uuidToAdd) < 0) {
+                      body.associationIds.push(uuidToAdd);
+                    }
+                    body.name = metadatum.name;
+                    body.value = metadatum.value;
+                    body.schemaId = metadatum.schemaId;
+                    MetaController.updateMetadata(body,metadataUuid)
+                    .then(
+                      function(response){
+                       // App.alert({message: $translate.instant('success_metadata_assocation_add') + ' ' + body.name,closeInSeconds: 5 });
+                      },
+                      function(response){
+                       // MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
+                      }
+
+                    )
+                  }
+                )
+              })
+          }
+        }
+      })
     }
     //For now we do this - in the future the bulk update API will make this one callback
     //Also when Groups are in place this can be simplified as well
     this.addDefaultPermissions = function(metadataUuid){
-      this.addUnapprovedAssociation(metadataUuid);
+      this.resolveApprovedStatus(metadataUuid);
       MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"omeier","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
+      $rootScope.$broadcast('permissionsUpdated',{message:"Permissions Updated Successfully."});
     }
 }]);

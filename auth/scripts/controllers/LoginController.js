@@ -14,7 +14,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             client_secret: '',
             remember: 0
     };
-    $scope.tenantId = 'ikewai'
+    $scope.tenantId = 'hawaii'
     /*if ($stateParams.tenantId) {
         $scope.tenantId = $stateParams.tenantId;
     } else {
