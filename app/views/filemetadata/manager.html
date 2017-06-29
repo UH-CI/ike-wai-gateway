@@ -229,7 +229,7 @@ jQuery.noConflict()(function ($) {
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.creators" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
-                                <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                                <ui-select-match placeholder="Select author...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
                                 <ui-select-choices repeat="person in people | filter: $select.search">
                                   <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
                                   <!--
@@ -241,7 +241,7 @@ jQuery.noConflict()(function ($) {
                                 </ui-select-choices>
                               </ui-select>
                               <!-- <p>Selected: {{selected.people}}</p> -->
-							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Creator</button>
+							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
@@ -376,7 +376,7 @@ jQuery.noConflict()(function ($) {
                               </button>
                               <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats">
-                                <ui-select-match placeholder="Select formats...">{{$item}}</ui-select-match>
+                                <ui-select-match placeholder="Select file formats...">{{$item}}</ui-select-match>
                                 <ui-select-choices repeat="format in formats | filter: $select.search">
                                   <span ng-bind-html="format"></span>
                                 </ui-select-choices>
@@ -468,19 +468,13 @@ jQuery.noConflict()(function ($) {
                             </div></br></br>
 
                             <!-- PUBLISHER -->
-                           <div class="form-group">
-                            <label class="control-label pull-left" for="publisher" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
                               <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <br /></div>
-                               <div class="form-group">
-                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.publishers" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose publishers">
-                              <ui-select-match placeholder="Select people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-                              <ui-select-choices repeat="person in people | filter: $select.search">
-                                <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
-                              </ui-select-choices>
-                            </ui-select></div>
+                              <input ng-model="datadescriptor.publisher" class="form-control" type='textarea' rows="2"/>
+                            </div>
 
                             <!-- PUBLICATION DATE -->
                             <div class="form-group">
@@ -498,14 +492,14 @@ jQuery.noConflict()(function ($) {
                                 </span>
                               </div>
                             </div>
-
+                            
                             <!-- DESCRIPTION -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
                               <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input ng-model="datadescriptor.description" class="form-control" type='textarea' rows="2"/>
+                              <input ng-model="datadescriptor.description" class="form-control" type='textarea' rows="5"/>
                             </div>
 
                             <!-- RELATED -->
