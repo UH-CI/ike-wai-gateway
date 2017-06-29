@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Variable','Tag'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Keywords','Variable','Tag'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
@@ -25,21 +25,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Keywords','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
-    //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
-  //  $scope.query["associationIds"] = $stateParams.uuid;
+    //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
-    $scope.selected = {};
-    $scope.selected.subjects = [];
-    $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
-
-    $scope.selected.people = [];
     $scope.people = [];
     $scope.orgs = [];
-    //$scope.contributors = [];
 
-    $scope.selected.formats = [];
+
     $scope.formats = [
     	".aiff - audio interchange file format",
     	".bmp - bit map",
@@ -80,7 +73,6 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     	".fastq - biological sequence text, Illumina"];
     
     
-    $scope.selected.languages = [];
     $scope.languages = ['English', 'Hawaiian'];
     $scope.datadescriptor = {};
     $scope.datadescriptor.organizations = [];
@@ -159,6 +151,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh = function() {
       $scope.requesting = true;
   	  $scope.people.length = 0;
+      //$scope.keywords.length = 0;
 	    $scope.orgs.length = 0;
 
       MetaController.listMetadataSchema(
@@ -208,6 +201,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       )
 
       $scope.getPeople();
+      //$scope.getKeywords();
       $scope.getOrgs();
 
       MetaController.listMetadataSchema(
@@ -229,6 +223,11 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.people.length = 0;
         $scope.fetchMetadata("{'name':'Person'}");
     };
+
+    //$scope.getKeywords = function(){
+    //    $scope.keywords.length = 0;
+    //    $scope.fetchMetadata("{'name':'Keywords'}");
+    //};
 
     $scope.getOrgs = function(){
         $scope.orgs.length = 0;
