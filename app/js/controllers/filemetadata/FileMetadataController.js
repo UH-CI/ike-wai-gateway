@@ -79,7 +79,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.creators = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
-    $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publishers','publication_date','description','relations']
+    $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
     $scope.datadescriptor.license_permission = "private";
     $scope.datadescriptor.title = "";
     $scope.datadescriptor.license_rights = 'Creative Commons Attribution CC BY';
