@@ -154,10 +154,12 @@ jQuery.noConflict()(function ($) {
                                         {{val.name}} 
                                       <span>
                                     </td>
-                                    <td ng-if="key=='subjects' || key=='formats' || key=='languages' ">
+                                    <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
+                                    <td ng-if="key=='formats' || key=='languages' ">
                                       {{data_descriptor_metadatum.value[key].join(',')}} 
                                     </td>
-                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">
+                                    <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
+                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='formats' && key!='languages'&& key!='publishers'">
                                       {{data_descriptor_metadatum.value[key]}}
                                     </td>
                                   </tr>
@@ -318,16 +320,19 @@ jQuery.noConflict()(function ($) {
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
+                              <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2"/>
+
                               <br />
+                              <!--
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
                                 <ui-select-match placeholder="Select subjects...">{{$item}}</ui-select-match>
                                 <ui-select-choices repeat="subject in subjects | filter: $select.search">
                                   <span ng-bind-html="subject"></span>
                                 </ui-select-choices>
                               </ui-select>
+                              -->
 				                      <!-- <p>Selected: {{selected.people}}</p> -->
                             </div>
-
 
                              <!-- START DATE -->
                             <div class="form-group">
