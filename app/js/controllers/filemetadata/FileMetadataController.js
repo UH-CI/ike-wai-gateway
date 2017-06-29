@@ -436,7 +436,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             })
           }else{
             $scope.requesting = false;
-            App.alert({type:'danger', message: "Creator, Title, Licence Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+            App.alert({type:'danger', message: "Creator, Title, License Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
           }
 
         }
