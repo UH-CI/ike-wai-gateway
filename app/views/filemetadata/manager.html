@@ -41,15 +41,34 @@
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
-}</style>
-<script>
-  $( document ).ready(function() {
-    $('#datetimepicker1').datetimepicker()
-    $('#datetimepicker2').datetimepicker()
-    $('#datetimepicker3').datetimepicker()
-  });
-</script>
+}
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+</style>
 
+
+
+
+<!--
+<script type="text/javascript">
+jQuery.noConflict()(function ($) {
+	  $(document).ready(function() {
+        $('#datetimepicker1').datetimepicker({
+            locale: 'ru'
+        });
+        $('#datetimepicker2').datetimepicker({
+            locale: 'ru'
+        });
+        $('#datetimepicker3').datetimepicker({
+            locale: 'ru'
+        });
+	  });
+});
+</script>
+ -->
+<h4><a ng-click="doTheBack()"><i class="glyphicon glyphicon-menu-left"/>Back To File Browser</a></h4>
 <h3 class="page-title">File Annotations</h3>
 <div class="row">
     <div class="col-md-12">
@@ -102,96 +121,197 @@
                 <div class=" pull-left">
                   <h4>{{filename}}</h4>
                 </div>
-                <div ng-show="has_data_descriptor == true">
-                  <div class="btn-group pull-right" >
-                    <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
-                  </div>
-                  <div class="btn-group pull-right">
-                      <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                          <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
-                          <i class="fa fa-angle-down pull-right"></i>
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
-                          <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
-                        </li>
-                      </ul>
-                  </div>
+                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
+                  <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
+                </div>
+                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
+                  <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
 
 
                 <!--  DATA DESCRIPTOR -->
                   <div class="col-md-12">
                     <div ng-show="!requesting">
-                      <div ng-show="has_data_descriptor == false" class="text-center">
+                      <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
+                          <div>
+                            <div ng-if="data_descriptor_metadatum" class="portlet light table-responsive">
+                              <table class="table table-striped table-bordered">
+                                <tbody>
+                                  <tr ng-repeat="(ind, key) in data_descriptor_order">
+                                    <td>
+                                      <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{key | capitalize_with_space}}</label>
+                                      <!--<button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
+                                        <i class="glyphicon glyphicon-question-sign"></i>
+                                      </button>-->
+                                    </td>
+                                    <td ng-if="key=='creators' || key=='contributors' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.first_name}} {{val.last_name}}
+                                      <span>
+                                    </td>
+                                    <td ng-if="key=='organizations' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.name}} 
+                                      <span>
+                                    </td>
+                                    <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
+                                    <td ng-if="key=='formats' || key=='languages' ">
+                                      {{data_descriptor_metadatum.value[key].join(',')}} 
+                                    </td>
+                                    <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
+                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='formats' && key!='languages'">
+                                      {{data_descriptor_metadatum.value[key]}}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- CHOOSE LOCATIONS -->
+                            <leaflet width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
+                            <div class="form-group">
+                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
+                            </div>
+                            <div>
+                              <table class="table table-striped table-bordered table-hover management">
+                                <tbody>                                 
+                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: locFilter">
+                                    <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                          {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                          </a>
+                                    </td>
+                                    <td><span ng-show='profile.username == filemetadata.owner || edit_perm'>
+                                                  <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
+                                                  <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                |</span><a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"><i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div></br>
+
+                            <!-- CHOOSE VARIABLES -->
+                            <div class="form-group">
+                              <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Variables</button>
+                            </div>
+                            <div>
+                              <table class="table table-striped table-bordered table-hover management">
+                                <tbody>                                 
+                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: {name: 'Variable'}">
+                                    <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                          {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                          </a>
+                                    </td>
+                                    <td><span ng-show='profile.username == filemetadata.owner || edit_perm'>
+                                                  <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
+                                                  <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                |</span><a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"<i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div></br>
+                          </div>
+                      </div>
+
+                      <!--DATA DESCRIPTOR FORM-->
+                      <div ng-show="has_data_descriptor == false || edit_data_descriptor == true" class="text-center">
                         <div class="row ">
                           <div class="col-md-12">
                           <h3 class="pull-left">Create Data Descriptor </h3>
                         </div>
                         <div class="col-md-11">
-                          <form>
+                          <form novalidate class="simple-form" name="dataDescriptorForm">
 
                             <!-- CREATOR -->
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Creator:</label>
                               <button type="button" data-toggle="popover" title="Creator Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
-                              <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.people" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
-				                <ui-select-match placeholder="Select people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
-				                <ui-select-choices repeat="person in people | filter: $select.search">
-				                  <span ng-bind-html="person.lastName"></span>, <span ng-bind-html="person.firstName">
-				                </ui-select-choices>
-				              </ui-select>
-				              <!-- <p>Selected: {{selected.people}}</p> -->
-                              <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Creator</button>
+                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.creators" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose creators">
+                                <ui-select-match placeholder="Select author...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                                <ui-select-choices repeat="person in people | filter: $select.search">
+                                  <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
+                                  <!--
+                                  <small>
+                                    email: {{person.email}}
+                                  </small>
+                                  -->
+
+                                </ui-select-choices>
+                              </ui-select>
+                              <!-- <p>Selected: {{selected.people}}</p> -->
+							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
+                              <script>
+                                 $(document).ready(function(){
+                                     $('[data-toggle="popover"]').popover();
+                                 });
+                               </script>
                             </div>
 
                             <!-- TITLE -->
                             <br />
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"title" | translate}}'>Title:</label>
                               <button type="button"  data-toggle="popover" title="Title Field" data-content='{{"title" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input class="form-control" type='text' value="{{filename.split('/').slice(-1)[0]}}"/>
-                              <script>
-                                $(document).ready(function(){
-                                    $('[data-toggle="popover"]').popover();
-                                });
-                              </script>
+                              <input class="form-control" type="text" ng-model="datadescriptor.title" />
                             </div>
 
                             <!-- RIGHTS - LICENSE -->
-                            <div class="form-group">
+                            <div class="form-group required">
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <select class="form-control">
+                              <!-- Licenses from: https://creativecommons.org/licenses/ -->
+                              <select class="form-control" ng-model="datadescriptor.license_rights" >
+                                <option value="Creative Commons Attribution CC BY" selected="selected">Creative Commons Attribution CC BY</option>
+                                <option value="Creative Commons Attribution-ShareAlike CC BY-SA">Creative Commons Attribution-ShareAlike CC BY-SA</option>
+                                <option value="Creative Commons Attribution-NoDerivs CC BY-ND">Creative Commons Attribution-NoDerivs CC BY-ND</option>
+                                <option value="Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA">Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA</option>
+                                <option value="Creative Commons Attribution-NoCommercial CC BY-NC">Creative Commons Attribution-NoCommercial CC BY-NC</option>
+                                <option value="Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND">Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND</option>
                                 <option value="other">Other</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
                               </select>
                             </div>
 
-                            <!-- RIGHTS - PERMISSIONS -->
-                            <div class="form-group">
-                              <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>License - Permissions:</label>
-                              <button type="button" data-toggle="popover" title="Permission Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
+                            <!-- ACCESS RIGHTS -->
+                            <div class="form-group required">
+                              <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>Access Rights:</label>
+                              <button type="button" data-toggle="popover" title="Access Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <select class="form-control">
-                                <option value="1">Public</option>
-                                <option value="2">Public after one year</option>
-                                <option value="3">Private</option>
-                                <option value="0">Other</option>
-                              </select>
+                              <br />
+                                <label class="pull-left" >
+                                  <input type="radio" ng-model="datadescriptor.license_permission" value="private">
+                                  Private   
+                                </label>
+                                <label class="pull-left" >
+                                  <input  type="radio" ng-model="datadescriptor.license_permission" value="public">
+                                  Public
+                                </label>
+                                <!--<tt>color = {{datadescriptor.license_permission | json}}</tt><br/>-->
+
+                              <!--
+                              <div class="btn-group pull-left" role="group">
+	                              <button id="btn-public" data-toggle="tooltip" data-placement="auto"
+	                                 title='{{"rightsPermissionsPublic" | translate}}' class="btn btn-default"
+                                   on-release="{{setPrivate(false)}}">
+	                                 Public
+	                              </button>
+	                              <button id="btn-private" data-toggle="tooltip" data-placement="auto"
+	                                 title='{{"rightsPermissionsPrivate" | translate}}' type="submit"
+	                                 class="btn btn-default active" on-release="{{setPrivate(true)}}">
+	                                 Private
+	                              </button>
+                                <input type="text" ng-model="datadescriptor.license_permission"/>
+                              </div>
+                              -->
+                              <br />
+                              <br />
                             </div>
 
                             <!-- SUBJECT -->
@@ -200,16 +320,19 @@
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <br />
-                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
-				                <ui-select-match placeholder="Select subjects...">{{$item}}</ui-select-match>
-				                <ui-select-choices repeat="subject in subjects | filter: $select.search">
-				                  <span ng-bind-html="subject"></span>
-				                </ui-select-choices>
-				              </ui-select>
-				              <!-- <p>Selected: {{selected.people}}</p> -->
-                            </div>
+                              <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2"/>
 
+                              <br />
+                              <!--
+                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
+                                <ui-select-match placeholder="Select subjects...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="subject in subjects | filter: $select.search">
+                                  <span ng-bind-html="subject"></span>
+                                </ui-select-choices>
+                              </ui-select>
+                              -->
+				                      <!-- <p>Selected: {{selected.people}}</p> -->
+                            </div>
 
                              <!-- START DATE -->
                             <div class="form-group">
@@ -221,7 +344,7 @@
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker1'>
-                                  <input type='text' class="form-control" width="50%"/>
+                                  <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%"/>
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
                                   </span>
@@ -238,10 +361,10 @@
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker2'>
-                                  <input type='text' class="form-control" />
-                                  <span class="input-group-addon">
-                                      <span class="glyphicon glyphicon-calendar"></span>
-                                  </span>
+                                <input type='text' ng-model="datadescriptor.end_datetime" class="form-control" />
+                                <span class="input-group-addon">
+                                  <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                               </div>
                             </div>
 
@@ -252,12 +375,12 @@
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats">
-				                <ui-select-match placeholder="Select formats...">{{$item}}</ui-select-match>
-				                <ui-select-choices repeat="format in formats | filter: $select.search">
-				                  <span ng-bind-html="format"></span>
-				                </ui-select-choices>
-				              </ui-select>
+                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.formats" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose formats">
+                                <ui-select-match placeholder="Select file formats...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="format in formats | filter: $select.search">
+                                  <span ng-bind-html="format"></span>
+                                </ui-select-choices>
+                              </ui-select>
                             </div>
 
                             <!-- CONTRIBUTING PERSON -->
@@ -268,26 +391,34 @@
                               </button>
                               <br />
                               <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
-                              <ui-select class="form-control" multiple remove-selected="false" ng-model="selected.contributingPeople" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
-				                <ui-select-match placeholder="Select contributing people...">{{$item.lastName}}, {{$item.firstName}}</ui-select-match>
-				                <ui-select-choices repeat="person in contributingPeople | filter: $select.search">
-				                  <span ng-bind-html="person.lastName"></span>, <span ng-bind-html="person.firstName">
-				                </ui-select-choices>
-				              </ui-select>
-				              <!-- <p>Selected: {{selected.people}}</p> -->
-                              <!--  <button class="btn btn-success pull-left" ng-click="open('lg')">Create Person</button>-->
-                              <button class="fa fa-plus pull-right" ng-click="open('lg')">Add Contributing People</button>
+                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.contributors" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
+                                <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                                <ui-select-choices repeat="person in people | filter: $select.search">
+                                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+                                </ui-select-choices>
+                              </ui-select>
+				                      <!-- <p>Selected: {{selected.people}}</p> -->
+                              <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
                             </div>
-
+                            <br />
                             <!-- CONTRIBUTING AGENCIES -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
                               <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input  class="form-control" type="text"/>
+                              <br />
+                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
+                              <ui-select class="form-control" multiple remove-selected="false" ng-model="datadescriptor.organizations" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose contributing people">
+                                <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
+                                <ui-select-choices repeat="org in orgs | filter: $select.search">
+                                  <span ng-bind-html="org.name"></span>
+                                </ui-select-choices>
+                              </ui-select>
+                              <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
+                              <!-- <p>Selected: {{datadescriptor.organizations}}</p> -->
                             </div>
-
+                            <br />
                             <!-- LANGUAGE -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="language" data-toggle="tooltip" title='{{"language" | translate}}'>Languages:</label>
@@ -295,12 +426,12 @@
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="selected.languages" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose languages">
-				                <ui-select-match placeholder="Select languages...">{{$item}}</ui-select-match>
-				                <ui-select-choices repeat="language in languages | filter: $select.search">
-				                  <span ng-bind-html="language"></span>
-				                </ui-select-choices>
-				              </ui-select>
+                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.languages" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose languages">
+                                <ui-select-match placeholder="Select languages...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="language in languages | filter: $select.search">
+                                  <span ng-bind-html="language"></span>
+                                </ui-select-choices>
+                              </ui-select>
                             </div>
 
                             <!-- VERSION -->
@@ -309,7 +440,7 @@
                               <button type="button" data-toggle="popover" title="Version Field" data-content='{{"version" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input  class="form-control" type="text"/>
+                              <input ng-model="datadescriptor.version" class="form-control" type='text'/>
                             </div>
 
                             <!-- CHOOSE LOCATIONS -->
@@ -318,11 +449,11 @@
                             </div>
                             <div>
                               <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: locFilter" ng-click="unAssociateMetadata(filemetadatum.uuid)">
-                                       {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
-                                       {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
-                                       <i class="glyphicon glyphicon-remove-sign"></i>
+                                {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                <i class="glyphicon glyphicon-remove-sign"></i>
                               </button>
-                            </div></br>
+                            </div></br></br></br>
 
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group">
@@ -330,19 +461,19 @@
                             </div>
                             <div>
                               <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid)">
-                                     {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
-                                     {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
-                                     <i class="glyphicon glyphicon-remove-sign"></i>
+                                {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                <i class="glyphicon glyphicon-remove-sign"></i>
                               </button>
-                            </div></br>
+                            </div></br></br>
 
                             <!-- PUBLISHER -->
                             <div class="form-group">
-                              <label class="control-label pull-left" for="publisher" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
+                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"publisher" | translate}}'>Publisher:</label>
                               <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input  class="form-control" type="text"/>
+                              <input ng-model="datadescriptor.publisher" class="form-control" type='textarea' rows="2"/>
                             </div>
 
                             <!-- PUBLICATION DATE -->
@@ -355,20 +486,20 @@
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker3'>
-                                <input type='text' class="form-control" />
+                                <input ng-model="datadescriptor.publication_date"  type='text' class="form-control" />
                                 <span class="input-group-addon">
                                    <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                               </div>
                             </div>
-
+                            
                             <!-- DESCRIPTION -->
                             <div class="form-group">
                               <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
                               <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input class="form-control" type='textarea' rows="2"/>
+                              <input ng-model="datadescriptor.description" class="form-control" type='textarea' rows="5"/>
                             </div>
 
                             <!-- RELATED -->
@@ -377,7 +508,7 @@
                               <button type="button" data-toggle="popover" title="Relations Field" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input class="form-control" type='textarea' rows="2"/>
+                              <input ng-model="datadescriptor.relations" class="form-control" type='textarea' rows="2"/>
                             </div>
 
 
@@ -394,6 +525,7 @@
 				              </ui-select>
 				               -->
 
+                            <!-- 
                             <div class="panel-group" id="accordion">
                               <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -408,79 +540,34 @@
 
                                     <div class="form-group">
                                       <label class="control-label pull-left" for="Title">Project Type</label><button type="button" class="btn btn-info btn-circle pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object."><i class="glyphicon glyphicon-question-sign"></i></button>
-                                      <input  class="form-control" type="text"/>
+                                      <input ng-model="datadescriptor.project_type" class="form-control" type="text"/>
                                     </div>
                                     <div class="form-group">
                                       <label class="control-label pull-left" for="Title">Funding Agency And Award Number</label><button type="button" class="btn btn-info btn-circle pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object."><i class="glyphicon glyphicon-question-sign"></i></button>
-                                      <input  class="form-control" type="text"/>
+                                      <input ng-model="datadescriptor.funding_agency" class="form-control" type="text"/>
                                     </div>
                                     <div class="form-group">
                                       <label class="control-label pull-left" for="Title">Participant Institution:</label><button type="button" class="btn btn-info btn-circle pull-left" data-toggle="popover" title="Title Field" data-content="The title of this data object."><i class="glyphicon glyphicon-question-sign"></i></button>
-                                      <input  class="form-control" type="text" value="University of Hawaii"/>
+                                      <input ng-model="datadescriptor.institution" class="form-control" type="text" value="University of Hawaii"/>
                                     </div>
 
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div class="form-group">
-                              <button  class="btn btn-primary" type="submit">Save Data Descriptor</button>
+                             -->
+                            <div ng-if="has_data_descriptor == false"class="form-group">
+                              <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
+                            </div>
+                            <div ng-if="has_data_descriptor == true"class="form-group">
+                              <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
                             </div>
                           </div>
                           </form>
                           </div>
                         </div>
                       </div>
-                      <div ng-show="has_data_descriptor == true">
-                        <span ng-repeat="filemetadatum in filemetadata">
-                                 {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
-                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
-                        </span>
-                          <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection">
-                              <thead>
-                                  <tr role="row" class="heading">
-                                      <th width="20%">
-                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
-                                          Description
-                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
-                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
-                                        </a>
-                                      </th>
-                                      <th width="10%" class="hidden-xs">
-                                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                                          Type
-                                          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                                          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                                        </a>
-                                      </th>
-                                      <th width="5%" class="text-center"> Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr ng-repeat="filemetadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter" ng-show="ignoreMetadataType.indexOf(filemetadatum.name) < 0">
-                                      <td>
-                                          <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')"> {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
-                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}} </a>
-                                      </td>
-                                      <td class="hidden-xs">
-                                          <a ui-sref="metadata({id: filemetadatum.uuid})"> {{filemetadatum.name}} </a>
-                                      </td>
-                                      <td class="text-center">
-                                          <div class="btn-group">
-                                                  <span ng-show='profile.username == filemetadata.owner || edit_perm'>
-                                                  <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
-                                                  <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
-                                                </span>
-                                                  &nbsp;
-                                                  <span>
-                                                  <a href="#" ng-click="unAssociateMetadata(filemetadatum)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
-                                                </span>
-                                          </div>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      </div>
+
                     </div>
                   </div>
               </div>

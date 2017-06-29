@@ -9,3 +9,5 @@ node_modules
 .gitignore.swp
 
 *.lock
+
+.vscode/launch.json

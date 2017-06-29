@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('FileMetadataController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage,  $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'filemetadata';
     $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -11,9 +11,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Variable'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Keywords','Variable','Tag'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
+    $scope.matchingAssociationIds = [''];
+    $scope.removedAssociationIds = [''];
+    $scope.limit = 500;
+    $scope.offset = 0;
     //set admin
     $scope.get_editors = function(){
       $scope.editors = MetadataService.getAdmins();
@@ -21,28 +25,66 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = "{'name':{$in:['Well','Site']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Keywords','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
-    //$scope.query ="{'associationIds':'673572511630299622-242ac113-0001-002'}";
-  //  $scope.query["associationIds"] = $stateParams.uuid;
+    //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
-    $scope.selected = {};
-    $scope.selected.subjects = [];
-    $scope.subjects = ['Wells', 'SGD', 'Bacteria'];
+    $scope.people = [];
+    $scope.orgs = [];
 
-    $scope.selected.people = [];
-    $scope.people = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
-    //$scope.systemTemplates.push({"id": system.id, "name": system.name, "type": system.type});
 
-    $scope.selected.contributingPeople = [];
-    $scope.contributingPeople = [{"lastName": "Geis", "firstName": "Jennifer"},{"lastName": "Cleveland", "firstName": "Sean"},{"lastName": "Jacobs", "firstName": "Gwen"}];
+    $scope.formats = [
+    	".aiff - audio interchange file format",
+    	".bmp - bit map",
+    	".cdf - common data format, netCDF",
+    	".csv - comma-separated value",
+    	".docx - Word document",
+    	".gif - graphics interchange format",
+    	".ipynb - Jupyter notebook",
+    	".jpg - joint photographic experts group",
+    	".json - geospatial javascript object notation",
+    	".json - javascript object notation",
+    	".kml - keyhole markup language",
+    	".kmz - keyhole markup language, zipped",
+    	".mov - QuickTime movie",
+    	".mp3 - moving picture experts group",
+    	".mp4 - moving picture experts group",
+    	".odp - OpenDocument presentation",
+    	".ods - OpenDocument spreadsheet",
+    	".odt - OpenDocument text",
+    	".pdf - Adobe portable document format",
+    	".png - portable network graphics",
+    	".pptx - PowerPoint",
+    	".py - Python",
+    	".r - R code and files",
+    	".rtf - rich text format",
+    	".shp .shx .dbf .prj .xml plus - shapefile (submit together as zip)",
+    	".svg - scalable vector graphics",
+    	".tex - LaTeX",
+    	".tiff - tagged image file format",
+    	".tiff - geoTIFF (geospatial tagged image file format)",
+    	".tsv - tab-separated value",
+    	".txt - plain text or other content",
+    	".xlsx - Excel workbook",
+    	".xml - extensible markup language",
+    	".zip - zip compression",
+    	".mat - Matlab file",
+    	".fasta - biological sequence text",
+    	".fastq - biological sequence text, Illumina"];
+    
+    
+    $scope.languages = ['English', 'Hawaiian'];
+    $scope.datadescriptor = {};
+    $scope.datadescriptor.organizations = [];
+    $scope.datadescriptor.creators = [];
+    $scope.datadescriptor.contributors = [];
+    $scope.edit_data_descriptor = false;
+    $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
+    $scope.datadescriptor.license_permission = "public";
+    $scope.datadescriptor.title = "";
+    $scope.datadescriptor.license_rights = 'Creative Commons Attribution CC BY';
 
-    $scope.selected.formats = [];
-    $scope.formats = ['pdf', 'jpeg', 'shape file', 'excel spreadsheet', 'word doc'];
-
-    $scope.selected.languages = [];
-    $scope.languages = ['English', 'Hawaiian', 'Dublin Core', 'Gene Ontology for genomics', 'Plant Ontology'];
-
+    $scope.data_descriptor
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -55,17 +97,70 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.filemetadatumUuid = $stateParams.uuid;
 
+    $scope.refreshMetadata = function(){
+      //refetch the file metadata object to ensure the latest associtionIds are in place
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}",)
+        .then(function(response){
+          $q.when()
+            .then(function () {
+              var deferred = $q.defer();
+              $scope.fileMetadataObject = response.result;
+              deferred.resolve($scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}"));
+              return deferred.promise;
+            })
+        }
+      )
+    }
+    //MAP STUFF
+    $scope.data_descriptor_markers = {};
+
+    $scope.makeLocationMarkers = function(metadata){
+        $scope.siteMarkers = $filter('filter')(metadata, {name: "Site"});
+        $scope.wellMarkers = $filter('filter')(metadata, {name: "Well"});
+        $scope.marks = {};
+        angular.forEach($scope.siteMarkers, function(datum) {
+            if(datum.value.loc != undefined){
+            $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+        });
+        angular.forEach($scope.wellMarkers, function(datum) {
+            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+        });
+        $scope.data_descriptor_markers = $scope.marks
+    }
+
+    angular.extend($scope, {
+        hawaii: {
+            lat: 21.289373,
+            lng: -157.91,
+            zoom: 7
+        },
+        events: {
+          map: {
+            enable: ['click', 'drag', 'blur', 'touchstart'],
+            logic: 'emit'
+          }
+        },
+        defaults: {
+            scrollWheelZoom: false
+        },
+    });
+
     $scope.refresh = function() {
       $scope.requesting = true;
+  	  $scope.people.length = 0;
+      //$scope.keywords.length = 0;
+	    $scope.orgs.length = 0;
+
       MetaController.listMetadataSchema(
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-				$scope.requesting = false;
 			})
       //check if default filemetadata object exists
       MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
-
         function (response) {
           $scope.fileMetadataObject = response.result;
 
@@ -75,12 +170,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
           }
           else{
-            //we have an object to modify our query for gettting metadata
+            //we have an object to modify our query for getting metadata
             if ($scope.fileMetadataObject[0].name == "PublishedFile"){
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
-
+             // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+              $scope.refreshMetadata();
             }
             else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
             {
@@ -91,10 +186,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             else{
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+             // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
+              $scope.refreshMetadata();
+
 
             }
           }
+          $scope.setTitle();
         },
         function(response){
           MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -102,10 +200,38 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         }
       )
 
+      $scope.getPeople();
+      //$scope.getKeywords();
+      $scope.getOrgs();
+
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
+      jQuery('#datetimepicker1').datetimepicker();
+      jQuery('#datetimepicker2').datetimepicker();
+      jQuery('#datetimepicker3').datetimepicker();
+      $scope.refreshMetadata();
+    };
 
+    $scope.setTitle = function() {
+      if (!$scope.datadescriptor.title && $scope.filename) {
+        $scope.datadescriptor.title = $scope.filename.split('/').slice(-1)[0];
+      }
+    }
+
+    $scope.getPeople = function(){
+        $scope.people.length = 0;
+        $scope.fetchMetadata("{'name':'Person'}");
+    };
+
+    //$scope.getKeywords = function(){
+    //    $scope.keywords.length = 0;
+    //    $scope.fetchMetadata("{'name':'Keywords'}");
+    //};
+
+    $scope.getOrgs = function(){
+        $scope.orgs.length = 0;
+        $scope.fetchMetadata("{'name':'Organization'}");
     };
 
     $scope.fetchMetadata = function(metadata_query){
@@ -113,14 +239,24 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
+            //$scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.filemetadata = response.result;
+            $scope.makeLocationMarkers($scope.filemetadata);
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
-              if(value.name =='DataDescriptor'){
+              if(value.name === 'DataDescriptor'){
                 $scope.has_data_descriptor = true;
+                $scope.data_descriptor_metadatum = value;
               }
-            })
+              else if(value.name === 'Person'){
+                  $scope.people.push(value.value);
+                  $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
+              }
+              else if(value.name === 'Organization'){
+                  $scope.orgs.push(value.value);
+                  $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
+              }
+            });
             $scope.requesting = false;
-          //  $scope.$apply();
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -139,11 +275,35 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh();
 
     $rootScope.$on("metadataUpdated", function(){
-      $scope.refresh();
+       $scope.refreshMetadata();
+       $scope.refresh();
+    });
+    
+    $rootScope.$on("metadataPersonOrOrgUpdated", function (event, args) {
+      $scope.requesting = false;
+      if (args.type === "Person") {
+        var str = {"first_name":args.value.value.first_name,"last_name":args.value.value.last_name,"uuid":args.value.uuid};
+        // this person is a contributor, not a creator
+        if ($scope.isContrib) {
+          $scope.datadescriptor.contributors.push(str);
+        }
+        // this person is a creator
+        else {
+          $scope.datadescriptor.creators.push(str);
+        }
+      }
+      else if (args.type === "Organization") {
+        var str = {"name":args.value.value.name,"uuid":args.value.uuid};
+        $scope.datadescriptor.organizations.push(str);
+      }
+      //$scope.refresh();
+      $rootScope.$broadcast('metadataUpdated');
     });
 
     $rootScope.$on("associationsUpdated", function(){
-      $scope.refresh();
+     // $scope.refresh();
+     $scope.refreshMetadata()
+     // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
     });
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
@@ -156,12 +316,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
       if (unAssociate) {
         FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
-      	  App.alert({message: $translate.instant('success_metadata_assocation_removed') });
+      	  App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
           $scope.metadatum = null;
           //pause to let model update
           $timeout(function(){
             //$scope.refresh()
-              $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+              $scope.refreshMetadata();
+              $scope.matchingAssociationIds.splice($scope.matchingAssociationIds.indexOf(metadatumUuid))
+              $scope.removedAssociationIds.push(metadatumUuid)
+              //$scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
           }, 300);
           $scope.requesting = false;
         });
@@ -175,21 +338,53 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         function(resp){
           //if still empty createFileObject
         if (resp.result == ""){
+          MetadataService.fetchSystemMetadataSchemaUuid('File').then(function(response_uuid){
+            var body={};
+            //associate system file with this metadata File object
+            body.associationIds = [fileUuid];
+            body.name = 'File';
+            body.value = {};
+            //File Schema uuid
+            body.schemaId = response_uuid;
+            MetaController.addMetadata(body)
+              .then(
+                function(response){
+                  $scope.metadataUuid = response.result.uuid;
+                  //App.alert({message: $translate.instant('File is ready for adding metadata') });
+                  //add the default permissions for the system in addition to the owners
+                  MetadataService.addDefaultPermissions($scope.metadataUuid);
+                  $scope.updateFileObject(response.result)
+                  $scope.requesting = false;
+                  $scope.refresh();
+                },
+                function(response){
+                  MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  $scope.requesting = false;
+                }
+              );
+          })
+         }
+        })
+      }
+
+      $scope.updateFileObject = function(fileobject){
+         MetadataService.fetchSystemMetadataSchemaUuid('File').then(function(response_uuid){
           var body={};
           //associate system file with this metadata File object
-          body.associationIds = [fileUuid];
+          body.associationIds = fileobject.associationIds;
           body.name = 'File';
-          body.value = {};
+          body.value= {};
+          body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+          body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
           //File Schema uuid
-          body.schemaId = '3557207775540866585-242ac1110-0001-013';
-          MetaController.addMetadata(body)
+          body.schemaId = response_uuid;
+          MetaController.updateMetadata(body,fileobject.uuid)
             .then(
               function(response){
                 $scope.metadataUuid = response.result.uuid;
                 //App.alert({message: $translate.instant('File is ready for adding metadata') });
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions($scope.metadataUuid);
-                $scope.updateFileObject(response.result)
                 $scope.requesting = false;
                 $scope.refresh();
               },
@@ -197,36 +392,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
                 $scope.requesting = false;
               }
-            );
-          }
-        })
-      }
-
-      $scope.updateFileObject = function(fileobject){
-        var body={};
-        //associate system file with this metadata File object
-        body.associationIds = fileobject.associationIds;
-        body.name = 'File';
-        body.value= {};
-        body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
-        body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
-        //File Schema uuid
-        body.schemaId = '3557207775540866585-242ac1110-0001-013';
-        MetaController.updateMetadata(body,fileobject.uuid)
-          .then(
-            function(response){
-              $scope.metadataUuid = response.result.uuid;
-              //App.alert({message: $translate.instant('File is ready for adding metadata') });
-              //add the default permissions for the system in addition to the owners
-              MetadataService.addDefaultPermissions($scope.metadataUuid);
-              $scope.requesting = false;
-              $scope.refresh();
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_add'));
-              $scope.requesting = false;
-            }
-          );
+            )
+         })
         }
 
         $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
@@ -237,17 +404,138 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
         }
 
+        $scope.saveDataDescriptor = function(){
+          $scope.requesting = true;
+      		$scope.$broadcast('schemaFormValidate');
+          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
+            // Then we check if the form is valid
+          //	if (form.$valid) {
+            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+            .then(function(response){
+              var body = {};
+              body.name = "DataDescriptor";
+              body.value = $scope.datadescriptor;
+              body.schemaId = response;
+
+              MetaController.addMetadata(body)
+                .then(
+                  function(response){
+                      $scope.metadataUuid = response.result.uuid;
+                      //add the default permissions for the system in addition to the owners
+                      MetadataService.addDefaultPermissions($scope.metadataUuid);
+                      $scope.addAssociation($scope.metadataUuid)
+                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
+                      $rootScope.$broadcast('metadataUpdated');
+                      $scope.edit_data_descriptor = false;
+                    },
+                    function(response){
+                      MessageService.handle(response, $translate.instant('error_metadata_add'));
+                      $scope.requesting = false;
+                    }
+                );
+              //}
+              //else{
+              //	$scope.requesting = false;
+              //}
+            })
+          }else{
+            $scope.requesting = false;
+            App.alert({type:'danger', message: "Creator, Title, License Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+          }
+
+        }
+
+        $scope.updateDataDescriptor = function(){
+          $scope.requesting = true;
+      		$scope.$broadcast('schemaFormValidate');
+
+          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
+           
+            // Then we check if the form is valid
+          //	if (form.$valid) {
+            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+            .then(function(response){
+              var body = {};
+              body.name = $scope.data_descriptor_metadatum.name;
+              body.value = $scope.datadescriptor;
+              body.schemaId = $scope.data_descriptor_metadatum.schemaId;
+
+              MetaController.updateMetadata(body,$scope.data_descriptor_metadatum.uuid)
+                .then(
+                  function(response){
+                      $scope.metadataUuid = response.result.uuid;
+                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
+                      $rootScope.$broadcast('metadataUpdated');
+                      $scope.edit_data_descriptor = false;
+                    },
+                    function(response){
+                      MessageService.handle(response, $translate.instant('error_metadata_add'));
+                      $scope.requesting = false;
+                    }
+                );
+              //}
+              //else{
+              //	$scope.requesting = false;
+              //}
+            })
+          }else{
+            $scope.requesting = false;
+            App.alert({type:'danger', message: "Creator, Title, Licence Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+          }
+        }
 
         $scope.animationsEnabled = true;
 
+        $scope.editDataDescriptor = function(){
+          $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+          $scope.edit_data_descriptor = true;
+        }
+
+        $scope.cancelEditDataDescriptor = function(){
+          $scope.edit_data_descriptor = false;
+          $scope.refreshMetadata();
+        }
+
+        $scope.doTheBack = function() {
+          window.history.back();
+        };
 /////////Modal Stuff/////////////////////
-        $scope.fetchModalMetadata = function(query){
+        $scope.fetchMoreModalMetadata = function(){
+          $scope.offset = $scope.offset + $scope.limit
+          $scope.requesting = true
           MetaController.listMetadata(
-            $scope.query
+            $scope.query,$scope.limit,$scope.offset
+          )
+            .then(
+              function (response) {
+                //$scope.metadata = angular.extend($scope.metadata,response.result);
+                //$scope.newmetadata. = Object.assign({},$scope.metadata, response.result);
+                if (response.result.length == $scope.limit){
+                  $scope.can_fetch_more = true;
+                }
+                else{
+                  $scope.can_fetch_more = false;
+                }
+                $scope.metadata = $scope.metadata.concat(response.result)
+                $scope.requesting = false;
+              },
+              function(response){
+                MessageService.handle(response, $translate.instant('error_metadata_list'));
+                $scope.requesting = false;
+              }
+          );
+        }
+        $scope.fetchModalMetadata = function(query){
+          $scope.can_fetch_more = false;
+          MetaController.listMetadata(
+            $scope.query,$scope.limit,$scope.offset
           )
             .then(
               function (response) {
                 $scope.metadata= response.result;
+                if ($scope.metadata.length == $scope.limit){
+                  $scope.can_fetch_more = true;
+                }
                 $scope.requesting = false;
               },
               function(response){
@@ -276,11 +564,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   .then(
                     function(response){
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
-                      App.alert({message: $translate.instant('success_metadata_add_assocation') });
+                      App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
                       $scope.requesting = false;
-                      //$scope.refresh();
-                      alert('fetchMe')
-                      $scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+
+                      //$scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+                      $scope.refreshMetadata();
+                      $scope.matchingAssociationIds.push(metadatumUuid)
+                      $scope.removedAssociationIds.splice($scope.removedAssociationIds.indexOf(metadatumUuid))
                       //$state.go('metadata',{id: $scope.metadataUuid});
                     },
                     function(response){
@@ -290,7 +580,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   )
                 }
                 else {
-                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists') });
+                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists'),closeInSeconds: 5  });
                   return
                 }
               })
@@ -316,7 +606,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                       function(response){
                         $scope.new_metadataUuid = response.result.uuid;
                         MetadataService.addDefaultPermissions($scope.new_metadataUuid);
-                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name });
+                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name ,closeInSeconds: 5 });
                         $scope.addAssociation($scope.new_metadataUuid)
                         $scope.requesting = false;
                         $scope.openEditMetadata($scope.new_metadataUuid,'lg')
@@ -336,16 +626,17 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
         $scope.locFilter = function(item){
            if (item.name === 'Well' || item.name === 'Site'){
-            return item;// || item.name === 'Site';
-            alert('filtering')
+            return item;
           }
         }
+
+
   /////////Modal Stuff/////////////////////
 
         $scope.open = function (size, types, title) {
             //Set the
             $scope.modalSchemas = types.slice(0);
-             $scope.selectedSchema = types.slice(0);
+            $scope.selectedSchema = types.slice(0);
             $scope.modalTitle = title;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -392,9 +683,37 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
+        
+        $scope.openCreateType = function (size, schemaType, isContrib = false) {
+            $scope.requesting = true;
+            // get the uuid for the schema
+            var typeString = "{'schema.title':'" + schemaType + "'}";
+            MetadataService.fetchSystemMetadataSchemaUuid(schemaType)
+              .then(function(response){
+                var uuid = response;
+                //console.log("uuid: " + uuid);
+                $scope.isContrib = isContrib;
+                $scope.openCreate(uuid, size);
+              });
+        	$scope.requesting = false;
+        };
+        
+        // open the modal to create a new person schema object
+        $scope.openCreatePerson = function (size) {
+        	 $scope.openCreateType(size,"Person");
+        };
 
+        $scope.openCreateContribPerson = function (size) {
+        	 $scope.openCreateType(size,"Person", true);
+        };
+        
+        // open the modal to create a new organization schema object
+        $scope.openCreateOrg = function (size) {
+        	 $scope.openCreateType(size,"Organization");
+        };
+        
         $scope.openCreate = function (schemauuid, size) {
-            $scope.fileMetadataObjects = $scope.fileMetadataObject
+          $scope.fileMetadataObjects = $scope.fileMetadataObject;
           $scope.selectedSchemaUuid = schemauuid;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -410,7 +729,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             }
           );
         };
-
+        
 ///////Assoc modal search////////
 $scope.schemaBox = {val1:true,val2:true};
 $scope.wellbox = true;
@@ -446,6 +765,7 @@ $scope.searchAll = function(){
     andquery['$and'] = andarray;
     $scope.query = JSON.stringify(andquery);
 
+    $scope.offset=0;
     $scope.fetchModalMetadata();
 }
 
@@ -471,9 +791,9 @@ $scope.searchAll = function(){
         $modalInstance.close();
       };
 
-      $scope.fetchModalMetadata = function(query){
+      $scope.fetchModalMetadata = function(){
         MetaController.listMetadata(
-          $scope.query
+          $scope.query,$scope.limit,$scope.offset
         )
           .then(
             function (response) {

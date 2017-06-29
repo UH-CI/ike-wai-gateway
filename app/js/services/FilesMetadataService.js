@@ -193,7 +193,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_add_assocation') });
+              App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
@@ -268,7 +268,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_update_assocation') });
+              App.alert({message: $translate.instant('success_metadata_update_assocation'),closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
@@ -307,7 +307,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
             .then(
               function(response){
                 metadataUuid = response.result.uuid;
-                App.alert({message: $translate.instant('success_metadata_add') + metadataUuid });
+                App.alert({message: $translate.instant('success_metadata_add') + metadataUuid ,closeInSeconds: 5});
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions(metadataUuid);
               },
@@ -412,7 +412,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              App.alert({message: $translate.instant('success_metadata_update') });
+              App.alert({message: $translate.instant('success_metadata_update'),closeInSeconds: 5 });
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
