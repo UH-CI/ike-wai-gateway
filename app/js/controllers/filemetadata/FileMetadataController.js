@@ -96,20 +96,24 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     */
 
     $scope.filemetadatumUuid = $stateParams.uuid;
-
+    
+    var updateFileObject = function() {
+      var deferred = $q.defer();
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}")
+        .then(function(response){
+              $scope.fileMetadataObject = response.result;
+              deferred.resolve();
+            
+        })
+      return deferred.promise;
+    };
+    
+    
     $scope.refreshMetadata = function(){
       //refetch the file metadata object to ensure the latest associtionIds are in place
-      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}",)
-        .then(function(response){
-          $q.when()
-            .then(function () {
-              var deferred = $q.defer();
-              $scope.fileMetadataObject = response.result;
-              deferred.resolve($scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}"));
-              return deferred.promise;
-            })
-        }
-      )
+       updateFileObject().then(function(response){ 	
+         $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+       })
     }
     //MAP STUFF
     $scope.data_descriptor_markers = {};
@@ -318,14 +322,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
       	  App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
           $scope.metadatum = null;
-          //pause to let model update
           $timeout(function(){
             //$scope.refresh()
               $scope.refreshMetadata();
               $scope.matchingAssociationIds.splice($scope.matchingAssociationIds.indexOf(metadatumUuid))
               $scope.removedAssociationIds.push(metadatumUuid)
-              //$scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
-          }, 300);
+          }, 500);
           $scope.requesting = false;
         });
       }else{
@@ -775,7 +777,12 @@ $scope.searchAll = function(){
 
     // Is currently selected
     if (idx > -1) {
-      $scope.selectedSchema.splice(idx, 1);
+      //alert($scope.selectedSchema.length )
+      if ($scope.selectedSchema.length >= 2){
+        $scope.selectedSchema.splice(idx, 1);
+      }else{
+        jQuery('#'+title+'_box').prop("checked",true);
+      }
     }
 
     // Is newly selected

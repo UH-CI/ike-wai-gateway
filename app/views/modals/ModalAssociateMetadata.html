@@ -33,6 +33,7 @@
                           <label ng-repeat="schema in modalSchemas">
                             <input
                               type="checkbox"
+                              id="{{schema}}_box"
                               name="selectedMetadata[]"
                               value="{{schema}}"
                               ng-checked="selectedSchema.indexOf(schema) > -1"
