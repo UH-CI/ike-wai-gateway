@@ -775,7 +775,12 @@ $scope.searchAll = function(){
 
     // Is currently selected
     if (idx > -1) {
-      $scope.selectedSchema.splice(idx, 1);
+      //alert($scope.selectedSchema.length )
+      if ($scope.selectedSchema.length >= 2){
+        $scope.selectedSchema.splice(idx, 1);
+      }else{
+        jQuery('#'+title+'_box').prop("checked",true);
+      }
     }
 
     // Is newly selected
