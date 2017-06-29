@@ -16,7 +16,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
     $scope.removedAssociationIds = [''];
-    $scope.limit = 1000;
+    $scope.limit = 500;
     $scope.offset = 0;
     //set admin
     $scope.get_editors = function(){
@@ -80,7 +80,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
-    $scope.datadescriptor.license_permission = "private";
+    $scope.datadescriptor.license_permission = "public";
     $scope.datadescriptor.title = "";
     $scope.datadescriptor.license_rights = 'Creative Commons Attribution CC BY';
 
@@ -338,21 +338,53 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         function(resp){
           //if still empty createFileObject
         if (resp.result == ""){
+          MetadataService.fetchSystemMetadataSchemaUuid('File').then(function(response_uuid){
+            var body={};
+            //associate system file with this metadata File object
+            body.associationIds = [fileUuid];
+            body.name = 'File';
+            body.value = {};
+            //File Schema uuid
+            body.schemaId = response_uuid;
+            MetaController.addMetadata(body)
+              .then(
+                function(response){
+                  $scope.metadataUuid = response.result.uuid;
+                  //App.alert({message: $translate.instant('File is ready for adding metadata') });
+                  //add the default permissions for the system in addition to the owners
+                  MetadataService.addDefaultPermissions($scope.metadataUuid);
+                  $scope.updateFileObject(response.result)
+                  $scope.requesting = false;
+                  $scope.refresh();
+                },
+                function(response){
+                  MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  $scope.requesting = false;
+                }
+              );
+          })
+         }
+        })
+      }
+
+      $scope.updateFileObject = function(fileobject){
+         MetadataService.fetchSystemMetadataSchemaUuid('File').then(function(response_uuid){
           var body={};
           //associate system file with this metadata File object
-          body.associationIds = [fileUuid];
+          body.associationIds = fileobject.associationIds;
           body.name = 'File';
-          body.value = {};
+          body.value= {};
+          body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
+          body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
           //File Schema uuid
-          body.schemaId = '3557207775540866585-242ac1110-0001-013';
-          MetaController.addMetadata(body)
+          body.schemaId = response_uuid;
+          MetaController.updateMetadata(body,fileobject.uuid)
             .then(
               function(response){
                 $scope.metadataUuid = response.result.uuid;
                 //App.alert({message: $translate.instant('File is ready for adding metadata') });
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions($scope.metadataUuid);
-                $scope.updateFileObject(response.result)
                 $scope.requesting = false;
                 $scope.refresh();
               },
@@ -360,36 +392,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
                 $scope.requesting = false;
               }
-            );
-          }
-        })
-      }
-
-      $scope.updateFileObject = function(fileobject){
-        var body={};
-        //associate system file with this metadata File object
-        body.associationIds = fileobject.associationIds;
-        body.name = 'File';
-        body.value= {};
-        body.value['filename'] = fileobject._links.associationIds[0].href.split('system')[1];
-        body.value['path'] = fileobject._links.associationIds[0].href.split('system')[1];
-        //File Schema uuid
-        body.schemaId = '3557207775540866585-242ac1110-0001-013';
-        MetaController.updateMetadata(body,fileobject.uuid)
-          .then(
-            function(response){
-              $scope.metadataUuid = response.result.uuid;
-              //App.alert({message: $translate.instant('File is ready for adding metadata') });
-              //add the default permissions for the system in addition to the owners
-              MetadataService.addDefaultPermissions($scope.metadataUuid);
-              $scope.requesting = false;
-              $scope.refresh();
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_add'));
-              $scope.requesting = false;
-            }
-          );
+            )
+         })
         }
 
         $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
