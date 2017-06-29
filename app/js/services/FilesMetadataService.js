@@ -248,7 +248,6 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           function(data) {
             deferredHandler(data, deferred, "Error Removing File Metadata Associations");
         });
-        return true;
     }
 
     this.addPublishedAssociation = function(metadataUuid, uuidToAdd){
