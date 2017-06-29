@@ -9,11 +9,4 @@ angular.module('AgaveToGo').controller('GeneralPageController', ['$rootScope', '
         $rootScope.settings.layout.pageBodySolid = false;
         $rootScope.settings.layout.pageSidebarClosed = false;
     });
-    $('a.noscroll').click(function(e)
-    		{
-    		    // Special stuff to do when this link is clicked...
-
-    		    // Cancel the default action
-    		    e.preventDefault();
-    });
 }]);

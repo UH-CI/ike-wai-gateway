@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple jQuery Contact Form With Validation</title>
+</head>
+<body>
+
+<h3>Contact Us</h3>
+
+Have you checked out the 'FAQs'? They contain information and answers for many common questions. There are also 'Walkthroughs', which contains step-by-step instructions on common `IkeToGo tasks.
+<p />
+Let us know how we can help you by filling out the form below. 
+
+<!--  
+check out: https://www.hawaii.edu/ecafe/feedback.html
+fields to add:
+  uh username (required)
+  phone number
+-->
+
+<!-- 
+<form action="mailto:jgeis@hawaii.edu" method="post" enctype="text/plain" >
+ -->
+<form action="#" id="form" method="post" name="form">
+<p id="returnmessage"></p>
+
+Name:<input name="vname" placeholder="Your Name" type="text" value="">
+<p />
+Email:<input name="vemail" placeholder="Your Email" type="text" value="">
+<p />
+Please describe your issue/question/request:<br />
+<textarea name="msg" placeholder="Type your text here..."  rows="5" cols="70"></textarea>
+<p />
+<input id="send" name="submit" type="submit" value="Send Feedback">
+</form>
+<?php include "views/help/contact_form.php"?>
+</body>
+</html>

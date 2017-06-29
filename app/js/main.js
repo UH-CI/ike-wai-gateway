@@ -216,13 +216,33 @@ AgaveToGo.config(function($translateProvider) {
     success_systems_roles: 'Success: updated roles for ',
 
     success_metadata_update_assocation: 'Success: updated Metadata associations',
-    success_metadata_add_assocation: 'Success: added file/Metadata associations ',
+    success_metadata_add_assocation: 'Success: added Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
     success_metadata_add: 'Success: new Metadata created',
     success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
     setDefault: 'set to default',
-    unsetDefault: 'unset default'
+    unsetDefault: 'unset default',
+
+    creator: 'The main researchers involved in producing the data, or the authors of the publication, in priority order.',
+    title: 'A name given to the resource.  Typically, a Title will be a name by which the resource is formally known.',
+    publisher: 'The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role.',
+    publicationDate: 'The year when the data was or will be made publicly available.',
+    subject: 'The topic of the resource.  Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary.',
+    contributorPerson: 'People responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    contributorAgency: 'Institutions responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    dates: 'Different dates relevant to the work.',
+    language: 'A language of the resource.  Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].',
+    format: 'The file format, physical medium, or dimensions of the resource.  Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME].',
+    version: 'The version number of the resource.',
+    rightsLicense: 'Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.',
+    rightsPermissions: 'Public can be viewed and downloaded by anyone. Private can be viewed and downloaded only by designated users or research groups.',
+    rightsPermissionsPublic: 'Can be viewed and downloaded by anyone.',
+    rightsPermissionsPrivate: 'Can be viewed and downloaded only by designated users or research groups.',
+    descriptor: 'All additional information that does not fit in any of the other categories. May be used for technical information.',
+    location: 'Spatial region or named place where the data was gathered or about which the data is focused.',
+    relations: 'Related resources.  Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.'
+
   });
 
   $translateProvider.preferredLanguage('en');
@@ -1677,11 +1697,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css',
                             '../assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css',
                             '../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
-
+                            '../assets/global/plugins/moment.min.js',
                             '../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js',
                             '../assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js',
                             '../assets/global/plugins/clockface/js/clockface.js',
-                            '../assets/global/plugins/moment.min.js',
                             '../assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js',
                             '../assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js',
                             '../assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
@@ -1971,6 +1990,31 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('metadata-unapproved', {
+            url: "/metadata/unapproved",
+            templateUrl: "views/metadata/resource/unapproved.html",
+            controller: "MetadataResourceUnapprovedController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/MetadataService.js',
+                          'js/controllers/metadata/resource/MetadataResourceUnapprovedController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                          'js/services/FilesMetadataService.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+        })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2071,6 +2115,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/FilesMetadataService.js',
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
+                            '../bower_components/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js',
+                            '../assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css',
                             'js/controllers/filemetadata/FileMetadataController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
@@ -2505,7 +2551,24 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
-    
+
+        .state('feedback', {
+            url: "/feedback",
+            templateUrl: "views/help/feedback.html",
+            data: {pageTitle: 'Help'},
+            controller: "GeneralPageController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load([{
+                        name: 'AgaveToGo',
+                        files: [
+                            'js/controllers/GeneralPageController.js'
+                        ]
+                    }]);
+                }]
+            }
+        })
+
 	    .state('walkthrough', {
 	        url: "/walkthrough",
 	        templateUrl: "views/help/walkthrough.html",

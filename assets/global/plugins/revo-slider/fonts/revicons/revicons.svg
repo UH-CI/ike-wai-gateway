@@ -1,3 +1,4 @@
+
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg xmlns="http://www.w3.org/2000/svg">
@@ -51,4 +52,5 @@
 <glyph glyph-name="popup" unicode="&#xe828;" d="m700 750q42 0 71-29t29-71l0-400q0-40-29-70t-71-30l-400 0q-40 0-70 30t-30 70l0 402q0 40 29 69t71 29l400 0z m0-500l0 400l-400 0l0-400l400 0z m-600 100l0-300l300 0l0-100l-300 0q-40 0-70 30t-30 70l0 300l100 0z" horiz-adv-x="800" />
 </font>
 </defs>
+
 </svg>

@@ -10,7 +10,7 @@ angular.module('AgaveToGo').controller('MetadataSchemasController', function ($s
       $scope.requesting = true;
 
       MetaController.listMetadataSchema(
-        $scope.query
+        $scope.query,100,0
       )
         .then(
           function (response) {
