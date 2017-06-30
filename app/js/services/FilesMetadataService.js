@@ -161,6 +161,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
     };
 
     this.removeAssociation = function(metadataUuid, uuidToRemove){
+      var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
@@ -170,12 +171,21 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.name = metadatum.name;
           body.value = metadatum.value;
           body.schemaId = metadatum.schemaId;
-          MetaController.updateMetadata(body,metadataUuid)
-          .then(function(resp) {
-            //return callback(resp.data);
-          })
+          promises.push(MetaController.updateMetadata(body,metadataUuid))
+          var deferred = $q.defer();
+
+          return $q.all(promises).then(
+            function(data) {
+              
+              $rootScope.$broadcast('associationsUpdated',{message:"File Associations Removed Successfully."});
+              return true;
+          },
+          function(data) {
+              return false;
+          });
         }
       )
+      
     }
 
     this.addAssociation = function(metadataUuid, uuidToAdd){
