@@ -1,4 +1,4 @@
-<div class="modal-header">
+<div id="associate_modal" class="modal-header">
     <h3 class="page-title">{{modalTitle}}</h3>
 
 </div>
@@ -123,11 +123,11 @@
                                       <td class="text-center">
                                           <div class="btn-group pull-left">
                                               <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
-                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0 && matchingAssociationIds.indexOf(metadatum.uuid) < 0) || removedAssociationIds.indexOf(metadatum.uuid) > -1 " class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid)">
+                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0 && matchingAssociationIds.indexOf(metadatum.uuid) < 0) || removedAssociationIds.indexOf(metadatum.uuid) > -1 " class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid, '#associate_modal')">
                                                   Associate
                                                   <i class="fa fa-link"></i>
                                               </a>
-                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) > -1 && removedAssociationIds.indexOf(metadatum.uuid) < 0)|| matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid)">
+                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) > -1 && removedAssociationIds.indexOf(metadatum.uuid) < 0)|| matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid, '#associate_modal')">
                                                   Remove Association
                                                   <i class="fa fa-trash"></i>
                                               </a>

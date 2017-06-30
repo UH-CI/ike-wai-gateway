@@ -85,6 +85,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor.license_rights = 'Creative Commons Attribution CC BY';
 
     $scope.data_descriptor
+    $scope.class =[];
     /*
     $scope.tagTransformPerson = function (newTag) {
         var item = {
@@ -111,9 +112,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     
     $scope.refreshMetadata = function(){
       //refetch the file metadata object to ensure the latest associtionIds are in place
-       updateFileObject().then(function(response){ 	
+       var deferred = $q.defer();
+       deferred.resolve(updateFileObject().then(function(response){ 	
          $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
-       })
+                  
+       }));
+       return deferred.promise;
     }
     //MAP STUFF
     $scope.data_descriptor_markers = {};
@@ -239,7 +243,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     };
 
     $scope.fetchMetadata = function(metadata_query){
-      MetaController.listMetadata(metadata_query,100,0).then(
+      var deferred = $q.defer();
+      deferred.resolve(MetaController.listMetadata(metadata_query,100,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
@@ -261,12 +266,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
             });
             $scope.requesting = false;
+            
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
             $scope.requesting = false;
           }
-      );
+      ));  
+      return deferred.promise;
     };
 
     $scope.searchTools = function(query){
@@ -305,22 +312,33 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     });
 
     $rootScope.$on("associationsUpdated", function(){
-     // $scope.refresh();
      $scope.refreshMetadata()
-     // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}")
+     App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
+    });
+
+    $rootScope.$on("associationRemoved", function(){
+     $scope.refreshMetadata().then(
+       $timeout(function(){
+            App.alert({container:'#association_notifications',  message: "Assocation Successfully Removed" ,closeInSeconds: 5  })
+          }, 500)
+     )
     });
 
     $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
 
-    $scope.unAssociateMetadata = function(metadatumUuid){
+    
+  
+    $scope.unAssociateMetadata = function(metadatumUuid, container_id=""){
       $scope.requesting = true;
+      $scope.class[metadatumUuid] = "btn-warning"
       var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
       if (unAssociate) {
         FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function(result){
-      	  App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
+          App.alert({type:'info',container: container_id, message: 'Removing Association',icon:'fa fa-spinner fa-spin', place:''})
+      	  //App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
           $scope.metadatum = null;
           $timeout(function(){
             //$scope.refresh()
@@ -547,8 +565,11 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
 
         }
-
-        $scope.addAssociation = function(metadatumUuid) {
+  	
+        //add an association to the current file object
+        //accept the metadata uuid to add to the file
+        //accepts a container id to dispaly a message app alert
+        $scope.addAssociation = function(metadatumUuid,container_id="") {
           if (metadatumUuid){
         		$scope.requesting = true;
         	  MetaController.getMetadata($scope.fileMetadataObject[0].uuid)
@@ -566,7 +587,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   .then(
                     function(response){
                       // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
-                      App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
+                       App.alert({container: container_id, message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
                       $scope.requesting = false;
 
                       //$scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
