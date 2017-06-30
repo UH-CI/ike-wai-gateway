@@ -176,11 +176,11 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
           return $q.all(promises).then(
             function(data) {
-              
-              $rootScope.$broadcast('associationsUpdated',{message:"File Associations Removed Successfully."});
+              $rootScope.$broadcast('associationRemoved',{message:"File Associations Removed Successfully."});
               return true;
           },
           function(data) {
+            deferredHandler(data, deferred, "Error Removing File Metadata Associations");
               return false;
           });
         }
@@ -253,10 +253,10 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
         return $q.all(promises).then(
           function(data) {
             deferredHandler(data, deferred);
-            $rootScope.$broadcast('associationsUpdated',{message:"File Associations Removed Successfully."});
+            //$rootScope.$broadcast('associationsUpdated',{message:"File Associations Removed Successfully."});
           },
           function(data) {
-            deferredHandler(data, deferred, "Error Removing File Metadata Associations");
+            //deferredHandler(data, deferred, "Error Removing File Metadata Associations");
         });
     }
 
