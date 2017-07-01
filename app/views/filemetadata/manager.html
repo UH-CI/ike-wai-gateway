@@ -290,7 +290,7 @@ jQuery.noConflict()(function ($) {
                                   Private   
                                 </label>
                                 <label class="pull-left" >
-                                  <input  type="radio" ng-model="datadescriptor.license_permission" value="public">
+                                  <input  type="radio" ng-model="datadescriptor.license_permission" value="public" checked>
                                   Public
                                 </label>
                                 <!--<tt>color = {{datadescriptor.license_permission | json}}</tt><br/>-->
@@ -320,7 +320,7 @@ jQuery.noConflict()(function ($) {
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2"/>
+                              <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>
 
                               <br />
                               <!--
@@ -344,7 +344,7 @@ jQuery.noConflict()(function ($) {
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker1'>
-                                  <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%"/>
+                                  <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
                                   </span>
@@ -361,7 +361,7 @@ jQuery.noConflict()(function ($) {
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker2'>
-                                <input type='text' ng-model="datadescriptor.end_datetime" class="form-control" />
+                                <input type='text' ng-model="datadescriptor.end_datetime" class="form-control" placeholder="Select end date of work referenced in file…"/>
                                 <span class="input-group-addon">
                                   <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
@@ -473,7 +473,7 @@ jQuery.noConflict()(function ($) {
                               <button type="button" data-toggle="popover" title="Publisher Field" data-content='{{"publisher" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input ng-model="datadescriptor.publisher" class="form-control" type='textarea' rows="2"/>
+                              <input ng-model="datadescriptor.publisher" class="form-control" type='textarea' rows="2" placeholder=" Enter publishing organization(s)…"/>
                             </div>
 
                             <!-- PUBLICATION DATE -->
