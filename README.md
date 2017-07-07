@@ -1,21 +1,6 @@
-## Agave ToGo
+## IKE ToGo
 
-Agave ToGo v2 is a full-featured web application providing a reference user interface to exercising the core
-functionality of the Agave Platform and demonstrate some of the advanced use cases which are possible by leveraging
-the core Agave Core Science APIs and mainstream open source web technologies.
-
-This version of the web application is implemented as a client-side application using the
-[AngularJS framework](http://angularjs.org/). It is designed to run entirely within your browser with no need for a
-back-end server. The Aside from the Agave Platform itself, there are no external third-party
-service dependencies. The assets produced by this project are entirely static, thus you may host this application out
-of your Bitbucket, GitHub, Dropbox, Google Drive, or even a folder you published using Agave.  
-
-Agave ToGo is fully open source under the BSD 2-Clause license. We encourage you to fork the project and use it as
-a jumping point from which you can build your own application. To contribute back enhancement and bug fixes, please
-make a pull request on the branch you have forked.
-***************************************************************************************************************************
-## Install Agave ToGo for UH Tenant
-* git clone git@github.com:UH-CI/uh-togo-app.git
+* git clone git@github.com:UH-CI/ike-togo-app.git
 * git checkout hawaii
 * npm install
 * npm install http-server -g
