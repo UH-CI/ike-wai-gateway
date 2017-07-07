@@ -34,43 +34,42 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
 
     $scope.formats = [
-    	".aiff - audio interchange file format",
-    	".bmp - bit map",
-    	".cdf - common data format, netCDF",
-    	".csv - comma-separated value",
-    	".docx - Word document",
-    	".gif - graphics interchange format",
-    	".ipynb - Jupyter notebook",
-    	".jpg - joint photographic experts group",
-    	".json - geospatial javascript object notation",
-    	".json - javascript object notation",
-    	".kml - keyhole markup language",
-    	".kmz - keyhole markup language, zipped",
-    	".mov - QuickTime movie",
-    	".mp3 - moving picture experts group",
-    	".mp4 - moving picture experts group",
-    	".odp - OpenDocument presentation",
-    	".ods - OpenDocument spreadsheet",
-    	".odt - OpenDocument text",
-    	".pdf - Adobe portable document format",
-    	".png - portable network graphics",
-    	".pptx - PowerPoint",
-    	".py - Python",
-    	".r - R code and files",
-    	".rtf - rich text format",
-    	".shp .shx .dbf .prj .xml plus - shapefile (submit together as zip)",
-    	".svg - scalable vector graphics",
-    	".tex - LaTeX",
-    	".tiff - tagged image file format",
-    	".tiff - geoTIFF (geospatial tagged image file format)",
-    	".tsv - tab-separated value",
-    	".txt - plain text or other content",
-    	".xlsx - Excel workbook",
-    	".xml - extensible markup language",
-    	".zip - zip compression",
-    	".mat - Matlab file",
-    	".fasta - biological sequence text",
-    	".fastq - biological sequence text, Illumina"];
+".bmp - bit map",
+".cdf - common data format, netCDF",
+".csv - comma-separated value",
+".docx - Word document",
+".fasta - biological sequence text",
+".fastq - biological sequence text, Illumina",
+".gif - graphics interchange format",
+".ipynb - Jupyter notebook",
+".jpg - joint photographic experts group",
+".json - geospatial javascript object notation",
+".json - javascript object notation",
+".kml - keyhole markup language",
+".kmz - keyhole markup language, zipped",
+".mat - Matlab file ",
+".mov - QuickTime movie",
+".mp3 - moving picture experts group",
+".mp4 - moving picture experts group",
+".odp - OpenDocument presentation",
+".ods - OpenDocument spreadsheet",
+".odt - OpenDocument text",
+".pdf - Adobe portable document format",
+".png - portable network graphics",
+".pptx - PowerPoint",
+".py - Python",
+".r - R code and files",
+".rtf - rich text format",
+".shp.shx .dbf .prj .xml - shapefile (submit together as zip)",
+".svg - scalable vector graphics",
+".tex - LaTeX",
+".tiff - tagged image file format",
+".tiff - geoTIFF (geospatial tagged image file format)",
+".tsv - tab-separated value",
+".txt - plain text or other content",
+".xlsx - Excel workbook ",
+".xml - extensible markup language",
+".zip - zip compression (select internal file formats also)"];
     
     
     $scope.languages = ['English', 'Hawaiian'];
@@ -215,9 +214,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       MetaController.listMetadataSchema(
         $scope.schemaQuery
       ).then(function(response){$scope.metadataschema = response.result;})
-      jQuery('#datetimepicker1').datetimepicker();
-      jQuery('#datetimepicker2').datetimepicker();
-      jQuery('#datetimepicker3').datetimepicker();
+      jQuery('#datetimepicker1').datepicker();
+      jQuery('#datetimepicker2').datepicker();
+      jQuery('#datetimepicker3').datepicker();
       $scope.refreshMetadata();
     };
 
