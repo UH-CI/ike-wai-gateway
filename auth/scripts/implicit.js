@@ -31,8 +31,8 @@ var OAuthClients = {
         "scope": "PRODUCTION"
     },
    'hawaii': {
-        'clientKey': 'YYqaSRRcPkFL0AdjoCkH7VzZL9Aa',
-        'callbackUrl': 'http://localhost:9000/auth',
+        'clientKey': 'UfDI7tIcDZXg8CW2JHvB4do7VPQa',
+        'callbackUrl': 'http://localhost:9000/auth/',
         'scope': 'PRODUCTION'
     }
 };
