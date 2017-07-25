@@ -224,24 +224,24 @@ AgaveToGo.config(function($translateProvider) {
     setDefault: 'set to default',
     unsetDefault: 'unset default',
 
-    creator: 'The main researchers involved in producing the data, or the authors of the publication, in priority order.',
-    title: 'A name given to the resource.  Typically, a Title will be a name by which the resource is formally known.',
-    publisher: 'The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource. This property will be used to formulate the citation, so consider the prominence of the role.',
-    publicationDate: 'The year when the data was or will be made publicly available.',
-    subject: 'The topic of the resource.  Typically, the subject will be represented using keywords, key phrases, or classification codes. Recommended best practice is to use a controlled vocabulary.',
-    contributorPerson: 'People responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
-    contributorAgency: 'Institutions responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
-    dates: 'Different dates relevant to the work.',
+    creator: 'Authors of the data, data product, publication, collection, or software, in authorship order for citation.',
+    title: 'A name for this resource, ideally unique but systematic. Filename is placed here by default but may be changed. Searchable.',
+    publisher: 'Entity that holds, archives, publishes, releases, or produces the resource; for formal citation. For original ?Ike Wai resources this will usually be University of Hawai?i. For legacy or external records, check source and provenance.',
+    publicationDate: 'The year when the data or files were or will be made publicly available.',
+    subject: 'Keywords describing the topic of the resource. The controlled vocabulary used here is a subset of the Global Change Master Directory. Consider search and retrieval in choices.',
+    contributorPerson: 'People  who are not data authors who are responsible for collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    contributorAgency: 'Institutions responsible for funding, collecting, managing, distributing, or otherwise contributing to the development of the resource.',
+    dates: 'Start/end date(s) of the information or work represented in this resource.',
     language: 'A language of the resource.  Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].',
-    format: 'The file format, physical medium, or dimensions of the resource.  Examples of dimensions include size and duration. Recommended best practice is to use a controlled vocabulary such as the list of Internet Media Types [MIME].',
-    version: 'The version number of the resource.',
-    rightsLicense: 'Information about rights held in and over the resource. Typically, rights information includes a statement about various property rights associated with the resource, including intellectual property rights.',
+    format: 'The format or file type of this resource. The list used here is a subset of the Library of Congress file types and extensions plus some new file type additions.',
+    version: 'The incremental version number of the resource. Either integers or dates (YYYYMMDD) may be used.',
+    rightsLicense: 'Licenses listed are open licenses that support the digital commons, acknowledge your copyright, allow others to use and build upon your work, and require others to credit authors listed. Recommended here: learn more, then use CC-BY for most work, BSD 2-clause for software, and identify existing licenses for legacy or external resources.',
     rightsPermissions: 'Public can be viewed and downloaded by anyone. Private can be viewed and downloaded only by designated users or research groups.',
     rightsPermissionsPublic: 'Can be viewed and downloaded by anyone.',
     rightsPermissionsPrivate: 'Can be viewed and downloaded only by designated users or research groups.',
-    descriptor: 'All additional information that does not fit in any of the other categories. May be used for technical information.',
+    descriptor: 'An Abstract of the data set, data product, publication, or software. This field is required to obtain a DOI. A primary field for web searching and pointing. Important details or technical information not entered elsewhere may be included.',
     location: 'Spatial region or named place where the data was gathered or about which the data is focused.',
-    relations: 'Related resources.  Recommended best practice is to identify the related resource by means of a string conforming to a formal identification system.'
+    relations: 'Related resources. Any connected or related files or resources should be listed here, ideally by repository UUID, DOI, or persistent URL; otherwise citation is acceptable.'
 
   });
 
@@ -385,8 +385,9 @@ AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', '$http', '$
 }]);
 
 /* Setup Layout Part - Sidebar */
-AgaveToGo.controller('SidebarController', ['$scope', function($scope) {
+AgaveToGo.controller('SidebarController', ['$scope', '$localStorage', function($scope, $localStorage) {
     $scope.$on('$includeContentLoaded', function() {
+        $scope.authenticatedUser = $localStorage.activeProfile;
         Layout.initSidebar(); // init sidebar
     });
 }]);
@@ -2098,6 +2099,14 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         // Metadata
         .state('filemetadata-manage', {
             url: "/filemetadata/:uuid",
+            /*
+            jen: working here
+            url: "/filemetadata/?fileUuids?filePaths",
+            params:{
+              fileUuids: { array: true },
+              filePaths: { array: true }
+            },
+            */
             templateUrl: "views/filemetadata/manager.html",
             data: {pageTitle: 'File Metadata Manager'},
             controller: "FileMetadataController",
