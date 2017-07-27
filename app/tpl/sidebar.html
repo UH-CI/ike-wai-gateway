@@ -131,13 +131,13 @@
                 </li>
             </ul>
         </li> -->
-      <!--  <li class="nav-item">
+      <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-database"></i>
                     <span class="title">Data</span>
                     <span class="arrow "></span>
                 </a>
-        <ul class="sub-menu">--->
+        <ul class="sub-menu">
         <li class="nav-item">
            <a href="#/data/explorer/">
                <i class="fa fa-database"></i>
@@ -150,6 +150,21 @@
                <span class="title">Team Data Preview</span>
            </a>
        </li>
+              <li class="nav-item">
+          <a href="#/data/explorer/ikewai-archive">
+              <i class="fa fa-database"></i>
+              <span class="title">Annotated Team Data</span>
+          </a>
+      </li>
+        
+      </ul>
+    </li>
+        <li class="nav-item">
+        <a href="#/basic-search">
+            <i class="fa fa-search"></i>
+            <span class="title">Search</span>
+        </a>
+    </li>
 
        <li class="nav-item">
        	   <a href="#/help">
@@ -161,15 +176,8 @@
 
        </li>
 
-      <!--<li class="nav-item">
 
-          <a href="#/data/explorer/ikewai-archive">
-              <i class="fa fa-database"></i>
-              <span class="title">Annotated Team Data</span>
-          </a>
-      </li>
-      </ul>
-    </li>
+<!--
     <li class="nav-item">
        <a href="#/apps">
            <i class="fa fa-code"></i>
@@ -182,12 +190,7 @@
           <span class="title">Jobs</span>
       </a>
   </li>
-    <li class="nav-item">
-        <a href="#/basic-search">
-            <i class="fa fa-search"></i>
-            <span class="title">Search</span>
-        </a>
-    </li>
+
        <li class="nav-item">
            <a href="#/metadata/">
                <i class="fa fa-tag"></i>
@@ -207,13 +210,30 @@
                <span class="title">Metadata Schemas</span>
            </a>
        </li>
-       {{console.log("Usersname" + angular.toJson(authenticatedUser))}}
-       <li class="nav-item warning" ng-if="['seanbc','jgeis','ike-admin'].indexOf(authenticatedUser.name) >= 0">
-           <a href="#/stagged">
-           </i><i class="fa fa-file"></i>
-               <span class="title">Staged Files</span>
-           </a>
-       </li>
+        -->
+        <li class="nav-item nav-item warning" ng-if="['seanbc','jgeis','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+                    >
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="fa fa-database"></i>
+                    <span class="title">Admin</span>
+                    <span class="arrow "></span>
+                </a>
+            <ul class="sub-menu">
+                <li class="nav-item warning" ng-if="['seanbc','jgeis','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+                    <a href="#/stagged">
+                    </i><i class="fa fa-file"></i>
+                        <span class="title">Staged Files</span>
+                    </a>
+                </li>
+                <li class="nav-item warning" ng-if="['seanbc','jgeis','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+                    <a href="#/metadata/unapproved">
+                    </i><i class="fa fa-tag"></i>
+                        <span class="title">Unapproved Metadata</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!--
        <li class="nav-item">
           <a href="#/apps">
               <i class="fa fa-code"></i>

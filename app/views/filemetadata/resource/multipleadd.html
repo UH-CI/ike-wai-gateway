@@ -88,8 +88,18 @@
                         <tbody>
                             <tr ng-repeat="matchingMetadatum in matchingMetadata | orderBy:sortType:sortReverse | filter:filter" >
                                 <td>
-                                    <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid, 'lg')"> {{matchingMetadatum.value.well_name}}{{matchingMetadatum.value.path}}
-                                     {{matchingMetadatum.value.wid}} {{matchingMetadatum.value.variable_name}} {{matchingMetadatum.value.description}} {{matchingMetadatum.value.tags.toString()}} </a>
+                                    <div ng-show="matchingMetadatum.name === 'DataDescriptor'" class="text-center">
+                                        <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid, 'lg')">  
+                                            Data Descriptor: {{matchingMetadatum.value.title}}
+                                        </a>
+                                    </div>
+                                    <div ng-show="matchingMetadatum.name != 'DataDescriptor'" class="text-center">
+                                        <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid, 'lg')"> 
+                                            {{matchingMetadatum.value.well_name}}{{matchingMetadatum.value.path}}
+                                            {{matchingMetadatum.value.wid}} {{matchingMetadatum.value.variable_name}} 
+                                            {{matchingMetadatum.value.description}} {{matchingMetadatum.value.tags.toString()}} 
+                                        </a>
+                                    </div>
                                 </td>
                                 <td class="hidden-xs">
                                     <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid, 'lg')"> {{matchingMetadatum.name}} </a>
