@@ -36,7 +36,7 @@ angular.module('AgaveToGo').controller("NotificationsResourceAddController", fun
 						"description": "URL to which Agave will send a POST request when that event occurs. A webhook can be any web accessible URL. Use this fanout.io default to see live toast alerts in Agave ToGo",
 						"format": "url",
 						"title": "URL",
-						"default": "https://48e3f6fe.fanoutcdn.com/fpp"
+						"default": "https://9d1e23fc.fanoutcdn.com/fpp"
 						// "validator": "(http|https)://[\\w-]+(\\.[\\w-]*)+([\\w.,@?^=%&amp;:/~+#-]*[\\w@?^=%&amp;/~+#-])?"
 					},
 			}
