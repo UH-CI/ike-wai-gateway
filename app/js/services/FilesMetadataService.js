@@ -260,6 +260,8 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
         });
     }
 
+    //add new association to published file
+    //set permissions to public as well.
     this.addPublishedAssociation = function(metadataUuid, uuidToAdd){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
@@ -277,6 +279,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
+              MetadataService.addPublicPermission(metadataUuid);
               App.alert({message: $translate.instant('success_metadata_update_assocation'),closeInSeconds: 5 });
             },
             function(response){
@@ -315,10 +318,12 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           promises.push(MetaController.addMetadata(body)
             .then(
               function(response){
+                console.log('PublishedFile: '+response.result.uuid)
                 metadataUuid = response.result.uuid;
                 App.alert({message: $translate.instant('success_metadata_add') + metadataUuid ,closeInSeconds: 5});
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions(metadataUuid);
+                MetadataService.resolveApprovedStatus(metadataUuid);//if not public make it so
               },
               function(response){
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -370,7 +375,8 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
               promises.push(
                 MetadataService.fetchSystemMetadataUuid('published')
                   .then(function(published_uuid){
-                    self.addAssociation(published_uuid,fileUuid);
+                    self.addPublishedAssociation(published_uuid,fileUuid);
+                    console.log('published: '+published_uuid+' , FileUUID: '+fileUuid)
                   }
                 )
               );
