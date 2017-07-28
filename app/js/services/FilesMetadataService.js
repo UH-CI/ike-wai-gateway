@@ -375,7 +375,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
               promises.push(
                 MetadataService.fetchSystemMetadataUuid('published')
                   .then(function(published_uuid){
-                    self.addPublishedAssociation(published_uuid,fileUuid);
+                    MetadataService.addAssociation(published_uuid,fileUuid);
                     console.log('published: '+published_uuid+' , FileUUID: '+fileUuid)
                   }
                 )
