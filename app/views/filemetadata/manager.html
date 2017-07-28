@@ -125,7 +125,7 @@
                 <div class=" pull-left">
                   <h4>{{filename}}</h4>
                 </div>
-                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
+                <div ng-show='edit_perm' class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
                 </div>
                 <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
@@ -172,8 +172,9 @@
                             </div>
                             <!-- CHOOSE LOCATIONS -->
                             <leaflet width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
-                            <div class="form-group">
-                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
+                            <div class="form-group" >
+                              <button  ng-show='profile.username == data_descriptor_metadatum.owner || edit_perm' class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
+                              <h3 ng-show='profile.username != data_descriptor_metadatum.owner && !edit_perm'>Locations:</h3>
                             </div>
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
@@ -183,10 +184,10 @@
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
                                     </td>
-                                    <td><span ng-show='profile.username == filemetadata.owner || edit_perm'>
+                                    <td><span ng-show='profile.username == filemetadatum.owner || edit_perm'>
                                                   <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
                                                   <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
-                                                |</span><a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"><i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></td>
+                                                |<a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"><i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></span></td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -194,7 +195,8 @@
 
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group">
-                              <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Variables</button>
+                              <button ng-show='profile.username == data_descriptor_metadatum.owner || edit_perm' class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Variables</button>
+                              <h3 ng-show='profile.username != data_descriptor_metadatum.owner && !edit_perm'>Variables:</h3>
                             </div>
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
@@ -204,10 +206,10 @@
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
                                     </td>
-                                    <td><span ng-show='profile.username == filemetadata.owner || edit_perm'>
+                                    <td><span ng-show='profile.username == filemetadatum.owner || edit_perm'>
                                                   <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
                                                   <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
-                                                |</span><a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"<i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></td>
+                                                |<a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"<i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></span></td>
                                   </tr>
                                 </tbody>
                               </table>
