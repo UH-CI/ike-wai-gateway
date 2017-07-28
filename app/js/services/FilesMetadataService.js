@@ -275,7 +275,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.name = metadatum.name;
           body.value = metadatum.value;
           body.schemaId = metadatum.schemaId;
-          body.published = 'True';
+          body.value['published'] = 'True';
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
