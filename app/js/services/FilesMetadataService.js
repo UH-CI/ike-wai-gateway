@@ -427,6 +427,10 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
+              MetadataService.fetchSystemMetadataUuid('rejected')
+               .then(function(rejected_uuid){
+                MetadataService.addAssociation(rejected_uuid, uuidToReject)
+               })
               App.alert({message: $translate.instant('success_metadata_update'),closeInSeconds: 5 });
             },
             function(response){
