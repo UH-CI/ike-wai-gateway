@@ -351,7 +351,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       var promises = [];
       var associations = [];
 
-      FilesController.importFileItem(filepath, newpath, "ikewai-archive")
+      FilesController.importFileItem(filepath, newpath, "ikewai-annotated-data")
         .then(function(response){
           //success - get the newfiles uuid
           newfile_uuid = response.result.uuid;

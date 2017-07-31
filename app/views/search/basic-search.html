@@ -62,10 +62,10 @@
                               </thead>
                               <tbody>
                                   <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
-                                      <td ng-show="file.href.includes('ikewai-archive')">
+                                      <td ng-show="file.href.includes('ikewai-annotated-data')">
                                          {{file.href.split('system')[1]}}
                                       </td>
-                                      <td ng-show="file.href.includes('ikewai-archive')">
+                                      <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
                                       </td>
                                   </tr>
