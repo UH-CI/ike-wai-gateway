@@ -13,10 +13,12 @@
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         <input type="text" class="form-control" placeholder="Search Annotated Filenames" ng-model="searchField.value"></div>
-                        <button class="btn btn-primary" ng-click="searchAll()">Search Files</button>
+                        <button class="btn btn-primary" ng-click="textSearch()">Search Files</button>
 
                       <br/>
                     </div>
+
+                    
 
 
                 </div>
@@ -63,7 +65,7 @@
                               <tbody>
                                   <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
-                                         {{file.href.split('system')[1]}}
+                                         {{file.href.split('ikewai-annotated-data/')[1]}}
                                       </td>
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>

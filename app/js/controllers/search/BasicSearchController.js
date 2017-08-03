@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site']
+    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -24,7 +24,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.status = 'active';
     $scope.available = true;
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }},{'_links.associationIds':1,'value.name':1,'name':1,'value.well_name':1,'value.wid':1}";
-    $scope.filequery="{'name':'PublishedFile'}";
+    $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
     $scope.schemaBox = {val1:true,val2:true};
@@ -37,8 +37,10 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
-            if(value.title == "file" && value.href != null){
-              $scope.files.push(value)
+            if(value.href != null){
+              if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
+                $scope.files.push(value)
+              }
             }
           })
         }
@@ -47,6 +49,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     }
 
      $scope.doSearch = function(){
+       $scope.requesting=true;
        MetaController.listMetadata($scope.filequery,limit=10000,offset=0).then(
            function (response) {
              $scope.filemetadata= response.result;
@@ -59,6 +62,15 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
           }
        );
      }
+    $scope.textSearch = function(){
+      if ($scope.searchField.value != ''){
+        $scope.filequery = "{$and:[{$text:{$search:'"+$scope.searchField.value+"'},{'value.published':'True'}]}";
+      }
+      else{
+        $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
+      }
+      $scope.doSearch();
+    }
 
     $scope.searchAll = function(){
       //alert($scope.filter)
