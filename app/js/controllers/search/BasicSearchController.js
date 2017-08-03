@@ -31,15 +31,19 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
-    $scope.parseFiles = function(){
+  $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
+      $scope.files_hrefs =[]
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
-                $scope.files.push(value)
+                if( $scope.files_hrefs.indexOf(value.href) < 0){
+                  $scope.files_hrefs.push(value.href)
+                  $scope.files.push(value)
+                }
               }
             }
           })
@@ -64,7 +68,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
      }
     $scope.textSearch = function(){
       if ($scope.searchField.value != ''){
-        $scope.filequery = "{$and:[{$text:{$search:'"+$scope.searchField.value+"'},{'value.published':'True'}]}";
+        $scope.filequery = "{$text:{$search:'"+$scope.searchField.value+"'}}";
       }
       else{
         $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
