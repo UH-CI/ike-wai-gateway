@@ -32,6 +32,16 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
     $scope.searchField = {value:''}
     $scope.files_hrefs=[]
     $scope.file_uuids =[]
+
+    $scope.sortType= 'href';
+    $scope.sortReverse = false;
+
+    $scope.wellSortType ='value.well_name'
+    $scope.siteSortType ='value.name'
+    $scope.varSortType ='value.variable_name'
+    $scope.wellSortReverse = true;
+    $scope.siteSortReverse = true;
+    $scope.varSortReverse = false;
     
     $scope.parseFiles = function(){
       //fetch related file metadata objects
