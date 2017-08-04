@@ -31,10 +31,13 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.files_hrefs=[]
+    $scope.file_uuids =[]
+    
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
       $scope.files_hrefs =[]
+      $scope.file_uuids =[]
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
@@ -43,12 +46,14 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
                   $scope.files.push(value)
+                  $scope.file_uuids.push(value.rel)
                 }
               }
             }
           })
         }
       })
+      $scope.fetchFacetMetadata();
       $scope.requesting=false;
     }
 
@@ -66,8 +71,9 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
           }
        );
      }
+     
+     
     $scope.textSearch = function(){
-
       if ($scope.selectedMetadata != null){
         $scope.filequery = "{$and:[{$text:{$search:'"+$scope.searchField.value+"'},{'value.published':'True'}]}";
       }
@@ -134,26 +140,30 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
 
     $scope.refresh = function() {
       $scope.requesting = true;
-      MetaController.listMetadataSchema(
-				$scope.schemaQuery
-			).then(function(response){
+      MetaController.listMetadataSchema($scope.schemaQuery)
+      .then(function(response){
 				$scope.metadataschema = response.result;
-            })
-      MetaController.listMetadata("{'name':'Well','value.published':'True'}",limit=1000,offset=0)
+      })
+      $scope.fetchFacetMetadata();
+      $scope.doSearch();
+    };
+    
+    $scope.fetchFacetMetadata = function(){
+      MetaController.listMetadata("{'name':'Well','value.published':'True','associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_wells = response.result;
+           // alert(angular.toJson($scope.facet_wells))
         })
-      MetaController.listMetadata("{'name':'Site','value.published':'True'}")
+      MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_sites = response.result;
         })
-    MetaController.listMetadata("{'name':'Variable','value.published':'True'}")
+    MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
         })
-      $scope.doSearch();
     };
-
+    
     $scope.searchTools = function(query){
       $scope.requesting = true;
       if (query !=''){

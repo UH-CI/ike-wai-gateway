@@ -37,7 +37,7 @@
                         <table>
                             <tbody>
                                 <tr ng-repeat="well in facet_wells | orderBy:sortType:sortReverse">
-                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}}
+                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-checked="selectedMetadata.indexOf(well.uuid) > -1" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}}
                                     </td>
                                 </tr>
                             </tbody>
@@ -48,7 +48,7 @@
                         <table>
                             <tbody>
                                 <tr ng-repeat="site in facet_sites | orderBy:sortType:sortReverse">
-                                    <td><input type="checkbox"name="selectedMetadata[]" value="{site.uuid}}" ng-click="toggleSelectedMetadata(site.uuid)"/>{{site.value.name}}
+                                    <td><input type="checkbox"name="selectedMetadata[]" value="{site.uuid}}" ng-checked="selectedMetadata.indexOf(site.uuid) > -1" ng-click="toggleSelectedMetadata(site.uuid)"/>{{site.value.name}}, {{site.value.description}}
                                     </td>
                                 </tr>
                             </tbody>
@@ -59,7 +59,7 @@
                         <table>
                             <tbody>
                                 <tr ng-repeat="var in facet_variables | orderBy:sortType:sortReverse">
-                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}},
+                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}},
                                     </td>
                                 </tr>
                             </tbody>
