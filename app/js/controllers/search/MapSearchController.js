@@ -269,9 +269,7 @@ angular.extend($scope, {
     drawOptions: {
       position: "bottomright",
       draw: {
-        //polyline: {
-        //  metric: false
-        //},
+        polyline: false,
         polygon: {
           metric: false,
           showArea: true,
@@ -310,7 +308,9 @@ var handle = {
   },
   edited: function(arg) {},
   deleted: function(arg) {
-    angular.element('.leaflet-draw-toolbar-top').show();
+    if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
+      angular.element('.leaflet-draw-toolbar-top').show();
+    }
   },
   drawstart: function(arg) {},
   drawstop: function(arg) {},
