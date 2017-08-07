@@ -48,11 +48,17 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.files = []
       $scope.files_hrefs =[]
       $scope.file_uuids =[]
+      $scope.culled_metadata = []
+      $scope.culled_metadata_uuids = []
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
+                if($scope.culled_metadata_uuids.indexOf(val.uuid) < 0){
+                    $scope.culled_metadata.push(val)
+                    $scope.culled_metadata_uuids.push(val.uuid)
+                }
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
                   $scope.files.push(value)
@@ -168,20 +174,85 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.doSearch();
     };
     
+
     $scope.fetchFacetMetadata = function(){
-      MetaController.listMetadata("{'name':'Well','value.published':'True','associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_wells = response.result;
-           // alert(angular.toJson($scope.facet_wells))
+        $scope.facet_wells =[]
+        $scope.facet_sites =[]
+        $scope.facet_variables =[]
+        $scope.markers = [];
+        angular.forEach($scope.culled_metadata, function(datum){
+            if(datum.name == 'Well'){
+                $scope.facet_wells.push(datum)
+                if(datum.value.latitude != undefined){
+                    $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
+                }
+            }else if(datum.name == 'Site'){
+                $scope.facet_sites.push(datum)
+                if(datum.value.latitude != undefined){
+                    $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
+                }
+            }
+            
         })
-      MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_sites = response.result;
-        })
-    MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
         })
+      /*$scope.markers = [];
+      if(drawnItems != undefined && typeof drawnItems.toGeoJSON === 'undefined'){
+        MetaController.listMetadata("$and:[{'name':'Well','value.published':'True'},{'associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}},{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_wells = response.result;
+            angular.forEach($scope.facet_wells, function(datum) {
+                if(datum.value.latitude != undefined){
+                    $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
+                }
+            });
+            // alert(angular.toJson($scope.facet_wells))
+        })
+        MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']},'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_sites = response.result;
+            angular.forEach($scope.facet_sites, function(datum) {
+                
+                if(datum.value.latitude != undefined){
+                    
+                    $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
+                }
+            });
+        })
+        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']},'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_variables = response.result;
+        })
+      }else{
+        MetaController.listMetadata("{'name':'Well','value.published':'True','associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+            .then(function(response){
+                $scope.facet_wells = response.result;
+                angular.forEach($scope.facet_wells, function(datum) {
+                    if(datum.value.latitude != undefined){
+                        $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
+                    }
+                });
+            // alert(angular.toJson($scope.facet_wells))
+            })
+        MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+            .then(function(response){
+                $scope.facet_sites = response.result;
+                angular.forEach($scope.facet_sites, function(datum) {
+                    
+                    if(datum.value.latitude != undefined){
+                    
+                        $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
+                }
+                });
+            })
+        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+            .then(function(response){
+                $scope.facet_variables = response.result;
+            })
+      }
+      */
     };
     
     $scope.searchTools = function(query){
@@ -236,6 +307,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     }
   };
 ////////LEAFLET//////////////////
+  $scope.markers=[];
+
   angular.extend($scope, {
     drawControl: true,
     hawaii: {
@@ -335,6 +408,13 @@ drawEvents.forEach(function(eventName){
 
 
 /////////Modal Stuff/////////////////////
+    $scope.viewFileAnnotations = function(fileUuid){
+        MetaController.listMetadata("{'name':'DataDescriptor','associationIds':{$in:['"+fileUuid+"']}}")
+        .then(function(response){
+            if(response.result[0] != null)
+            $scope.openView(response.result[0].uuid, 'lg')
+        })
+    }   
 
     $scope.openView = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;
