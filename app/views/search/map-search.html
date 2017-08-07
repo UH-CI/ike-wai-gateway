@@ -5,9 +5,18 @@
         <div class="col-md-10">
                <leaflet width="100%" height="350px" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
           </div>
+
           <div class="col-md-1"></div>
         </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <button class="btn btn-primary pull-right" ng-click="spatialSearch()"><i class="fa fa-search"/> Search In Bounding Area</button>
+            <br/>
+            <br/>
+        </div>
+        <div class="col-md-1"></div>
     <div class="col-md-12">
+        
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
                 <div class="row text-center">
@@ -36,12 +45,10 @@
             <div class="portlet-body">
             <div class="row">
                 <div class="col-md-12">
-                        <button class="btn btn-primary pull-right" ng-click="spatialSearch()"><i class="fa fa-search"/> Search In Bounding Area</button>
-                        <br/>
-                        <br/>
                 <div class="row">
                     <div class="col-md-4">
-
+                            <button class="btn btn-primary" ng-click="facetSearch()"><i class="fa fa-search"/> Search With Selections</button>
+                    </br></br>
                         <div class="portlet light portlet-fit portlet-datatable">
                             <table id="well_facet" class="table table-striped table-bordered table-hover management pre-scrollable">
                                 <thead>
@@ -162,6 +169,7 @@
                                         <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 {{file.href.split('ikewai-annotated-data/')[1]}}
+                                                <a href="#" ng-click="viewFileAnnotations(file.rel)"><i class="fa fa-eye"></i></a> 
                                             </td>
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
