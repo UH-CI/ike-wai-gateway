@@ -2404,6 +2404,34 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('map-search', {
+            url: "/map-search",
+            templateUrl: "views/search/map-search.html",
+            data: {pageTitle: 'Search Ike'},
+            controller: "MapSearchController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/PermissionsService.js',
+                            'js/services/MetadataService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/search/MapSearchController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                        ]
+                    });
+                }]
+            }
+        })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
