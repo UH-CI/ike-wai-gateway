@@ -198,61 +198,6 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         .then(function(response){
             $scope.facet_variables = response.result;
         })
-      /*$scope.markers = [];
-      if(drawnItems != undefined && typeof drawnItems.toGeoJSON === 'undefined'){
-        MetaController.listMetadata("$and:[{'name':'Well','value.published':'True'},{'associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}},{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_wells = response.result;
-            angular.forEach($scope.facet_wells, function(datum) {
-                if(datum.value.latitude != undefined){
-                    $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
-                }
-            });
-            // alert(angular.toJson($scope.facet_wells))
-        })
-        MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']},'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_sites = response.result;
-            angular.forEach($scope.facet_sites, function(datum) {
-                
-                if(datum.value.latitude != undefined){
-                    
-                    $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
-                }
-            });
-        })
-        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']},'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_variables = response.result;
-        })
-      }else{
-        MetaController.listMetadata("{'name':'Well','value.published':'True','associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-            .then(function(response){
-                $scope.facet_wells = response.result;
-                angular.forEach($scope.facet_wells, function(datum) {
-                    if(datum.value.latitude != undefined){
-                        $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
-                    }
-                });
-            // alert(angular.toJson($scope.facet_wells))
-            })
-        MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-            .then(function(response){
-                $scope.facet_sites = response.result;
-                angular.forEach($scope.facet_sites, function(datum) {
-                    
-                    if(datum.value.latitude != undefined){
-                    
-                        $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
-                }
-                });
-            })
-        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-            .then(function(response){
-                $scope.facet_variables = response.result;
-            })
-      }
-      */
     };
     
     $scope.searchTools = function(query){
