@@ -409,11 +409,7 @@ drawEvents.forEach(function(eventName){
 
 /////////Modal Stuff/////////////////////
     $scope.viewFileAnnotations = function(fileUuid){
-        MetaController.listMetadata("{'name':'DataDescriptor','associationIds':{$in:['"+fileUuid+"']}}")
-        .then(function(response){
-            if(response.result[0] != null)
-            $scope.openView(response.result[0].uuid, 'lg')
-        })
+        $state.go("filemetadata-manage",{'uuid': fileUuid});     
     }   
 
     $scope.openView = function (metadatumuuid, size) {
