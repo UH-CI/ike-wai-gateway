@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('BasicSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService) {
+angular.module('AgaveToGo').controller('FacetedSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -30,11 +30,24 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.schemaBox = {val1:true,val2:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
+    $scope.files_hrefs=[]
+    $scope.file_uuids =[]
 
-  $scope.parseFiles = function(){
+    $scope.sortType= 'href';
+    $scope.sortReverse = false;
+
+    $scope.wellSortType ='value.well_name'
+    $scope.siteSortType ='value.name'
+    $scope.varSortType ='value.variable_name'
+    $scope.wellSortReverse = true;
+    $scope.siteSortReverse = true;
+    $scope.varSortReverse = false;
+    
+    $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
       $scope.files_hrefs =[]
+      $scope.file_uuids =[]
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
@@ -43,12 +56,14 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
                   $scope.files.push(value)
+                  $scope.file_uuids.push(value.rel)
                 }
               }
             }
           })
         }
       })
+      $scope.fetchFacetMetadata();
       $scope.requesting=false;
     }
 
@@ -66,12 +81,24 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
           }
        );
      }
+     
+     
     $scope.textSearch = function(){
-      if ($scope.searchField.value != ''){
-        $scope.filequery = "{$text:{$search:'"+$scope.searchField.value+"'}}";
+      if ($scope.selectedMetadata != null){
+        $scope.filequery = "{$and:[{$text:{$search:'"+$scope.searchField.value+"'},{'value.published':'True'}]}";
       }
       else{
         $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
+      }
+      $scope.doSearch();
+    }
+
+    $scope.facetSearch = function(){
+      if ($scope.selectedMetadata != ''){
+        $scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
+      }
+      else{
+        $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
       }
       $scope.doSearch();
     }
@@ -123,14 +150,30 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
 
     $scope.refresh = function() {
       $scope.requesting = true;
-      MetaController.listMetadataSchema(
-				$scope.schemaQuery
-			).then(function(response){
+      MetaController.listMetadataSchema($scope.schemaQuery)
+      .then(function(response){
 				$scope.metadataschema = response.result;
-			})
+      })
+      $scope.fetchFacetMetadata();
       $scope.doSearch();
     };
-
+    
+    $scope.fetchFacetMetadata = function(){
+      MetaController.listMetadata("{'name':'Well','value.published':'True','associationIds':{$in:['"+$scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_wells = response.result;
+           // alert(angular.toJson($scope.facet_wells))
+        })
+      MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_sites = response.result;
+        })
+    MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_variables = response.result;
+        })
+    };
+    
     $scope.searchTools = function(query){
       $scope.requesting = true;
       if (query !=''){
@@ -163,6 +206,25 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         $scope.requesting = false;
       });
     }
+
+
+    $scope.selectedMetadata=[]
+    // Toggle selection for a given fruit by name
+     $scope.toggleSelectedMetadata = function(uuid) {
+    var idx = $scope.selectedMetadata.indexOf(uuid);
+
+    // Is currently selected
+    if (idx > -1) {
+
+        $scope.selectedMetadata.splice(idx, 1);
+
+    }
+
+    // Is newly selected
+    else {
+      $scope.selectedMetadata.push(uuid);
+    }
+  };
 /////////Modal Stuff/////////////////////
 
     $scope.openView = function (metadatumuuid, size) {

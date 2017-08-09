@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
 <style>
 button.accordion {
     background-color: #eee;
@@ -29,19 +45,20 @@ div.panel {
 <body>
 <h3>Help Topics</h3>
 
-Go <a href="#/walkthrough">here</a> for the walkthrough.
+For a step by step guide to using the system, this takes you to the <a href="#/walkthrough">walkthrough</a>.
 
  <!-- <a href="#/help/#sidebar">sidebar</a> -->
 
 <hr />
 
-<ul>
-	<li>How do I contact you?<br />
-		Go <a id="mailto" href="mailto:itsci@hawaii.edu?subject=IkeToGo">here</a>
+	<button class="accordion">How do I contact you?</button>
+	<div class="panel"><br />
+		Here's <a id="mailto" href="mailto:itsci@hawaii.edu?subject=IkeToGo">our email address.</a>
 		<hr />
-	</li>
+	</div>
 
-	<li>How do I log in?<br />
+		<button class="accordion">How do I log in?</button>
+	<div class="panel"><br />
 
 		Bring up <a href="http://ikewai.its.hawaii.edu">`Ike ToGo</a> in your browser.
 		You may see briefly see this page: 
@@ -414,8 +431,11 @@ Go <a href="#/walkthrough">here</a> for the walkthrough.
 
 	  delete the files.
 
+		</div>
 
-	<li>How do I tag/add metadata to my files?<br />
+	<button class="accordion">How do I tag/add metadata to my files?</button>
+	<div class="panel"><br />
+
 		Click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
@@ -468,7 +488,7 @@ Go <a href="#/walkthrough">here</a> for the walkthrough.
 		button at the top of the page.  If you are in the main file browser window and would like to add/view/edit
 		the metadata for a given file, click on the "Actions" menu next to the file and then click on "View/Add Metadata."
 		<hr />
-	</li>
+	</div>
 	<!--
 	<li>How do I narrow down the metadata to associate?<br />
 

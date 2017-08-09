@@ -152,7 +152,9 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       //return true;
     }
 
-
+    this.addPublicPermission = function(uuidToAdd){
+      MetaController.addMetadataPermission('{"username":"public","permission":"READ"}',uuidToAdd);
+    }
     this.resolveApprovedStatus = function(uuidToAdd){
       var self = this;
       user = $localStorage.activeProfile;

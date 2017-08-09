@@ -172,7 +172,7 @@ angular.module('AgaveToGo').controller('StudiesResourceEditLocationsController',
       body.schemaId = $scope.selectedmetadataschema.uuid;
       //check for latitude - if there then store a geojson point
       if($scope.model.latitude){
-          body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.latitude,$scope.model.longitude]}
+          body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.longitude,$scope.model.latitude]}
           body.geospatial= true;
       }
       MetaController.addMetadata(body)
