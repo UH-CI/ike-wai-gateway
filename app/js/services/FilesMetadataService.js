@@ -167,10 +167,16 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           var metadatum = response.result;
           var body = {};
           body.associationIds = metadatum.associationIds;
-          body.associationIds.splice(body.associationIds.indexOf(uuidToRemove), 1);
+          var index = body.associationIds.indexOf(uuidToRemove);
+          body.associationIds.splice(index, 1);
           body.name = metadatum.name;
           body.value = metadatum.value;
           body.schemaId = metadatum.schemaId;
+          if (body.name === "rejected") {
+            body.value.title = metadatum.value.title;
+            body.value.reasons = metadatum.value.reasons;
+            body.value.reasons.splice(index, 1);
+          }
           promises.push(MetaController.updateMetadata(body,metadataUuid))
           var deferred = $q.defer();
 
@@ -407,7 +413,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       });
     }
 
-    this.rejectStaggingRequest = function(metadataUuid, uuidToReject){
+    this.rejectStaggingRequest = function(metadataUuid, uuidToReject, reason){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
@@ -419,22 +425,56 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           body.value = metadatum.value;
           //rejected = [angular.toJson(body.value)];
           body.schemaId = metadatum.schemaId;
-          if (body.value.rejected.indexOf[uuidToReject] < 0){
+          if (body.value.rejected.indexOf(uuidToReject) < 0){
             body.value.rejected.push(uuidToReject);
           }
+          //self.addToRejected(uuidToReject, reason);
           //alert(angular.toJson(rejected))
         //  body.value.rejected = rejected
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
+              
+              // put the rejected uuid and reason in the rejected metadata container object
+              // get the metadata object that holds all rejected file ids.
               MetadataService.fetchSystemMetadataUuid('rejected')
                .then(function(rejected_uuid){
-                MetadataService.addAssociation(rejected_uuid, uuidToReject)
-               })
+                //MetadataService.addAssociation(rejected_uuid, uuidToReject);
+
+  	            MetaController.getMetadata(rejected_uuid)
+                  .then(function(response){
+
+                    var metadatum = response.result;
+                    var body = {};
+                    body.name = metadatum.name;
+                    body.value = metadatum.value;
+                    body.schemaId = metadatum.schemaId;
+                    body.associationIds = metadatum.associationIds;
+                    body.value.title = metadatum.value.title;
+                    body.value.reasons = metadatum.value.reasons;
+                    if (typeof body.value.reasons === 'undefined') {
+                      body.value.reasons = [];
+                    }
+                    if (body.associationIds.indexOf(uuidToReject) < 0){
+                      body.associationIds.push(uuidToReject);
+                      body.value.reasons.push(reason);
+                    }
+                    MetaController.updateMetadata(body,rejected_uuid)
+                      .then(
+                        function(response){
+                          //App.alert({message: $translate.instant('success_metadata_update'),closeInSeconds: 5 });
+                        },
+                        function(response){
+                          //MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+                        }
+                      )
+
+                });
+              });
               App.alert({message: $translate.instant('success_metadata_update'),closeInSeconds: 5 });
             },
             function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
+             MessageService.handle(response, $translate.instant('error_metadata_update_assocation'));
             }
 
           )
