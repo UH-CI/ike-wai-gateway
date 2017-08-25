@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Keywords','Variable','Tag'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Subject','Variable','Tag'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
@@ -25,13 +25,13 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     }
     $scope.get_editors();
 
-    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Keywords','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
     $scope.people = [];
     $scope.orgs = [];
-
+    $scope.subjects = [];
 
     $scope.formats = [
 ".bmp - bit map",
@@ -76,6 +76,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor = {};
     $scope.datadescriptor.organizations = [];
     $scope.datadescriptor.creators = [];
+    $scope.datadescriptor.subjects = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
@@ -158,7 +159,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh = function() {
       $scope.requesting = true;
   	  $scope.people.length = 0;
-      //$scope.keywords.length = 0;
+      $scope.subjects.length = 0;
 	    $scope.orgs.length = 0;
 
       MetaController.listMetadataSchema(
@@ -208,7 +209,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       )
 
       $scope.getPeople();
-      //$scope.getKeywords();
+      $scope.getSubjects();
       $scope.getOrgs();
 
       MetaController.listMetadataSchema(
@@ -231,10 +232,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.fetchMetadata("{'name':'Person'}");
     };
 
-    //$scope.getKeywords = function(){
-    //    $scope.keywords.length = 0;
-    //    $scope.fetchMetadata("{'name':'Keywords'}");
-    //};
+    $scope.getSubjects = function(){
+        $scope.subjects.length = 0;
+        $scope.fetchMetadata("{'name':'Subject'}");
+    };
 
     $scope.getOrgs = function(){
         $scope.orgs.length = 0;
@@ -263,6 +264,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   $scope.orgs.push(value.value);
                   $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
               }
+              else if(value.name === 'Subject'){
+                  $scope.subjects.push(value.value);
+                  $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
+              }
             });
             $scope.requesting = false;
             
@@ -289,7 +294,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
        $scope.refresh();
     });
     
-    $rootScope.$on("metadataPersonOrOrgUpdated", function (event, args) {
+    $rootScope.$on("metadataPersonOrgOrSubjectUpdated", function (event, args) {
       $scope.requesting = false;
       if (args.type === "Person") {
         var str = {"first_name":args.value.value.first_name,"last_name":args.value.value.last_name,"uuid":args.value.uuid};
@@ -305,6 +310,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       else if (args.type === "Organization") {
         var str = {"name":args.value.value.name,"uuid":args.value.uuid};
         $scope.datadescriptor.organizations.push(str);
+      }
+      else if (args.type === "Subject") {
+        var str = {"name":args.value.value.word,"uuid":args.value.uuid};
+        $scope.datadescriptor.subjects.push(str);
       }
       //$scope.refresh();
       $rootScope.$broadcast('metadataUpdated');
@@ -499,7 +508,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             })
           }else{
             $scope.requesting = false;
-            App.alert({type:'danger', message: "Creator, Title, Licence Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
+            App.alert({type:'danger', message: "Creator, Title, License Rights, and License Permissions are required fields - Please correct and submit again.",closeInSeconds: 5  });
           }
         }
 
