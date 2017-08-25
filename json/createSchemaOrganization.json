@@ -1,0 +1,29 @@
+{
+  "title" : "Organization",
+  "description" : "Information related to an organization, agency, institution, etc.",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "title" : "Organization Name"
+    },
+    "email" : {
+      "type" : "string",
+      "title" : "Email"
+    },
+    "address" : {
+      "type" : "string",
+      "title" : "Address"
+    },
+    "phone" : {
+      "type" : "string",
+      "title" : "Phone"
+    },
+    "url" : {
+      "type" : "string",
+      "title" : "Web Site"
+    }
+  },
+  "required" : [ "name" ]
+}

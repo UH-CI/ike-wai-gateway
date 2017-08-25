@@ -1,0 +1,1000 @@
+
+
+
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"‘Ano‘ilani",
+	    "last_name":"Aga",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-0289",
+	    "email" : "anoilani@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Aida",
+	    "last_name":"Arik",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "aarik@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Daniela",
+	    "last_name":"Bottjer-Wilson",
+	    "email" : "dbottjer@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Barbara",
+	    "last_name":"Bruno",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-0901",
+	    "email" : "barb@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Kim",
+	    "last_name":"Burnett",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-8086",
+	    "email" : "kburnett@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Michelle",
+	    "last_name":"Choe",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "email" : "choem3@hawaii.edu "
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Greg",
+	    "last_name":"Chun",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-5640",
+	    "email" : "gchun711@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Sean",
+	    "last_name":"Cleveland",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "phone" : "(808) 956-6362",
+	    "email" : "seanbc@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Henrietta",
+	    "last_name":"Dulai",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-0720",
+	    "email" : "hdulaiov@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Aly",
+	    "last_name":"El-Kadi",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-6331",
+	    "email" : "elkadi@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Jennifer",
+	    "last_name":"Engels",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "engels@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Kiana",
+	    "last_name":"Frank",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-0403",
+	    "email" : "klfrank@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"David",
+	    "last_name":"Garmire",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-7406",
+	    "email" : "garmire@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Jennifer",
+	    "last_name":"Geis",
+	    "email" : "jgeis@hawaii.edu",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "phone" : "808-956-7123"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Catherine",
+	    "last_name":"Hudson",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "hudson4@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Gwen",
+	    "last_name":"Jacobs",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "phone" : "(808) 956-5767",
+	    "email" : "gwenj@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Velma",
+	    "last_name":"Kameoka",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-0813",
+	    "email" : "velmak@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Kevin",
+	    "last_name":"Kelly",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-6651",
+	    "email" : "kevink@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Jack",
+	    "last_name":"Lam",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "jacksy@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Nicole",
+	    "last_name":"Lautze",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-3499",
+	    "email" : "nlautze@soest.hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Jason",
+	    "last_name":"Leigh",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-9164",
+	    "email" : "leighj@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Darren",
+	    "last_name":"Lerner",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-7031",
+	    "email" : "lerner@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Ouida",
+	    "last_name":"Meier",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "email" : "omeier@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Ronald",
+	    "last_name":"Merrill",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "phone" : "(808) 956-8951",
+	    "email" : "merrill@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Anupam",
+	    "last_name":"Misra",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-6938",
+	    "email" : "anupam@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Peter",
+	    "last_name":"Mouginis-Mark",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-6490",
+	    "email" : "pmm@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Scott",
+	    "last_name":"Murakami",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-9709",
+	    "email" : "smurakam@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"M. Puakea",
+	    "last_name":"Nogelmeier",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-3562",
+	    "email" : "puakea@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Roberto",
+	    "last_name":"Pelayo",
+	    "organization" : "University of Hawaiʻi at Hilo",
+	    "phone" : "(808) 932-7539",
+	    "email" : "robertop@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Matthew",
+	    "last_name":"Platz",
+	    "organization" : "University of Hawaiʻi at Hilo",
+	    "phone" : "(808) 932-7332",
+	    "email" : "mplatz@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"John",
+	    "last_name":"Rand",
+	    "address" : "200 N Vineyard Blvd, Suite A-420",
+	    "phone" : "(808) 587-4086",
+	    "email" : "jrand@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"David",
+	    "last_name":"Schanzenbach",
+	    "organization" : "University of Hawaiʻi at Manoa, Cyberinfrastructure",
+	    "phone" : "(808) 956-8653",
+	    "email" : "davidls@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Diamond",
+	    "last_name":"Tachera",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "diamondt@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Helen",
+	    "last_name":"Turner",
+	    "organization" : "Chaminade University",
+	    "phone" : "(808) 739-8399",
+	    "email" : "hturner@chaminade.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Julie",
+	    "last_name":"Uʻilani",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "email" : "Aujulieau@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "2407294948645474791-242ac1110-0001-013", 
+    "title": "Person",
+	"value": {
+	    "first_name":"Christopher",
+	    "last_name":"Wada",
+	    "organization" : "University of Hawaiʻi at Manoa",
+	    "phone" : "(808) 956-2325",
+	    "email" : "cawada@hawaii.edu"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Person"
+}'	
+
+
