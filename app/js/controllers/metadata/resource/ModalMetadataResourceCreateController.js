@@ -8,7 +8,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.model = {};
 
 	$scope.schemaQuery ='';
-	$scope.approvedSchema = ['Well','Site','Person','Organization','Location','Variable'];
+	$scope.approvedSchema = ['Well','Site','Person','Organization','Subject','Location','Variable'];
 	var selectedSchemaUuid = '';
 
 	$scope.initialize = function() {
@@ -92,7 +92,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						var metaName = response.result.name;
 
 						// don't do associations for any person or organization metadata objects
-						if (metaName != "Person" && metaName != "Organization") {
+						if (metaName != "Person" && metaName != "Organization" && metaName != "Subject") {
 							//check if this is for a file object or just a new metadata creation
 							if ($scope.fileMetadataObjects){
 								FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
@@ -110,8 +110,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							$rootScope.$broadcast('metadataUpdated');
 							//$scope.close();
 						}
-						else if (metaName === "Person" || metaName === "Organization" ) {
-							$rootScope.$broadcast('metadataPersonOrOrgUpdated', { type: metaName, value: response.result});
+						else if (metaName === "Person" || metaName === "Organization" || metaName === "Subject" ) {
+							$rootScope.$broadcast('metadataPersonOrgOrSubjectUpdated', { type: metaName, value: response.result});
 							App.alert({message: "Successfully Created "+ " " + metaName,closeInSeconds: 5  });
 						    $scope.close();
 						}

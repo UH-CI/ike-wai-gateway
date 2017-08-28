@@ -2562,7 +2562,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                         'js/services/MessageService.js',
                         'js/services/FilesMetadataService.js',
                         'js/services/MetadataService.js',
-                        'js/controllers/stagged/StaggedController.js'
+                        'js/controllers/stagged/StaggedController.js',
+                        'js/controllers/stagged/ModalRejectStagingRequestController.js'
                     ]
                   }
                 ]);

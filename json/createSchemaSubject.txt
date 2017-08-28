@@ -1,0 +1,88 @@
+curl -sk -H "Authorization: Bearer 74f8bc634129fd7f19af4489c2cbea" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title": "Subject",
+  "description" : "Searchable words describing the contents of this file",
+  "type": "object",
+  "ikewai" : "TRUE",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "uuid": {
+      "type": "string",
+      "title": "UUID"
+    },
+    "short_heirarchy": {
+      "type": "string",
+      "title": "Short Heirarchy"
+    },
+    "full_heirarchy": {
+      "type": "string",
+      "title": "Full Heirarchy"
+    },
+    "display": {
+      "type": "string",
+      "title": "display"
+    }
+  },
+  "required" : [ "word"]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+------
+
+{
+  "status":"success",
+  "message":null,
+  "version":"2.2.4-dev-r942a307",
+  "result":{
+    "internalUsername":null,
+    "lastUpdated":"2017-08-25T14:13:43.054-05:00",
+    "schema":{
+      "title":"Subject",
+      "description":"Searchable words describing the contents of this file",
+      "type":"object",
+      "ikewai":"TRUE",
+      "properties":{
+        "word":{
+          "type":"string",
+          "title":"Subject"
+        },
+        "uuid":{
+          "type":"string",
+          "title":"UUID"
+        },
+        "short_heirarchy":{
+          "type":"string",
+          "title":"Short Heirarchy"
+        },
+        "full_heirarchy":{
+          "type":"string",
+          "title":"Full Heirarchy"
+        },
+        "display":{
+          "type":"string",
+          "title":"display"
+        }
+      },
+      "required":["word"]
+    },
+    "uuid":"3613615198303228391-242ac1110-0001-013",
+    "created":"2017-08-25T14:13:43.054-05:00",
+    "owner":"jgeis",
+    "_links":{
+      "self":{
+        "href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/3613615198303228391-242ac1110-0001-013"
+      },
+      "permissions":{
+        "href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/3613615198303228391-242ac1110-0001-013/pems"
+      },
+      "owner":{
+        "href":"https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+      }
+    }
+  }
+}
+
+

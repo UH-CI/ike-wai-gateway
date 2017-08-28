@@ -1,0 +1,107 @@
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaPerson.json
+
+OR
+
+
+
+curl -sk -H "Authorization: Bearer 9f59a59f57e09ffdfce8fcd8b08520a7" -X POST -H "Content-Type: application/json" --data-binary '
+    {
+      "title" : "Person",
+      "description" : "Information related to a person",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "first_name" : {
+          "type" : "string",
+          "title" : "First Name"
+        },
+        "last_name" : {
+          "type" : "string",
+          "title" : "Last Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "organization" : {
+          "type" : "string",
+          "title" : "Organization"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "first_name", "last_name" ]
+    }
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+// OUTPUT
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-06-15T14:20:40.761-05:00",
+  "schema": {
+    "title": "Person",
+    "description": "Information related to a person",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "first_name": {
+        "type": "string",
+        "title": "First Name"
+      },
+      "last_name": {
+        "type": "string",
+        "title": "Last Name"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email"
+      },
+      "organization": {
+        "type": "string",
+        "title": "Organization"
+      },
+      "address": {
+        "type": "string",
+        "title": "Address"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Phone"
+      },
+      "url": {
+        "type": "string",
+        "title": "Web Site"
+      }
+    },
+    "required": [
+      "first_name",
+      "last_name"
+    ]
+  },
+  "uuid": "5170913436418240025-242ac1110-0001-013",
+  "created": "2017-06-15T14:20:40.761-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5170913436418240025-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5170913436418240025-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}

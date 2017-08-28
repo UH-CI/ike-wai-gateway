@@ -158,12 +158,17 @@
                                         {{val.name}} 
                                       <span>
                                     </td>
+                                    <td ng-if="key=='subjects' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.full_heirarchy}} 
+                                      <span>
+                                    </td>
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <td ng-if="key=='formats' || key=='languages' ">
                                       {{data_descriptor_metadatum.value[key].join(',')}} 
                                     </td>
                                     <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
-                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='formats' && key!='languages'">
+                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='subjects' && key!='formats' && key!='languages'">
                                       {{data_descriptor_metadatum.value[key]}}
                                     </td>
                                   </tr>
@@ -326,17 +331,23 @@
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>
+                             <!-- <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>-->
 
                               <br />
-                              <!--
+                              
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
-                                <ui-select-match placeholder="Select subjects...">{{$item}}</ui-select-match>
-                                <ui-select-choices repeat="subject in subjects | filter: $select.search">
-                                  <span ng-bind-html="subject"></span>
+                                <ui-select-match placeholder="Select subjects...">{{$item.word}}</ui-select-match>
+                                <ui-select-choices repeat="subject in subjects | filter: $select.search | orderBy:'subject.full_heirarchy'">
+                                  <!--<span ng-bind-html="subject"></span>-->
+                                  <div><small><span ng-bind-html="subject.full_heirarchy"></span></small></div>
+                                  <!--
+                                  <small>
+                                    {{subject.short_heirarchy}}
+                                  </small>
+                                  -->
                                 </ui-select-choices>
                               </ui-select>
-                              -->
+                              
 				                      <!-- <p>Selected: {{selected.people}}</p> -->
                             </div>
 

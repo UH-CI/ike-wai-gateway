@@ -1,0 +1,186 @@
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "Center for the Study of Active Volcanoes (CSAV)",
+		  "address": "University of Hawaiʻi at Hilo",
+      "phone": "(808) 932-7555",
+      "url": "https://hilo.hawaii.edu/~csav/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "Chaminade University of Honolulu",
+      "address": "23140 Waialae Avenue, Honolulu, HI 96816",
+      "phone": "(808) 735-4711",
+      "url": "https://chaminade.edu/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "Institute of Hawaiian Language Research and Translation",
+      "address": "2525 Correa Road, HIG 212, Honolulu, HI 96822",
+      "phone": "(808) 956-0289",
+      "url": "http://ihlrt.seagrant.soest.hawaii.edu/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "University of British Columbia",
+      "address": "2329 West Mall, Vancouver, BC Canada V6T 1Z4 ",
+      "phone": "604 822 2211",
+      "url": "https://www.ubc.ca/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "University of Hawaiʻi at Hilo",
+      "address": "200 W. Kāwili St., Hilo, HI 96720-4091",
+      "phone": "(808) 932-7446",
+      "url": "https://hilo.hawaii.edu/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "University of Hawaiʻi at Mānoa",
+      "address": "2500 Campus Road, Honolulu, HI 96822",
+      "phone": "808-956-8111",
+      "url": "https://manoa.hawaii.edu/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "5992991345384034791-242ac1110-0001-013", 
+    "title": "Organization",
+	"value": {
+      "name": "U.S. Geological Survey",
+      "url": "https://www.usgs.gov/"
+    },
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "omeier",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Organization"
+}'	
+
+
+
+
+

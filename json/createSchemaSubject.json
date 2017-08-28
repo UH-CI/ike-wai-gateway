@@ -1,0 +1,29 @@
+{
+  "title": "Subject",
+  "description" : "Searchable words describing the contents of this file",
+  "type": "object",
+  "ikewai" : "TRUE",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "uuid": {
+      "type": "string",
+      "title": "UUID"
+    },
+    "short_heirarchy": {
+      "type": "string",
+      "title": "Short Heirarchy"
+    },
+    "full_heirarchy": {
+      "type": "string",
+      "title": "Full Heirarchy"
+    },
+    "display": {
+      "type": "string",
+      "title": "display"
+    }
+  },
+  "required" : [ "word"]
+}

@@ -1,0 +1,89 @@
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaOrganization.json
+
+OR
+
+
+curl -sk -H "Authorization: Bearer d58597524b4a3b19e639e7c0f070d361" -X POST -H "Content-Type: application/json" --data-binary '
+    {
+      "title" : "Organization",
+      "description" : "Information related to an organization, agency, institution, etc.",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "title" : "Organization Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "name" ]
+    }
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+// output
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-06-09T17:07:27.341-05:00",
+  "schema": {
+    "title": "Organization",
+    "description": "Information related to an organization, agency, institution, etc.",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "name": {
+        "type": "string",
+        "title": "Organization Name"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email"
+      },
+      "address": {
+        "type": "string",
+        "title": "Address"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Phone"
+      },
+      "url": {
+        "type": "string",
+        "title": "Web Site"
+      }
+    },
+    "required": [
+      "name"
+    ]
+  },
+  "uuid": "442902870017184231-242ac1110-0001-013",
+  "created": "2017-06-09T17:07:27.341-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/442902870017184231-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/442902870017184231-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}

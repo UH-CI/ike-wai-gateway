@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h3 class="modal-title">Reason for rejection</h3>
+</div>
+
+<div class="portlet-body form">
+    <form name="rejectReasonForm"
+        sf-schema="schema"
+        sf-form="form"
+        sf-model="model">
+        <!--<input type="textarea" name="reason" ng-model="userType" style="width:100%" rows="5">-->
+        <textarea name="reason" ng-model="model.reason" placeholder="Enter rejection reason here..."  rows="5" style="width:100%"></textarea>
+    </form>
+</div>
+
+<div class="modal-footer">
+  <input type="submit" name="saveBtn" class="btn btn-primary" value="Submit" ng-click="onSubmit(rejectReasonForm)">
+  <button class="btn btn-default pull-left" name="closeBtn"  ng-click="close()">Cancel</button>
+</div>
