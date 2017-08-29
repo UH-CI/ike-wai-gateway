@@ -334,12 +334,17 @@
                              <!-- <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>-->
 
                               <br />
-                              
+
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
                                 <ui-select-match placeholder="Select subjects...">{{$item.word}}</ui-select-match>
                                 <ui-select-choices repeat="subject in subjects | filter: $select.search | orderBy:'subject.full_heirarchy'">
                                   <!--<span ng-bind-html="subject"></span>-->
-                                  <div><small><span ng-bind-html="subject.full_heirarchy"></span></small></div>
+                                  <div ng-show='subject.display == "bold"'>
+                                    <div><small><bold><span ng-bind-html="subject.word | highlight: subject.word"></span><bold></small></div>
+                                  </div>
+                                  <div ng-show='subject.display !== "bold"'>
+                                    <div><small><span ng-bind-html="subject.word"></span></small></div>
+                                  </div>
                                   <!--
                                   <small>
                                     {{subject.short_heirarchy}}

@@ -1,3 +1,5 @@
+DEV: (see prod below)
+
 curl -sk -H "Authorization: Bearer 74f8bc634129fd7f19af4489c2cbea" -X POST -H "Content-Type: application/json" --data-binary '
 {
   "title": "Subject",
@@ -32,6 +34,7 @@ curl -sk -H "Authorization: Bearer 74f8bc634129fd7f19af4489c2cbea" -X POST -H "C
 
 ------
 
+OUTPUT: 
 {
   "status":"success",
   "message":null,
@@ -86,3 +89,94 @@ curl -sk -H "Authorization: Bearer 74f8bc634129fd7f19af4489c2cbea" -X POST -H "C
 }
 
 
+---------
+
+PROD:
+
+curl -sk -H "Authorization: Bearer d78bb650547036932d93423118b4172" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title": "Subject",
+  "description" : "Searchable words describing the contents of this file",
+  "type": "object",
+  "ikewai" : "TRUE",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "uuid": {
+      "type": "string",
+      "title": "UUID"
+    },
+    "short_heirarchy": {
+      "type": "string",
+      "title": "Short Heirarchy"
+    },
+    "full_heirarchy": {
+      "type": "string",
+      "title": "Full Heirarchy"
+    },
+    "display": {
+      "type": "string",
+      "title": "display"
+    }
+  },
+  "required" : [ "word"]
+}
+' https://ikeauth.its.hawaii.edu/meta/v2/schemas/
+
+--------
+OUTPUT:
+
+{
+    "status": "success",
+    "message": null,
+    "version": "2.2.4-dev-r942a307",
+    "result": {
+        "internalUsername": null,
+        "lastUpdated": "2017-08-28T18:33:31.330-05:00",
+        "schema": {
+            "title": "Subject",
+            "description": "Searchable words describing the contents of this file",
+            "type": "object",
+            "ikewai": "TRUE",
+            "properties": {
+                "word": {
+                    "type": "string",
+                    "title": "Subject"
+                },
+                "uuid": {
+                    "type": "string",
+                    "title": "UUID"
+                },
+                "short_heirarchy": {
+                    "type": "string",
+                    "title": "Short Heirarchy"
+                },
+                "full_heirarchy": {
+                    "type": "string",
+                    "title": "Full Heirarchy"
+                },
+                "display": {
+                    "type": "string",
+                    "title": "display"
+                }
+            },
+            "required": ["word"]
+        },
+        "uuid": "5560776967454265831-242ac11f-0001-013",
+        "created": "2017-08-28T18:33:31.330-05:00",
+        "owner": "jgeis",
+        "_links": {
+            "self": {
+                "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/5560776967454265831-242ac11f-0001-013"
+            },
+            "permissions": {
+                "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/5560776967454265831-242ac11f-0001-013/pems"
+            },
+            "owner": {
+                "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+            }
+        }
+    }
+}

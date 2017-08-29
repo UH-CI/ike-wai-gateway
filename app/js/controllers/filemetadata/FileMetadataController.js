@@ -234,7 +234,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
 
     $scope.getSubjects = function(){
         $scope.subjects.length = 0;
-        $scope.fetchMetadata("{'name':'Subject'}");
+        $scope.fetchMetadataWithLimit("{'name':'Subject'}", 300);
     };
 
     $scope.getOrgs = function(){
@@ -243,8 +243,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     };
 
     $scope.fetchMetadata = function(metadata_query){
+      $scope.fetchMetadataWithLimit(metadata_query, 100);
+    }
+
+    $scope.fetchMetadataWithLimit = function(metadata_query, limit){
       var deferred = $q.defer();
-      deferred.resolve(MetaController.listMetadata(metadata_query,100,0).then(
+      deferred.resolve(MetaController.listMetadata(metadata_query,limit,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
@@ -470,7 +474,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
             $scope.requesting = false;
             App.alert({type:'danger', message: "Creator, Title, License Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
           }
-
+          
         }
 
         $scope.updateDataDescriptor = function(){
