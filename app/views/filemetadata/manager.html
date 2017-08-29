@@ -123,7 +123,7 @@
 
               <div class="row">
                 <div class=" pull-left">
-                  <h4>{{filename}}</h4>
+                  <h4>{{filename.split('/').pop()}}</h4>
                 </div>
                 <div ng-show='edit_perm || !data_descriptor_metadatum.value.published' class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
