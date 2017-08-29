@@ -1,0 +1,31 @@
+metadata-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/rejected.json
+
+------
+
+OUTPUT: 
+{
+  "uuid": "105290816389648871-242ac11f-0001-012",
+  "owner": "jgeis",
+  "schemaId": null,
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2017-08-29T16:50:00.199-05:00",
+  "name": "rejected",
+  "value": {
+    "title": "Rejected files",
+    "reasons": []
+  },
+  "created": "2017-08-29T16:50:00.199-05:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/105290816389648871-242ac11f-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/105290816389648871-242ac11f-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": []
+  }
+}
