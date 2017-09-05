@@ -52,19 +52,19 @@
 <script type="text/javascript">
       $(document).ready(function() {
           $('#datetimepicker1').datepicker({
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             todayHighlight: true,
             autoclose: true
           }).on("changeDate", function(e) {
               $('#datetimepicker2').datepicker("setDate", e.date);
           });
           $('#datetimepicker2').datepicker({
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             todayHighlight: true,
             autoclose: true
           });
           $('#datetimepicker3').datepicker({
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             todayHighlight: true,
             autoclose: true
           });
