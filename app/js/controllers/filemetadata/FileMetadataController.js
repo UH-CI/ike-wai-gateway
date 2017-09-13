@@ -34,43 +34,53 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.subjects = [];
 
     $scope.formats = [
-".bmp - bit map",
-".cdf - common data format, netCDF",
-".csv - comma-separated value",
-".docx - Word document",
-".fasta - biological sequence text",
-".fastq - biological sequence text, Illumina",
-".gif - graphics interchange format",
-".ipynb - Jupyter notebook",
-".jpg - joint photographic experts group",
-".json - geospatial javascript object notation",
-".json - javascript object notation",
-".kml - keyhole markup language",
-".kmz - keyhole markup language, zipped",
-".mat - Matlab file ",
-".mov - QuickTime movie",
-".mp3 - moving picture experts group",
-".mp4 - moving picture experts group",
-".odp - OpenDocument presentation",
-".ods - OpenDocument spreadsheet",
-".odt - OpenDocument text",
-".pdf - Adobe portable document format",
-".png - portable network graphics",
-".pptx - PowerPoint",
-".py - Python",
-".r - R code and files",
-".rtf - rich text format",
-".shp.shx .dbf .prj .xml - shapefile (submit together as zip)",
-".svg - scalable vector graphics",
-".tex - LaTeX",
-".tiff - tagged image file format",
-".tiff - geoTIFF (geospatial tagged image file format)",
-".tsv - tab-separated value",
-".txt - plain text or other content",
-".xlsx - Excel workbook ",
-".xml - extensible markup language",
-".zip - zip compression (select internal file formats also)"];
+      ".bmp - bit map",
+      ".cdf - common data format, netCDF",
+      ".csv - comma-separated value",
+      ".docx - Word document",
+      ".fasta - biological sequence text",
+      ".fastq - biological sequence text, Illumina",
+      ".gif - graphics interchange format",
+      ".ipynb - Jupyter notebook",
+      ".jpg - joint photographic experts group",
+      ".json - geospatial javascript object notation",
+      ".json - javascript object notation",
+      ".kml - keyhole markup language",
+      ".kmz - keyhole markup language, zipped",
+      ".mat - Matlab file ",
+      ".mov - QuickTime movie",
+      ".mp3 - moving picture experts group",
+      ".mp4 - moving picture experts group",
+      ".odp - OpenDocument presentation",
+      ".ods - OpenDocument spreadsheet",
+      ".odt - OpenDocument text",
+      ".pdf - Adobe portable document format",
+      ".png - portable network graphics",
+      ".pptx - PowerPoint",
+      ".py - Python",
+      ".r - R code and files",
+      ".rtf - rich text format",
+      ".shp.shx .dbf .prj .xml - shapefile (submit together as zip)",
+      ".svg - scalable vector graphics",
+      ".tex - LaTeX",
+      ".tiff - tagged image file format",
+      ".tiff - geoTIFF (geospatial tagged image file format)",
+      ".tsv - tab-separated value",
+      ".txt - plain text or other content",
+      ".xlsx - Excel workbook ",
+      ".xml - extensible markup language",
+      ".zip - zip compression (select internal file formats also)"];
     
+    // Licenses from: https://creativecommons.org/licenses/
+    $scope.license_rights = [
+      "Creative Commons Attribution CC BY",
+      "Creative Commons Attribution-ShareAlike CC BY-SA",
+      "Creative Commons Attribution-NoDerivs CC BY-ND",
+      "Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA",
+      "Creative Commons Attribution-NoCommercial CC BY-NC",
+      "Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND",
+      "Other"
+    ];
     
     $scope.languages = ['English', 'Hawaiian'];
     $scope.datadescriptor = {};
@@ -82,7 +92,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
     $scope.datadescriptor.license_permission = "public";
     $scope.datadescriptor.title = "";
-    $scope.datadescriptor.license_rights = 'Creative Commons Attribution CC BY';
+    $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
 
     $scope.data_descriptor
     $scope.class =[];
@@ -219,7 +229,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       jQuery('#datetimepicker2').datepicker();
       jQuery('#datetimepicker3').datepicker();
       $scope.refreshMetadata();
-    };
+   };
 
     $scope.setTitle = function() {
       if (!$scope.datadescriptor.title && $scope.filename) {
