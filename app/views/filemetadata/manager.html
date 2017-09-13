@@ -161,18 +161,20 @@
                                         {{val.name}} 
                                       <span>
                                     </td>
+                                    <!--
                                     <td ng-if="key=='subjects' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.word}} 
                                       <span>
                                     </td>
+                                      -->
                                     <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
                                       <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
                                       <!--{{data_descriptor_metadatum.value[key]}}--> 
                                       {{data_descriptor_metadatum.value[key] | date:"yyyy-mm-dd"}}
                                     </td>
-                                    <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
-                                    <td ng-if="key=='formats' || key=='languages' ">
+                                    <td ng-if="key=='subjects' || key=='formats' || key=='languages' ">
+                                    <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(',')}} 
                                     </td>
                                     <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
@@ -339,28 +341,33 @@
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                             <!-- <input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>-->
-
                               <br />
-
+                              <!--<input ng-model="datadescriptor.subjects" class="form-control" type='textarea' rows="2" placeholder="Enter Keywords"/>-->
+                              <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
+                                <ui-select-match placeholder="Enter terms you would use to search for this data...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="subject in subjects | filter: $select.search">
+                                  <span ng-bind-html="subject"></span>
+                                </ui-select-choices>
+                              </ui-select>
+                               <!--
+                              <br />
                               <ui-select class="form-control" multiple tagging tagging-label="" remove-selected="false" ng-model="datadescriptor.subjects" theme="bootstrap" sortable="true" ng-disabled="disabled"  title="Choose subjects">
                                 <ui-select-match placeholder="Enter terms you would use to search for this data...">{{$item.word}}</ui-select-match>
                                 <ui-select-choices repeat="subject in subjects | filter: $select.search | orderBy:'subject.full_heirarchy'">
-                                  <!--<span ng-bind-html="subject"></span>-->
                                   <div ng-show='subject.display == "bold"'>
                                     <div><small><bold><span ng-bind-html="subject.word | highlight: subject.word"></span><bold></small></div>
                                   </div>
                                   <div ng-show='subject.display !== "bold"'>
                                     <div><small><span ng-bind-html="subject.word"></span></small></div>
                                   </div>
-                                  <!--
-                                  <small>
-                                    {{subject.short_heirarchy}}
-                                  </small>
-                                  -->
                                 </ui-select-choices>
                               </ui-select>
-                              
+                              -->
+                              <!--
+                              <small>
+                                {{subject.short_heirarchy}}
+                              </small>
+                              -->
 				                      <!-- <p>Selected: {{selected.people}}</p> -->
                             </div>
 

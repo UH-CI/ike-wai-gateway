@@ -8,7 +8,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
   $scope.order['Site'] =['name','latitude','longitude','description','county','state']
   $scope.order['Person'] =['first_name','last_name','email','orcid','organization','address','phone','url']
   $scope.order['Organization'] = ['name','email','address','phone','url']
-  $scope.order['Subject'] = ['word','uuid','short_heirarchy','full_heirarchy','display']
+  //$scope.order['Subject'] = ['word','uuid','short_heirarchy','full_heirarchy','display']
 
   $scope.get_editors = function(){
     $scope.editors = MetadataService.getAdmins();

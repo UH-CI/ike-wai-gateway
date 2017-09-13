@@ -86,7 +86,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.datadescriptor = {};
     $scope.datadescriptor.organizations = [];
     $scope.datadescriptor.creators = [];
-    $scope.datadescriptor.subjects = [];
+    //$scope.datadescriptor.subjects = [];
     $scope.datadescriptor.contributors = [];
     $scope.edit_data_descriptor = false;
     $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
@@ -169,7 +169,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.refresh = function() {
       $scope.requesting = true;
   	  $scope.people.length = 0;
-      $scope.subjects.length = 0;
+      //$scope.subjects.length = 0;
 	    $scope.orgs.length = 0;
 
       MetaController.listMetadataSchema(
@@ -219,7 +219,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       )
 
       $scope.getPeople();
-      $scope.getSubjects();
+      //$scope.getSubjects();
       $scope.getOrgs();
 
       MetaController.listMetadataSchema(
@@ -242,10 +242,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.fetchMetadata("{'name':'Person'}");
     };
 
-    $scope.getSubjects = function(){
-        $scope.subjects.length = 0;
-        $scope.fetchMetadataWithLimit("{'name':'Subject'}", 300);
-    };
+    //$scope.getSubjects = function(){
+    //    $scope.subjects.length = 0;
+    //    $scope.fetchMetadataWithLimit("{'name':'Subject'}", 300);
+    //};
 
     $scope.getOrgs = function(){
         $scope.orgs.length = 0;
@@ -278,10 +278,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   $scope.orgs.push(value.value);
                   $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
               }
-              else if(value.name === 'Subject'){
-                  $scope.subjects.push(value.value);
-                  $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
-              }
+              //else if(value.name === 'Subject'){
+              //    $scope.subjects.push(value.value);
+              //    $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
+              //}
             });
             $scope.requesting = false;
             
@@ -325,10 +325,10 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         var str = {"name":args.value.value.name,"uuid":args.value.uuid};
         $scope.datadescriptor.organizations.push(str);
       }
-      else if (args.type === "Subject") {
-        var str = {"name":args.value.value.word,"uuid":args.value.uuid};
-        $scope.datadescriptor.subjects.push(str);
-      }
+      //else if (args.type === "Subject") {
+      //  var str = {"name":args.value.value.word,"uuid":args.value.uuid};
+      //  $scope.datadescriptor.subjects.push(str);
+      //}
       //$scope.refresh();
       $rootScope.$broadcast('metadataUpdated');
     });
