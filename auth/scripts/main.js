@@ -40,15 +40,15 @@ AgaveAuth.config(function($locationProvider) {
 AgaveAuth.factory('settings', ['$rootScope', function($rootScope) {
     // supported languages
     var settings = {
-        oauth: {
+      /*  oauth: {
             clients: OAuthClients,
             scope: 'PRODUCTION'
-        },
+        },*/
         layout: {
             loginPage: false,
             tenantPage: true
         },
-        tenants: [],
+        //tenants: [],
         assetsPath: '/assets',
         globalPath: '/assets/global',
         layoutPath: '/assets/layouts/layout',
@@ -126,30 +126,10 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
         })
 
         // Login
-        .state('tenants', {
-            url: "/",
-            templateUrl: "views/tenants.html",
-            data: {pageTitle: 'Select Tenant'},
-            controller: "TenantSelectionController",
-            resolve: {
-                deps: ['$ocLazyLoad', function($ocLazyLoad) {
-                    return $ocLazyLoad.load({
-                        name: 'AgaveAuth',
-                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
-                        files: [
-                            //'../auth/css/tenants.css',
-                            '../auth/scripts/controllers/TenantSelectionController.js',
-                        ]
-                    });
-                }]
-            }
-        })
-
-        // Login
         .state('login', {
-            url: "/login/:tenantId",
+            url: "/",
             templateUrl: "views/login.html",
-            data: {pageTitle: 'Login'},
+            data: {pageTitle: 'Select Tenant'},
             controller: "LoginController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -159,6 +139,26 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
                         files: [
                             //'../auth/css/tenants.css',
                             '../auth/scripts/controllers/LoginController.js',
+                        ]
+                    });
+                }]
+            }
+        })
+
+        // Login
+        .state('login-success', {
+            url: "/login-success",
+            templateUrl: "views/success.html",
+            data: {pageTitle: 'Login'},
+            controller: "LoginSuccessController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        name: 'AgaveAuth',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before a LINK element with this ID. Dynamic CSS files must be loaded between core and theme css files
+                        files: [
+                            //'../auth/css/tenants.css',
+                            '../auth/scripts/controllers/LoginSuccessController.js',
                         ]
                     });
                 }]
@@ -255,7 +255,7 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
 AgaveAuth.run(["$rootScope", "$location", "$state", "$timeout", "$localStorage", "Alerts", "TenantsController", "ProfilesController", "settings", "Commons", function($rootScope, $location, $state, $timeout, $localStorage, Alerts, TenantsController, ProfilesController, settings, Commons) {
     $rootScope.$state = $state;
 
-    TenantsController.listTenants().then(
+    /*TenantsController.listTenants().then(
         function (response) {
             angular.forEach(response, function (tenant, key) {
                 if (settings.oauth.clients[tenant.code] &&
@@ -269,8 +269,8 @@ AgaveAuth.run(["$rootScope", "$location", "$state", "$timeout", "$localStorage",
             Alerts.danger({message: "Failed to retrieve tenant information."});
         }
     );
-
-    $rootScope.$on('oauth:login', function(event, token) {
+    */
+    /*$rootScope.$on('oauth:login', function(event, token) {
         $localStorage.token = token;
         //
         // ProfilesController.getProfile('me').then(
@@ -288,7 +288,7 @@ AgaveAuth.run(["$rootScope", "$location", "$state", "$timeout", "$localStorage",
         //         //$location.replace();
         //     }
         // );
-    });
+    });*/
 
     // $rootScope.$on('oauth:logout', function(event) {
     // });
@@ -304,10 +304,10 @@ AgaveAuth.run(["$rootScope", "$location", "$state", "$timeout", "$localStorage",
     //     //$location.href("/login");
     // });
 
-    $rootScope.$on('oauth:profile', function(event, profile) {
+   /* $rootScope.$on('oauth:profile', function(event, profile) {
         $timeout(function() {
             $localStorage.activeProfile = profile;
         }, 0);
-    });
+    });*/
 
 }]);

@@ -1,4 +1,4 @@
-angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, TenantsController, Commons, Alerts) {
+angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, TenantsController, Commons, Alerts) {
 
     settings.layout.tenantPage = true;
     settings.layout.loginPage = false;
@@ -36,6 +36,25 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             Alerts.danger({message: 'No tenant found matching ' + tenantId});
         }
     };
+    $scope.requesting =false;
+    $scope.getAuthToken = function(){
+        $scope.requesting = true;
+        $http.post('https://ikewai-dev.its.hawaii.edu:8000/login?username='+$scope.username+'&password='+$scope.password)
+            .success(function (data, status, headers, config) {
+                $scope.requesting=false;
+                $localStorage.token = data;
+                d = new Date();
+                $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
+                $location.path("/success");
+                
+            })
+            .error(function (data, status, header, config) {
+                $scope.requesting=false;
+                alert(angular.toJson(data));
+            });
+            
+    }
+
 
 
     var updateCurrentTenant = function () {
@@ -128,11 +147,11 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             });
     };
 //forward user onto the oauth login page
-$scope.$on('oauth:loggedOut', function(event) {
+/*$scope.$on('oauth:loggedOut', function(event) {
   //console.log('The user is not signed in');
   $timeout(function() {
     angular.element('a.btn.default.logged-out.ng-scope').trigger('click');
   });
 });
-
+*/
 });
