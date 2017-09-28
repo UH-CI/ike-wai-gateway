@@ -6,7 +6,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     $scope.randomState = function() {
         return (Math.ceil(Math.random() * 9));
     }
-
+    $scope.alerts=[]
     $scope.user = ($localStorage.client && angular.copy($localStorage.client)) || {
             username: '',
             password: '',
@@ -42,11 +42,15 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
         $http.post('https://ikewai-dev.its.hawaii.edu:8000/login?username='+$scope.username+'&password='+$scope.password)
             .success(function (data, status, headers, config) {
                 $scope.requesting=false;
-                $localStorage.token = data;
-                d = new Date();
-                $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
-                $location.path("/success");
-                
+                if (data.access_token){
+                    $localStorage.token = data;
+                    d = new Date();
+                    $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
+                    $location.path("/success");
+                }
+                else{
+                    $scope.login_error=true;
+                }
             })
             .error(function (data, status, header, config) {
                 $scope.requesting=false;
