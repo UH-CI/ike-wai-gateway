@@ -27,7 +27,8 @@ var AgaveToGo = angular.module("AgaveToGo", [
   'ui.bootstrap',
   'ui.router',
   'ui.select',
-  'ui-leaflet'
+  'ui-leaflet',
+  'ngIdle'
 ]).service('NotificationsService',['$rootScope', '$localStorage', 'MetaController', 'toastr', function($rootScope, $localStorage, MetaController, toastr){
     if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.activeProfile !== 'undefined') {
       this.client = new Fpp.Client('https://9d1e23fc.fanoutcdn.com/fpp');
@@ -294,8 +295,12 @@ initialization can be disabled and Layout.init() should be called on page load c
 ***/
 
 /* Setup Layout Part - Header */
-AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', '$http', '$rootScope', 'StatusIoController', function($scope, $localStorage, $http, $rootScope, StatusIoController) {
+AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', '$http', '$rootScope', '$interval', 'StatusIoController', function($scope, $localStorage, $http, $rootScope, $interval, StatusIoController) {
     $scope.showTokenCountdown = true;
+    
+    $scope.checkTokenExpiration = function() {
+      //console.log("Checking token expiration.")
+    }
 
     // get token countdown time
     if (typeof $localStorage.token !== 'undefined'){
@@ -430,6 +435,101 @@ AgaveToGo.controller('FooterController', ['$scope', function($scope) {
         Layout.initFooter(); // init footer
     });
 }]);
+
+/* Setup Idle Monitor 	 */
+AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal', '$localStorage','$http', function($scope, Idle, Keepalive,$uibModal, $localStorage, $http) {
+	$scope.events = [];
+  $scope.isIdle =false;
+	function closeModals() {
+      if ($scope.warning) {
+        $scope.warning.close();
+        $scope.warning = null;
+      }
+    }
+    
+	$scope.$on('IdleStart', function() {
+		// the user appears to have gone idle
+    console.log('BEING-IDLE')
+    if($scope.isIdle == false){
+        closeModals();
+    
+        $scope.warning = $uibModal.open({
+          templateUrl: 'views/modals/ModalIdleWarning.html',
+          windowClass: 'modal-danger'
+        });
+        $scope.isIdle = true;
+      }
+	});
+
+	$scope.$on('IdleWarn', function(e, countdown) {
+		// follows after the IdleStart event, but includes a countdown until the user is considered timed out
+		// the countdown arg is the number of seconds remaining until then.
+		// you can change the title or display a warning dialog from here.
+		// you can let them resume their session by calling Idle.watch()
+    //console.log('IDLE')
+     if($scope.isIdle == false){
+        closeModals();
+    
+        $scope.warning = $uibModal.open({
+          templateUrl: 'views/modals/ModalIdleWarning.html',
+          windowClass: 'modal-danger'
+        });
+        $scope.isIdle = true;
+      }
+    
+	});
+
+	$scope.$on('IdleTimeout', function() {
+		// the user has timed out (meaning idleDuration + timeout has passed without any activity)
+		// this is where you'd log them
+    console.log('TIMEOUT')
+    closeModals();
+    //logout
+	});
+
+	$scope.$on('IdleEnd', function() {
+		// the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+    closeModals();
+    $scope.isIdle = false;
+	});
+
+	$scope.$on('Keepalive', function() {
+		// do something to keep the user's session alive
+    console.log('KEEPALIVE')
+    var now= new (Date)
+    var expiring = new Date(now - 10*1000) //set time ten minutes back
+    if($localStorage.token.expires_at >= expiring){
+      $http.post('https://localhost:8000/refresh?refresh_token='+$localStorage.token.refresh_token)
+              .success(function (data, status, headers, config) {
+                  $scope.requesting=false;
+                  if (data.access_token){
+                      $localStorage.token = data;
+                      d = new Date();
+                      $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
+                  }
+                  else{
+                      $scope.login_error=true;
+                  }
+              })
+              .error(function (data, status, header, config) {
+                  $scope.requesting=false;
+                  //alert(angular.toJson(data));
+              });
+     }
+    });
+}]);
+AgaveToGo.config(['IdleProvider','KeepaliveProvider',function(IdleProvider, KeepaliveProvider) {
+	// configure Idle settings
+	IdleProvider.idle(600); // in seconds 
+	IdleProvider.timeout(300); // in seconds
+	KeepaliveProvider.interval(60); // in seconds
+}]);
+/*.run(['Idle', '$interval',function(Idle, $interval){
+	// start watching when the app runs. also starts the Keepalive service by default.
+	Idle.watch();
+  $interval(console.log("hi"),1000)
+;}]);*/
+
 
 /* Setup Rounting For All Pages */
 AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider', function($stateProvider, $urlRouterProvider, $urlMatcherFactoryProvider) {
@@ -2656,7 +2756,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
 
 /* Init global settings and run the app */
 //AgaveToGo.run(["$rootScope", "settings", "$state", 'ProfilesController', function($rootScope, settings, $state) { //}, ProfilesController) {
-AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', '$localStorage', '$window', 'CacheFactory', 'NotificationsService', function($rootScope, settings, $state, $http, $templateCache, $localStorage, $window, CacheFactory, NotificationsService) {
+AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', '$localStorage', '$window', 'CacheFactory', 'NotificationsService','Idle','$interval', function($rootScope, settings, $state, $http, $templateCache, $localStorage, $window, CacheFactory, NotificationsService, Idle, $interval) {
     $rootScope.$state = $state; // state to be accessed from view
     $rootScope.$settings = settings; // state to be accessed from view
 
@@ -2688,4 +2788,8 @@ AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', '$
           $window.location.href = '/auth';
         }
     });
+    Idle.watch();
+     /*$interval(function() {
+        console.log('HEY');
+    }, 1000);*/
 }]);

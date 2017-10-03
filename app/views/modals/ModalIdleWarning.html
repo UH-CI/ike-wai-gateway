@@ -1,0 +1,20 @@
+<div id="idle-warning_modal" class="modal-header">
+        <h3 class="page-title">Idle Logout Warning</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light portlet-fit portlet-datatable bordered center"> 
+                <div idle-countdown="countdown" ng-init="countdown=60" class="modal-body">
+                   <center><h4>You have been idle too long. <br/></br/>
+                   <uib-progressbar max="60" value="60" animate="false" class="progress-striped active">You'll be logged out in {{countdown}} second(s).</uib-progressbar>
+                   </br><br/>Unless you resume activity.
+                   </h4></center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-default pull-left" name="closeBtn"  ng-click="close()">Close</button>
+</div>

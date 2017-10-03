@@ -323,6 +323,8 @@
                   <!--  <timer class="agave-message" countdown="tokenCountdown" interval="1000" ng-show="showTokenCountdown">Session expires in {{mminutes}} minute{{minutesS}}, {{sseconds}} second{{secondsS}}</timer>-->
                     Session expires at {{expiration | date:'HH:mm'}}
                 </a>
+                <section data-ng-controller="IdleEventsCtrl">
+                </section>
             </li>
             <!--<li>
               <a href="javascript:;" ng-click="refreshAuthToken()">Refresh Token</a>
