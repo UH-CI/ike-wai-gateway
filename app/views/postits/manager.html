@@ -83,11 +83,11 @@
 						                    </a>
 						                    <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ng-click="emailMultiple(postitsSelected.postits)" role="button"> <i class="fa fa-share"></i></i> Email </a>
+                                                  <a ng-click="emailMultiple(postitsSelected.postits)" role="button"> <i class="fa fa-envelope"></i></i> Email </a>
                                                 </li>
                                                 <li>
                                                   <!-- the real thing here is the copy to the clipboard, the ng-click call is to de-select all the checkboxes once the copy is done -->
-                                                  <a ng-click="emptySelected()" data-clipboard-text="{{postitString}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
+                                                  <a ng-click="emptySelected()" data-clipboard-text="{{postitString}}" type="button" ng-disabled="temp.inprocess" ngclipboard><i class="fa fa-clipboard"></i></i> {{"Copy To Clipboard" | translate}} </a>
                                                 </li>
                                                 <li>
                                                   <a ng-click="deletePostits(postitsSelected.postits, postits)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>
@@ -170,10 +170,10 @@
                                               </a>
                                               <ul class="dropdown-menu pull-right">
                                                 <li>
-                                                  <a ng-click="email(postit._links.self.href)" role="button"> <i class="fa fa-share"></i></i> Email </a>
+                                                  <a ng-click="email(postit._links.self.href)" role="button"> <i class="fa fa-envelope"></i></i> Email </a>
                                                 </li>
                                                 <li>
-                                                  <a data-clipboard-text="{{postit._links.self.href}}" type="button" class="fa fa-copy" ng-disabled="temp.inprocess" ngclipboard> {{"Copy" | translate}} </a>
+                                                  <a data-clipboard-text="{{postit._links.self.href}}" ng-click='notifyClipboard(((postit.url.split("//"))[2]).split("?")[0])' type="button"ng-disabled="temp.inprocess" ngclipboard><i class="fa fa-clipboard"></i></i> {{"Copy To Clipboard" | translate}} </a>
                                                 </li>
                                                 <li>
                                                   <a ng-click="confirmAction('postit', postit, 'delete', postits)" role="button"> <i class="fa fa-trash-o"></i> Delete</a>

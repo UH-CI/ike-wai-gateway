@@ -108,6 +108,10 @@ angular.module('AgaveToGo').controller('PostitsListController', function ($scope
     $scope.emptySelected = function() {
     	$scope.postitsSelected.postits = [];
     	$scope.postitString = '';
+        App.alert({message: $translate.instant('Shared Link Copied To Clipboard For: ' + filename),closeInSeconds: 5  });
     }
     
+    $scope.notifyClipboard = function(filename) {
+        App.alert({message: $translate.instant('Shared Link Copied To Clipboard For: ' + filename),closeInSeconds: 5  });
+    }
 });
