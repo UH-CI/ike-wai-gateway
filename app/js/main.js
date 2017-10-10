@@ -437,7 +437,7 @@ AgaveToGo.controller('FooterController', ['$scope', function($scope) {
 }]);
 
 /* Setup Idle Monitor 	 */
-AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal', '$localStorage','$http', function($scope, Idle, Keepalive,$uibModal, $localStorage, $http) {
+AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal', '$localStorage','$http','$window', function($scope, Idle, Keepalive,$uibModal, $localStorage, $http, $window) {
 	$scope.events = [];
   $scope.isIdle =false;
 	function closeModals() {
@@ -484,6 +484,7 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
 		// this is where you'd log them
     console.log('TIMEOUT')
     closeModals();
+    $window.location = '/auth/#/logout';
     //logout
 	});
 
