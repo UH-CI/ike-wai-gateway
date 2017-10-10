@@ -4,19 +4,9 @@
         <div class="message"></div>
 
         <form class="form-horizontal expired">
-            <h3 class="lock-head">Click Button Below To Login</h3>
-            <div class="form-group">
-              <oauth
-                      template="/auth/views/templates/oauth-ng-button.html"
-                      site="tenant.baseUrl"
-                      client-id="settings.oauth.clients[tenant.code].clientKey"
-                      redirect-uri="{{settings.oauth.clients[tenant.code].callbackUrl}}"
-                      authorize-path="/authorize",
-                      state="{{randomState()}}"
-                      scope="{{settings.oauth.clients[tenant.code].scope}}"
-                      tenant="tenant">
-              </oauth>
-            </div>
+            <h3 class="lock-head">
+                <a href="/auth">Goto Login Page</a>
+            </h3
             <br/><br/>
         </form>
     </div>

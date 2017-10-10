@@ -4,9 +4,10 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
 
     // explicitely set oAuthAccessToken and BASEURI Configuration for SDK
     Configuration.oAuthAccessToken = $localStorage.token ? $localStorage.token.access_token : '';
-    Configuration.BASEURI = $localStorage.tenant ? $localStorage.tenant.baseUrl : '';
+    //Configuration.BASEURI = $localStorage.tenant ? $localStorage.tenant.baseUrl : '';
 
     $scope.authToken = $localStorage.token;
+
     $scope.loggedIn = (!!$scope.authToken) && (moment($scope.authToken.expires_at).diff(moment()) > 0);
 
     if ($scope.loggedIn) {
