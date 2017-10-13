@@ -2842,7 +2842,7 @@ AgaveToGo.run(['$rootScope', 'settings', '$state', '$http', '$templateCache', '$
           $rootScope.locationChange = true;
         }
 
-        if (typeof $localStorage.tenant !== 'undefined' && typeof $localStorage.token !== 'undefined'){
+        if (typeof $localStorage.token !== 'undefined'){
           var currentDate = new Date();
           var expirationDate = Date.parse($localStorage.token.expires_at);
           var diff = (expirationDate - currentDate) / 60000;

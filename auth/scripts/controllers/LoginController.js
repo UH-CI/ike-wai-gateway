@@ -46,6 +46,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                     $localStorage.token = data;
                     d = new Date();
                     $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
+                    $localStorage.tenant = {"id":"0001411570998814-b0b0b0bb0b-0001-016","name":"Hawaii Tenant","baseUrl":"https://agaveauth.its.hawaii.edu/","code":"hawaii","contact":[{"name":"Sean Cleveland","email":"seanbc@uhawaii.edu","url":"","type":"admin","primary":true}],"_links":{"self":{"href":"https://docker.example.com/tenants/v2/hawaii"},"publickey":{"href":"https://agaveauth.its.hawaii.edu/apim/v2/publickey"}}};
                     $location.path("/success");
                 }
                 else{

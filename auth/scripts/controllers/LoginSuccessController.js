@@ -3,9 +3,9 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
     settings.layout.loginPage = true;
 
     // explicitely set oAuthAccessToken and BASEURI Configuration for SDK
-    Configuration.oAuthAccessToken = $localStorage.token ? $localStorage.token.access_token : '';
-    //Configuration.BASEURI = $localStorage.tenant ? $localStorage.tenant.baseUrl : '';
-
+    //Configuration.oAuthAccessToken = $localStorage.token ? $localStorage.token.access_token : '';
+    Configuration.BASEURI ='https://agaveauth.its.hawaii.edu';
+    Configuration.oAuthAccessToken = $localStorage.token.access_token; 
     $scope.authToken = $localStorage.token;
 
     $scope.loggedIn = (!!$scope.authToken) && (moment($scope.authToken.expires_at).diff(moment()) > 0);
@@ -18,13 +18,13 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
                 function(response) {
                     $rootScope.$broadcast('oauth:profile', response);
                     $scope.requesting = false;
-
                     $scope.tenant = $localStorage.tenant;
 
                     var tokenEndsAt = moment($scope.authToken.expires_at).toDate();
                     $('#tokenCountdown').countdown({
                         until: tokenEndsAt
                     });
+                    $window.location.href = '/app';
                 },
                 function(message) {
                     Alerts.danger({message:"Failed to fetch user profile."});
