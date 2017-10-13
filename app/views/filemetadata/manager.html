@@ -96,11 +96,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="metadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter
-                                                            "ng-show="metadatum.name === 'DataDescriptor' ">
+                                                <!--
+                                                <tr ng-repeat="metadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter"
+                                                    ng-if="metadatum.name === 'DataDescriptor'" 
+                                                    ng-style="associatedDataDescriptors.indexOf(metadatum.uuid) == -1 ? { 'background-color':'default' } : { 'background-color':'green' }">
+                                                    -->
+                                                <tr ng-repeat="metadatum in filemetadata | orderBy:sortType:sortReverse | filter:filter"
+                                                    ng-if="metadatum.name === 'DataDescriptor' && associatedDataDescriptors.indexOf(metadatum.uuid) == -1">
+
                                                     <td>
-                                                        
-                                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg') "> {{metadatum.value.title}}</a>
+                                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>
                                                     </td>
                                                     <td>
                                                         <a href='#' ng-click="openView(metadatum.uuid, 'lg') "> {{metadatum.owner}}</a>
