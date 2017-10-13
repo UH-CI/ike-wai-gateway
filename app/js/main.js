@@ -2189,6 +2189,46 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               }]
           }
         })
+
+        /**********************************************************************/
+        /**********************************************************************/
+        /***                                                                ***/
+        /***                       DataDescriptors Routes                   ***/
+        /***                                                                ***/
+        /**********************************************************************/
+        /**********************************************************************/
+
+
+        .state('datadescriptors-manage', {
+            url: "/datadescriptors",
+            templateUrl: "views/datadescriptors/manager.html",
+            data: {pageTitle: 'Data Descriptors Manager'},
+            controller: "DataDescriptorsController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/PermissionsService.js',
+                            'js/services/MetadataService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            'js/controllers/datadescriptors/DataDescriptorsController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2198,16 +2238,40 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         /**********************************************************************/
 
         // Metadata
+        .state('datadescriptor', {
+            url: "/datadescriptor/:uuid?action",
+            templateUrl: "views/datadescriptor/manager.html",
+            data: {pageTitle: 'DataDescriptor'},
+            controller: "DataDescriptorController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/FilesMetadataService.js',
+                            'js/services/MetadataService.js',
+                            'js/controllers/MetadataQueryBuilderController.js',
+                            '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            //'../bower_components/uh-togo-angular-filemanager/dist/angular-filemanager.min.js  ',
+                            '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
+                            'js/controllers/datadescriptor/DataDescriptorController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                            'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
+                        ]
+                    });
+                }]
+            }
+        })
+
         .state('filemetadata-manage', {
-            url: "/filemetadata/:uuid",
-            /*
-            jen: working here
-            url: "/filemetadata/?fileUuids?filePaths",
-            params:{
-              fileUuids: { array: true },
-              filePaths: { array: true }
-            },
-            */
+            url: "/filemetadata/:uuid?action",
             templateUrl: "views/filemetadata/manager.html",
             data: {pageTitle: 'File Metadata Manager'},
             controller: "FileMetadataController",
