@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Subject','Variable','Tag'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Subject','Variable','Tag','File'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
@@ -24,90 +24,16 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
     }
     $scope.get_editors();
+    $scope.action = $stateParams.action;
 
-    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
-    //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
-
-    $scope.people = [];
-    $scope.orgs = [];
-    $scope.subjects = [];
-
-    $scope.formats = [
-      ".bmp - bit map",
-      ".cdf - common data format, netCDF",
-      ".csv - comma-separated value",
-      ".docx - Word document",
-      ".fasta - biological sequence text",
-      ".fastq - biological sequence text, Illumina",
-      ".gif - graphics interchange format",
-      ".ipynb - Jupyter notebook",
-      ".jpg - joint photographic experts group",
-      ".json - geospatial javascript object notation",
-      ".json - javascript object notation",
-      ".kml - keyhole markup language",
-      ".kmz - keyhole markup language, zipped",
-      ".mat - Matlab file ",
-      ".mov - QuickTime movie",
-      ".mp3 - moving picture experts group",
-      ".mp4 - moving picture experts group",
-      ".odp - OpenDocument presentation",
-      ".ods - OpenDocument spreadsheet",
-      ".odt - OpenDocument text",
-      ".pdf - Adobe portable document format",
-      ".png - portable network graphics",
-      ".pptx - PowerPoint",
-      ".py - Python",
-      ".r - R code and files",
-      ".rtf - rich text format",
-      ".shp.shx .dbf .prj .xml - shapefile (submit together as zip)",
-      ".svg - scalable vector graphics",
-      ".tex - LaTeX",
-      ".tiff - tagged image file format",
-      ".tiff - geoTIFF (geospatial tagged image file format)",
-      ".tsv - tab-separated value",
-      ".txt - plain text or other content",
-      ".xlsx - Excel workbook ",
-      ".xml - extensible markup language",
-      ".zip - zip compression (select internal file formats also)"];
-    
-    // Licenses from: https://creativecommons.org/licenses/
-    $scope.license_rights = [
-      "Creative Commons Attribution CC BY",
-      "Creative Commons Attribution-ShareAlike CC BY-SA",
-      "Creative Commons Attribution-NoDerivs CC BY-ND",
-      "Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA",
-      "Creative Commons Attribution-NoCommercial CC BY-NC",
-      "Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND",
-      "Other"
-    ];
-    
-    $scope.languages = ['English', 'Hawaiian'];
-    $scope.datadescriptor = {};
-    $scope.datadescriptor.organizations = [];
-    $scope.datadescriptor.creators = [];
-    //$scope.datadescriptor.subjects = [];
-    $scope.datadescriptor.contributors = [];
-    $scope.edit_data_descriptor = false;
-    $scope.data_descriptor_order = ['creators','title','license_rights','license_permission','subjects','start_datetime','end_datetime','formats','contributors','organizations','languages','version','publisher','publication_date','description','relations']
-    $scope.datadescriptor.license_permission = "public";
-    $scope.datadescriptor.title = "";
-    $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
-
-    $scope.data_descriptor
+    $scope.data_descriptor_metadatum = [];
+    $scope.associatedDataDescriptors = [];
     $scope.class =[];
-    /*
-    $scope.tagTransformPerson = function (newTag) {
-        var item = {
-            name: newTag,
-            email: newTag.toLowerCase()+'@email.com',
-            age: 'unknown',
-            country: 'unknown'
-        };
-    */
 
     $scope.filemetadatumUuid = $stateParams.uuid;
-    
+
     var updateFileObject = function() {
       var deferred = $q.defer();
       MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}")
@@ -118,9 +44,9 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         })
       return deferred.promise;
     };
-    
-    
+
     $scope.refreshMetadata = function(){
+      console.log("JEN FMC: refreshMetadata");
       //refetch the file metadata object to ensure the latest associtionIds are in place
        var deferred = $q.defer();
        deferred.resolve(updateFileObject().then(function(response){ 	
@@ -129,162 +55,153 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
        }));
        return deferred.promise;
     }
-    //MAP STUFF
-    $scope.data_descriptor_markers = {};
-
-    $scope.makeLocationMarkers = function(metadata){
-        $scope.siteMarkers = $filter('filter')(metadata, {name: "Site"});
-        $scope.wellMarkers = $filter('filter')(metadata, {name: "Well"});
-        $scope.marks = {};
-        angular.forEach($scope.siteMarkers, function(datum) {
-            if(datum.value.loc != undefined){
-            $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
-          }
-        });
-        angular.forEach($scope.wellMarkers, function(datum) {
-            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
-          }
-        });
-        $scope.data_descriptor_markers = $scope.marks
-    }
-
-    angular.extend($scope, {
-        hawaii: {
-            lat: 21.289373,
-            lng: -157.91,
-            zoom: 7
-        },
-        events: {
-          map: {
-            enable: ['click', 'drag', 'blur', 'touchstart'],
-            logic: 'emit'
-          }
-        },
-        defaults: {
-            scrollWheelZoom: false
-        },
-    });
 
     $scope.refresh = function() {
+      console.log("JEN FMC: refresh: action = " + $scope.action);
       $scope.requesting = true;
-  	  $scope.people.length = 0;
-      //$scope.subjects.length = 0;
-	    $scope.orgs.length = 0;
+      $scope.data_descriptor_metadatum.length = 0;
 
       MetaController.listMetadataSchema(
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-			})
+			});
       //check if default filemetadata object exists
-      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
-        function (response) {
+      MetaController.listMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'"+$stateParams.uuid+"'}]}")
+        .then(function (response) {
           $scope.fileMetadataObject = response.result;
 
+          // see if file has a filemetadataobject, if not make one.
+          // this retrieves an example file metadata object on dev: 
+          // ./metadata-list -v -Q '{"name":"File","associationIds":"1907741320846241305-242ac113-0001-002"}'
           if ($scope.fileMetadataObject == ""){
-            //we have no object so create a new one
             $scope.createFileObject($stateParams.uuid);
-
           }
-          else{
+          else {
+
             //we have an object to modify our query for getting metadata
             if ($scope.fileMetadataObject[0].name == "PublishedFile"){
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
              // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
-              $scope.refreshMetadata();
+              //$scope.refreshMetadata();
             }
-            else if ($scope.fileMetadataObject[0].value.filename != $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1])
-            {
-              //if filename or path is off change File metadata object
+            //if filename or path are off, update the File metadata object
+            else if ($scope.fileMetadataObject[0].value.filename != 
+                     $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1]) {
               $scope.updateFileObject($scope.fileMetadataObject[0]);
-
             }
-            else{
+            else {
               //filename & path are good fetch associated metadata
               $scope.filename = $scope.fileMetadataObject[0]._links.associationIds[0].href.split('system')[1];
              // $scope.fetchMetadata("{'uuid':{$in: ['"+$scope.fileMetadataObject[0].associationIds.join("','")+"']}}");
-              $scope.refreshMetadata();
-
-
+              //$scope.refreshMetadata();
             }
           }
-          $scope.setTitle();
+
+          //$scope.setTitle();
         },
         function(response){
           MessageService.handle(response, $translate.instant('error_filemetadata_list'));
           $scope.requesting = false;
-        }
-      )
+        });
 
-      $scope.getPeople();
-      //$scope.getSubjects();
-      $scope.getOrgs();
+        MetaController.listMetadataSchema(
+          $scope.schemaQuery
+        ).then(function(response){$scope.metadataschema = response.result;})
+        $scope.refreshMetadata();
+      };
 
-      MetaController.listMetadataSchema(
-        $scope.schemaQuery
-      ).then(function(response){$scope.metadataschema = response.result;})
-      jQuery('#datetimepicker1').datepicker();
-      jQuery('#datetimepicker2').datepicker();
-      jQuery('#datetimepicker3').datepicker();
-      $scope.refreshMetadata();
-   };
-
+  
+   /*
     $scope.setTitle = function() {
       if (!$scope.datadescriptor.title && $scope.filename) {
         $scope.datadescriptor.title = $scope.filename.split('/').slice(-1)[0];
       }
     }
-
-    $scope.getPeople = function(){
-        $scope.people.length = 0;
-        $scope.fetchMetadata("{'name':'Person'}");
-    };
-
-    //$scope.getSubjects = function(){
-    //    $scope.subjects.length = 0;
-    //    $scope.fetchMetadataWithLimit("{'name':'Subject'}", 300);
-    //};
-
-    $scope.getOrgs = function(){
-        $scope.orgs.length = 0;
-        $scope.fetchMetadata("{'name':'Organization'}");
-    };
+    */
 
     $scope.fetchMetadata = function(metadata_query){
       $scope.fetchMetadataWithLimit(metadata_query, 100);
     }
 
     $scope.fetchMetadataWithLimit = function(metadata_query, limit){
+      console.log("JEN FMC: fetchMetadataWithLimit: " + metadata_query);
       var deferred = $q.defer();
+      $scope.associatedDataDescriptors.length = 0;
       deferred.resolve(MetaController.listMetadata(metadata_query,limit,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             //$scope[$scope._COLLECTION_NAME] = response.result;
             $scope.filemetadata = response.result;
-            $scope.makeLocationMarkers($scope.filemetadata);
+            //$scope.datadescriptors = response.result;
+            //$scope.makeLocationMarkers($scope.filemetadata);
             angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
               if(value.name === 'DataDescriptor'){
                 $scope.has_data_descriptor = true;
-                $scope.data_descriptor_metadatum = value;
+                //$scope.data_descriptor_metadatum = value;
+                $scope.associatedDataDescriptors.push(value.uuid);
+                $scope.data_descriptor_metadatum.push(value.value);
+                $scope.data_descriptor_metadatum[$scope.data_descriptor_metadatum.length-1]["uuid"] = value.uuid;
               }
-              else if(value.name === 'Person'){
-                  $scope.people.push(value.value);
-                  $scope.people[$scope.people.length-1]["uuid"] = value.uuid;
-              }
-              else if(value.name === 'Organization'){
-                  $scope.orgs.push(value.value);
-                  $scope.orgs[$scope.orgs.length-1]["uuid"] = value.uuid;
-              }
-              //else if(value.name === 'Subject'){
-              //    $scope.subjects.push(value.value);
-              //    $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
-              //}
             });
-            $scope.requesting = false;
             
+            if ($scope.action === "associate") {
+              $scope.fetchAllDataDescriptors();
+            }
+            else {
+              $scope.action = "view";
+              console.log("JEN FMC: have " +  $scope.data_descriptor_metadatum.length + " data descriptors: ");
+              // if there is no data descriptor for this file, prompt the user to associate with an
+              // existing data descriptor, clone and associate an existing dd, or create a new one
+              if ($scope.data_descriptor_metadatum.length === 0) {
+                console.log("JEN FMC: have no data descriptors");
+                $scope.has_data_descriptor = false;
+                // get all Data Descriptors and let the user do associations 
+                // between one or more of them with the current file
+                $scope.fetchAllDataDescriptors();
+              }
+              // if it has only one data descriptor, call the DataDescriptor controller to show it.          
+              else if ($scope.data_descriptor_metadatum.length === 1) {
+                console.log("JEN FMC: have one data descriptor");
+                $scope.has_data_descriptor = true;
+                $state.go("datadescriptor",{'uuid': $scope.data_descriptor_metadatum[0].uuid, 'action': 'view'});
+              } 
+              // if there is more than one data descriptor, show modal list of dds from which the user can select
+              else if ($scope.data_descriptor_metadatum.length > 1) {
+                $scope.has_data_descriptor = true;
+                console.log("JEN FMC: Got multiple data descriptors");
+              }
+            }
+            $scope.requesting = false;
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_filemetadata_list'));
+            $scope.requesting = false;
+          }
+      ));  
+      return deferred.promise;
+    };
+
+    $scope.fetchAllDataDescriptors = function(){
+      console.log("JEN FMC: fetchAllDataDescriptors");
+      var deferred = $q.defer();
+      deferred.resolve(MetaController.listMetadata("{'name':'DataDescriptor'}").then(
+          function (response) {
+            $scope.totalItems = response.result.length;
+            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
+            //$scope[$scope._COLLECTION_NAME] = response.result;
+            $scope.filemetadata = response.result;
+            //$scope.makeLocationMarkers($scope.filemetadata);
+            //angular.forEach($scope[$scope._COLLECTION_NAME], function(value, key){
+            //  if(value.name === 'DataDescriptor'){
+            //    //$scope.data_descriptor_metadatum = value;
+            //    $scope.data_descriptor_metadatum.push(value.value);
+            //    $scope.data_descriptor_metadatum[$scope.data_descriptor_metadatum.length-1]["uuid"] = value.uuid;
+            //  }
+            //});
+            $scope.requesting = false;
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -300,45 +217,22 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       //$scope.refresh();
     }
 
-
     $scope.refresh();
 
     $rootScope.$on("metadataUpdated", function(){
+      console.log("JEN FMC: on metadataUpdated");
        $scope.refreshMetadata();
        $scope.refresh();
     });
-    
-    $rootScope.$on("metadataPersonOrgOrSubjectUpdated", function (event, args) {
-      $scope.requesting = false;
-      if (args.type === "Person") {
-        var str = {"first_name":args.value.value.first_name,"last_name":args.value.value.last_name,"uuid":args.value.uuid};
-        // this person is a contributor, not a creator
-        if ($scope.isContrib) {
-          $scope.datadescriptor.contributors.push(str);
-        }
-        // this person is a creator
-        else {
-          $scope.datadescriptor.creators.push(str);
-        }
-      }
-      else if (args.type === "Organization") {
-        var str = {"name":args.value.value.name,"uuid":args.value.uuid};
-        $scope.datadescriptor.organizations.push(str);
-      }
-      //else if (args.type === "Subject") {
-      //  var str = {"name":args.value.value.word,"uuid":args.value.uuid};
-      //  $scope.datadescriptor.subjects.push(str);
-      //}
-      //$scope.refresh();
-      $rootScope.$broadcast('metadataUpdated');
-    });
 
     $rootScope.$on("associationsUpdated", function(){
+      console.log("JEN FMC: on associationsUpdated");
      $scope.refreshMetadata()
      App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
     });
 
     $rootScope.$on("associationRemoved", function(){
+      console.log("JEN FMC: on associationRemoved");
      $scope.refreshMetadata().then(
        $timeout(function(){
             App.alert({container:'#association_notifications',  message: "Assocation Successfully Removed" ,closeInSeconds: 5  })
@@ -350,9 +244,8 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
 
-    
-  
     $scope.unAssociateMetadata = function(metadatumUuid, container_id=""){
+      console.log("JEN FMC: unAssociateMetadata");
       $scope.requesting = true;
       $scope.class[metadatumUuid] = "btn-warning"
       var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
@@ -374,8 +267,12 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         $scope.requesting = false;
       }
     }
-
-    $scope.createFileObject = function(fileUuid){
+ 
+  // the "fileobject" being created is not the file itself,
+  // it's metadata holding the file path, name, uuid, and associations
+  // note that the uuid of this fileobject is not the same as the one for the file itself. 
+  $scope.createFileObject = function(fileUuid){
+      console.log("JEN FMC: createFileObject");
       MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':'"+$stateParams.uuid+"'}]}").then(
         function(resp){
           //if still empty createFileObject
@@ -446,103 +343,14 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
         }
 
-        $scope.saveDataDescriptor = function(){
-          $scope.requesting = true;
-      		$scope.$broadcast('schemaFormValidate');
-          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
-            // Then we check if the form is valid
-          //	if (form.$valid) {
-            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-            .then(function(response){
-              var body = {};
-              body.name = "DataDescriptor";
-              body.value = $scope.datadescriptor;
-              body.schemaId = response;
-
-              MetaController.addMetadata(body)
-                .then(
-                  function(response){
-                      $scope.metadataUuid = response.result.uuid;
-                      //add the default permissions for the system in addition to the owners
-                      MetadataService.addDefaultPermissions($scope.metadataUuid);
-                      $scope.addAssociation($scope.metadataUuid)
-                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
-                      $rootScope.$broadcast('metadataUpdated');
-                      $scope.edit_data_descriptor = false;
-                    },
-                    function(response){
-                      MessageService.handle(response, $translate.instant('error_metadata_add'));
-                      $scope.requesting = false;
-                    }
-                );
-              //}
-              //else{
-              //	$scope.requesting = false;
-              //}
-            })
-          }else{
-            $scope.requesting = false;
-            App.alert({type:'danger', message: "Creator, Title, License Rights and License Permissions are Required Fields - Please Correct and Submit Again.",closeInSeconds: 5  });
-          }
-          
-        }
-
-        $scope.updateDataDescriptor = function(){
-          $scope.requesting = true;
-      		$scope.$broadcast('schemaFormValidate');
-
-          if($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' && $scope.datadescriptor.title && $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights){
-           
-            // Then we check if the form is valid
-          //	if (form.$valid) {
-            MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-            .then(function(response){
-              var body = {};
-              body.name = $scope.data_descriptor_metadatum.name;
-              body.value = $scope.datadescriptor;
-              body.schemaId = $scope.data_descriptor_metadatum.schemaId;
-
-              MetaController.updateMetadata(body,$scope.data_descriptor_metadatum.uuid)
-                .then(
-                  function(response){
-                      $scope.metadataUuid = response.result.uuid;
-                      App.alert({message: "Success Data Descriptor Saved",closeInSeconds: 5  });
-                      $rootScope.$broadcast('metadataUpdated');
-                      $scope.edit_data_descriptor = false;
-                    },
-                    function(response){
-                      MessageService.handle(response, $translate.instant('error_metadata_add'));
-                      $scope.requesting = false;
-                    }
-                );
-              //}
-              //else{
-              //	$scope.requesting = false;
-              //}
-            })
-          }else{
-            $scope.requesting = false;
-            App.alert({type:'danger', message: "Creator, Title, License Rights, and License Permissions are required fields - Please correct and submit again.",closeInSeconds: 5  });
-          }
-        }
-
         $scope.animationsEnabled = true;
-
-        $scope.editDataDescriptor = function(){
-          $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
-          $scope.edit_data_descriptor = true;
-        }
-
-        $scope.cancelEditDataDescriptor = function(){
-          $scope.edit_data_descriptor = false;
-          $scope.refreshMetadata();
-        }
 
         $scope.doTheBack = function() {
           window.history.back();
         };
 /////////Modal Stuff/////////////////////
         $scope.fetchMoreModalMetadata = function(){
+          console.log("JEN FMC: fetchMoreModalMetadata");
           $scope.offset = $scope.offset + $scope.limit
           $scope.requesting = true
           MetaController.listMetadata(
@@ -568,6 +376,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
         }
         $scope.fetchModalMetadata = function(query){
+          console.log("JEN FMC: fetchModalMetadata");
           $scope.can_fetch_more = false;
           MetaController.listMetadata(
             $scope.query,$scope.limit,$scope.offset
@@ -587,11 +396,17 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
           );
 
         }
-  	
-        //add an association to the current file object
-        //accept the metadata uuid to add to the file
-        //accepts a container id to dispaly a message app alert
+
+        //make and association btwn the current datadescriptor
+        //object and the given file.
+        //accepts the current datadescriptor uuid 
+        //accepts a file uuid to get the dd uuid association
+        //accepts a container id to display a message app alert
+        // metadatumUuid is really dataDescriptorUuid, but since I'm modifying
+        // an old method and don't want a bunch of arbitrary changes to show 
+        // during a comparison, I just do an assignment on the first line.
         $scope.addAssociation = function(metadatumUuid,container_id="") {
+          console.log("JEN FMC: addAssociation: " + metadatumUuid);
           if (metadatumUuid){
         		$scope.requesting = true;
         	  MetaController.getMetadata($scope.fileMetadataObject[0].uuid)
@@ -628,56 +443,66 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
                   App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists'),closeInSeconds: 5  });
                   return
                 }
-              })
-             }
+            })
+          }
           else{
-               MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
-             }
-             $scope.requesting = false;
+            MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
           }
+          $scope.requesting = false;
+        }        
 
-          $scope.addClone = function(metadatumUuid) {
-            if (metadatumUuid){
-              $scope.requesting = true;
-              MetaController.getMetadata(metadatumUuid)
-                .then(function(response){
-                  $scope.metadatum = response.result;
-                  var body = {};
-                  body.name = $scope.metadatum.name;
-                  body.value = $scope.metadatum.value;
-                  body.schemaId = $scope.metadatum.schemaId;
-                  MetaController.addMetadata(body)
-                    .then(
-                      function(response){
-                        $scope.new_metadataUuid = response.result.uuid;
-                        MetadataService.addDefaultPermissions($scope.new_metadataUuid);
-                        App.alert({message: $translate.instant('success_metadata_add') + ' ' + body.name ,closeInSeconds: 5 });
-                        $scope.addAssociation($scope.new_metadataUuid)
-                        $scope.requesting = false;
-                        $scope.openEditMetadata($scope.new_metadataUuid,'lg')
-                        //$state.go('metadata-edit',{uuid: $scope.new_metadataUuid});
-                      },
-                      function(response){
-                        MessageService.handle(response, $translate.instant('error_metadata_add'));
-                        $scope.requesting = false;
+        // metadatumUuid is really dataDescriptorUuid, but since I'm modifying
+        // an old method and don't want a bunch of arbitrary changes to show 
+        // during a comparison, I just do an assignment on the first line.
+        $scope.addClone = function (metadatumUuid) {
+          console.log("JEN FMC: addClone: " + metadatumUuid);
+          fileUuid = $scope.fileMetadataObject[0].uuid;
+          if (metadatumUuid) {
+            $scope.requesting = true;
+            MetaController.getMetadata(metadatumUuid)
+              .then(function (response) {
+                $scope.metadatum = response.result;
+                var body = {};
+                body.name = $scope.metadatum.name;
+                body.value = $scope.metadatum.value;
+                body.schemaId = $scope.metadatum.schemaId;
+                MetaController.addMetadata(body)
+                  .then(
+                    function (response) {
+                      $scope.new_metadataUuid = response.result.uuid;
+                      $scope.ddUuid = $scope.new_metadataUuid;
+                      MetadataService.addDefaultPermissions($scope.new_metadataUuid);
+                      App.alert({
+                        message: $translate.instant('success_metadata_add') + ' ' + body.name,
+                        closeInSeconds: 5
+                      });
+                      if (fileUuid && fileUuid != undefined) {
+                        $scope.addAssociation($scope.new_metadataUuid, fileUuid);
                       }
-                    )
-                })
-               }
-            else{
-                 MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
-               }
-               $scope.requesting = false;
-            }
-        $scope.locFilter = function(item){
-           if (item.name === 'Well' || item.name === 'Site'){
-            return item;
+                      $scope.requesting = false;
+                      //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
+                      console.log("clone made: " + $scope.new_metadataUuid);
+                      $scope.uuid = $scope.new_metadataUuid;
+                      $state.go('datadescriptor', {
+                        uuid: $scope.new_metadataUuid,
+                        "action": "edit"
+                      });
+                    },
+                    function (response) {
+                      MessageService.handle(response, $translate.instant('error_metadata_add'));
+                      $scope.requesting = false;
+                    }
+                  )
+              })
+          } else {
+            MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
           }
+          $scope.requesting = false;
         }
-
+      
 
   /////////Modal Stuff/////////////////////
-
+/*
         $scope.open = function (size, types, title) {
             //Set the
             $scope.modalSchemas = types.slice(0);
@@ -758,7 +583,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
         };
         
         $scope.openCreate = function (schemauuid, size) {
-          $scope.fileMetadataObjects = $scope.fileMetadataObject;
+          $scope.ddObjects = $scope.ddObject;
           $scope.selectedSchemaUuid = schemauuid;
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -767,76 +592,17 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               scope: $scope,
               size: size,
               schemaUuid: schemauuid,
-              fileMetadataObjects: $scope.fileMetadataObjects,
+              ddObjects: $scope.ddObjects,
               resolve: {
 
               }
             }
           );
         };
-        
-///////Assoc modal search////////
-$scope.schemaBox = {val1:true,val2:true};
-$scope.wellbox = true;
-$scope.searchField = {value:''}
-$scope.searchAll = function(){
-  $scope.requesting = true;
-    var orquery = {}
-    var andquery = {}
-    var queryarray = []
-    var andarray = []
-    var innerquery = {}
-    var typearray = []
-    var typequery = {}
+*/
 
-    angular.forEach($scope.metadataschema, function(value, key){
-      if($scope.selectedSchema.indexOf(value.schema.title) > -1){
-        //set the schema name(s) to search across
-        typearray.push(value.schema.title);
-        //add schema properties to search across
-        if ($scope.searchField.value != ''){
-          angular.forEach(value.schema.properties, function(val, key){
-            var valquery = {}
-            valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
-            queryarray.push(valquery)
-          })
-          orquery['$or'] = queryarray;
-        }
-      }
-    })
-    typequery['name'] = {'$in': typearray}
-    andarray.push(typequery)
-    andarray.push(orquery)
-    andquery['$and'] = andarray;
-    $scope.query = JSON.stringify(andquery);
-
-    $scope.offset=0;
-    $scope.fetchModalMetadata();
-}
-
-// Toggle selection for a given fruit by name
-  $scope.toggleSelectedSchema = function(title) {
-    var idx = $scope.selectedSchema.indexOf(title);
-
-    // Is currently selected
-    if (idx > -1) {
-      //alert($scope.selectedSchema.length )
-      if ($scope.selectedSchema.length >= 2){
-        $scope.selectedSchema.splice(idx, 1);
-      }else{
-        jQuery('#'+title+'_box').prop("checked",true);
-      }
-    }
-
-    // Is newly selected
-    else {
-      $scope.selectedSchema.push(title);
-    }
-    $scope.modalSchemas = $scope.modalSchemas
-  };
 
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
-      ///$scope.uuid = filemetadatumUuid;
       $scope.cancel = function () {
         $modalInstance.close();
       };
