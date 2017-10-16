@@ -124,7 +124,6 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     });
     
     $scope.confirmDelete = function(metadatum){
-         alert('yes')
          MetaController.deleteMetadata(metadatum.uuid)
            .then(
                function(response){
