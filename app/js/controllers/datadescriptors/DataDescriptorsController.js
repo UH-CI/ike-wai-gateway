@@ -1,6 +1,7 @@
 angular.module('AgaveToGo').controller('DataDescriptorsController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'metadata',
     $scope._RESOURCE_NAME = 'metadatum';
+    $scope.showModal = false;
 
     $scope.profile = $localStorage.activeProfile;
     $scope.get_editors = function(){
@@ -121,10 +122,21 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $rootScope.$on("metadataUpdated", function(){
       $scope.refresh();
     });
+    
+    $scope.confirmDelete = function(metadatum){
+         alert('yes')
+         MetaController.deleteMetadata(metadatum.uuid)
+           .then(
+               function(response){
+                 $scope.metadata.splice($scope.metadata.indexOf(metadatum),1)
+                 App.alert({message: 'Data Descriptor Successfully Deleted.',closeInSeconds: 5  });
+               },
+               function(response){
+                 App.alert({type: 'danger',message: 'Error Deleting Data Descriptor!',closeInSeconds: 5  });
+               }
+           )
+    }
 
-    $scope.confirmAction = function(resourceType, resource, resourceAction, resourceList, resourceIndex){
-      ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
-    };
 
 /////////Modal Stuff/////////////////////
 
