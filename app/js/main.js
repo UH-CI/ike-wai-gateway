@@ -522,7 +522,7 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
 }]);
 AgaveToGo.config(['IdleProvider','KeepaliveProvider',function(IdleProvider, KeepaliveProvider) {
 	// configure Idle settings
-	IdleProvider.idle(600); // in seconds 
+	IdleProvider.idle(3600); // in seconds 
 	IdleProvider.timeout(300); // in seconds
 	KeepaliveProvider.interval(60); // in seconds
 }]);
