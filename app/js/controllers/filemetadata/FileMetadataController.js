@@ -129,6 +129,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       console.log("JEN FMC: fetchMetadataWithLimit: " + metadata_query);
       var deferred = $q.defer();
       $scope.associatedDataDescriptors.length = 0;
+      $scope.data_descriptor_metadatum.length = 0;
       deferred.resolve(MetaController.listMetadata(metadata_query,limit,0).then(
           function (response) {
             $scope.totalItems = response.result.length;
