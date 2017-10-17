@@ -89,7 +89,7 @@
                             <tr ng-repeat="matchingMetadatum in matchingMetadata | orderBy:sortType:sortReverse | filter:filter" >
                                 <td>
                                     <div ng-show="matchingMetadatum.name === 'DataDescriptor'" class="text-center">
-                                        <a href='#' ng-click="openViewMetadata(matchingMetadatum.uuid, 'lg')">  
+                                        <a href='#' ng-click="openViewDataDescriptor(matchingMetadatum.uuid, 'lg')">  
                                             Data Descriptor: {{matchingMetadatum.value.title}}
                                         </a>
                                     </div>

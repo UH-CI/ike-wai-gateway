@@ -1,0 +1,201 @@
+
+<div class="modal-header">
+    <h3 class="modal-title">Data Descriptor Details: {{data_descriptor_metadatum.value.title}}</h3>
+     <span ng-if="metadatum" class="btn-group">
+     </span>
+</div>
+
+<style>
+.btn-circle {
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  padding: 0 0;
+  font-size: 11px;
+  line-height: .514;
+  border-radius: 5px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
+}
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+
+            <!--
+            <div class="portlet-title">
+                <div class="row text-center">
+                  <div class="col-md-12">
+
+                  </div>
+                </div>
+                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
+                      </div>
+                    </div>
+                    <div class="row top-buffer" ng-show="showSearch">
+                      <query-builder group="filter.group" resource="metadata"></query-builder>
+                      <div class="col-md-12 top-buffer">
+
+                        <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group top-buffer">
+                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Search Tools'}}
+                      </button>
+                    </div>
+                </div>
+            </div>
+            -->
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                <div class=" pull-left">
+                  <h4>{{filename.split('/').pop()}}</h4>
+                </div>
+
+                <!--  DATA DESCRIPTOR -->
+                  <div class="col-md-12">
+                    <div ng-show="!requesting">
+                      <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
+                          <div>
+                            <div ng-if="data_descriptor_metadatum" class="portlet light table-responsive">
+                              <table class="table table-striped table-bordered">
+                                <tbody>
+                                  <tr ng-if="key!=='publisher' && key!=='version' && key!='publication_date' && key!='languages'" 
+                                      ng-repeat="(ind, key) in data_descriptor_order">
+
+                                    <td>
+                                      <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{key | capitalize_with_space}}</label>
+                                      <!--<button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
+                                        <i class="glyphicon glyphicon-question-sign"></i>
+                                      </button>-->
+                                    </td>
+                                    <td ng-if="key=='creators' || key=='contributors' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.first_name}} {{val.last_name}}
+                                      <span>
+                                    </td>
+                                    <td ng-if="key=='organizations' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.name}} 
+                                      <span>
+                                    </td>
+                                    <!--
+                                    <td ng-if="key=='subjects' ">
+                                      <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                        {{val.word}} 
+                                      <span>
+                                    </td>
+                                      -->
+                                    <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
+                                      <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
+                                      <!--{{data_descriptor_metadatum.value[key]}}--> 
+                                      {{data_descriptor_metadatum.value[key] | date:"yyyy-mm-dd"}}
+                                    </td>
+                                    <td ng-if="key=='subjects' || key=='formats' ">
+                                    <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
+                                    <!--<td ng-if="key=='formats' || key=='languages' ">-->
+                                      {{data_descriptor_metadatum.value[key].join(',')}} 
+                                    </td>
+                                    <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
+                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='subjects' && key!='formats' && key!='languages' && key!='start_datetime' && key!='end_datetime' && key!='publication_date'">
+                                      {{data_descriptor_metadatum.value[key]}}
+                                    </td>
+
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- CHOOSE LOCATIONS -->
+                            <leaflet width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
+                              </br>
+                            <div>
+                              <h3>Locations:</h3>
+                            </div>
+                            <div>
+                              <table class="table table-striped table-bordered table-hover management">
+                                <tbody>                                 
+                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: locFilter">
+                                    <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                          {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                          </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div></br>
+
+                            <!-- CHOOSE VARIABLES -->
+                            <div class="form-group">
+                              <h3 >Variables:</h3>
+                            </div>
+                            <div>
+                              <table class="table table-striped table-bordered table-hover management">
+                                <tbody>                                 
+                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: {name: 'Variable'}">
+                                    <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                          {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
+                                          </a>
+                                    </td>
+                                    <td><span ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm'>
+                                                  <!-- <a ui-sref="metadata-edit({uuid:filemetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a> -->
+                                                 <span ng-show='(profile.username == filemetadatum.owner) && filemetadatum.value.published!="True"'> <a href='#' ng-click="openEditMetadata(filemetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a> |</span>
+                                                <a href="#" ng-click="unAssociateMetadata(filemetadatum.uuid)"<i class="glyphicon glyphicon-remove-sign"></i>Remove  </a></span></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div></br>
+                          </div>
+                      </div>
+
+                      
+
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+    <button ng-show='profile.username == metadatum.owner || edit_perm' class="btn btn-primary" ng-click="openEdit({uuid: metadatum.uuid},'lg')">Edit</button>
+    <button class="btn btn-default pull-left" ng-click="close()">Close</button>
+</div>

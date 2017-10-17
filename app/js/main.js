@@ -2372,7 +2372,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/controllers/filemetadata/resource/FileMetadataResourceMultipleAddController.js',
                           'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                           'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
-                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/datadescriptor/ModalDataDescriptorDetailsController.js'
                       ]
                     }
                   ]);
