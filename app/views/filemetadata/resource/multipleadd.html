@@ -16,7 +16,7 @@
     <div landing-start-menu></div>
 </div>
 -->
-<h3 class="page-title"> Create and Associate/Clone Metadata For These Files:
+<h3 class="page-title"> Associate These Files With Data Descriptors:
 </h3>
 <table>
   <tbody>
@@ -43,13 +43,13 @@
                 <div class="row text-center">
                   <div class="col-md-12">
                     <div class="pull-left">
-                      Metadata shared by all the above files is listed here:
+                      Data Descriptors associated by all the above files:
                     </div>
                     <div class="btn-group pull-right">
-                      <a href='#' ng-click="open('lg')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Associate Or Clone Existing Metadata </a>
+                      <a href='#' ng-click="open('lg' ,['DataDescriptor'],'Select Data Descriptor(s)')" role="button" class="btn green btn-outline pull-right"> <i class="fa fa-tag"></i> Add Data Descriptor Associations</a>
                     </div>
                     <div class="btn-group pull-right">
-                        <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                       <!-- <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
                             <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
                             <i class="fa fa-angle-down pull-right"></i>
                         </a>
@@ -57,12 +57,12 @@
                           <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter">
                             <a href='#' ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1" ng-click="openCreate(metadataschemata.uuid, 'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
                           </li>
-                        </ul>
+                        </ul>-->
                     </div>
                   </div>
                 </div>
                 <div ng-show="fileMetadataObjects == '' || matchingMetadata == ''" class="col-md-8 col-md-offset-3">
-                    <h3>No metadata is shared by all these files.</h3>
+                    <h3>No Data Descriptors associated by all these files.</h3>
                 </div>
                 <div ng-show="matchingMetadata.length > 0 && !requesing">
                     <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection">

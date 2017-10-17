@@ -5,7 +5,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.filePaths = $stateParams['filePaths'];
 		$scope.profile = $localStorage.activeProfile;
 
-		$scope.query = "{'name':{$in:['Well','Site']}}"
+		$scope.query = "{'name':{$in:['DataDescriptor']}}"
 		$scope.get_editors = function(){
 			$scope.editors = MetadataService.getAdmins();
 			$scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
@@ -25,7 +25,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		//alert($scope.fileObjs)
     //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
-		$scope.approvedSchema = ['Well','Site'];
+		$scope.approvedSchema = ['DataDescriptor'];
 
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
@@ -262,7 +262,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 /////////Modal Stuff/////////////////////
 			$scope.fetchModalMetadata = function(){
 				MetaController.listMetadata(
-					$scope.query
+					$scope.query, 1000
 				)
 					.then(
 						function (response) {
@@ -353,6 +353,26 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					}
 				});
 		};
+		
+		/////////Modal Stuff/////////////////////
+		  $scope.open = function (size, types, title) {
+		    //Set the
+		    $scope.modalSchemas = types.slice(0);
+		    $scope.selectedSchema = types.slice(0);
+		    $scope.modalTitle = title;
+		    var modalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: 'views/modals/ModalAssociateDataDescriptor.html',
+		      controller: 'ModalAssociateMetadataMultiFileCtrl',
+		      scope: $scope,
+		      size: size,
+		      resolve: {
+		
+		      }
+		    });
+		    //$scope.fetchModalMetadata();
+		    $scope.searchAll();
+		  };
 
 		$scope.openEditMetadata = function (metadatumuuid, size) {
 			$scope.metadataUuid = metadatumuuid;
@@ -435,11 +455,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		    var typequery = {}
 
 		    if ($scope.schemaBox.val1){
-		      typearray.push('Site')
+		      typearray.push('DataDescriptor')
 		    }
-		    if ($scope.schemaBox.val2){
-		      typearray.push('Well')
-		    }
+
 		    typequery['name'] = {'$in': typearray}
 		    andarray.push(typequery)
 		    andarray.push(orquery)
