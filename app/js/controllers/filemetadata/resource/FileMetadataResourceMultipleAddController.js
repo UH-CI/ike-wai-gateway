@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, $localStorage, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
+angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $q, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, $localStorage, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
 		$scope.fileUuids = $stateParams['fileUuids'];
@@ -277,25 +277,52 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 			}
 		$scope.addAssociation = function(metadatumUuid) {
-			FilesMetadataService.addAssociations($scope.fileMetadataObjects, metadatumUuid)
-				.then(function(response) {
+			var promise = []
+			promise.push(FilesMetadataService.addAssociations($scope.fileMetadataObjects, metadatumUuid)
+				/*.then(function(response) {
 					//$scope.matchingAssociationIds.push(metadatumUuid)
-					$rootScope.$broadcast('associationsUpdated')
-				});
+					/*$rootScope.$broadcast('associationsUpdated')
+					$scope.fetchModalMetadata();
+					$scope.fetchFileMetadataObjects();
+					$scope.populateAssociatedMetadata();*/
+				//});
+			)
+			$q.all(promise).then(
+	          function(data) {
+				  $scope.fetchModalMetadata();
+					$scope.fetchFileMetadataObjects();
+					$scope.populateAssociatedMetadata();
+	            $rootScope.$broadcast('associationsUpdated')
+	          },
+	          function(data) {
+	            
+	        });
 		}
 
 		$scope.unAssociateMetadata = function(metadatumUuid){
+			var promise = []
 			var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     	if (unAssociate) {
-			FilesMetadataService.removeAssociations($scope.fileMetadataObjects, metadatumUuid)
-				.then(function(response) {
+			
+			promise.push(FilesMetadataService.removeAssociations($scope.fileMetadataObjects, metadatumUuid))
+				/*.then(function(response) {
 					//remove uuid of unassociated metadata object
 					//var index = $scope.matchingAssociationIds.indexOf(metadatumUuid);
 					//$scope.matchingAssociationIds.splice(index, 1);
 					$rootScope.$broadcast('associationsUpdated')
-				});
+				});*/
 			}
+			$q.all(promise).then(
+	          function(data) {
+				  $scope.fetchModalMetadata();
+					$scope.fetchFileMetadataObjects();
+					$scope.populateAssociatedMetadata();
+	            $rootScope.$broadcast('associationsUpdated')
+	          },
+	          function(data) {
+	            
+	        });
 		}
 
 			$scope.addClone = function(metadatumUuid) {
