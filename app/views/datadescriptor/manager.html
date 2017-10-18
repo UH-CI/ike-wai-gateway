@@ -76,11 +76,22 @@
 
 
 <h4><a ng-click="doTheBack()"><i class="glyphicon glyphicon-menu-left"/>Go Back</a></h4>
-<h3 class="page-title">File Annotations</h3>
+<h3 class="page-title">Data Descriptor</h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-
+            <div>
+              Associated Files:
+              <table>
+                <tbody>
+                  <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
+                      <td ng-if="link.title == 'file'">
+                          <i class="fa fa-file-o">{{link.href.split('system')[1]}}</i>
+                      </td>
+                    </tr>
+                  </table>
+              </table>
+            </div>
             <!--
             <div class="portlet-title">
                 <div class="row text-center">
