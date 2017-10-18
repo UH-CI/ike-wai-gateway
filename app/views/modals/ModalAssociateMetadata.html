@@ -123,7 +123,7 @@
                                       <td class="text-center">
                                           <div class="btn-group pull-left">
                                               <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
-                                              <a ng-if="(fileMetadataObject[0].associationIds.indexOf(metadatum.uuid) < 0 && matchingAssociationIds.indexOf(metadatum.uuid) < 0) || removedAssociationIds.indexOf(metadatum.uuid) > -1 " class="btn btn-sm green btn-outline" ng-click="addAssociation(metadatum.uuid, '#associate_modal')">
+                                              <a class="btn btn-sm green btn-outline" ng-click="addAssociationToDataDescriptor(data_descriptor_metadatum.uuid, metadatum.uuid, '#associate_modal')">
                                                   Associate
                                                   <i class="fa fa-link"></i>
                                               </a>

@@ -451,6 +451,23 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			);
 		};
 		
+		$scope.openEditDataDescriptor= function (metadatumuuid, size) {
+			$scope.metadataUuid = metadatumuuid;
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: 'views/modals/ModalEditDataDescriptor.html',
+					controller: 'ModalDataDescriptorEditController',
+					scope: $scope,
+					size: size,
+					metadataUuid: metadatumuuid,
+					profile: $scope.profile,
+					resolve: {
+
+					}
+				}
+			);
+		};
+		
 		$scope.openCreate = function (schemauuid, size) {
 			//check if file ojects all exist - wait to open modal until they do
 				$scope.selectedSchemaUuid = schemauuid;
