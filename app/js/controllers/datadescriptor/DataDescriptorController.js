@@ -308,7 +308,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           
         });
         $scope.requesting = false;
-        console.log($scope.locations.length)
+        console.log("Locations count: " + $scope.locations.length)
       },
       function (response) {
         MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -453,8 +453,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.class[metadatumUuid] = "btn-warning"
     var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
     //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
+    $scope.dd_object = [$scope.data_descriptor_metadatum]
     if (unAssociate) {
-      FilesMetadataService.removeAssociations($scope.fileMetadataObject, metadatumUuid).then(function (result) {
+      FilesMetadataService.removeAssociations($scope.dd_object, metadatumUuid).then(function (result) {
         App.alert({
           type: 'info',
           container: container_id,
