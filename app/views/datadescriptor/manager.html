@@ -198,7 +198,7 @@
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
                                 <tbody>                                 
-                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: locFilter">
+                                  <tr class="" ng-repeat="filemetadatum in locations">
                                     <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
@@ -220,7 +220,7 @@
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
                                 <tbody>                                 
-                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: {name: 'Variable'}">
+                                  <tr class="" ng-repeat="filemetadatum in variables">
                                     <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
@@ -537,7 +537,7 @@
                               <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
-                              <button class="btn btn-default btn-sm"  ng-repeat="filemetadatum in filemetadata | filter: locFilter" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
+                              <button class="btn btn-default btn-sm"  ng-repeat="filemetadatum in locations" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
                                 {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i id="filemetadatum.uuid" ng-class="class[uuid]" class="glyphicon glyphicon-remove-sign"></i>
@@ -549,7 +549,7 @@
                               <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
                             </div>
                             <div id="variable_buttons">
-                              <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
+                              <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in variables | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
                                 {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i class="glyphicon glyphicon-remove-sign"></i>

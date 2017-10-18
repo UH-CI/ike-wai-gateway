@@ -33,7 +33,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.people = [];
   $scope.orgs = [];
   $scope.subjects = [];
-
+  $scope.locations = [];
+  $scope.variables = [];
   $scope.ddUuid = $stateParams.uuid;
 
   $scope.formats = [
@@ -228,6 +229,16 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.people.length = 0;
     $scope.fetchMetadata("{'name':'Person'}");
   };
+  
+  $scope.getAssociations = function () {
+    $scope.locations = [];
+    $scope.variables = [];
+    console.log('getAssociation')
+    if ($scope.data_descriptor_metadatum.associationIds){
+      $scope.fetchMetadata("{'uuid':{'$in':['"+$scope.data_descriptor_metadatum.associationIds.join("','")+"']}}");
+    }
+  };
+
 
   $scope.getFiles = function () {
     $scope.people.length = 0;
@@ -258,11 +269,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
         //$scope[$scope._COLLECTION_NAME] = response.result;
         $scope.filemetadata = response.result;
+        
         $scope.makeLocationMarkers($scope.filemetadata);
         angular.forEach($scope[$scope._COLLECTION_NAME], function (value, key) {
           if (value.name === 'DataDescriptor') {
             $scope.has_data_descriptor = true;
             $scope.data_descriptor_metadatum = value;
+            $scope.getAssociations() 
             if ($scope.action && $scope.action === "edit") {
               $scope.editDataDescriptor();
             }
@@ -276,13 +289,26 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           }
+          else if (value.name === 'Well' || value.name ==='Site') {
+            console.log('stuff')
+            if( $scope.locations.indexOf(value) < 0){
+              $scope.locations.push(value);
+            }
+          }
+          else if (value.name === 'Variable') {
+            if($scope.variables.indexOf(value) < 0){
+              $scope.variables.push(value);
+            }
+          }
+          
           //else if(value.name === 'Subject'){
           //    $scope.subjects.push(value.value);
           //    $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
           //}
+          
         });
         $scope.requesting = false;
-
+        console.log($scope.locations.length)
       },
       function (response) {
         MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -626,6 +652,61 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         }
       );
 
+  }
+  
+  $scope.addAssociationToDataDescriptor = function (dataDescriptorUuid, metadatumUuid, container_id = "") {
+    //alert('trying to associate')
+    //metadatumUuid = dataDescriptorUuid;
+    console.log("JEN DDC: addAssociation");
+    if (metadatumUuid) {
+      $scope.requesting = true;
+      MetaController.getMetadata(dataDescriptorUuid)
+        .then(function (response) {
+          $scope.dataDescriptor = response.result;
+          //alert(dataDescriptor)
+          var body = {};
+          body.associationIds = $scope.dataDescriptor.associationIds;
+          //check if fileUuid is already associated
+          if (body.associationIds.indexOf(metadatumUuid) < 0) {
+            body.associationIds.push(metadatumUuid);
+            body.name = $scope.dataDescriptor.name;
+            body.value = $scope.dataDescriptor.value;
+            body.schemaId = $scope.dataDescriptor.schemaId;
+            MetaController.updateMetadata(body, dataDescriptorUuid)
+              .then(
+                function (response) {
+                  // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
+                  App.alert({
+                    container: container_id,
+                    message: $translate.instant('success_metadata_add_assocation'),
+                    closeInSeconds: 5
+                  });
+                  $scope.requesting = false;
+
+                  //$scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
+                  $scope.refreshMetadata();
+                  $scope.matchingAssociationIds.push(metadatumUuid)
+                  $scope.removedAssociationIds.splice($scope.removedAssociationIds.indexOf(metadatumUuid))
+                  //$state.go('metadata',{id: $scope.metadataUuid});
+                },
+                function (response) {
+                  MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
+                  $scope.requesting = false;
+                }
+              )
+          } else {
+            App.alert({
+              type: 'danger',
+              message: $translate.instant('error_metadata_add_assocation_exists'),
+              closeInSeconds: 5
+            });
+            return
+          }
+        })
+    } else {
+      MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+    }
+    $scope.requesting = false;
   }
 
   //make and association btwn the current datadescriptor

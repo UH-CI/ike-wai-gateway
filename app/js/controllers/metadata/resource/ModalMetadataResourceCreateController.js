@@ -95,9 +95,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						// don't do associations for any person or organization metadata objects
 						//if (metaName != "Person" && metaName != "Organization" && metaName != "Subject") {
 						if (metaName != "Person" && metaName != "Organization") {
-							//check if this is for a file object or just a new metadata creation
-							if ($scope.fileMetadataObjects){
-								FilesMetadataService.addAssociations($scope.fileMetadataObjects, $scope.metadataUuid)
+							//check if this is for a data descriptor object or just a new metadata creation
+							if ($scope.data_descriptor_metadatum){
+								console.log($scope.data_descriptor_metadatum)
+								$scope.dd_object = [$scope.data_descriptor_metadatum]
+								FilesMetadataService.addAssociations($scope.dd_object, $scope.metadataUuid)
 									.then(function(response) {
 									//	need to send to modal instead
 									$timeout(function(){
