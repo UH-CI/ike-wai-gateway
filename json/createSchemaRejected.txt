@@ -1,0 +1,32 @@
+metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaRejected.json
+
+-------
+
+Output:
+
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-08-29T16:34:45.413-05:00",
+  "schema": {
+    "value": {
+      "title": "Rejected files",
+      "reasons": []
+    },
+    "name": "rejected",
+    "associationIds": []
+  },
+  "uuid": "2290937614905044505-242ac11f-0001-013",
+  "created": "2017-08-29T16:34:45.413-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2290937614905044505-242ac11f-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2290937614905044505-242ac11f-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
