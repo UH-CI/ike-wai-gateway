@@ -66,7 +66,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
 
-        MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
+        MetaController.listMetadata($scope.query,limit=100,offset=0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
