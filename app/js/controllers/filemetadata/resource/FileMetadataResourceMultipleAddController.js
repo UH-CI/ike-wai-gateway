@@ -5,7 +5,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.filePaths = $stateParams['filePaths'];
 		$scope.profile = $localStorage.activeProfile;
 
-		$scope.query = "{'name':{$in:['DataDescriptor']}}"
+		$scope.query = "{'name':'DataDescriptor'}"
 		$scope.get_editors = function(){
 			$scope.editors = MetadataService.getAdmins();
 			$scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
@@ -23,8 +23,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		}
 		$scope.populateFileIds();*/
 		//alert($scope.fileObjs)
-    //$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
-    $scope.schemaQuery ='';//"{'owner':'seanbc'}";
+    	//$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
+    	$scope.schemaQuery ='';//"{'owner':'seanbc'}";
 		$scope.approvedSchema = ['DataDescriptor'];
 
 		$scope.fetchMetadataSchema = function(schemauuid) {
