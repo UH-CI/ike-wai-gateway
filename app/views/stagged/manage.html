@@ -22,7 +22,7 @@
           </thead>
           <tbody>
             <tr ng-repeat="associationId in metadatum._links['associationIds']">
-                <td><a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId.href.split('system')[1]}}</a></td>
+                <td><a ui-sref="filemetadata-multipleadd({filePaths: associationId.href.split('system')[1],fileUuids: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})">{{associationId.href.split('system')[1]}}</a></td>
                 <td>
                   {{associationId.rel}}
                 </td>
