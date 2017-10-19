@@ -1,6 +1,13 @@
 angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $q, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, $localStorage, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
 	$scope.model = {};
 
+	$scope.profile = $localStorage.activeProfile;
+	$scope.get_editors = function(){
+    $scope.editors = MetadataService.getAdmins();
+      $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
+    }
+    $scope.get_editors();
+   
 		$scope.fileUuids = $stateParams['fileUuids'];
 		$scope.filePaths = $stateParams['filePaths'];
 		$scope.profile = $localStorage.activeProfile;

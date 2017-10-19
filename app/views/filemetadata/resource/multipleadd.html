@@ -18,6 +18,7 @@
 -->
 <h3 class="page-title"> Associate These Files With Data Descriptors:
 </h3>
+{{profile.username}}
 <table>
   <tbody>
     <tr ng-repeat="path in filePaths track by $index| orderBy:sortType:sortReverse | filter:filter">
@@ -101,16 +102,16 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                            <span ng-show='profile.useranme == matchingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
-                                            <a ng-click="openEdit(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit </a>
-                                          </span>
-                                            &nbsp;
-                                            <span>
-                                            <a href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
-                                          </span>
-                                                                                      <span>
-                                            <a href="#" ng-click="openEdit(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit</a>
-                                          </span>
+                                       <a class="btn btn-sm green btn-outline pull-right" ng-click="openClone(metadatum.uuid)">
+                                            Clone
+                                            <i class="fa fa-plus"></i>
+                                        </a>  
+                                        <span>
+                                          <a class="btn btn-sm green btn-outline pull-right"  href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
+                                        </span>
+                                        <span ng-show='profile.username == matchingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
+                                          <a class="btn btn-sm green btn-outline pull-right" ng-click="openEdit(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                        </span>	
                                     </div>
                                 </td>
                             </tr>
