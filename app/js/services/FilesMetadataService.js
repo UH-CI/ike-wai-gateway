@@ -160,6 +160,42 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       return true;
     };
 
+    this.removeMulitpleAssociationIds = function(metadataUuid, uuidsToRemove){
+      var promises = [];
+  	  MetaController.getMetadata(metadataUuid)
+        .then(function(response){
+          var metadatum = response.result;
+          var body = {};
+          body.associationIds = metadatum.associationIds;
+          angular.forEach(uuidsToRemove, function(value, key){
+            var index = body.associationIds.indexOf(value);
+            body.associationIds.splice(index, 1);
+          })
+          body.name = metadatum.name;
+          body.value = metadatum.value;
+          body.schemaId = metadatum.schemaId;
+          if (body.name === "rejected") {
+            body.value.title = metadatum.value.title;
+            body.value.reasons = metadatum.value.reasons;
+            body.value.reasons.splice(index, 1);
+          }
+          promises.push(MetaController.updateMetadata(body,metadataUuid))
+          var deferred = $q.defer();
+
+          return $q.all(promises).then(
+            function(data) {
+              $rootScope.$broadcast('associationRemoved',{message:"File Associations Removed Successfully."});
+              return true;
+          },
+          function(data) {
+            deferredHandler(data, deferred, "Error Removing File Metadata Associations");
+              return false;
+          });
+        }
+      )
+      
+    }
+
     this.removeAssociation = function(metadataUuid, uuidToRemove){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
@@ -194,6 +230,34 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       
     }
 
+    this.addMultipleAssociationIds = function(metadataUuid, uuidsToAdd){
+  	  MetaController.getMetadata(metadataUuid)
+        .then(function(response){
+          var metadatum = response.result;
+          var body = {};
+          body.associationIds = metadatum.associationIds;
+          angular.forEach(uuidsToAdd, function(value, key){
+            if (body.associationIds.indexOf(value) < 0) {
+              body.associationIds.push(value);
+            }
+          })
+          body.name = metadatum.name;
+          body.value = metadatum.value;
+          body.schemaId = metadatum.schemaId;
+          MetaController.updateMetadata(body,metadataUuid)
+          .then(
+            function(response){
+              App.alert({message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
+            },
+            function(response){
+              MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
+            }
+
+          )
+        }
+      )
+    }
+    
     this.addAssociation = function(metadataUuid, uuidToAdd){
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
