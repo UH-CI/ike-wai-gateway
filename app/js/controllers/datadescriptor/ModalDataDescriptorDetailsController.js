@@ -45,6 +45,8 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.people = [];
   $scope.orgs = [];
   $scope.subjects = [];
+  $scope.locations = [];
+  $scope.variables = [];
 
   $scope.ddUuid = $scope.metadataUuid;//$stateParams.uuid;
 
@@ -205,6 +207,15 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
     $scope.fetchMetadata("{'name':'Organization'}");
   };
 
+ $scope.getAssociations = function () {
+    $scope.locations = [];
+    $scope.variables = [];
+    console.log('getAssociation')
+    if ($scope.data_descriptor_metadatum.associationIds){
+      $scope.fetchMetadata("{'uuid':{'$in':['"+$scope.data_descriptor_metadatum.associationIds.join("','")+"']}}");
+    }
+  };
+  
   $scope.fetchMetadata = function (metadata_query) {
   
     $scope.fetchMetadataWithLimit(metadata_query, 100);
@@ -224,7 +235,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
           if (value.name === 'DataDescriptor') {
             $scope.has_data_descriptor = true;
             $scope.data_descriptor_metadatum = value;
-       
+            $scope.getAssociations();
             if ($scope.action && $scope.action === "edit") {
               $scope.editDataDescriptor();
             }
@@ -237,6 +248,17 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
           } else if (value.name === 'File') {
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
+          }
+          else if (value.name === 'Well' || value.name ==='Site') {
+            console.log('stuff')
+            if( $scope.locations.indexOf(value) < 0){
+              $scope.locations.push(value);
+            }
+          }
+          else if (value.name === 'Variable') {
+            if($scope.variables.indexOf(value) < 0){
+              $scope.variables.push(value);
+            }
           }
           //else if(value.name === 'Subject'){
           //    $scope.subjects.push(value.value);

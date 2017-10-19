@@ -40,7 +40,18 @@
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
-
+            <div>
+              Associated Files:
+              <table>
+                <tbody>
+                  <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
+                      <td ng-if="link.title == 'file'">
+                          <i class="fa fa-file-o">{{link.href.split('system')[1]}}</i>
+                      </td>
+                    </tr>
+                  </table>
+              </table>
+            </div>
             <!--
             <div class="portlet-title">
                 <div class="row text-center">
@@ -151,7 +162,7 @@
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
                                 <tbody>                                 
-                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: locFilter">
+                                  <tr class="" ng-repeat="filemetadatum in locations">
                                     <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
@@ -168,7 +179,7 @@
                             <div>
                               <table class="table table-striped table-bordered table-hover management">
                                 <tbody>                                 
-                                  <tr class="" ng-repeat="filemetadatum in filemetadata | filter: {name: 'Variable'}">
+                                  <tr class="" ng-repeat="filemetadatum in variables">
                                     <td>  <a href='#' ng-click="openViewMetadata(filemetadatum.uuid, 'lg')">    <i class="glyphicon glyphicon-eye-open"></i>{{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                           {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                           </a>
