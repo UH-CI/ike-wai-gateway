@@ -359,10 +359,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
                 console.log("clone made: " + $scope.new_metadataUuid);
                 $scope.uuid = $scope.new_metadataUuid;
-                $state.go('datadescriptor', {
-                  uuid: $scope.new_metadataUuid,
-                  "action": "edit"
-                });
+                //$state.go('datadescriptor', {
+                //  uuid: $scope.new_metadataUuid,
+                //  "action": "edit"
+                //});
               },
               function (response) {
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
