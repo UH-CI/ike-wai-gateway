@@ -75,7 +75,22 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				})
 		  }
 		}
+		
+		$scope.fetchDataDescriptors = function(){
+			//find DataDescriptors that are associated with all fileUuids
+			$scope.DataDescriptorIds=[];
+			MetaController.listMetadata("{'associationIds':{$all :['"+$scope.fileUuids.join("','")+"']}}").then(
+				function (response) {
+					$scope.matchingDataDescriptors = response.result;
+					angular.forEach($scope.matchingDataDescriptors, function(value, key) {
+							$scope.DataDescriptorIds.push(value.uuid)
+					})
+				}
+			)
+		}
 
+		$scope.fetchDataDescriptors();
+		
 		$scope.fetchFileMetadataObjects = function(){
 			MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids.join("','")+"']}}]}").then(
 
@@ -140,6 +155,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			$scope.fetchModalMetadata();
 			$scope.fetchFileMetadataObjects();
 			$scope.populateAssociatedMetadata();
+			$scope.fetchDataDescriptors();
 			$scope.requesting = false;
 		});
 
@@ -147,6 +163,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			$scope.fetchModalMetadata();
 			$scope.fetchFileMetadataObjects();
 			$scope.populateAssociatedMetadata();
+			$scope.fetchDataDescriptors();
 			$scope.requesting = false;
 		});
 
@@ -278,7 +295,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			}
 		$scope.addAssociation = function(metadatumUuid) {
 			var promise = []
-			promise.push(FilesMetadataService.addAssociations($scope.fileMetadataObjects, metadatumUuid)
+			promise.push(FilesMetadataService.addMultipleAssociationIds(metadatumUuid, $stateParams.fileUuids)// $scope.fileMetadataObjects, metadatumUuid)
 				/*.then(function(response) {
 					//$scope.matchingAssociationIds.push(metadatumUuid)
 					/*$rootScope.$broadcast('associationsUpdated')
@@ -292,6 +309,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				  $scope.fetchModalMetadata();
 					$scope.fetchFileMetadataObjects();
 					$scope.populateAssociatedMetadata();
+					$scope.fetchDataDescriptors();
 	            $rootScope.$broadcast('associationsUpdated')
 	          },
 	          function(data) {
@@ -305,7 +323,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     	if (unAssociate) {
 			
-			promise.push(FilesMetadataService.removeAssociations($scope.fileMetadataObjects, metadatumUuid))
+			promise.push(FilesMetadataService.removeMulitpleAssociationIds(metadatumUuid,$stateParams.fileUuids))
 				/*.then(function(response) {
 					//remove uuid of unassociated metadata object
 					//var index = $scope.matchingAssociationIds.indexOf(metadatumUuid);
@@ -469,6 +487,25 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		};
 		
 		$scope.openCreate = function (schemauuid, size) {
+	      $scope.selectedSchemaUuid = schemauuid;
+	      $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create', 'fileUuids':$stateParams.fileUuids}); 
+	      /*
+	        var modalInstance = $uibModal.open({
+	          animation: $scope.animationsEnabled,
+	          templateUrl: 'views/modals/ModalCreateMetadata.html',
+	          controller: 'ModalMetadataResourceCreateController',
+	          scope: $scope,
+	          size: size,
+	          schemaUuid: schemauuid,
+	          resolve: {
+	
+	          }
+	        }
+	      );
+	      */
+	    };
+		
+		/*$scope.openCreate = function (schemauuid, size) {
 			//check if file ojects all exist - wait to open modal until they do
 				$scope.selectedSchemaUuid = schemauuid;
 				$scope.modalSize = size;
@@ -486,7 +523,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					 }
 				 }
 			 );
-		};
+		};*/
 		///////Assoc modal search////////
 		$scope.schemaBox = {val1:true,val2:true};
 		$scope.wellbox = true;
