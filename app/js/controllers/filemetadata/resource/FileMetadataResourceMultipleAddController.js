@@ -343,7 +343,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 	        });
 		}
 
-			$scope.addClone = function(metadatumUuid) {
+	/*		$scope.addClone = function(metadatumUuid) {
 				$scope.checkFileMetadata()
 				if (metadatumUuid){
 					$scope.requesting = true;
@@ -383,7 +383,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 						 MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
 					 }
 					 $scope.requesting = false;
-				}
+				}*/
 
 		$scope.open = function (size) {
 				$scope.fetchModalMetadata();
@@ -468,6 +468,23 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				}
 			);
 		};
+		$scope.openEdit = function (metadatumuuid, size) {
+	      $scope.metadataUuid = metadatumuuid;
+	      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'edit'}); 
+	/*
+	        var modalInstance = $uibModal.open({
+	          animation: $scope.animationsEnabled,
+	          templateUrl: 'views/filemetadata/manager.html',
+	          controller: 'FileMetadataController',
+	          scope: $scope,
+	          size: size,
+	          resolve: {
+	
+	          }
+	        }
+	      );
+	*/
+	    };
 		
 		$scope.openEditDataDescriptor= function (metadatumuuid, size) {
 			$scope.metadataUuid = metadatumuuid;
@@ -484,6 +501,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					}
 				}
 			);
+		  $scope.selectedSchemaUuid = schemauuid;
+	      $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create', 'fileUuids':$stateParams.fileUuids}); 
 		};
 		
 		$scope.openCreate = function (schemauuid, size) {
@@ -504,6 +523,26 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 	      );
 	      */
 	    };
+		
+		$scope.openClone = function (dataDescriptorUuid, size) {
+	      $scope.selectedSchemaUuid = dataDescriptorUuid;
+	      $state.go("datadescriptor",{'uuid': dataDescriptorUuid, 'action': 'clone', 'fileUuids':$stateParams.fileUuids}); 
+	      /*
+	        var modalInstance = $uibModal.open({
+	          animation: $scope.animationsEnabled,
+	          templateUrl: 'views/modals/ModalCreateMetadata.html',
+	          controller: 'ModalMetadataResourceCreateController',
+	          scope: $scope,
+	          size: size,
+	          schemaUuid: schemauuid,
+	          resolve: {
+	
+	          }
+	        }
+	      );
+	      */
+	    };
+
 		
 		/*$scope.openCreate = function (schemauuid, size) {
 			//check if file ojects all exist - wait to open modal until they do

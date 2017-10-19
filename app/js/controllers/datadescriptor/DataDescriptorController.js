@@ -339,6 +339,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.name = $scope.metadatum.name;
           body.value = $scope.metadatum.value;
           body.schemaId = $scope.metadatum.schemaId;
+          if($stateParams.fileUuids){
+            body.associationIds = $stateParams.fileUuids
+          }
           MetaController.addMetadata(body)
             .then(
               function (response) {
@@ -503,7 +506,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.value = $scope.datadescriptor;
           body.schemaId = response;
           if($stateParams.fileUuids){
-            alert('true')
             body.associationIds = $stateParams.fileUuids
           }
 

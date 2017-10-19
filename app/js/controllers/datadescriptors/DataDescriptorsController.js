@@ -141,7 +141,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 
 
     $scope.openCreate = function (schemauuid, size) {
-      $scope.selectedSchemaUuid = schemauuid;
+      //$scope.selectedSchemaUuid = schemauuid;
       $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create'}); 
       /*
         var modalInstance = $uibModal.open({

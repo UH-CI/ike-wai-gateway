@@ -102,14 +102,14 @@
                                 <td class="text-center">
                                     <div class="btn-group">
                                             <span ng-show='profile.useranme == matchingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
-                                            <a ui-sref="metadata-edit({uuid:matchingMetadatum.uuid})" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                            <a ng-click="openEdit(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit </a>
                                           </span>
                                             &nbsp;
                                             <span>
                                             <a href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
                                           </span>
                                                                                       <span>
-                                            <a href="#" ng-click="openEditDataDescriptor(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit</a>
+                                            <a href="#" ng-click="openEdit(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit</a>
                                           </span>
                                     </div>
                                 </td>
