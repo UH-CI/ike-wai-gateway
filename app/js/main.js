@@ -2240,7 +2240,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
 
         // Metadata
         .state('datadescriptor', {
-            url: "/datadescriptor/:uuid?action",
+            url: "/datadescriptor/:uuid?action?fileUuids",
+            params:{
+              fileUuids: { array: true }
+            },
             templateUrl: "views/datadescriptor/manager.html",
             data: {pageTitle: 'DataDescriptor'},
             controller: "DataDescriptorController",
