@@ -86,7 +86,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.fetchDataDescriptors = function(){
 			//find DataDescriptors that are associated with all fileUuids
 			$scope.DataDescriptorIds=[];
-			MetaController.listMetadata("{'associationIds':{$all :['"+$scope.fileUuids.join("','")+"']}}").then(
+			MetaController.listMetadata("{'name':'DataDescriptor','associationIds':{$all :['"+$scope.fileUuids.join("','")+"']}}").then(
 				function (response) {
 					$scope.matchingDataDescriptors = response.result;
 					angular.forEach($scope.matchingDataDescriptors, function(value, key) {
@@ -478,6 +478,24 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.openEdit = function (metadatumuuid, size) {
 	      $scope.metadataUuid = metadatumuuid;
 	      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'edit'}); 
+	/*
+	        var modalInstance = $uibModal.open({
+	          animation: $scope.animationsEnabled,
+	          templateUrl: 'views/filemetadata/manager.html',
+	          controller: 'FileMetadataController',
+	          scope: $scope,
+	          size: size,
+	          resolve: {
+	
+	          }
+	        }
+	      );
+	*/
+	    };
+		
+		$scope.openView = function (metadatumuuid, size) {
+	      $scope.metadataUuid = metadatumuuid;
+	      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'view'}); 
 	/*
 	        var modalInstance = $uibModal.open({
 	          animation: $scope.animationsEnabled,
