@@ -486,6 +486,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
   }
 
+//THe save
   $scope.saveDataDescriptor = function () {
     console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
     //$scope.cancelEditDataDescriptor();
@@ -501,6 +502,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.name = "DataDescriptor";
           body.value = $scope.datadescriptor;
           body.schemaId = response;
+          if($stateParams.fileUuids){
+            alert('true')
+            body.associationIds = $stateParams.fileUuids
+          }
 
           MetaController.addMetadata(body)
             .then(
@@ -557,7 +562,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.name = $scope.data_descriptor_metadatum.name;
           body.value = $scope.datadescriptor;
           body.schemaId = $scope.data_descriptor_metadatum.schemaId;
-
           MetaController.updateMetadata(body, $scope.data_descriptor_metadatum.uuid)
             .then(
               function (response) {
