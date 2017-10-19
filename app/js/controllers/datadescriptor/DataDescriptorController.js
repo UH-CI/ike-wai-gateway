@@ -564,6 +564,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.name = $scope.data_descriptor_metadatum.name;
           body.value = $scope.datadescriptor;
           body.schemaId = $scope.data_descriptor_metadatum.schemaId;
+          body.associationIds = $scope.data_descriptor_metadatum.associationIds;
           MetaController.updateMetadata(body, $scope.data_descriptor_metadatum.uuid)
             .then(
               function (response) {
