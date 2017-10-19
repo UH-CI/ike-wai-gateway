@@ -89,7 +89,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 				$scope.requesting = false;
 			})
       MetaController.listMetadata(
-        $scope.query,limit=1000,offset=0
+        $scope.query,limit=100,offset=0
       )
         .then(
           function (response) {
