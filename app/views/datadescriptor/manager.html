@@ -543,8 +543,26 @@
                             </div>
                             -->
   	                        <!--<div id="association_notifications"></div>-->
-                            <!-- CHOOSE LOCATIONS -->
+                              <!-- DESCRIPTION -->
                             <div class="form-group">
+                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
+                              <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                              <input ng-model="datadescriptor.description" placeholder="Enter abstract or text describing this resource" class="form-control" type='textarea' rows="5"/>
+                            </div>
+
+                            <!-- RELATED -->
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Relations:</label>
+                              <button type="button" data-toggle="popover" title="Relations Field" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                              <input ng-model="datadescriptor.relations" placeholder="Enter filenames linked to this resource" class="form-control" type='textarea' rows="2"/>
+                            </div> 
+                              
+                            <!-- CHOOSE LOCATIONS -->
+                            <div class="form-group" ng-show="data_descriptor_metadatum">
                               <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
@@ -556,7 +574,7 @@
                             </div></br></br></br>
 
                             <!-- CHOOSE VARIABLES -->
-                            <div class="form-group">
+                            <div class="form-group" ng-show="data_descriptor_metadatum">
                               <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
                             </div>
                             <div id="variable_buttons">
@@ -603,23 +621,7 @@
                             </div>
                             -->
 
-                            <!-- DESCRIPTION -->
-                            <div class="form-group">
-                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
-                              <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <input ng-model="datadescriptor.description" placeholder="Enter abstract or text describing this resource" class="form-control" type='textarea' rows="5"/>
-                            </div>
-
-                            <!-- RELATED -->
-                            <div class="form-group">
-                              <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Relations:</label>
-                              <button type="button" data-toggle="popover" title="Relations Field" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <input ng-model="datadescriptor.relations" placeholder="Enter filenames linked to this resource" class="form-control" type='textarea' rows="2"/>
-                            </div>
+                           
 
 
 
