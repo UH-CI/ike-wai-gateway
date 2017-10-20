@@ -428,17 +428,17 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           console.log("new-uuid: " + newfile_uuid )
           console.log("old-uuid: " + fileUuid)
           //fetch all file objects associated with oldfile
-          MetaController.listMetadata('{$and: [{"name":"File"},{"associationIds":"' +  fileUuid+ '"}]}',1000,0)
+          MetaController.listMetadata('{"associationIds":"' +  fileUuid+ '"}',1000,0)
             .then(function(response){
               angular.forEach(response.result, function(value){
                   //loop through File metadata associations
-                  angular.forEach(value.associationIds, function(val,index){
+                  // angular.forEach(value, function(val,index){
                     //associate newfile with oldfiles metadatum object
-                    if( associations.indexOf(val) < 0){
-                     associations.push(val)
-                     self.addPublishedAssociation(val, newfile_uuid);
+                    if( associations.indexOf(value.uuid) < 0){
+                     associations.push(value.uuid)
+                     self.addPublishedAssociation(value.uuid, newfile_uuid);
                    }
-                 })
+                 //})
               })
               //create a a File Metadata Object, assocaiate metadata objects
               promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
