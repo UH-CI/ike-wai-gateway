@@ -66,6 +66,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
           }
        );
      }
+     
     $scope.textSearch = function(){
       if ($scope.searchField.value != ''){
         $scope.filequery = "{$text:{$search:'"+$scope.searchField.value+"'}}";
