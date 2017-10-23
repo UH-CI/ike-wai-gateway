@@ -163,8 +163,7 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                     <td>
-                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>
-                                    </td>
+                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>&nbsp;<span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>                                    </td>
                                     <td>
                                         <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.owner}}</a>
                                     </td>
