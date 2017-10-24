@@ -39,7 +39,13 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     $scope.requesting =false;
     $scope.getAuthToken = function(){
         $scope.requesting = true;
-        $http.post('https://ikewai-dev.its.hawaii.edu:8000/login?username='+$scope.username+'&password='+$scope.password)
+        var post_data = {};
+        var url = 'https://localhost:8000/login';
+        var options = {
+            withCredentials: true, 
+            headers:{ 'Authorization':  'Basic ' + btoa($scope.username + ":" + $scope.password)}
+          }
+        $http.post(url,post_data, options)
             .success(function (data, status, headers, config) {
                 $scope.requesting=false;
                 if (data.access_token){
@@ -55,7 +61,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
             })
             .error(function (data, status, header, config) {
                 $scope.requesting=false;
-                alert(angular.toJson(data));
+                Alerts.danger({message:angular.toJson(data)});
             });
             
     }
