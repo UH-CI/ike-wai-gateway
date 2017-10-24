@@ -18,7 +18,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
-    $scope.limit = 10;
+    $scope.limit = 100;
     $scope.hasFiles = false;
 
     $scope.sortType = 'name';
@@ -34,7 +34,6 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.searchField = {value:''}
 
     $scope.searchAll = function(){
-      //alert($scope.filter)
       $scope.requesting = true;
         var orquery = {}
         var andquery = {}
@@ -66,8 +65,13 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
 
-        MetaController.listMetadata($scope.query,limit=100,offset=0).then(
+        MetaController.listMetadata($scope.query,$scope.limit,$scope.offset).then(
           function (response) {
+            if (response.result.length == $scope.limit) {
+              $scope.can_fetch_more = true;
+            } else {
+              $scope.can_fetch_more = false;
+            }
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
@@ -79,6 +83,29 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
           }
       );
     }
+    
+    $scope.fetchMoreMetadata = function () {
+        $scope.offset = $scope.offset + $scope.limit
+        $scope.requesting = true
+        MetaController.listMetadata($scope.query, $scope.limit, $scope.offset)
+          .then(
+            function (response) {
+              if (response.result.length == $scope.limit) {
+                $scope.can_fetch_more = true;
+              } else {
+                $scope.can_fetch_more = false;
+              }
+               $scope[$scope._COLLECTION_NAME]=  $scope[$scope._COLLECTION_NAME].concat(response.result)
+               $scope.totalItems = $scope[$scope._COLLECTION_NAME].length;
+              $scope.pagesTotal = Math.ceil($scope[$scope._COLLECTION_NAME].length / $scope.limit);
+              $scope.requesting = false;
+            },
+            function (response) {
+              MessageService.handle(response, $translate.instant('error_metadata_list'));
+              $scope.requesting = false;
+            }
+          );
+      }
 
     $scope.refresh = function() {
       $scope.requesting = true;
@@ -88,27 +115,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 				$scope.metadataschema = response.result;
 				$scope.requesting = false;
 			})
-      MetaController.listMetadata(
-        $scope.query,limit=100,offset=0
-      )
-        .then(
-          function (response) {
-            $scope.totalItems = response.result.length;        
-            //angular.forEach(response.result, function(val, key){
-            //    console.log("values: " + $scope.profile.username + ", " + val.owner);
-            //    var r = $scope.profile.username == val.owner;
-            //    console.log("result: " + r);
-            //});
-            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
-            $scope.requesting = false;
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_list'));
-            $scope.requesting = false;
-          }
-      );
-
+      $scope.searchAll();
     };
 
     $scope.searchTools = function(query){

@@ -86,28 +86,16 @@
                       <div ng-show="metadata.length === 0" class="text-center">
                         <div class="row text-center">
                           <div class="col-md-12">
-                              No Metadata found
+                              No Data Descriptors found
                           </div>
                         </div>
                       </div>
                       <div ng-show="metadata.length > 0"class="text-left">
                           <div class="pull-left">
                               Total Search Results: {{totalItems}}
+                              <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>
                           </div>
                       </div>
-                        <!--
-                      <div class="btn-group pull-right">
-                          <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                              <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
-                              <i class="fa fa-angle-down pull-right"></i>
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li ng-repeat="metadataschemata in metadataschema " ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
-                              <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
-                            </li>
-                          </ul>
-                      </div>
-                        -->
                       <div class="btn-group pull-right">
                           <a class="btn green btn-outline pull-right" href="#" ng-click="openCreate(metadataschema[0].uuid)" role="button">
                               <i class="fa fa-plus"></i>&nbsp;Create New Data Descriptor
