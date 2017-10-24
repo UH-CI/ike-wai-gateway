@@ -143,7 +143,7 @@
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
                 </div>
                 <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
-                  <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
+                  <a class="btn btn-default" href="#" ng-click="close()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
 
 
@@ -669,13 +669,15 @@
                             </div>
                              -->
                             <!--<div ng-if="ddUuid === ''"class="form-group"> -->
+                              <!--
                             <div ng-if="has_data_descriptor == false"class="form-group">
                               <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
                             </div>
-                            <!--<div ng-if="ddUuid != ''"class="form-group"> -->
+                            
                             <div ng-if="has_data_descriptor == true"class="form-group">
                               <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
                             </div>
+                            -->
                           </div>
                           </form>
                           </div>
@@ -687,5 +689,16 @@
               </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default pull-left" ng-click="close()">Close</button>
+    <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
+    <div ng-if="has_data_descriptor == false"class="form-group">
+      <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
+    </div>
+    <!--<div ng-if="ddUuid != ''"class="form-group"> -->
+    <div ng-if="has_data_descriptor == true"class="form-group">
+      <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
     </div>
 </div>

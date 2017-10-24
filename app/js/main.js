@@ -2221,6 +2221,10 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/FilesMetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             'js/controllers/datadescriptors/DataDescriptorsController.js',
+                            //'js/controllers/datadescriptor/ModalDataDescriptorDetailsController.js',
+                            'js/controllers/datadescriptor/DataDescriptorController.js',
+                            '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                            '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
                             'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
@@ -2296,6 +2300,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
                             '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
                             'js/controllers/filemetadata/FileMetadataController.js',
+                            'js/controllers/datadescriptor/DataDescriptorController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js'
@@ -2376,8 +2381,11 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                           'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                           'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
                           'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
                           'js/controllers/datadescriptor/ModalDataDescriptorDetailsController.js',
-                          'js/controllers/datadescriptor/ModalDataDescriptorEditController.js'
+                          'js/controllers/datadescriptor/ModalDataDescriptorEditController.js',
+                          '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                          '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css'
                       ]
                     }
                   ]);

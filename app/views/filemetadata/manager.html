@@ -106,13 +106,13 @@
                                                            && !(action=='associate' && associatedDataDescriptors.indexOf(metadatum.uuid) != -1)">
 
                                                     <td>
-                                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>
+                                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>
                                                     </td>
                                                     <td>
-                                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg') "> {{metadatum.owner}}</a>
+                                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg') "> {{metadatum.owner}}</a>
                                                     </td>
                                                     <td>
-                                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg') "> {{metadatum.value.description}}</a>
+                                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg') "> {{metadatum.value.description}}</a>
                                                         <!--{{metadatum.uuid}}-->
                                                     </td>
                                                     
@@ -141,7 +141,7 @@
                                                             </a>
                                                             <ul class="dropdown-menu pull-right" role="menu">
                                                                 <li>
-                                                                    <a ng-click="openView(metadatum.uuid, 'lg') ">
+                                                                    <a ng-click="openViewDataDescriptor(metadatum.uuid, 'lg') ">
                                                                     <i class="fa fa-tags "></i> 
                                                                     View
                                                                     </a>

@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('DataDescriptorsController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('DataDescriptorsController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'metadata',
     $scope._RESOURCE_NAME = 'metadatum';
     $scope.showModal = false;
@@ -140,96 +140,81 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 /////////Modal Stuff/////////////////////
 
 
-    $scope.openCreate = function (schemauuid, size) {
-      //$scope.selectedSchemaUuid = schemauuid;
-      $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create'}); 
-      /*
-        var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'views/modals/ModalCreateMetadata.html',
-          controller: 'ModalMetadataResourceCreateController',
-          scope: $scope,
-          size: size,
-          schemaUuid: schemauuid,
-          resolve: {
 
-          }
+    $scope.openCreate = function (selectedSchemaUuid, size) {
+      $scope.selectedSchemaUuid = selectedSchemaUuid;
+      //$state.go("datadescriptor",{'uuid': selectedSchemaUuid, 'action': 'create'}); 
+      $scope.uuid = selectedSchemaUuid;
+      $scope.action = "create";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: selectedSchemaUuid,
+        profile: $scope.profile,
+        resolve: {
+
         }
-      );
-      */
+      });
     };
 
     $scope.openClone = function (dataDescriptorUuid, size) {
-      $scope.selectedSchemaUuid = dataDescriptorUuid;
-      $state.go("datadescriptor",{'uuid': dataDescriptorUuid, 'action': 'clone'}); 
-      /*
-        var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'views/modals/ModalCreateMetadata.html',
-          controller: 'ModalMetadataResourceCreateController',
-          scope: $scope,
-          size: size,
-          schemaUuid: schemauuid,
-          resolve: {
+      //$state.go("datadescriptor",{'uuid': dataDescriptorUuid, 'action': 'clone'}); 
+      $scope.uuid = dataDescriptorUuid;
+      $scope.action = "clone";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
 
-          }
         }
-      );
-      */
-    };
-
-    /*
-    $scope.openEdit = function (metadatumuuid, size) {
-      $scope.metadataUuid = metadatumuuid;
-        var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'views/modals/ModalEditMetadata.html',
-          controller: 'ModalMetadataResourceEditController',
-          scope: $scope,
-          size: size,
-          resolve: {
-
-          }
-        }
-      );
-    };
-    */
-
-    
-    $scope.openEdit = function (metadatumuuid, size) {
-      $scope.metadataUuid = metadatumuuid;
-      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'edit'}); 
-/*
-        var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'views/filemetadata/manager.html',
-          controller: 'FileMetadataController',
-          scope: $scope,
-          size: size,
-          resolve: {
-
-          }
-        }
-      );
-*/
+      });
     };
     
+    $scope.openEdit = function (dataDescriptorUuid, size) {
+      $scope.metadataUuid = dataDescriptorUuid;
+      //$state.go("datadescriptor",{'uuid': dataDescriptorUuid, 'action': 'edit'}); 
+      $scope.uuid = dataDescriptorUuid;
+      $scope.action = "edit";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
 
-    $scope.openView = function (metadatumuuid, size) {
-      $scope.metadataUuid = metadatumuuid;
-      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'view'}); 
-      /*
-        var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'views/modals/ModalViewMetadata.html',
-          controller: 'FileMetadataController',
-          scope: $scope,
-          size: size,
-          resolve: {
-
-          }
         }
-      );
-      */
+      });
+    };
+
+    $scope.openViewDataDescriptor = function (dataDescriptorUuid, size) {
+      $scope.uuid = dataDescriptorUuid;
+      $scope.action = "view";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
+
+        }
+      });
     };
 });

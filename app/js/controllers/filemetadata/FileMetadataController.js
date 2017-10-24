@@ -157,7 +157,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               // if there is no data descriptor for this file, prompt the user to associate with an
               // existing data descriptor, clone and associate an existing dd, or create a new one
               if ($scope.data_descriptor_metadatum.length === 0) {
-                console.log("JEN FMC: have no data descriptors");
+                //console.log("JEN FMC: have no data descriptors");
                 $scope.has_data_descriptor = false;
                 // get all Data Descriptors and let the user do associations 
                 // between one or more of them with the current file
@@ -165,14 +165,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
               }
               // if it has only one data descriptor, call the DataDescriptor controller to show it.          
               else if ($scope.data_descriptor_metadatum.length === 1) {
-                console.log("JEN FMC: have one data descriptor");
+                //console.log("JEN FMC: have one data descriptor");
                 $scope.has_data_descriptor = true;
-                $state.go("datadescriptor",{'uuid': $scope.data_descriptor_metadatum[0].uuid, 'action': 'view'});
+                //$state.go("datadescriptor",{'uuid': $scope.data_descriptor_metadatum[0].uuid, 'action': 'view'});
+                $scope.openViewDataDescriptor($scope.data_descriptor_metadatum[0].uuid, 'lg');
               } 
               // if there is more than one data descriptor, show modal list of dds from which the user can select
               else if ($scope.data_descriptor_metadatum.length > 1) {
                 $scope.has_data_descriptor = true;
-                console.log("JEN FMC: Got multiple data descriptors");
+                //console.log("JEN FMC: Got multiple data descriptors");
               }
             }
             $scope.requesting = false;
@@ -503,6 +504,26 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
       
 
   /////////Modal Stuff/////////////////////
+        $scope.openViewDataDescriptor = function (metadatumuuid, size) {
+          $scope.metadataUuid = metadatumuuid;
+          $scope.uuid = metadatumuuid;
+          $scope.action = 'view';
+          var modalInstance = $uibModal.open({
+            animation: $scope.animationsEnabled,
+            //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+            templateUrl: 'views/datadescriptor/manager.html',
+            controller: 'DataDescriptorController',
+            scope: $scope,
+            size: size,
+            metadataUuid: metadatumuuid,
+            uuid: metadatumuuid,
+            profile: $scope.profile,
+            resolve: {
+
+            }
+          });
+        };
+
 /*
         $scope.open = function (size, types, title) {
             //Set the

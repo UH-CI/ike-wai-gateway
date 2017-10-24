@@ -163,13 +163,16 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                     <td>
-                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.title}}</a>&nbsp;<span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>                                    </td>
+                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> 
+                                          {{metadatum.value.title}}</a>&nbsp;
+                                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>
+                                        </a>
+                                      </td>
                                     <td>
-                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.owner}}</a>
+                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.owner}}</a>
                                     </td>
                                     <td>
-                                        <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.description}}</a>
-                                        <!--{{metadatum.uuid}}-->
+                                        <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.value.description}}</a>
                                     </td>
                                     <!--
                                     <td>
@@ -204,7 +207,7 @@
                                           <ul class="dropdown-menu pull-right" role="menu">
                                             <!--<li ng-show="config.allowedActions.clone">-->
                                             <li>
-                                                <a ng-click="openView(metadatum.uuid, 'lg')">
+                                                <a ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')">
                                                   <i class="fa fa-tags"></i> 
                                                   View
                                                 </a>

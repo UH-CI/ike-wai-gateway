@@ -144,7 +144,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 		$scope.searchTools = function(query){
 			$scope.query = query;
-			$scope.fetchModalMetadata($scope.query)
+			$scope.fetchModalMetadata();
 			//$scope.refresh();
 		}
 
@@ -298,8 +298,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 							$scope.requesting = false;
 						}
 				);
-
 			}
+			$scope.fetchModalMetadata();
+
 		$scope.addAssociation = function(metadatumUuid) {
 			var promise = []
 			promise.push(FilesMetadataService.addMultipleAssociationIds(metadatumUuid, $stateParams.fileUuids)// $scope.fileMetadataObjects, metadatumUuid)
@@ -459,114 +460,78 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			);
 		};
 
-		$scope.openViewDataDescriptor= function (metadatumuuid, size) {
-			$scope.metadataUuid = metadatumuuid;
-				var modalInstance = $uibModal.open({
-					animation: $scope.animationsEnabled,
-					templateUrl: 'views/modals/ModalViewDataDescriptor.html',
-					controller: 'ModalDataDescriptorDetailsController',
-					scope: $scope,
-					size: size,
-					metadataUuid: metadatumuuid,
-					profile: $scope.profile,
-					resolve: {
+		$scope.openViewDataDescriptor = function (dataDescriptorUuid, size) {
+			$scope.uuid = dataDescriptorUuid;
+			$scope.action = "view";
+			var modalInstance = $uibModal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'views/datadescriptor/manager.html',
+				controller: 'DataDescriptorController',
+				scope: $scope,
+				size: size,
+				uuid: dataDescriptorUuid,
+				profile: $scope.profile,
+				resolve: {
 
-					}
 				}
-			);
+			});
 		};
-		$scope.openEdit = function (metadatumuuid, size) {
-	      $scope.metadataUuid = metadatumuuid;
-	      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'edit'}); 
-	/*
-	        var modalInstance = $uibModal.open({
-	          animation: $scope.animationsEnabled,
-	          templateUrl: 'views/filemetadata/manager.html',
-	          controller: 'FileMetadataController',
-	          scope: $scope,
-	          size: size,
-	          resolve: {
-	
-	          }
-	        }
-	      );
-	*/
-	    };
-		
-		$scope.openView = function (metadatumuuid, size) {
-	      $scope.metadataUuid = metadatumuuid;
-	      $state.go("datadescriptor",{'uuid': metadatumuuid, 'action': 'view'}); 
-	/*
-	        var modalInstance = $uibModal.open({
-	          animation: $scope.animationsEnabled,
-	          templateUrl: 'views/filemetadata/manager.html',
-	          controller: 'FileMetadataController',
-	          scope: $scope,
-	          size: size,
-	          resolve: {
-	
-	          }
-	        }
-	      );
-	*/
-	    };
-		
-		$scope.openEditDataDescriptor= function (metadatumuuid, size) {
-			$scope.metadataUuid = metadatumuuid;
-				var modalInstance = $uibModal.open({
-					animation: $scope.animationsEnabled,
-					templateUrl: 'views/modals/ModalEditDataDescriptor.html',
-					controller: 'ModalDataDescriptorEditController',
-					scope: $scope,
-					size: size,
-					metadataUuid: metadatumuuid,
-					profile: $scope.profile,
-					resolve: {
 
-					}
-				}
-			);
-		  $scope.selectedSchemaUuid = schemauuid;
-	      $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create', 'fileUuids':$stateParams.fileUuids}); 
+
+
+
+
+		$scope.openEditDataDescriptor= function (dataDescriptorUuid, size) {
+			$scope.uuid = dataDescriptorUuid;
+			$scope.action = "edit";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
+
+        }
+      });
 		};
-		
-		$scope.openCreate = function (schemauuid, size) {
-	      $scope.selectedSchemaUuid = schemauuid;
-	      $state.go("datadescriptor",{'uuid': schemauuid, 'action': 'create', 'fileUuids':$stateParams.fileUuids}); 
-	      /*
-	        var modalInstance = $uibModal.open({
-	          animation: $scope.animationsEnabled,
-	          templateUrl: 'views/modals/ModalCreateMetadata.html',
-	          controller: 'ModalMetadataResourceCreateController',
-	          scope: $scope,
-	          size: size,
-	          schemaUuid: schemauuid,
-	          resolve: {
-	
-	          }
-	        }
-	      );
-	      */
-	    };
+
+
+		$scope.openCreate = function (dataDescriptorUuid, size) {
+			$scope.uuid = dataDescriptorUuid;
+			$scope.action = "create";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
+
+        }
+      });
+		};
 		
 		$scope.openClone = function (dataDescriptorUuid, size) {
-	      $scope.selectedSchemaUuid = dataDescriptorUuid;
-	      $state.go("datadescriptor",{'uuid': dataDescriptorUuid, 'action': 'clone', 'fileUuids':$stateParams.fileUuids}); 
-	      /*
-	        var modalInstance = $uibModal.open({
-	          animation: $scope.animationsEnabled,
-	          templateUrl: 'views/modals/ModalCreateMetadata.html',
-	          controller: 'ModalMetadataResourceCreateController',
-	          scope: $scope,
-	          size: size,
-	          schemaUuid: schemauuid,
-	          resolve: {
-	
-	          }
-	        }
-	      );
-	      */
-	    };
+			$scope.uuid = dataDescriptorUuid;
+			$scope.action = "clone";
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        templateUrl: 'views/datadescriptor/manager.html',
+        controller: 'DataDescriptorController',
+        scope: $scope,
+        size: size,
+        uuid: dataDescriptorUuid,
+        profile: $scope.profile,
+        resolve: {
+
+        }
+			});
+		}
 
 		
 		/*$scope.openCreate = function (schemauuid, size) {

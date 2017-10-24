@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('DataDescriptorController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage, $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('DataDescriptorController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage, $modalInstance, $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
   $scope._COLLECTION_NAME = 'filemetadata';
   $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -24,7 +24,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
   }
   $scope.get_editors();
-  $scope.action = $stateParams.action;
+  //$scope.action = $stateParams.action;
 
   $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
   $scope.schemaQuery = ''; //"{'owner':'seanbc'}";
@@ -35,7 +35,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.subjects = [];
   $scope.locations = [];
   $scope.variables = [];
-  $scope.ddUuid = $stateParams.uuid;
+  //$scope.ddUuid = $stateParams.uuid;
+  $scope.ddUuid = $scope.uuid;
 
   $scope.formats = [
     ".bmp - bit map",
@@ -104,8 +105,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.class = [];
 
   $scope.refreshMetadata = function () {
-    console.log("JEN DDC: refreshMetadata: uuid:'" + $stateParams.uuid);
-    console.log("JEN DDC: refreshMetadata: uuid:" + $scope.ddUuid);
+    //console.log("JEN DDC: refreshMetadata: stateparam uuid:'" + $stateParams.uuid);
+    //console.log("JEN DDC: refreshMetadata: scope uuid:" + $scope.ddUuid);
     //refetch the file metadata object to ensure the latest associtionIds are in place
     var deferred = $q.defer();
     //$scope.fetchMetadata("{'uuid':'" + $stateParams.uuid + "'}");
@@ -165,8 +166,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   });
 
   $scope.refresh = function () {
-    console.log("JEN DDC: refresh: action = " + $scope.action + ", uuid:" + $stateParams.uuid);
-    console.log("JEN DDC: refresh: action = " + $scope.action + ", uuid:" + $scope.ddUuid);
+    if ($stateParams.uuid != undefined) {
+      $scope.ddUuid = $stateParams.uuid;
+    }
+    // stateParams.action, if provided, overrules scope.action,
+    // but if not provided, leave scope.action alone
+    if ($stateParams.action != undefined) {
+      $scope.action = $stateParams.action;
+    }
+    //console.log("JEN DDC: refresh: action = " + $scope.action + ", stateparam uuid:" + $stateParams.uuid);
+    //console.log("JEN DDC: refresh: action = " + $scope.action + ", scope uuid:" + $scope.ddUuid);
+
     if ($scope.action === "create") {
       $scope.ddUuid = "";
       $scope.action = "edit";
@@ -545,6 +555,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         closeInSeconds: 5
       });
     }
+    //$scope.cancelEditDataDescriptor();
+    $scope.close();
   }
 
   $scope.updateDataDescriptor = function () {
@@ -594,6 +606,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         closeInSeconds: 5
       });
     }
+    //$scope.cancelEditDataDescriptor();
+    $scope.close();
   }
 
   $scope.animationsEnabled = true;
@@ -609,6 +623,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
     $scope.refreshMetadata();
+    //$scope.close();
   }
 
   $scope.doTheBack = function () {
@@ -778,61 +793,15 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.requesting = false;
   }
 
-  /*
-          $scope.addAssociation = function(metadatumUuid,container_id="") {
-          if (metadatumUuid){
-        		$scope.requesting = true;
-        	  MetaController.getMetadata($scope.fileMetadataObject[0].uuid)
-              .then(function(response){
-                $scope.metadatum = response.result;
-                var body = {};
-                body.associationIds = $scope.metadatum.associationIds;
-                //check if fileUuid is already associated
-                if (body.associationIds.indexOf(metadatumUuid) < 0) {
-                  body.associationIds.push(metadatumUuid);
-                  body.name = $scope.metadatum.name;
-                  body.value = $scope.metadatum.value;
-                  body.schemaId = $scope.metadatum.schemaId;
-                  MetaController.updateMetadata(body,$scope.fileMetadataObject[0].uuid)
-                  .then(
-                    function(response){
-                      // decided not to show the metadata name in the error message as it would require that to be passed in, or another call
-                       App.alert({container: container_id, message: $translate.instant('success_metadata_add_assocation'),closeInSeconds: 5 });
-                      $scope.requesting = false;
-
-                      //$scope.fetchMetadata("{'uuid':{$in: ['"+body.associationIds.join("','")+"']}}")
-                      $scope.refreshMetadata();
-                      $scope.matchingAssociationIds.push(metadatumUuid)
-                      $scope.removedAssociationIds.splice($scope.removedAssociationIds.indexOf(metadatumUuid))
-                      //$state.go('metadata',{id: $scope.metadataUuid});
-                    },
-                    function(response){
-                      MessageService.handle(response, $translate.instant('error_metadata_add_assocation'));
-                      $scope.requesting = false;
-                    }
-                  )
-                }
-                else {
-                  App.alert({type: 'danger',message: $translate.instant('error_metadata_add_assocation_exists'),closeInSeconds: 5  });
-                  return
-                }
-              })
-             }
-          else{
-               MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
-             }
-             $scope.requesting = false;
-          }
-    */
-
   $scope.locFilter = function (item) {
     if (item.name === 'Well' || item.name === 'Site') {
       return item;
     }
   }
 
-
-  /////////Modal Stuff/////////////////////
+  /////////Modal Stuff for locations and variables, not data descriptors /////////////////////
+  
+  // opens modals for location and variables
   $scope.open = function (size, types, title) {
     //Set the
     $scope.modalSchemas = types.slice(0);
@@ -866,9 +835,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     });
   };
 
-
   $scope.openViewMetadata = function (metadatumuuid, size) {
-
     $scope.metadataUuid = metadatumuuid;
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
@@ -1000,6 +967,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     }
     $scope.modalSchemas = $scope.modalSchemas
   };
+
+  $scope.close = function () {
+    $scope.cancelEditDataDescriptor();
+	  $modalInstance.close();
+	};
 
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
   $scope.cancel = function () {
