@@ -18,7 +18,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
-    $scope.limit = 100;
+    $scope.limit = 500;
     $scope.hasFiles = false;
 
     $scope.sortType = 'name';
