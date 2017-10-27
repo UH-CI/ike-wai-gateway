@@ -4,7 +4,17 @@
      <span ng-if="metadatum" class="btn-group">
      </span>
 </div>
-
+<div class="row text-center" ng-show="requesting">
+	<div class="col-md-12">
+		<div class="loading-message">
+			<div class="block-spinner-bar">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <style>
 .btn-circle {
   width: 15px;
@@ -37,6 +47,7 @@
 }
 </style>
 
+<div class="modal-body">
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -204,7 +215,7 @@
         </div>
     </div>
 </div>
-
+</div>
 
 <div class="modal-footer">
     <button ng-show='profile.username == metadatum.owner || edit_perm' class="btn btn-primary" ng-click="openEdit({uuid: metadatum.uuid},'lg')">Edit</button>
