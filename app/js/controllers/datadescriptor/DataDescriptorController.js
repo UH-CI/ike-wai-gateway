@@ -165,7 +165,24 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     },
   });
 
+  $scope.cancelEditDataDescriptor = function () {
+    console.log("JEN DDC: cancelEditDataDescriptor");
+    $scope.edit_data_descriptor = false;
+    $scope.action = "view";
+    //$scope.refreshMetadata();
+    //$scope.close();
+  }
+
+  $scope.close = function () {
+    console.log("JEN DDC: close");
+    $scope.cancelEditDataDescriptor();
+    $modalInstance.close();
+    $uibModal.close;
+	};
+
+  
   $scope.refresh = function () {
+    console.log("JEN DDC: refresh: action = " + $scope.action);
     if ($stateParams.uuid != undefined) {
       $scope.ddUuid = $stateParams.uuid;
     }
@@ -177,54 +194,62 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //console.log("JEN DDC: refresh: action = " + $scope.action + ", stateparam uuid:" + $stateParams.uuid);
     //console.log("JEN DDC: refresh: action = " + $scope.action + ", scope uuid:" + $scope.ddUuid);
 
+    $scope.continue = true;
+
     if ($scope.action === "create") {
       $scope.ddUuid = "";
       $scope.action = "edit";
     }
-    if ($scope.action === "clone") {
+    else if ($scope.action === "clone") {
+      $scope.continue = false;
       $scope.action = "edit";
+      $modalInstance.close();
+      $scope.close();
       //$scope.addClone($stateParams.uuid);
       $scope.addClone($scope.ddUuid);
     }
 
-    $scope.requesting = true;
-    $scope.people.length = 0;
-    //$scope.subjects.length = 0;
-    $scope.orgs.length = 0;
+    if ($scope.continue) {
+      console.log("Jen DDC continue in refresh");
+      $scope.requesting = true;
+      $scope.people.length = 0;
+      //$scope.subjects.length = 0;
+      $scope.orgs.length = 0;
 
-    MetaController.listMetadataSchema(
-      $scope.schemaQuery
-    ).then(function (response) {
-      $scope.metadataschema = response.result;
-    })
+      MetaController.listMetadataSchema(
+        $scope.schemaQuery
+      ).then(function (response) {
+        $scope.metadataschema = response.result;
+      })
 
-    //check if default filemetadata object exists
-    //MetaController.listMetadata("{'uuid':'" + $stateParams.uuid + "'}").then(
-    MetaController.listMetadata("{'uuid':'" + $scope.ddUuid + "'}").then(
-      function (response) {
-        $scope.ddObject = response.result;
-        //$scope.refreshMetadata();
-      },
-      function (response) {
-        MessageService.handle(response, $translate.instant('error_filemetadata_list'));
-        $scope.requesting = false;
-      }
-    )
+      //check if default filemetadata object exists
+      //MetaController.listMetadata("{'uuid':'" + $stateParams.uuid + "'}").then(
+      MetaController.listMetadata("{'uuid':'" + $scope.ddUuid + "'}").then(
+        function (response) {
+          $scope.ddObject = response.result;
+          //$scope.refreshMetadata();
+        },
+        function (response) {
+          MessageService.handle(response, $translate.instant('error_filemetadata_list'));
+          $scope.requesting = false;
+        }
+      )
 
-    $scope.getPeople();
-    //$scope.getSubjects();
-    $scope.getOrgs();
-    $scope.getFiles();
+      $scope.getPeople();
+      //$scope.getSubjects();
+      $scope.getOrgs();
+      $scope.getFiles();
 
-    MetaController.listMetadataSchema(
-      $scope.schemaQuery
-    ).then(function (response) {
-      $scope.metadataschema = response.result;
-    })
-    jQuery('#datetimepicker1').datepicker();
-    jQuery('#datetimepicker2').datepicker();
-    jQuery('#datetimepicker3').datepicker();
-    $scope.refreshMetadata();
+      MetaController.listMetadataSchema(
+        $scope.schemaQuery
+      ).then(function (response) {
+        $scope.metadataschema = response.result;
+      })
+      jQuery('#datetimepicker1').datepicker();
+      jQuery('#datetimepicker2').datepicker();
+      jQuery('#datetimepicker3').datepicker();
+      $scope.refreshMetadata();
+    }
   };
 
   /*
@@ -315,7 +340,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           //    $scope.subjects.push(value.value);
           //    $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
           //}
-          
+
         });
         $scope.requesting = false;
         console.log("Locations count: " + $scope.locations.length)
@@ -338,7 +363,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // an old method and don't want a bunch of arbitrary changes to show 
   // during a comparison, I just do an assignment on the first line.
   $scope.addClone = function (dataDescriptorUuid, fileUuid) {
-    console.log("JEN DDC: addClone: " + dataDescriptorUuid);
+    console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
     metadatumUuid = dataDescriptorUuid;
     if (metadatumUuid) {
       $scope.requesting = true;
@@ -355,6 +380,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           MetaController.addMetadata(body)
             .then(
               function (response) {
+                //$modalInstance.close();
                 $scope.new_metadataUuid = response.result.uuid;
                 $scope.ddUuid = $scope.new_metadataUuid;
                 MetadataService.addDefaultPermissions($scope.new_metadataUuid);
@@ -367,12 +393,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 }
                 $scope.requesting = false;
                 //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
-                console.log("clone made: " + $scope.new_metadataUuid);
+                console.log("clone made, new dd: " + $scope.new_metadataUuid);
                 $scope.uuid = $scope.new_metadataUuid;
+                $scope.ddUuid = $scope.new_metadataUuid;
+                $scope.action = "edit";
                 //$state.go('datadescriptor', {
                 //  uuid: $scope.new_metadataUuid,
                 //  "action": "edit"
                 //});
+
+                //$scope.openEditDataDescriptor($scope.new_metadataUuid,'lg');
+                
               },
               function (response) {
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -383,6 +414,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     } else {
       MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
     }
+    //$scope.close();
     $scope.requesting = false;
   }
 
@@ -616,14 +648,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: editDataDescriptor");
     $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
     $scope.edit_data_descriptor = true;
-  }
-
-  $scope.cancelEditDataDescriptor = function () {
-    console.log("JEN DDC: cancelEditDataDescriptor");
-    $scope.edit_data_descriptor = false;
-    $scope.action = "view";
-    $scope.refreshMetadata();
-    //$scope.close();
   }
 
   $scope.doTheBack = function () {
@@ -898,6 +922,24 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     });
   };
 
+  $scope.openEditDataDescriptor = function (dataDescriptorUuid, size) {
+    console.log("Jen DDC: openEditDataDescriptor: " + dataDescriptorUuid);
+    $scope.uuid = dataDescriptorUuid;
+    $scope.action = "edit";
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'views/datadescriptor/manager.html',
+      controller: 'DataDescriptorController',
+      scope: $scope,
+      size: size,
+      uuid: dataDescriptorUuid,
+      profile: $scope.profile,
+      resolve: {
+
+      }
+    });
+  };
+
   ///////Assoc modal search////////
   $scope.schemaBox = {
     val1: true,
@@ -967,11 +1009,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     }
     $scope.modalSchemas = $scope.modalSchemas
   };
-
-  $scope.close = function () {
-    $scope.cancelEditDataDescriptor();
-	  $modalInstance.close();
-	};
 
 }).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
   $scope.cancel = function () {

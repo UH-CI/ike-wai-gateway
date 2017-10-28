@@ -160,7 +160,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       return true;
     };
 
-    this.removeMulitpleAssociationIds = function(metadataUuid, uuidsToRemove){
+    this.removeMultipleAssociationIds = function(metadataUuid, uuidsToRemove){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){

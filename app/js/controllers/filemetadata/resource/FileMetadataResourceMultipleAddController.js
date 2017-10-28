@@ -159,20 +159,27 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.fetchFileObjects();
 
 		$rootScope.$on("associationsUpdated", function(){
-			$scope.fetchModalMetadata();
-			$scope.fetchFileMetadataObjects();
-			$scope.populateAssociatedMetadata();
-			$scope.fetchDataDescriptors();
-			$scope.requesting = false;
+			//console.log("JEN FMRMAC: associationsUpdated broadcast received");
+			$scope.handleBroadcast();
+		});
+
+		$rootScope.$on("associationRemoved", function(){
+			//console.log("JEN FMRMAC: associationRemoved broadcast received");
+			$scope.handleBroadcast();
 		});
 
 		$rootScope.$on("metadataUpdated", function(){
+			//console.log("JEN FMRMAC: metadataUpdated broadcast received");
+			$scope.handleBroadcast();
+		});
+
+		$scope.handleBroadcast = function() {
 			$scope.fetchModalMetadata();
 			$scope.fetchFileMetadataObjects();
 			$scope.populateAssociatedMetadata();
 			$scope.fetchDataDescriptors();
 			$scope.requesting = false;
-		});
+		}
 
 		//$scope.submit = function(){
 		$scope.onSubmit = function(form) {
@@ -318,6 +325,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					$scope.fetchFileMetadataObjects();
 					$scope.populateAssociatedMetadata();
 					$scope.fetchDataDescriptors();
+					//console.log("JEN FMRMAC: associationsUpdated broadcast being sent");
 	            $rootScope.$broadcast('associationsUpdated')
 	          },
 	          function(data) {
@@ -331,12 +339,12 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
       //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     	if (unAssociate) {
 			
-			promise.push(FilesMetadataService.removeMulitpleAssociationIds(metadatumUuid,$stateParams.fileUuids))
+			promise.push(FilesMetadataService.removeMultipleAssociationIds(metadatumUuid,$stateParams.fileUuids))
 				/*.then(function(response) {
 					//remove uuid of unassociated metadata object
 					//var index = $scope.matchingAssociationIds.indexOf(metadatumUuid);
 					//$scope.matchingAssociationIds.splice(index, 1);
-					$rootScope.$broadcast('associationsUpdated')
+					$rootScope.$broadcast('associationRemoved')
 				});*/
 			}
 			$q.all(promise).then(
@@ -344,7 +352,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				  $scope.fetchModalMetadata();
 					$scope.fetchFileMetadataObjects();
 					$scope.populateAssociatedMetadata();
-	            $rootScope.$broadcast('associationsUpdated')
+					//console.log("JEN FMRMAC: associationRemoved broadcast being sent");
+	            $rootScope.$broadcast('associationRemoved')
 	          },
 	          function(data) {
 	            
@@ -517,7 +526,10 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		};
 		
 		$scope.openClone = function (dataDescriptorUuid, size) {
+			console.log("JEN FMRMAC: openClone: " + dataDescriptorUuid);
 			$scope.uuid = dataDescriptorUuid;
+			//$state.go("datadescriptor",{'uuid': $scope.dataDescriptorUuid, 'action': 'clone'});
+			
 			$scope.action = "clone";
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
@@ -531,6 +543,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
         }
 			});
+			console.log("JEN FMRMAC: trying to close Clone: " + dataDescriptorUuid);
+			//modalInstance.close();
+			
 		}
 
 		

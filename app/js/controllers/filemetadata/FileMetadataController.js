@@ -230,14 +230,15 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $rootScope.$on("associationsUpdated", function(){
       console.log("JEN FMC: on associationsUpdated");
      $scope.refreshMetadata()
-     App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
+     App.alert({message: $translate.instant('success_metadata_update_assocation'),closeInSeconds: 5  });
     });
 
     $rootScope.$on("associationRemoved", function(){
       console.log("JEN FMC: on associationRemoved");
      $scope.refreshMetadata().then(
        $timeout(function(){
-            App.alert({container:'#association_notifications',  message: "Assocation Successfully Removed" ,closeInSeconds: 5  })
+            //App.alert({container:'#association_notifications',  message: "Association Successfully Removed" ,closeInSeconds: 5  })
+            App.alert({message: $translate.instant('success_metadata_assocation_removed'),closeInSeconds: 5  });
           }, 500)
      )
     });
