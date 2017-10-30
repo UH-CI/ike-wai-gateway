@@ -206,6 +206,66 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         }
       });
     };
+    
+	// metadatumUuid is really dataDescriptorUuid, but since I'm modifying
+	// an old method and don't want a bunch of arbitrary changes to show 
+	// during a comparison, I just do an assignment on the first line.
+	$scope.addClone = function (dataDescriptorUuid) {
+	    console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
+	    metadatumUuid = dataDescriptorUuid;
+	    if (metadatumUuid) {
+	      $scope.requesting = true;
+	      MetaController.getMetadata(metadatumUuid)
+	        .then(function (response) {
+	          $scope.metadatum = response.result;
+	          var body = {};
+	          body.name = $scope.metadatum.name;
+	          body.value = $scope.metadatum.value;
+	          body.schemaId = $scope.metadatum.schemaId;
+	          if($stateParams.fileUuids){
+	            body.associationIds = $stateParams.fileUuids
+	          }
+	          MetaController.addMetadata(body)
+	            .then(
+	              function (response) {
+	                //$modalInstance.close();
+	                $scope.new_metadataUuid = response.result.uuid;
+	                $scope.ddUuid = $scope.new_metadataUuid;
+	                MetadataService.addDefaultPermissions($scope.new_metadataUuid);
+	                App.alert({
+	                  message: $translate.instant('success_metadata_add') + ' ' + body.name,
+	                  closeInSeconds: 5
+	                });
+	
+	                $scope.requesting = false;
+	                //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
+	                console.log("clone made, new dd: " + $scope.new_metadataUuid);
+	
+	                $scope.openEdit($scope.new_metadataUuid, 'lg') 
+	                //$state.go('datadescriptor', {
+	                //  uuid: $scope.new_metadataUuid,
+	                //  "action": "edit"
+	                //});
+	    
+	                //$scope.openEditDataDescriptor($scope.new_metadataUuid,'lg');
+	                
+	              },
+	              function (response) {
+	                MessageService.handle(response, $translate.instant('error_metadata_add'));
+	                $scope.requesting = false;
+	              }
+	            )
+	        })
+	    } else {
+	      App.alert({
+	        type: 'danger',
+	        message: $translate.instant('Error access existing Data Descritpor!'),
+	        closeInSeconds: 5
+	      });
+	    }
+	    //$scope.close();
+	    $scope.requesting = false;
+	}
 
     $scope.openViewDataDescriptor = function (dataDescriptorUuid, size) {
       $scope.uuid = dataDescriptorUuid;
