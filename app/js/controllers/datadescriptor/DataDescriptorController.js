@@ -203,8 +203,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     else if ($scope.action === "clone") {
       $scope.continue = false;
       $scope.action = "edit";
-      $modalInstance.close();
-      $scope.close();
+      //$modalInstance.close();
+      //$scope.close();
       //$scope.addClone($stateParams.uuid);
       $scope.addClone($scope.ddUuid);
     }
@@ -396,7 +396,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 console.log("clone made, new dd: " + $scope.new_metadataUuid);
                 $scope.uuid = $scope.new_metadataUuid;
                 $scope.ddUuid = $scope.new_metadataUuid;
-                $scope.action = "edit";
+                $scope.action = "close-clone";
+                $scope.close();
                 //$state.go('datadescriptor', {
                 //  uuid: $scope.new_metadataUuid,
                 //  "action": "edit"
@@ -412,7 +413,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             )
         })
     } else {
-      MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+      App.alert({
+        type: 'danger',
+        message: $translate.instant('Error access existing Data Descritpor!'),
+        closeInSeconds: 5
+      });
     }
     //$scope.close();
     $scope.requesting = false;
@@ -751,7 +756,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           }
         })
     } else {
-      MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+      MessageService.handle(response, $translate.instant('error_metadataschemas_get'));
     }
     $scope.requesting = false;
   }
@@ -812,7 +817,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           }
         })
     } else {
-      MessageService.handle(schema_response, $translate.instant('error_metadataschemas_get'));
+      App.alert({
+        type: 'danger',
+        message: $translate.instant('Error access existing Data Descritpor!'),
+        closeInSeconds: 5
+      });
     }
     $scope.requesting = false;
   }
@@ -939,6 +948,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       }
     });
   };
+  
+  
 
   ///////Assoc modal search////////
   $scope.schemaBox = {
