@@ -493,18 +493,18 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.openEditDataDescriptor= function (dataDescriptorUuid, size) {
 			$scope.uuid = dataDescriptorUuid;
 			$scope.action = "edit";
-      var modalInstance = $uibModal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: 'views/datadescriptor/manager.html',
-        controller: 'DataDescriptorController',
-        scope: $scope,
-        size: size,
-        uuid: dataDescriptorUuid,
-        profile: $scope.profile,
-        resolve: {
-
-        }
-      });
+	      var modalInstance = $uibModal.open({
+	        animation: $scope.animationsEnabled,
+	        templateUrl: 'views/datadescriptor/manager.html',
+	        controller: 'DataDescriptorController',
+	        scope: $scope,
+	        size: size,
+	        uuid: dataDescriptorUuid,
+	        profile: $scope.profile,
+	        resolve: {
+	
+	        }
+	      });
 		};
 
 
@@ -564,8 +564,17 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		          body.value = $scope.metadatum.value;
 				  body.value.title = body.value.title + "_Clone"
 		          body.schemaId = $scope.metadatum.schemaId;
-				  //copy associationIds - files and metadata
-		          body.associationIds = $scope.metadatum.associationIds
+				  //make  associationIds - current files
+		          if($stateParams.fileUuids){
+ 		            body.associationIds = $stateParams.fileUuids
+ 		          }
+				  //copy metadata associations
+				  angular.forEach($scope.metadatum._links.associationIds, function(associationId, key) {
+					  console.log(associationId.title)
+					  if(associationId.title == 'metadata'){
+					    body.associationIds.push(associationId.rel)
+					  }
+				  });
 		          MetaController.addMetadata(body)
 		            .then(
 		              function (response) {
@@ -583,6 +592,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		                console.log("clone made, new dd: " + $scope.new_metadataUuid);
 		
 		                $scope.openEditDataDescriptor($scope.new_metadataUuid, 'lg') 
+						$scope.refresh();
 		                //$state.go('datadescriptor', {
 		                //  uuid: $scope.new_metadataUuid,
 		                //  "action": "edit"

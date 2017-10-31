@@ -169,7 +169,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: cancelEditDataDescriptor");
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
-    //$scope.refreshMetadata();
+    $scope.refreshMetadata();
     //$scope.close();
   }
 
@@ -178,6 +178,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.cancelEditDataDescriptor();
     $modalInstance.close();
     $uibModal.close;
+    $scope.refresh();
 	};
 
   
