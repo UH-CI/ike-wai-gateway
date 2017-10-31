@@ -562,10 +562,10 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		          var body = {};
 		          body.name = $scope.metadatum.name;
 		          body.value = $scope.metadatum.value;
+				  body.value.title = body.value.title + "_Clone"
 		          body.schemaId = $scope.metadatum.schemaId;
-		          if($stateParams.fileUuids){
-		            body.associationIds = $stateParams.fileUuids
-		          }
+				  //copy associationIds - files and metadata
+		          body.associationIds = $scope.metadatum.associationIds
 		          MetaController.addMetadata(body)
 		            .then(
 		              function (response) {

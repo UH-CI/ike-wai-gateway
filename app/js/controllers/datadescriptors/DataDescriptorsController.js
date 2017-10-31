@@ -221,10 +221,19 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 	          var body = {};
 	          body.name = $scope.metadatum.name;
 	          body.value = $scope.metadatum.value;
+              body.value.title = body.value.title + "_Clone"
 	          body.schemaId = $scope.metadatum.schemaId;
 	          if($stateParams.fileUuids){
 	            body.associationIds = $stateParams.fileUuids
 	          }
+              body.associationIds = [];
+              //copy metadata associations
+              angular.forEach($scope.metadatum._links.associationIds, function(associationId, key) {
+                  console.log(associationId.title)
+                  if(associationId.title == 'metadata'){
+                    body.associationIds.push(associationId.rel)
+                  }
+              });
 	          MetaController.addMetadata(body)
 	            .then(
 	              function (response) {
