@@ -268,12 +268,21 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                                         </th>
+                                                        <!--
                                                         <th width="5%" class="hidden-xs">
                                                             <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
                                           Type
                                           <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
+                                                        </th>
+                                                    -->
+                                                    <th width="5%" class="hidden-xs">
+                                                            <a href="#" ng-click="sortType = 'description'; sortReverse = !sortReverse">
+                                                                Description
+                                                                <span ng-show="sortType == 'description' && !sortReverse" class="fa fa-caret-down"></span>
+                                                                <span ng-show="sortType == 'description' && sortReverse" class="fa fa-caret-up"></span>
+                                                                </a>
                                                         </th>
                                                         <th width="15%" class="text-center"> Actions</th>
                                                     </tr>
@@ -282,11 +291,16 @@
                                                     <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                                         <td>
                                                             <a ng-click="openViewDataDescriptor(metadatum.uuid,'lg')"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.title}} {{metadatum.value.variable_name}} {{metadatum.value.description}}
+                                           {{metadatum.value.title}} {{metadatum.value.variable_name}}
                                            {{metadatum.value.tags.toString()}} </a>
                                                         </td>
+                                                        <!--
                                                         <td class="hidden-xs">
                                                             {{metadatum.name}}
+                                                        </td>
+                                                        -->
+                                                        <td class="hidden-xs">
+                                                                {{metadatum.value.description}}
                                                         </td>
                                                         <td class="text-center">
                                                             <div class="btn-group pull-left">
