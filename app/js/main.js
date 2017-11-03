@@ -501,7 +501,7 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
     var now= new (Date)
     var expiring = new Date(now - 10*1000) //set time ten minutes back
     if($localStorage.token.expires_at >= expiring){
-      $http.post('https://ikewai-dev.its.hawaii.edu:8000/refresh?refresh_token='+$localStorage.token.refresh_token)
+      $http.post('https://ikewai-staging.its.hawaii.edu:8000/refresh?refresh_token='+$localStorage.token.refresh_token)
               .success(function (data, status, headers, config) {
                   $scope.requesting=false;
                   if (data.access_token){
