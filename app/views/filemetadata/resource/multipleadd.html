@@ -16,8 +16,13 @@
     <div landing-start-menu></div>
 </div>
 -->
-<h3 class="page-title"> Associate These Files With Data Descriptors:
-</h3>
+<div ng-show="filePaths.length !== 1">
+    <h3 class="page-title"> Associate These Files With Data Descriptors:</h3>
+</div>
+<div ng-show="filePaths.length === 1">
+    <h3 class="page-title"> Associate This File With Data Descriptors:</h3>
+</div>
+
 <table>
     <tbody>
         <tr ng-repeat="path in filePaths track by $index| orderBy:sortType:sortReverse | filter:filter">
@@ -34,7 +39,7 @@
                 <div class="row text-center">
                     <div class="col-md-12">
                         <div class="pull-left">
-                            Data Descriptors associated with all the above files:
+                            Data Descriptors associated with the above file(s):
                         </div>
                         <!--
                         <div class="btn-group pull-right">
@@ -78,7 +83,7 @@
                                     Description
                                     <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
                                     <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
-                                  </a>
+                                    </a>
                                 </th>
                                 <th width="5%" class="text-center"> Actions</th>
                             </tr>
@@ -106,10 +111,10 @@
                                             <i class="fa fa-plus"></i>
                                         </a>
                                         <span>
-                                          <a class="btn btn-sm green btn-outline pull-right"  href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
+                                            <a class="btn btn-sm green btn-outline pull-right"  href="#" ng-click="unAssociateMetadata(matchingMetadatum.uuid)" role="button"> <i class="fa fa-trash-o"></i> Remove Association</a>
                                         </span>
                                         <span ng-show='profile.username == matchingMetadatum.owner || (edit_perm.indexOf(profile.username) > -1)'>
-                                          <a class="btn btn-sm green btn-outline pull-right" ng-click="openEditDataDescriptor(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit </a>
+                                            <a class="btn btn-sm green btn-outline pull-right" ng-click="openEditDataDescriptor(matchingMetadatum.uuid,'lg')" role="button"> <i class="fa fa-pencil"></i> Edit </a>
                                         </span>
                                     </div>
                                 </td>
