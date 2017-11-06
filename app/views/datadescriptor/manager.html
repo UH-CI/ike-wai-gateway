@@ -258,14 +258,16 @@
 
                       <!--DATA DESCRIPTOR FORM-->
                       <div ng-show="has_data_descriptor == false || edit_data_descriptor == true" class="text-center">
+                        <!--
                         <div class="row ">
                           <div class="col-md-12">
                           <h3 class="pull-left">{{action | capitalize}} Data Descriptor </h3>
                         </div>
+                       -->
                         <div class="col-md-11">
                           <form novalidate class="simple-form" name="dataDescriptorForm">
 
-                            <!-- CREATOR -->
+                            <!-- AUTHOR -->
                             <div class="form-group required">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Author(s):</label>
                               <button type="button" data-toggle="popover" title="Author Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
