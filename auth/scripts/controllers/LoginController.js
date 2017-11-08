@@ -40,7 +40,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     $scope.getAuthToken = function(){
         $scope.requesting = true;
         var post_data = {};
-        var url = 'https://ikewai.its.hawaii.edu:8888/login';
+        var url = 'https://ikewai-dev.its.hawaii.edu:8000/login';
         var options = {
             withCredentials: true, 
             headers:{ 'Authorization':  'Basic ' + btoa($scope.username + ":" + $scope.password)}
@@ -52,27 +52,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                     $localStorage.token = data;
                     d = new Date();
                     $localStorage.token.expires_at = moment(d).add($localStorage.token.expires_in, 's').toDate();
-                    $localStorage.tenant = {
-                                    		"id": "0001411570998814-b0b0b0bb0b-0001-018",
-                                    		"name": "IkeWai Tenant",
-                                    		"baseUrl": "https://ikeauth.its.hawaii.edu/",
-                                    		"code": "ikewai",
-                                    		"contact": [{
-                                    			"name": "Sean Cleveland",
-                                    			"email": "seanbc@uhawaii.edu",
-                                    			"url": "",
-                                    			"type": "admin",
-                                    			"primary": true
-                                    		}],
-                                    		"_links": {
-                                    			"self": {
-                                    				"href": "https://docker.example.com/tenants/v2/ikewai"
-                                    			},
-                                    			"publickey": {
-                                    				"href": "https://ikeauth.its.hawaii.edu/apim/v2/publickey"
-                                    			}
-                                    		}
-                                    	};
+                    $localStorage.tenant = {"id":"0001411570998814-b0b0b0bb0b-0001-016","name":"Hawaii Tenant","baseUrl":"https://agaveauth.its.hawaii.edu/","code":"hawaii","contact":[{"name":"Sean Cleveland","email":"seanbc@uhawaii.edu","url":"","type":"admin","primary":true}],"_links":{"self":{"href":"https://docker.example.com/tenants/v2/hawaii"},"publickey":{"href":"https://agaveauth.its.hawaii.edu/apim/v2/publickey"}}};
                     $location.path("/success");
                 }
                 else{
