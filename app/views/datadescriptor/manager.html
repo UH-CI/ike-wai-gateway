@@ -56,8 +56,8 @@
             todayHighlight: true,
             autoclose: true,
             useCurrent: false
-          }).on("changeDate", function(e) {
-              $('#datetimepicker2').datepicker("setDate", e.date);
+          //}).on("changeDate", function(e) {
+          //    $('#datetimepicker2').datepicker("setDate", e.date);
           });
           $('#datetimepicker2').datepicker({
             format: 'yyyy-mm-dd',
@@ -424,7 +424,7 @@
                               <br />
                             </div>
                             <div class="form-group">
-                              <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-start-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
+                              <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
                                   <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
@@ -705,11 +705,11 @@
 <div class="modal-footer">
     <button class="btn btn-default pull-left" ng-click="close()">Close</button>
     <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
-    <div ng-if="has_data_descriptor == false"class="form-group">
+    <div ng-if="has_data_descriptor == false && edit_data_descriptor == true"class="form-group">
       <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
     </div>
     <!--<div ng-if="ddUuid != ''"class="form-group"> -->
-    <div ng-if="has_data_descriptor == true"class="form-group">
+    <div ng-if="has_data_descriptor == true && edit_data_descriptor == true"class="form-group">
       <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
     </div>
 </div>
