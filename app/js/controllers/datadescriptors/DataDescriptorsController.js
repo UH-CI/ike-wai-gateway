@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.available = true;
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
-    $scope.schemaQuery = "{'schema.title':'DataDescriptor' }}"
+    $scope.schemaQuery = "{'schema.title':'DataDescriptor'}"
 
     $scope.schemaBox = {val1:true,val2:true};
     $scope.wellbox = true;
@@ -42,10 +42,18 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         var innerquery = {}
         var typearray = []
         if ($scope.searchField.value != ''){
+            console.log('searching')
+            console.log(angular.toJson($scope.metadataschema))
           angular.forEach($scope.metadataschema, function(value, key){
             //alert(angular.toJson(value))
+            var vquery = {}
+            vquery['owner'] = {$regex: $scope.searchField.value}
+            queryarray.push(vquery)
+            console.log(value.schema.title)
             if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+                console.log(value.schema.title)
               angular.forEach(value.schema.properties, function(val, key){
+                  console.log(val)
                 var valquery = {}
                 valquery['value.'+key] = {$regex: $scope.searchField.value}
                 queryarray.push(valquery)
@@ -109,9 +117,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 
     $scope.refresh = function() {
       $scope.requesting = true;
+      console.log("query: " + $scope.schemaQuery)
       MetaController.listMetadataSchema(
-				$scope.schemaQuery
+				
 			).then(function(response){
+                console.log("METADATA SCHEMA: "+ angular.toJson(response))
 				$scope.metadataschema = response.result;
 				$scope.requesting = false;
 			})
@@ -293,4 +303,31 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         }
       });
     };
+    
+    $scope.addOldAssociations = function(){
+        console.log("Starting")
+        var assocs = []
+      angular.forEach($scope.metadata, function(value, key){
+          MetadataService.removeAssociation(value.uuid, value.uuid)
+         /* MetaController.listMetadata("{'associationIds':'"+value.uuid+"'}",1000,0)
+            .then(function (response) {
+                assocs = []
+                angular.forEach(response.result, function(val,key){
+                  if(val.name == 'File'){
+                     angular.forEach(val._links.associationIds, function(v,key){
+                         //if(v.title == 'file'){
+                             assocs.push(v.rel)
+                         //}
+                         MetadataService.addAssociation(value.uuid, v.rel)   
+                     })
+                  }else{
+                    assocs.push(val.uuid)
+                    MetadataService.addAssociation(value.uuid, val.uuid)   
+                  }
+                })
+                console.log("New Associations "+angular.toJson(value.value.title)+": " + angular.toJson(assocs))
+            })
+            */
+      })
+    }
 });
