@@ -54,22 +54,43 @@
           $('#datetimepicker1').datepicker({
             format: 'yyyy-mm-dd',
             todayHighlight: true,
-            autoclose: true,
-            useCurrent: false
+            autoClose: true,
+            //useCurrent: false,
+            validateOnBlur: false,
+            allowInputToggle : true,
+            forceParse: false
+          // if selected start date is before current end date, make end date match start date
           }).on("changeDate", function(e) {
-              $('#datetimepicker2').datepicker("setDate", e.date);
+              var d1 = $('#datetimepicker1').datepicker("getDate");
+              var d2 = $('#datetimepicker2').datepicker("getDate");
+              if (d2 < d1) {
+                $('#datetimepicker2').datepicker("setDate", e.date);
+              }
           });
           $('#datetimepicker2').datepicker({
             format: 'yyyy-mm-dd',
             todayHighlight: true,
-            autoclose: true,
-            useCurrent: false
+            autoClose: true,
+            //useCurrent: false,
+            validateOnBlur: false,
+            allowInputToggle : true,
+            forceParse: false
+          // if selected end date is before current start date, make start date match end date
+          }).on("changeDate", function(e) {
+              var d1 = $('#datetimepicker1').datepicker("getDate");
+              var d2 = $('#datetimepicker2').datepicker("getDate");
+              if (d2 < d1) {
+                $('#datetimepicker1').datepicker("setDate", e.date);
+              }
           });
           $('#datetimepicker3').datepicker({
             format: 'yyyy-mm-dd',
             todayHighlight: true,
-            autoclose: true,
-            useCurrent: false
+            autoClose: true,
+            //useCurrent: false,
+            validateOnBlur: false,
+            allowInputToggle : true,
+            forceParse: false
           });
       });
 </script>
@@ -193,7 +214,7 @@
                                     <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
                                       <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
                                       <!--{{data_descriptor_metadatum.value[key]}}--> 
-                                      {{data_descriptor_metadatum.value[key] | date:"yyyy-mm-dd"}}
+                                      {{data_descriptor_metadatum.value[key]}}
                                     </td>
                                     <td ng-if="key=='subjects' || key=='formats' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
@@ -212,7 +233,7 @@
                             <!-- CHOOSE LOCATIONS -->
                             <leaflet width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
                             <div class="form-group" >
-                              <button  ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
+                              <button type="button" ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
                               <h3 ng-show='data_descriptor_metadatum.value.published && !edit_perm'>Locations:</h3>
                             </div>
                             <div>
@@ -234,7 +255,14 @@
 
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group">
-                              <button ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Variables</button>
+                              <button ng-show='(profile.username == data_descriptor_metadatum.owner 
+                                                && data_descriptor_metadatum.value.published!="True") 
+                                                || edit_perm ' 
+                                type="button"
+                                class="btn btn-success pull-left form-control" 
+                                ng-click="open('lg',['Variable'],'Select Variable(s)')">
+                                  <i class="glyphicon glyphicon-plus"></i> Add Additional Variables
+                              </button>
                               <h3 ng-show='data_descriptor_metadatum.value.published && !edit_perm'>Variables:</h3>
                             </div>
                             <div>
@@ -258,14 +286,16 @@
 
                       <!--DATA DESCRIPTOR FORM-->
                       <div ng-show="has_data_descriptor == false || edit_data_descriptor == true" class="text-center">
+                        <!--
                         <div class="row ">
                           <div class="col-md-12">
                           <h3 class="pull-left">{{action | capitalize}} Data Descriptor </h3>
                         </div>
+                       -->
                         <div class="col-md-11">
                           <form novalidate class="simple-form" name="dataDescriptorForm">
 
-                            <!-- CREATOR -->
+                            <!-- AUTHOR -->
                             <div class="form-group required">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Author(s):</label>
                               <button type="button" data-toggle="popover" title="Author Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
@@ -295,7 +325,7 @@
                                 </ui-select-choices>
                               </ui-select>
                               <!-- <p>Selected: {{selected.people}}</p> -->
-							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
+							                <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
@@ -422,7 +452,7 @@
                               <br />
                             </div>
                             <div class="form-group">
-                              <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-start-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
+                              <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
                                   <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
@@ -494,7 +524,7 @@
                                 </ui-select-choices>
                               </ui-select>
 				                      <!-- <p>Selected: {{selected.people}}</p> -->
-                              <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
+                              <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
                             </div>
                             <br />
                             <!-- CONTRIBUTING AGENCIES -->
@@ -520,7 +550,7 @@
                                   <span ng-bind-html="org.name"></span>
                                 </ui-select-choices>
                               </ui-select>
-                              <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
+                              <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
                               <!-- <p>Selected: {{datadescriptor.organizations}}</p> -->
                             </div>
                             <br />
@@ -572,10 +602,10 @@
                               
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
-                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Select Location(s)</button>
+                              <button type="button" class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
-                              <button class="btn btn-default btn-sm"  ng-repeat="filemetadatum in locations" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
+                              <button type="button" class="btn btn-default btn-sm"  ng-repeat="filemetadatum in locations" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
                                 {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i id="filemetadatum.uuid" ng-class="class[uuid]" class="glyphicon glyphicon-remove-sign"></i>
@@ -584,10 +614,10 @@
 
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
-                              <button  class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
+                              <button type="button" class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
                             </div>
                             <div id="variable_buttons">
-                              <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in variables | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
+                              <button type="button" class="btn btn-default btn-sm" ng-repeat="filemetadatum in variables | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
                                 {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i class="glyphicon glyphicon-remove-sign"></i>
@@ -703,11 +733,11 @@
 <div class="modal-footer">
     <button class="btn btn-default pull-left" ng-click="close()">Close</button>
     <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
-    <div ng-if="has_data_descriptor == false"class="form-group">
-      <button  class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
+    <div ng-if="has_data_descriptor == false && edit_data_descriptor == true"class="form-group">
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
     </div>
     <!--<div ng-if="ddUuid != ''"class="form-group"> -->
-    <div ng-if="has_data_descriptor == true"class="form-group">
-      <button  class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
+    <div ng-if="has_data_descriptor == true && edit_data_descriptor == true"class="form-group">
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
     </div>
 </div>
