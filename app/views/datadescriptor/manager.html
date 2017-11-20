@@ -453,7 +453,7 @@
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
-                                  <input ng-model="datadescriptor.start_datetime" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
+                                  <input ng-model="datadescriptor.start_datetime"  min-date="new Date('1900-01-01')" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
                                   <span class="input-group-addon">
                                       <span class="glyphicon glyphicon-calendar"></span>
                                   </span>
@@ -470,7 +470,7 @@
                             </div>
                             <div class="form-group">
                               <div class='input-group date' id='datetimepicker2' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.end_datetime">
-                                <input type='text' ng-model="datadescriptor.end_datetime" class="form-control" value="datadescriptor.end_datetime" placeholder="Select end date of work referenced in file…"/>
+                                <input type='text' ng-model="datadescriptor.end_datetime" min-date="new Date('1900-01-01')" class="form-control" value="datadescriptor.end_datetime" placeholder="Select end date of work referenced in file…"/>
                                 <span class="input-group-addon">
                                   <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
