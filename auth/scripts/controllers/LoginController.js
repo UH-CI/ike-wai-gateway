@@ -40,7 +40,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     $scope.getAuthToken = function(){
         $scope.requesting = true;
         var post_data = {};
-        var url = 'https://ikewai.its.hawaii.edu:8888/login';
+        var url = 'https://ikewai-staging.its.hawaii.edu:8888/login';
         var options = {
             withCredentials: true, 
             headers:{ 'Authorization':  'Basic ' + btoa($scope.username + ":" + $scope.password)}
