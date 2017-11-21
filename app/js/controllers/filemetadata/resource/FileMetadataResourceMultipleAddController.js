@@ -428,6 +428,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		      controller: 'ModalAssociateMetadataMultiFileCtrl',
 		      scope: $scope,
 		      size: size,
+			  backdrop: 'static',
+        	  keyboard : false,
 		      resolve: {
 		
 		      }
@@ -444,6 +446,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					controller: 'ModalMetadataResourceEditController',
 					scope: $scope,
 					size: size,
+					backdrop: 'static',
+      				keyboard : false,
 					metadataUuid: metadatumuuid,
 					resolve: {
 
@@ -460,6 +464,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 					controller: 'ModalMetadataResourceDetailsController',
 					scope: $scope,
 					size: size,
+					backdrop: 'static',
+      				keyboard : false,
 					metadataUuid: metadatumuuid,
 					profile: $scope.profile,
 					resolve: {
@@ -478,6 +484,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				controller: 'DataDescriptorController',
 				scope: $scope,
 				size: size,
+				backdrop: 'static',
+      		    keyboard : false,
 				uuid: dataDescriptorUuid,
 				profile: $scope.profile,
 				resolve: {
@@ -499,6 +507,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 	        controller: 'DataDescriptorController',
 	        scope: $scope,
 	        size: size,
+			backdrop: 'static',
+      		keyboard : false,
 	        uuid: dataDescriptorUuid,
 	        profile: $scope.profile,
 	        resolve: {
@@ -517,6 +527,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
         controller: 'DataDescriptorController',
         scope: $scope,
         size: size,
+		backdrop: 'static',
+      	keyboard : false,
         uuid: dataDescriptorUuid,
         profile: $scope.profile,
         resolve: {
@@ -537,6 +549,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		        controller: 'DataDescriptorController',
 		        scope: $scope,
 		        size: size,
+				backdrop: 'static',
+      		    keyboard : false,
 		        uuid: dataDescriptorUuid,
 		        profile: $scope.profile,
 		        resolve: {

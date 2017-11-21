@@ -170,6 +170,8 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         controller: 'DataDescriptorController',
         scope: $scope,
         size: size,
+        backdrop: 'static',
+        keyboard : false,
         uuid: selectedSchemaUuid,
         profile: $scope.profile,
         resolve: {
@@ -189,6 +191,8 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         controller: 'DataDescriptorController',
         scope: $scope,
         size: size,
+        backdrop: 'static',
+        keyboard : false,
         uuid: dataDescriptorUuid,
         profile: $scope.profile,
         resolve: {
@@ -209,6 +213,8 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         controller: 'DataDescriptorController',
         scope: $scope,
         size: size,
+        backdrop: 'static',
+        keyboard : false,
         uuid: dataDescriptorUuid,
         profile: $scope.profile,
         resolve: {
@@ -296,6 +302,8 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         controller: 'DataDescriptorController',
         scope: $scope,
         size: size,
+        backdrop: 'static',
+        keyboard : false,
         uuid: dataDescriptorUuid,
         profile: $scope.profile,
         resolve: {
