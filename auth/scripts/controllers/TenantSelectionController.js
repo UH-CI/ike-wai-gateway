@@ -3,8 +3,8 @@ angular.module('AgaveAuth').controller('TenantSelectionController', function ($i
     settings.layout.tenantPage = false;
     settings.layout.loginPage = true;
     
-    $scope.tenant = {selected: "hawaii", code: "hawaii", name: "UH Agave Platform"};
-    $scope.tenants = ["hawaii"];
+    $scope.tenant = {selected: "ikewai", code: "ikewai", name: "UH Agave Platform"};
+    $scope.tenants = ["ikewai"];
     $scope.displayTenant ={
 		"id": "0001411570998814-b0b0b0bb0b-0001-018",
 		"name": "IkeWai Tenant",
