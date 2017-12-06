@@ -216,15 +216,20 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                            scope.fields.push({name: 'value.filename', title: "filename"})
                          }
                      );
-                    /*  scope.fields = [
-                        {name: 'value.tags'},
-                        {name: 'value.name'},
-                        {name: 'value.description'},
-                        {name: 'value.latitude'},
-                        {name: 'value.longitude'},
-                        {name: 'value.county'},
-                        {name: 'value.state'},
-                      ];*/
+                     break;
+                     case 'dd_search':
+                       scope.fields=[
+                          {name:'value.title', title:'Title'},
+                          {name:'value.creators.first_name', title:'Author First Name'},
+                          {name:'value.creators.last_name', title:'Author Last Name'},
+                          {name:'value.creators.email', title:'Author Email'},
+                          {name:'value.creators.organization', title:'Author Orginazation'},
+                          {name: 'value.description', title:'Summary'},
+                          {name:'value.subjects', title:'Subjects/Keywords/Search Terms'},
+                          {name:'value.formats', title:'Formats'},
+                          {name:'value.start_datetime', title:'Data Collection Start Date'},
+                          {name:'value.end_datetime', title:'Data Collection End Date'},
+                       ];
                       break;
                 }
 
@@ -265,7 +270,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                       {name: 'contains', value: '$options'+"'"+': '+"'i','"+ '$regex'},
                   ];
                 }
-                if(attrs.resource == 'search'){
+                if(attrs.resource == 'search' ||attrs.resource == 'dd_search' ){
                   scope.conditions = [
                     {name: 'equals', value:'$eq'},
                     {name: 'is not equal', value:'$ne'},
