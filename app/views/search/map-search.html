@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
+               <h5>Draw Bounding Box And Click "Search In Bounding Box" Button To Begin Searching...</h5>
                <leaflet width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
           </div>
 
@@ -169,7 +170,7 @@
                                         <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 {{file.href.split('ikewai-annotated-data/')[1]}}
-                                                <a href="#" ng-click="viewFileAnnotations(file.rel)"><i class="fa fa-eye"></i></a> 
+                                                <a href="#" ng-click="viewFileAnnotations(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-eye"></i></a> 
                                             </td>
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
