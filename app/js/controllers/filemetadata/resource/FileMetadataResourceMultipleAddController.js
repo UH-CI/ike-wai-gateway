@@ -31,8 +31,9 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.populateFileIds();*/
 		//alert($scope.fileObjs)
     	//$scope.query="{'uuid': //'"+$scope.schemauuid+"'}"//"{'uuid':'316750742996381210-242ac1110-0001-013'}";
-    	$scope.schemaQuery ='';//"{'owner':'seanbc'}";
+    	$scope.schemaQuery ="{'schema.title':'DataDescriptor'}";//"{'owner':'seanbc'}";
 		$scope.approvedSchema = ['DataDescriptor'];
+		$scope.selectedSchema = ['DataDescriptor'];
 
 		$scope.fetchMetadataSchema = function(schemauuid) {
 			$scope.requesting = true;
@@ -658,38 +659,8 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.searchAll = function(){
 		  //alert($scope.filter)
 		  $scope.requesting = true;
-		    var orquery = {}
-		    var andquery = {}
-		    var queryarray = []
-		    var andarray = []
-		    var innerquery = {}
-		    var typearray = []
-		    if ($scope.searchField.value != ''){
-		      angular.forEach($scope.metadataschema, function(value, key){
-		        //alert(angular.toJson(value))
-		        if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-		          angular.forEach(value.schema.properties, function(val, key){
-		            var valquery = {}
-		            valquery['value.'+key] = {$regex: $scope.searchField.value}
-		            queryarray.push(valquery)
-		          })
-		        }
-		      })
-		      orquery['$or'] = queryarray;
-		   }
-		    var typequery = {}
-
-		    if ($scope.schemaBox.val1){
-		      typearray.push('DataDescriptor')
-		    }
-
-		    typequery['name'] = {'$in': typearray}
-		    andarray.push(typequery)
-		    andarray.push(orquery)
-		    andquery['$and'] = andarray;
-		    $scope.query = JSON.stringify(andquery);
-
-		    $scope.fetchModalMetadata();
+		  $scope.query = "{$and: [{'name':'DataDescriptor'},{$text:{$search:'"+$scope.searchField.value+"'}}]}";//JSON.stringify(andquery);
+		  $scope.fetchModalMetadata();
 		}
 
 

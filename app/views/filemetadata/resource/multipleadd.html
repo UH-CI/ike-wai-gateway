@@ -191,24 +191,10 @@
                                 <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                                 <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
 
-                            <div class="input-group-addon">
-                                <span class="input-group pull-left" aria-hidden="true">
-                                            <label ng-repeat="schema in modalSchemas">
-                                                <input
-                                                type="checkbox"
-                                                id="{{schema}}_box"
-                                                name="selectedMetadata[]"
-                                                value="{{schema}}"
-                                                ng-checked="selectedSchema.indexOf(schema) > -1"
-                                                ng-click="toggleSelectedSchema(schema)"
-                                                > Search {{schema}}&nbsp;
-                                            </label>
-                                        </span>
-                            </div>
                             <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
                             <br/>
                             <div class="row top-buffer" ng-show="showSearch">
-                                <query-builder group="filter.group" resource="metadata" schemas="selectedSchema.join(',')"></query-builder>
+                                <query-builder group="filter.group" resource="dd_search" schemas="['DataDescriptor']"></query-builder>
                                 <div class="col-md-12 top-buffer">
 
                                     <div class="input-group">
