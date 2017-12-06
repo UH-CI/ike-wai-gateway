@@ -238,6 +238,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 	          body.name = $scope.metadatum.name;
 	          body.value = $scope.metadatum.value;
               body.value.title = body.value.title + "_Clone"
+              body.value.published = "False"
 	          body.schemaId = $scope.metadatum.schemaId;
 	          if($stateParams.fileUuids){
 	            body.associationIds = $stateParams.fileUuids
