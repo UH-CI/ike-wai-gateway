@@ -164,6 +164,10 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         $scope.requesting = false;
       });
     }
+    
+    $scope.viewFileAnnotations = function(fileUuid,filePath){
+        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath}); 
+    }   
 /////////Modal Stuff/////////////////////
 
     $scope.openView = function (metadatumuuid, size) {
