@@ -96,7 +96,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.datadescriptor.subjects = [];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['creators', 'title', 'license_rights', 'license_permission', 'subjects', 'start_datetime', 'end_datetime', 'formats', 'contributors', 'organizations', 'languages', 'version', 'publisher', 'publication_date', 'description', 'relations']
+  $scope.data_descriptor_order = ['title','creators', 'subjects', 'start_datetime', 'end_datetime', 'formats',  'description']
+   $scope.data_descriptor_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary']
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
   $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
@@ -594,7 +595,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       });
     }
     //$scope.cancelEditDataDescriptor();
-    $scope.close();
+    //$scope.close();
   }
 
   $scope.updateDataDescriptor = function () {
@@ -645,7 +646,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       });
     }
     //$scope.cancelEditDataDescriptor();
-    $scope.close();
+    //$scope.close();
   }
 
   $scope.animationsEnabled = true;
