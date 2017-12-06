@@ -112,7 +112,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
 
-          $scope.filequery = "{'$and':[{'value.published':'True'},{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          $scope.filequery = "{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}";
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -171,7 +171,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
 				$scope.metadataschema = response.result;
       })
       $scope.fetchFacetMetadata();
-      $scope.doSearch();
+      $scope.requesting = false;
+      //$scope.doSearch();
     };
     
 
@@ -353,8 +354,8 @@ drawEvents.forEach(function(eventName){
 
 
 /////////Modal Stuff/////////////////////
-    $scope.viewFileAnnotations = function(fileUuid){
-        $state.go("filemetadata-manage",{'uuid': fileUuid});     
+    $scope.viewFileAnnotations = function(fileUuid,filePath){
+        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath}); 
     }   
 
     $scope.openView = function (metadatumuuid, size) {
