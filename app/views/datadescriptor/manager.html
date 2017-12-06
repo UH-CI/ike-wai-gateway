@@ -173,7 +173,7 @@
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
                 </div>
                 <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
-                  <a class="btn btn-default" href="#" ng-click="close()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
+                  <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
 
 
@@ -188,8 +188,8 @@
                                   <tr ng-if="key!=='publisher' && key!=='version' && key!='publication_date' && key!='languages'" 
                                       ng-repeat="(ind, key) in data_descriptor_order">
 
-                                    <td>
-                                      <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{key | capitalize_with_space}}</label>
+                                    <td width='30%'>
+                                      <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{data_descriptor_display[ind]}}</label>
                                       <!--<button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
                                         <i class="glyphicon glyphicon-question-sign"></i>
                                       </button>-->
@@ -199,18 +199,18 @@
                                         {{val.first_name}} {{val.last_name}}
                                       <span>
                                     </td>
-                                    <td ng-if="key=='organizations' ">
+                                   <!-- <td ng-if="key=='organizations' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.name}} 
                                       <span>
-                                    </td>
+                                    </td>-->
                                     <!--
                                     <td ng-if="key=='subjects' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.word}} 
                                       <span>
                                     </td>
-                                      -->
+
                                     <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
                                       <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
                                       <!--{{data_descriptor_metadatum.value[key]}}--> 
@@ -219,12 +219,17 @@
                                     <td ng-if="key=='subjects' || key=='formats' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
-                                      {{data_descriptor_metadatum.value[key].join(',')}} 
+                                      {{data_descriptor_metadatum.value[key].join(', ')}} 
+                                    </td>
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' ">
+                                    <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
+                                    <!--<td ng-if="key=='formats' || key=='languages' ">-->
+                                      {{data_descriptor_metadatum.value[key]}} 
                                     </td>
                                     <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' &&key!='subjects' && key!='formats' && key!='languages'&& key!='publishers'">-->
-                                    <td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='subjects' && key!='formats' && key!='languages' && key!='start_datetime' && key!='end_datetime' && key!='publication_date'">
+                                    <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='subjects' && key!='formats' && key!='languages' && key!='start_datetime' && key!='end_datetime' && key!='publication_date'">
                                       {{data_descriptor_metadatum.value[key]}}
-                                    </td>
+                                    </td>-->
 
                                   </tr>
                                 </tbody>
@@ -295,6 +300,18 @@
                         <div class="col-md-11">
                           <form novalidate class="simple-form" name="dataDescriptorForm">
 
+                            <!-- TITLE -->
+                          <div class="panel panel-default">
+                           <div class="panel-heading">Required</div>
+                           <div class="panel-body">
+                            <div class="form-group required">
+                              <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"title" | translate}}'>Title:</label>
+                              <button type="button"  data-toggle="popover" title="Title Field" data-content='{{"title" | translate}}' class="btn btn-info btn-circle pull-left">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                              <input class="form-control" type="text" ng-model="datadescriptor.title" />
+                            </div>
+
                             <!-- AUTHOR -->
                             <div class="form-group required">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Author(s):</label>
@@ -302,7 +319,6 @@
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
                               <ui-select 
                                 class="form-control" 
                                 multiple 
@@ -316,15 +332,8 @@
                                 <ui-select-match placeholder="Select author(s)...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
                                 <ui-select-choices repeat="person in people | filter: $select.search">
                                   <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
-                                  <!--
-                                  <small>
-                                    email: {{person.email}}
-                                  </small>
-                                  -->
-
                                 </ui-select-choices>
                               </ui-select>
-                              <!-- <p>Selected: {{selected.people}}</p> -->
 							                <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
                               <script>
                                  $(document).ready(function(){
@@ -332,19 +341,12 @@
                                  });
                                </script>
                             </div>
-
-                            <!-- TITLE -->
-                            <br />
-                            <div class="form-group required">
-                              <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"title" | translate}}'>Title:</label>
-                              <button type="button"  data-toggle="popover" title="Title Field" data-content='{{"title" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <input class="form-control" type="text" ng-model="datadescriptor.title" />
                             </div>
+                          </div>
+                            </br>
 
                             <!-- RIGHTS - LICENSE -->
-                            <br />
+                         <!--   <br />
                             <div class="form-group required">
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
@@ -360,10 +362,10 @@
                                     <div ng-bind-html="license | highlight: $select.search"></div>
                                   </ui-select-choices>
                               </ui-select>
-                            </div>
+                            </div> -->
 
                             <!-- ACCESS RIGHTS -->
-                            <div class="form-group required">
+                           <!-- <div class="form-group required">
                               <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>Access Rights:</label>
                               <button type="button" data-toggle="popover" title="Access Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -377,7 +379,7 @@
                                 <label class="pull-left" >
                                   <input  type="radio" ng-model="datadescriptor.license_permission" value="public" checked>
                                   Public
-                                </label>
+                                </label> -->
                                 <!--<tt>color = {{datadescriptor.license_permission | json}}</tt><br/>-->
 
                               <!--
@@ -395,9 +397,9 @@
                                 <input type="text" ng-model="datadescriptor.license_permission"/>
                               </div>
                               -->
+                             <!-- <br />
                               <br />
-                              <br />
-                            </div>
+                            </div>-->
 
                             <!-- SUBJECT -->
                             <div class="form-group">
@@ -445,7 +447,7 @@
 
                              <!-- START DATE -->
                             <div class="form-group">
-                              <label class="control-label pull-left" for="startDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Start Date:</label>
+                              <label class="control-label pull-left" for="startDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Data Collection Start Date:</label>
                               <button type="button" data-toggle="popover" title="Start Date Field" data-content='{{"dates" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
@@ -462,7 +464,7 @@
 
                              <!-- END DATE -->
                             <div class="form-group">
-                              <label class="control-label pull-left" for="endDate" data-toggle="tooltip" title='{{"dates" | translate}}'>End Date:</label>
+                              <label class="control-label pull-left" for="endDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Data Collection End Date:</label>
                               <button type="button" data-toggle="popover" title="End Date Field" data-content='{{"dates" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
@@ -501,13 +503,13 @@
                             </div>
 
                             <!-- CONTRIBUTING PERSON -->
-                            <div class="form-group">
+                        <!--    <div class="form-group">
                               <label class="control-label pull-left" for="contributorPerson" data-toggle="tooltip" title='{{"contributorPerson" | translate}}'>Contributor - Person:</label>
                               <button type="button" data-toggle="popover" title="Contributing Person Field" data-content='{{"contributorPerson" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
+
                               <ui-select 
                                 class="form-control" 
                                 multiple 
@@ -523,18 +525,18 @@
                                   <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
                                 </ui-select-choices>
                               </ui-select>
-				                      <!-- <p>Selected: {{selected.people}}</p> -->
+
                               <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
                             </div>
-                            <br />
+                            <br />-->
                             <!-- CONTRIBUTING AGENCIES -->
-                            <div class="form-group">
+                           <!-- <div class="form-group">
                               <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
                               <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
-                              <!--  see http://plnkr.co/edit/m1SQXUxftBLQtitng1f0?p=preview for examples -->
+
                               <ui-select 
                                 class="form-control" 
                                 multiple 
@@ -551,9 +553,9 @@
                                 </ui-select-choices>
                               </ui-select>
                               <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
-                              <!-- <p>Selected: {{datadescriptor.organizations}}</p> -->
+
                             </div>
-                            <br />
+                            <br />-->
                             <!-- LANGUAGE -->
                             <!--
                             <div class="form-group">
@@ -584,21 +586,21 @@
   	                        <!--<div id="association_notifications"></div>-->
                               <!-- DESCRIPTION -->
                             <div class="form-group">
-                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Description:</label>
+                              <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Summary:</label>
                               <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
-                              <input ng-model="datadescriptor.description" placeholder="Enter abstract or text describing this resource" class="form-control" type='textarea' rows="5"/>
+                              <textarea ng-model="datadescriptor.description" placeholder="Enter abstract or text describing this resource" class="form-control" type='textarea' rows="5"/>
                             </div>
 
                             <!-- RELATED -->
-                            <div class="form-group">
+                           <!-- <div class="form-group">
                               <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Relations:</label>
                               <button type="button" data-toggle="popover" title="Relations Field" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <input ng-model="datadescriptor.relations" placeholder="Enter filenames linked to this resource" class="form-control" type='textarea' rows="2"/>
-                            </div> 
+                            </div> -->
                               
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
