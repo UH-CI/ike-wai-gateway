@@ -12,7 +12,7 @@
     <div landing-start-menu></div>
 </div>
 -->
-<h3 class="page-title"> Browse Metadata</h3>
+<h3 class="page-title"> Browse Location Data</h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -22,6 +22,24 @@
 
                   </div>
                 </div>
+                <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+                <div class="col-md-10">
+               <h5>Draw Bounding Box And Click "Search In Bounding Box" Button To Begin Searching...</h5>
+               <leaflet width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
+          </div>
+
+          <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <button class="btn btn-primary pull-right" ng-click="spatialSearch()"><i class="fa fa-search"/> Search In Bounding Area</button>
+            <br/>
+            <br/>
+        </div>
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
@@ -78,6 +96,8 @@
                       <div ng-show="metadata.length > 0"class="text-left">
                           <div class="pull-left">
                               Total Search Results: {{totalItems}}
+                              <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>
+        
                           </div>
                       </div>
                       <div class="btn-group pull-right">
@@ -98,11 +118,33 @@
                                   <tr role="row" class="heading">
                                       <th width="20%">
                                         <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
-                                          Values
+                                          Name
                                           <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          ID
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          Longitude
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          Latitude
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      
                                       <!--
                                       <th width="20%">
                                         <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
@@ -126,7 +168,19 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}}</a>
+                                           {{metadatum.value.name}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.wid}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.longitude}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.latitude}} </a>
                                       </td>
                                       <!--
                                       <td>
