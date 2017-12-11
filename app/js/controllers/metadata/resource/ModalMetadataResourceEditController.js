@@ -92,9 +92,12 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
       body.name = $scope.metadatum.name;
       body.value = $scope.model;
       body.schemaId = $scope.metadatum.schemaId;
-      if(body.value.end_date ==''){
-        body.value.end_date = null;
-      }
+      angular.forEachbody.value, function(value, key) {
+        if(value ==''){
+          body.value[key] = null;
+        }
+      })
+
       if (body.schemaId == null){
         if(body.name == 'Well'){
         body.schemaId = '5711039176026484250-242ac1110-0001-013'
