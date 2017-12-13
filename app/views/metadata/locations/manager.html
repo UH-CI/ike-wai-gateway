@@ -1,0 +1,228 @@
+<!--
+ <div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="#/dashboard.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <a href="#/metadata">Metadata</a>
+        </li>
+    </ul>
+    <div landing-start-menu></div>
+</div>
+-->
+<h3 class="page-title"> Browse Location Data</h3>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="row text-center">
+                  <div class="col-md-12">
+
+                  </div>
+                </div>
+                <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+                <div class="col-md-10">
+               <h5>Draw Bounding Box And Click "Search In Bounding Box" Button To Begin Searching...</h5>
+               <leaflet defaults="defaults" width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
+          </div>
+
+          <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <button class="btn btn-primary pull-right" ng-click="spatialSearch()"><i class="fa fa-search"/> Search In Bounding Area</button>
+            <br/>
+            <br/>
+        </div>
+                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter">
+                      </div>
+                      <br/>
+                      <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
+                        <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
+                        <div class="input-group-addon"><span class="input-group pull-left" aria-hidden="true"><input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;<input type="checkbox" ng-model="schemaBox.val2" />Search Wells</span></div>
+
+                      <br/>
+                    </div>
+                    <div class="row top-buffer" ng-show="showSearch">
+                      <query-builder group="filter.group" resource="metadata"></query-builder>
+                      <div class="col-md-12 top-buffer">
+
+                        <div class="input-group">
+                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
+                        </div>
+
+                        <div class="btn-group">
+                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="btn-group top-buffer">
+                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Open Advanced Search Tools'}}
+                      </button>
+                    </div>
+                </div>
+            </div>
+            <div class="portlet-body">
+              <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md-12">
+                    <div ng-show="!requesting">
+                      <div ng-show="metadata.length === 0" class="text-center">
+                        <div class="row text-center">
+                          <div class="col-md-12">
+                              No Metadata found
+                          </div>
+                        </div>
+                      </div>
+                      <div ng-show="metadata.length > 0"class="text-left">
+                          <div class="pull-left">
+                              Total Search Results: {{totalItems}}
+                              <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>
+        
+                          </div>
+                      </div>
+                      <div class="btn-group pull-right">
+                          <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+                              <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
+                              <i class="fa fa-angle-down pull-right"></i>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li ng-repeat="metadataschemata in metadataschema " ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
+                              <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
+                            </li>
+                          </ul>
+                      </div>
+                      <div class="col-md-12">
+                      <div ng-show="metadata.length > 0" class="pre-scrollable">
+                          <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_collection">
+                              <thead>
+                                  <tr role="row" class="heading">
+                                      <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          Name
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          ID
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          Longitude
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                                                            <th width="20%">
+                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                          Latitude
+                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      
+                                      <!--
+                                      <th width="20%">
+                                        <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
+                                          Associated Files
+                                          <span ng-show="sortType == 'path' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'path' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                       -->
+                                      <th width="10%" class="hidden-xs">
+                                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                                          TYPE
+                                          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                                          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                      </th>
+                                      <th width="5%" class="text-center"> Actions</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
+                                           {{metadatum.value.name}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.wid}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.longitude}} </a>
+                                      </td>
+                                      <td>
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                           {{metadatum.value.latitude}} </a>
+                                      </td>
+                                      <!--
+                                      <td>
+                                          <div ng-repeat="associationId in metadatum._links['associationIds']">
+
+                                            <a ui-sref="filemetadata-manage({uuid: metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)]})" class="fa fa-eye">{{associationId.href.split('system')[1]}}</a>
+
+                                          </div>
+                                      </td>
+                                       -->
+                                      <div ng-repeat="associationId in metadatum._links['associationIds']">
+                                        <a ng-click="filemetadata-manage([associationId])" class="fa fa-download"> {{associationId.href.split('system\/')[1]}} </a>
+
+                                      </div>
+                                      <td class="hidden-xs">
+                                          {{metadatum.name}}
+                                      </td>
+                                      <td class="text-center">
+                                          <div class="btn-group">
+
+													<!--  metadata and metadata-edit are both found in main.js -->
+                                                  <!-- <a ui-sref="metadata({id: metadatum.uuid})" role="button"> <i class="fa fa-eye"></i>View </a>
+                                                  &nbsp;
+                                                  <a ui-sref="metadata-edit({uuid: metadatum.uuid})" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  -->
+                                                  <!-- decided to hide the button as the user can just click on the name to get the details -->
+                                                  <!-- <a href='#' ng-click="openView(metadatum.uuid)" role="button"> <i class="fa fa-eye"></i>View </a>
+                                                  &nbsp; -->
+
+                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
