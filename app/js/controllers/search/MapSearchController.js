@@ -285,6 +285,9 @@ angular.extend($scope, {
         lng: -157.91,
         zoom: 7
     },
+    default:{
+      attributionControl: false
+    },
     drawOptions: {
       position: "bottomright",
       draw: {
