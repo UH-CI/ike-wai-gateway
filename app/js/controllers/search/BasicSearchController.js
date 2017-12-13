@@ -123,13 +123,13 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     }
 
     $scope.refresh = function() {
-      $scope.requesting = true;
+     // $scope.requesting = true;
       MetaController.listMetadataSchema(
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
 			})
-      $scope.doSearch();
+      //$scope.doSearch();
     };
 
     $scope.searchTools = function(query){
