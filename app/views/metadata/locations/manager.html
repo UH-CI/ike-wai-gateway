@@ -12,22 +12,8 @@
     <div landing-start-menu></div>
 </div>
 -->
-<h3 class="page-title"> Browse Location Data</h3>
-<div class="row">
-    <div class="col-md-12">
-        <div class="portlet light portlet-fit portlet-datatable bordered">
-            <div class="portlet-title">
-                <div class="row text-center">
-                  <div class="col-md-12">
-
-                  </div>
-                </div>
-                <div class="row text-center" ng-show="requesting">
-                  <div class="col-md-12">
-                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
-                  </div>
-              </div>
-                <div class="col-md-10">
+<h3 > Browse Location Data</h3>
+                    <div class="col-md-12">
                <h5>Draw Bounding Box And Click "Search In Bounding Box" Button To Begin Searching...</h5>
                <leaflet defaults="defaults" width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
           </div>
@@ -40,6 +26,16 @@
             <br/>
             <br/>
         </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="row text-center" ng-show="requesting">
+                  <div class="col-md-12">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                  </div>
+                </div>
+
                 <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
