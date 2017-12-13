@@ -98,8 +98,17 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     
      $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
+        typearray = []
+        typequery = {}
+        if ($scope.schemaBox.val1){
+          typearray.push('Site')
+        }
+        if ($scope.schemaBox.val2){
+          typearray.push('Well')
+        }
+        typequery['name'] = {'$in': typearray}
 $scope.requesting = true;
-          $scope.query = "{$and: [{'name': {'$in':['Well','Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          $scope.query = "{$and: ["+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         
         //else{
@@ -238,13 +247,7 @@ angular.extend($scope, {
             color: 'blue'
           }
         },
-        circle: {
-          showArea: true,
-          metric: false,
-          shapeOptions: {
-            color: '#662d91'
-          }
-        },
+        circle: false,
         marker: false
       },
       edit: {
