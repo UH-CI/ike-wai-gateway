@@ -300,13 +300,7 @@ angular.extend($scope, {
             color: 'blue'
           }
         },
-        circle: {
-          showArea: true,
-          metric: false,
-          shapeOptions: {
-            color: '#662d91'
-          }
-        },
+        circle: false,
         marker: false
       },
       edit: {
