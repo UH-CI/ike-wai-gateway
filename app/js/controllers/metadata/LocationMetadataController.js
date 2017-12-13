@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MetadataController', function ($scope, $state, $filter,$translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, leafletDrawEvents) {
+angular.module('AgaveToGo').controller('LocationMetadataController', function ($scope, $state, $filter,$translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, leafletDrawEvents) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -13,8 +13,8 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Variable','Person']
-    $scope.selectedSchema = ['Well','Site','Variable','Person']
+    $scope.approvedSchema = ['Well','Site']
+    $scope.selectedSchema = ['Well','Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true,val3:true,val4:true};
+    $scope.schemaBox = {val1:true,val2:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.searchAll = function(){
@@ -59,12 +59,6 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         }
         if ($scope.schemaBox.val2){
           typearray.push('Well')
-        }
-        if ($scope.schemaBox.val3){
-          typearray.push('Variable')
-        }
-        if ($scope.schemaBox.val4){
-          typearray.push('Person')
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
@@ -104,9 +98,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     
      $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
-  	     $scope.requesting = true;
+$scope.requesting = true;
           $scope.query = "{$and: [{'name': {'$in':['Well','Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
-          $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+        //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
@@ -314,13 +308,12 @@ drawEvents.forEach(function(eventName){
       );
     };
 
- /*   $scope.openEdit = function (metadatumuuid, size) {
+    $scope.openEdit = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;
         var modalInstance = $uibModal.open({
           animation: $scope.animationsEnabled,
           templateUrl: 'views/modals/ModalEditMetadata.html',
           controller: 'ModalMetadataResourceEditController',
-                       ModalMetadataResourceEditController
           scope: $scope,
           size: size,
           resolve: {
@@ -329,20 +322,6 @@ drawEvents.forEach(function(eventName){
         }
       );
     };
-    */
-      $scope.openEdit= function (metadatumuuid, size) {
-    $scope.metadataUuid = metadatumuuid;
-    var modalInstance = $uibModal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'views/modals/ModalEditMetadata.html',
-      controller: 'ModalMetadataResourceEditController',
-      scope: $scope,
-      size: size,
-      resolve: {
-
-      }
-    });
-  };
 
     $scope.openView = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;

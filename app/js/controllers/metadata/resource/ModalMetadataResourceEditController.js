@@ -92,31 +92,26 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
       body.name = $scope.metadatum.name;
       body.value = $scope.model;
       body.schemaId = $scope.metadatum.schemaId;
-      angular.forEachbody.value, function(value, key) {
+      angular.forEach(body.value, function(value, key) {
         if(value ==''){
           body.value[key] = null;
         }
       })
 
-      if($scope.metadatum.latitude){
-						body.value["loc"] = {"type":"Point", "coordinates":[$scope.metadatum.longitude,$scope.metadatum.latitude]}
+      if (body.value["latitude"] != null){
+						body.value["loc"] = {"type":"Point", "coordinates":[body.value["longitude"],body.value["latitude"]]}
 						body.geospatial= true;
 			}
       
-      if (body.schemaId == null){
-        if(body.name == 'Well'){
-        body.schemaId = '5711039176026484250-242ac1110-0001-013'
-        }
-      }
       MetaController.updateMetadata(body,$scope.metadataUuid)
         .then(
           function(response){
             //App.alert({message: $translate.instant('success_metadata_update') });
-			//make sure default permissions are set
-			MetadataService.addDefaultPermissions($scope.metadataUuid);
+			      //make sure default permissions are set
+			     	MetadataService.addDefaultPermissions($scope.metadataUuid);
             $scope.requesting = false;
             $rootScope.$broadcast('metadataUpdated');
-			//$window.history.back();
+			       //$window.history.back();
             //  $state.go('metadata',{id: $scope.metadataUuid});
           },
           function(response){
