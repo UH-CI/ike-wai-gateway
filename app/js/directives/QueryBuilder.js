@@ -173,7 +173,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                     break;
                   case 'metadata':
                     scope.fields=[];
-                     MetaController.listMetadataSchema().then(
+                     MetaController.listMetadataSchema("{'schema.title': {$in:['"+scope.$parent.approvedSchema.join("','")+"']}}").then(
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];

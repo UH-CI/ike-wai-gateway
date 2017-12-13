@@ -236,7 +236,7 @@
                               </table>
                             </div>
                             <!-- CHOOSE LOCATIONS -->
-                            <leaflet width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
+                            <leaflet defaults="defaults" width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" event-broadcast="events"></leaflet>
                             <div class="form-group" >
                               <button type="button" ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
                               <h3 ng-show='data_descriptor_metadatum.value.published && !edit_perm'>Locations:</h3>
