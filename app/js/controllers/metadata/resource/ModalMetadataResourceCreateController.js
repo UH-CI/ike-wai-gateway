@@ -112,7 +112,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							}
 							App.alert({message: "Successfully Created "+ " " + metaName,closeInSeconds: 5  });
 							$rootScope.$broadcast('metadataUpdated');
-							//$scope.close();
+							$scope.close();
 						}
 						//else if (metaName === "Person" || metaName === "Organization" || metaName === "Subject" ) {
 						else if (metaName === "Person" || metaName === "Organization" ) {
