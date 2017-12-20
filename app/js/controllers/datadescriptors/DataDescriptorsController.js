@@ -47,18 +47,18 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
           angular.forEach($scope.metadataschema, function(value, key){
             //alert(angular.toJson(value))
             var vquery = {}
-            vquery['owner'] = {$regex: $scope.searchField.value}
-            queryarray.push(vquery)
+            //vquery['value.'+value] = {$regex: $scope.searchField.value, '$options':'i'}
+            //queryarray.push(vquery)
             console.log(value.schema.title)
-            if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-                console.log(value.schema.title)
+            //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+            //    console.log(value.schema.title)
               angular.forEach(value.schema.properties, function(val, key){
                   console.log(val)
                 var valquery = {}
-                valquery['value.'+key] = {$regex: $scope.searchField.value}
+                valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
                 queryarray.push(valquery)
               })
-            }
+            //}
           })
           orquery['$or'] = queryarray;
        }
@@ -118,7 +118,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.refresh = function() {
       $scope.requesting = true;
       console.log("query: " + $scope.schemaQuery)
-      MetaController.listMetadataSchema(
+      MetaController.listMetadataSchema($scope.schemaQuery
 				
 			).then(function(response){
                 console.log("METADATA SCHEMA: "+ angular.toJson(response))
