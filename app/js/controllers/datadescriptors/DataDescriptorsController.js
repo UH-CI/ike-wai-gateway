@@ -47,8 +47,8 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
           angular.forEach($scope.metadataschema, function(value, key){
             //alert(angular.toJson(value))
             var vquery = {}
-            //vquery['value.'+value] = {$regex: $scope.searchField.value, '$options':'i'}
-            //queryarray.push(vquery)
+            vquery['owner'] = {$regex: $scope.searchField.value, '$options':'i'}
+            queryarray.push(vquery)
             console.log(value.schema.title)
             //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
             //    console.log(value.schema.title)
