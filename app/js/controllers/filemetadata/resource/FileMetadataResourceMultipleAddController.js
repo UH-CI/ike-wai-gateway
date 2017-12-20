@@ -657,10 +657,55 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		$scope.schemaBox = {val1:true,val2:true};
 		$scope.wellbox = true;
 		$scope.searchField = {value:''}
+		query_array = []
 		$scope.searchAll = function(){
 		  //alert($scope.filter)
 		  $scope.requesting = true;
-		  $scope.query = "{$and: [{'name':'DataDescriptor'},{$text:{$search:'"+$scope.searchField.value+"'}}]}";//JSON.stringify(andquery);
+//		  query_array = [{'name':'DataDescriptor'},{$text:{$search:'"+$scope.searchField.value+"'}}]
+//		  if($scope.owner_filter) {
+//			 query_array.push({'owner':'"+$localStorage.activeProfile.username+"'})
+//		  }
+//          $scope.and_query = JSON.stringify(fileandquery).replace(/"/g, "'");
+//		  $scope.query = JSON.stringify(and_query).replace(/"/g, "'");//"{$and: [{'name':'DataDescriptor'},{'owner':'"+$localStorage.activeProfile.username+"'},{$text:{$search:'"+$scope.searchField.value+"'}}]}";//JSON.stringify(andquery);
+//		  
+		   var orquery = {}
+        var andquery = {}
+        var queryarray = []
+        var andarray = []
+        var innerquery = {}
+        var typearray = []
+        if ($scope.searchField.value != ''){
+            console.log('searching')
+            console.log(angular.toJson($scope.metadataschema))
+          angular.forEach($scope.metadataschema, function(value, key){
+            //alert(angular.toJson(value))
+            var vquery = {}
+            //vquery['value.'+value] = {$regex: $scope.searchField.value, '$options':'i'}
+            //queryarray.push(vquery)
+            console.log(value.schema.title)
+            //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+            //    console.log(value.schema.title)
+              angular.forEach(value.schema.properties, function(val, key){
+                  console.log(val)
+                var valquery = {}
+                valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
+                queryarray.push(valquery)
+              })
+            //}
+          })
+          orquery['$or'] = queryarray;
+       }
+        var typequery = {}
+
+        if ($scope.schemaBox.val1){
+          typearray.push('DataDescriptor')
+        }
+        typequery['name'] = {'$in': typearray}
+        andarray.push(typequery)
+        andarray.push(orquery)
+        andquery['$and'] = andarray;
+        $scope.query = JSON.stringify(andquery);
+		  
 		  $scope.fetchModalMetadata();
 		}
 
