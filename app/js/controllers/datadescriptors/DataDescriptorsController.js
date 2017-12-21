@@ -43,33 +43,28 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         var typearray = []
         if ($scope.searchField.value != ''){
             console.log('searching')
-            console.log(angular.toJson($scope.metadataschema))
-          angular.forEach($scope.metadataschema, function(value, key){
-            //alert(angular.toJson(value))
             var vquery = {}
-            //vquery['value.'+value] = {$regex: $scope.searchField.value, '$options':'i'}
-            //queryarray.push(vquery)
-            console.log(value.schema.title)
-            //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-            //    console.log(value.schema.title)
-              angular.forEach(value.schema.properties, function(val, key){
-                  console.log(val)
+            vquery['owner'] = {$regex: $scope.searchField.value, '$options':'i'}
+            queryarray.push(vquery)
+              angular.forEach($scope.metadataschema.schema.properties, function(val, key){
                 var valquery = {}
                 valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
                 queryarray.push(valquery)
               })
-            //}
-          })
+         
           orquery['$or'] = queryarray;
        }
         var typequery = {}
-
+        var textquery = {'$text':{'$search':$scope.searchField.value}}
         if ($scope.schemaBox.val1){
           typearray.push('DataDescriptor')
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)
+        //if($scope.searchField.value){
+        //  andarray.push(textquery)
+        //}
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
 
@@ -118,7 +113,10 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.refresh = function() {
       $scope.requesting = true;
       console.log("query: " + $scope.schemaQuery)
-      MetaController.listMetadataSchema($scope.schemaQuery
+     // uuid = MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+      uuid = $localStorage["schema_DataDescriptor"]
+      //console.log(angular.toJson(uuid))
+      MetaController.getMetadataSchema(uuid,1,0
 				
 			).then(function(response){
                 console.log("METADATA SCHEMA: "+ angular.toJson(response))

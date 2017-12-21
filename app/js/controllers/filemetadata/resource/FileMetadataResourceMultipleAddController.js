@@ -1,6 +1,10 @@
 angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddController", function($scope, $state, $q, $stateParams, $translate, $window, $uibModal, $rootScope, $timeout, $localStorage, WizardHandler, MetaController, FilesController, MetadataService, ActionsService, MessageService, FilesMetadataService) {
+	    $scope._COLLECTION_NAME = 'metadata',
+    $scope._RESOURCE_NAME = 'metadatum';
 	$scope.model = {};
-
+	$scope.searchCheckBox={'checked':true}
+	$scope.limit = 500;
+	$scope.offset = 0;
 	$scope.profile = $localStorage.activeProfile;
 	$scope.get_editors = function(){
     $scope.editors = MetadataService.getAdmins();
@@ -128,17 +132,17 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
     $scope.refresh = function() {
       $scope.requesting = true;
-
-      MetaController.listMetadataSchema(
-        $scope.schemaQuery
-      ).then(function(response){
+		uuid = $localStorage["schema_DataDescriptor"]
+      //console.log(angular.toJson(uuid))
+      MetaController.getMetadataSchema(uuid,1,0
+	  ).then(function(response){
         $scope.metadataschema = response.result;
         $scope.requesting = false;
       })
-
-			if ($stateParams.schemauuid != null) {
-					$scope.fetchMetadataSchema($stateParams.schemauuid);
-			}
+	  if ($stateParams.schemauuid != null) {
+		$scope.fetchMetadataSchema($stateParams.schemauuid);
+      }
+	  
     };
 
     $scope.refresh();
@@ -294,10 +298,15 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 /////////Modal Stuff/////////////////////
 			$scope.fetchModalMetadata = function(){
 				MetaController.listMetadata(
-					$scope.query, 1000
+					$scope.query, $scope.limit
 				)
 					.then(
 						function (response) {
+							if (response.result.length == $scope.limit) {
+				              $scope.can_fetch_more = true;
+				            } else {
+				              $scope.can_fetch_more = false;
+				            }
 							$scope.metadata= response.result;
 							$scope.requesting = false;
 						},
@@ -307,7 +316,30 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 						}
 				);
 			}
-			$scope.fetchModalMetadata();
+			//$scope.fetchModalMetadata();
+			
+	 $scope.fetchMoreMetadata = function () {
+        $scope.offset = $scope.offset + $scope.limit
+        $scope.requesting = true
+        MetaController.listMetadata($scope.query, $scope.limit, $scope.offset)
+          .then(
+            function (response) {
+              if (response.result.length == $scope.limit) {
+                $scope.can_fetch_more = true;
+              } else {
+                $scope.can_fetch_more = false;
+              }
+               $scope[$scope._COLLECTION_NAME]=  $scope[$scope._COLLECTION_NAME].concat(response.result)
+               $scope.totalItems = $scope[$scope._COLLECTION_NAME].length;
+              $scope.pagesTotal = Math.ceil($scope[$scope._COLLECTION_NAME].length / $scope.limit);
+              $scope.requesting = false;
+            },
+            function (response) {
+              MessageService.handle(response, $translate.instant('error_metadata_list'));
+              $scope.requesting = false;
+            }
+          );
+      }
 
 		$scope.addAssociation = function(metadatumUuid) {
 			var promise = []
@@ -668,48 +700,56 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 //          $scope.and_query = JSON.stringify(fileandquery).replace(/"/g, "'");
 //		  $scope.query = JSON.stringify(and_query).replace(/"/g, "'");//"{$and: [{'name':'DataDescriptor'},{'owner':'"+$localStorage.activeProfile.username+"'},{$text:{$search:'"+$scope.searchField.value+"'}}]}";//JSON.stringify(andquery);
 //		  
-		   var orquery = {}
-        var andquery = {}
-        var queryarray = []
-        var andarray = []
-        var innerquery = {}
-        var typearray = []
-        if ($scope.searchField.value != ''){
-            console.log('searching')
-            console.log(angular.toJson($scope.metadataschema))
-          angular.forEach($scope.metadataschema, function(value, key){
-            //alert(angular.toJson(value))
-            var vquery = {}
-            //vquery['value.'+value] = {$regex: $scope.searchField.value, '$options':'i'}
-            //queryarray.push(vquery)
-            console.log(value.schema.title)
-            //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-            //    console.log(value.schema.title)
-              angular.forEach(value.schema.properties, function(val, key){
-                  console.log(val)
-                var valquery = {}
-                valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
-                queryarray.push(valquery)
-              })
-            //}
-          })
-          orquery['$or'] = queryarray;
-       }
-        var typequery = {}
+			var orquery = {}
+	        var andquery = {}
+	        var queryarray = []
+	        var andarray = []
+	        var innerquery = {}
+	        var typearray = []
+			$scope.offset = 0;
+			var vquery = {}
+			console.log('SEARCHBOX: '+ angular.toJson($scope.searchCheckBox))
+			if ($scope.searchCheckBox.checked){
+				console.log('checked')
+	            vquery['owner'] = {$regex: $localStorage.activeProfile.username, '$options':'i'}
+				andarray.push(vquery);
+			}
+	        if ($scope.searchField.value != ''){
+	            console.log('searching')
+	            console.log(angular.toJson($scope.metadataschema))
+	          //angular.forEach($scope.metadataschema, function(value, key){
+	            //alert(angular.toJson(value))
 
-        if ($scope.schemaBox.val1){
-          typearray.push('DataDescriptor')
-        }
-        typequery['name'] = {'$in': typearray}
-        andarray.push(typequery)
-        andarray.push(orquery)
-        andquery['$and'] = andarray;
-        $scope.query = JSON.stringify(andquery);
+	           // console.log(value.schema.title)
+	            //if($scope.approvedSchema.indexOf(value.schema.title) > -1){
+	            //    console.log(value.schema.title)
+	              angular.forEach($scope.metadataschema.schema.properties, function(val, key){
+	                  console.log(val)
+	                var valquery = {}
+	                valquery['value.'+key] = {$regex: $scope.searchField.value, '$options':'i'}
+	                queryarray.push(valquery)
+	              })
+	            //}
+	        //  })
+	          orquery['$or'] = queryarray;
+	       }
+	        var typequery = {}
+			var ownerquery = {}
+	        typearray.push('DataDescriptor')
+	        typequery['name'] = {'$in': typearray}
+			/*if (!$scope.searchCheckBox.val1){
+			  ownerquery['owner'] = $localStorage.activeProfile.username
+			  andarray.push(ownerquery)
+			}*/
+	        andarray.push(typequery)
+	        andarray.push(orquery)
+	        andquery['$and'] = andarray;
+	        $scope.query = JSON.stringify(andquery);
 		  
 		  $scope.fetchModalMetadata();
 		}
 
-
+        $scope.searchAll();
 }).controller('ModalAssociateMetadataMultiFileCtrl', function ($scope, $modalInstance, MetaController) {
 	///$scope.uuid = filemetadatumUuid;
 	$scope.cancel = function () {
