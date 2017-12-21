@@ -113,17 +113,19 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.refresh = function() {
       $scope.requesting = true;
       console.log("query: " + $scope.schemaQuery)
-     // uuid = MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-      uuid = $localStorage["schema_DataDescriptor"]
-      //console.log(angular.toJson(uuid))
-      MetaController.getMetadataSchema(uuid,1,0
-				
-			).then(function(response){
-                console.log("METADATA SCHEMA: "+ angular.toJson(response))
-				$scope.metadataschema = response.result;
-				$scope.requesting = false;
-			})
-      $scope.searchAll();
+      MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+      .then(function(){
+          uuid = $localStorage["schema_DataDescriptor"]
+          //console.log(angular.toJson(uuid))
+          MetaController.getMetadataSchema(uuid,1,0
+    				
+    			).then(function(response){
+                    console.log("METADATA SCHEMA: "+ angular.toJson(response))
+    				$scope.metadataschema = response.result;
+    				$scope.requesting = false;
+    			})
+          $scope.searchAll();
+      })
     };
 
     $scope.searchTools = function(query){

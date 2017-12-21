@@ -130,22 +130,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 		$scope.loadedOnce = false;
 
-    $scope.refresh = function() {
-      $scope.requesting = true;
-		uuid = $localStorage["schema_DataDescriptor"]
-      //console.log(angular.toJson(uuid))
-      MetaController.getMetadataSchema(uuid,1,0
-	  ).then(function(response){
-        $scope.metadataschema = response.result;
-        $scope.requesting = false;
-      })
-	  if ($stateParams.schemauuid != null) {
-		$scope.fetchMetadataSchema($stateParams.schemauuid);
-      }
-	  
-    };
 
-    $scope.refresh();
 
 		$scope.searchTools = function(query){
 			$scope.query = query;
@@ -749,7 +734,28 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		  $scope.fetchModalMetadata();
 		}
 
-        $scope.searchAll();
+        
+		
+	$scope.refresh = function() {
+      $scope.requesting = true;
+	  MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+      .then(function(){
+		uuid = $localStorage["schema_DataDescriptor"]
+        //console.log(angular.toJson(uuid))
+	      MetaController.getMetadataSchema(uuid,1,0
+		  ).then(function(response){
+	        $scope.metadataschema = response.result;
+	        $scope.requesting = false;
+	      })
+		  if ($stateParams.schemauuid != null) {
+			$scope.fetchMetadataSchema($stateParams.schemauuid);
+	      }
+		  $scope.searchAll();
+	  })
+    };
+
+    $scope.refresh();
+	
 }).controller('ModalAssociateMetadataMultiFileCtrl', function ($scope, $modalInstance, MetaController) {
 	///$scope.uuid = filemetadatumUuid;
 	$scope.cancel = function () {
