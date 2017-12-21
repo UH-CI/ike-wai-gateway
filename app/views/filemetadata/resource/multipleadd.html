@@ -193,7 +193,11 @@
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                                 <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
-
+                                                        <div class="input-group-addon">
+                            <span class="input-group pull-left" aria-hidden="true">
+                                <input type="checkbox" ng-model="searchCheckBox.checked" />Only Return Data Descriptors Created By Me
+                            </span>
+                        </div>
                             <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
                             <br/>
                             <div class="row top-buffer" ng-show="showSearch">
@@ -233,7 +237,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" ng-show="!requesting">
                             <button class="btn green btn-outline" ng-click="showBasicSearch = !showBasicSearch">
                                 <i class="fa fa-search"></i> {{showBasicSearch ? 'Hide Search' : 'Show Search'}}
                             </button>
@@ -255,7 +259,7 @@
 
                                         <div class="caption">
                                             Total Objects: {{ metadata.length}}
-                                            <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreModalMetadata()'>Fetch More Results</button>                                    
+                                            <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>                                    
                                         </div>
                                         <div class="pre-scrollable" style="max-height:200px;">
                                             <table class="table table-striped table-bordered table-hover management" width="100%" id="datatable_collection" class="pre-scrollable">
