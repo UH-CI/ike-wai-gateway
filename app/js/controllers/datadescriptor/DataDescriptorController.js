@@ -522,7 +522,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         $scope.metadatum = null;
         $timeout(function () {
           //$scope.refresh()
-          $scope.refreshMetadata();
+          //$scope.refreshMetadata();
+          //$rootScope.$broadcast('metadataUpdated');
           $scope.matchingAssociationIds.splice($scope.matchingAssociationIds.indexOf(metadatumUuid))
           $scope.removedAssociationIds.push(metadatumUuid)
         }, 500);
