@@ -224,6 +224,8 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.fetchMetadataWithLimit = function (metadata_query, limit) {
     console.log("JEN DDC: fetchMetadataWithLimit: " + metadata_query);
     var deferred = $q.defer();
+    $scope.variables = [];
+    $scope.locations = [];
     deferred.resolve(MetaController.listMetadata(metadata_query, limit, 0).then(
       function (response) {
         $scope.totalItems = response.result.length;
