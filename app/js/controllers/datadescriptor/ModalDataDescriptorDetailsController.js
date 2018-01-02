@@ -117,8 +117,8 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.class = [];
 
   $scope.refreshMetadata = function () {
-   //console.log("JEN DDC: refreshMetadata: uuid:'" + $stateParams.uuid);
-    //console.log("JEN DDC: refreshMetadata: uuid:" + $scope.ddUuid);
+    //console.log("JEN MDDDC: refreshMetadata: uuid:'" + $stateParams.uuid);
+    //console.log("JEN MDDDC: refreshMetadata: uuid:" + $scope.ddUuid);
     //refetch the file metadata object to ensure the latest associtionIds are in place
  
     var deferred = $q.defer();
@@ -222,7 +222,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   }
 
   $scope.fetchMetadataWithLimit = function (metadata_query, limit) {
-    console.log("JEN DDC: fetchMetadataWithLimit: " + metadata_query);
+    //console.log("JEN MDDDC: fetchMetadataWithLimit: " + metadata_query);
     var deferred = $q.defer();
     $scope.variables = [];
     $scope.locations = [];
@@ -366,8 +366,8 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   });
   
     $scope.refresh = function () {
-    //console.log("JEN DDC: refresh: action = " + $scope.action + ", uuid:" + $stateParams.uuid);
-    //console.log("JEN DDC: refresh: action = " + $scope.action + ", uuid:" + $scope.ddUuid);
+    //console.log("JEN MDDDC: refresh: action = " + $scope.action + ", uuid:" + $stateParams.uuid);
+    //console.log("JEN MDDDC: refresh: action = " + $scope.action + ", uuid:" + $scope.ddUuid);
     if ($scope.action === "create") {
       $scope.ddUuid = "";
       $scope.action = "edit";
