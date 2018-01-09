@@ -1354,6 +1354,30 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         /**********************************************************************/
         /**********************************************************************/
 
+
+        .state('data-explorer-root', {
+            url: "/data/explorerroot/:systemId",
+            templateUrl: "views/data/explorer.html",
+            data: { pageTitle: 'File Explorer' },
+            controller: "FileExplorerController",
+            path: "",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            serie: true,
+                            name: 'AgaveToGo',
+                            insertBefore: '#ng_load_plugins_before',
+                            files: [
+                                "js/services/MessageService.js",
+                                "js/controllers/data/FileExplorerController.js"
+                            ]
+                        }
+                    ]);
+                }]
+            }
+        })
+
         // TO-DO: need to improve this with redirect
         .state('data-explorer-noslash', {
             url: "/data/explorer/:systemId",
@@ -2766,7 +2790,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                   {
                     name: 'AgaveToGo',
                     files: [
-                        'js/services/ActionsService.js',
                         'js/services/MessageService.js',
                         'js/services/FilesMetadataService.js',
                         'js/services/MetadataService.js',
