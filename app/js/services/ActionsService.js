@@ -746,7 +746,10 @@ angular.module('AgaveToGo',[]).service('ActionsService',['$uibModal', '$rootScop
                     case 'meta':
                       switch(resourceAction){
                         case 'delete':
-                          MetaController.deleteMetadata(resource.id)
+                          //JEN's note, not sure if this will have repercussions elsewhere,
+                          // but as metadata doesn't have an id, but a uuid, I changed it.
+                          // MetaController.deleteMetadata(resource.id)
+                          MetaController.deleteMetadata(resource.uuid)
                             .then(
                               function(response){
                                 if (typeof resourceList === 'undefined' || resourceList === ''){
