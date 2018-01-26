@@ -298,7 +298,7 @@ initialization can be disabled and Layout.init() should be called on page load c
 /* Setup Layout Part - Header */
 AgaveToGo.controller('HeaderController', ['$scope', '$localStorage', '$http', '$rootScope', '$interval', 'StatusIoController', function($scope, $localStorage, $http, $rootScope, $interval, StatusIoController) {
     $scope.showTokenCountdown = true;
-    
+
     $scope.checkTokenExpiration = function() {
       //console.log("Checking token expiration.")
     }
@@ -447,13 +447,13 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
         $scope.warning = null;
       }
     }
-    
+
 	$scope.$on('IdleStart', function() {
 		// the user appears to have gone idle
     console.log('BEING-IDLE')
     if($scope.isIdle == false){
         closeModals();
-    
+
         $scope.warning = $uibModal.open({
           templateUrl: 'views/modals/ModalIdleWarning.html',
           windowClass: 'modal-danger'
@@ -470,14 +470,14 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
     //console.log('IDLE')
      if($scope.isIdle == false){
         closeModals();
-    
+
         $scope.warning = $uibModal.open({
           templateUrl: 'views/modals/ModalIdleWarning.html',
           windowClass: 'modal-danger'
         });
         $scope.isIdle = true;
       }
-    
+
 	});
 
 	$scope.$on('IdleTimeout', function() {
@@ -522,7 +522,7 @@ AgaveToGo.controller('IdleEventsCtrl', ['$scope', 'Idle', 'Keepalive','$uibModal
 }]);
 AgaveToGo.config(['IdleProvider','KeepaliveProvider',function(IdleProvider, KeepaliveProvider) {
 	// configure Idle settings
-	IdleProvider.idle(3600); // in seconds 
+	IdleProvider.idle(3600); // in seconds
 	IdleProvider.timeout(300); // in seconds
 	KeepaliveProvider.interval(60); // in seconds
 }]);
@@ -1229,6 +1229,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
                             'js/services/PermissionsService.js',
+                            'js/services/MetadataService.js',
                             'js/controllers/QueryBuilderController.js',
                             'js/controllers/apps/AppDirectoryController.js',
                             'js/controllers/modals/ModalConfirmResourceActionController.js',

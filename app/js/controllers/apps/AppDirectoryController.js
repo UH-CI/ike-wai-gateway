@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('AppDirectoryController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $http, $translate, Commons, AppsController, SystemsController, ActionsService, PermissionsService, MessageService) {
+angular.module('AgaveToGo').controller('AppDirectoryController', function ($injector, $timeout, $rootScope, $scope, $state, $stateParams, $q, $uibModal, $http, $translate, $localStorage, Commons, AppsController, SystemsController, ActionsService, MetadataService, PermissionsService, MessageService) {
 
     $scope.offset = $scope.offset || 0;
     $scope.limit = $scope.limit || 25;
@@ -20,6 +20,13 @@ angular.module('AgaveToGo').controller('AppDirectoryController', function ($inje
 
     $scope.filter = '';
     $scope.query = 'filter=id,name,version,label,shortDescription,executionSystem,isPublic,revision,lastModified,uuid';
+
+    $scope.profile = $localStorage.activeProfile;
+    $scope.get_editors = function(){
+      $scope.editors = MetadataService.getAdmins();
+      $scope.edit_perm = $scope.editors.indexOf($scope.profile.username) > -1;
+    }
+    $scope.get_editors();
 
     $scope.refresh = function() {
         $scope.appsList = [];
