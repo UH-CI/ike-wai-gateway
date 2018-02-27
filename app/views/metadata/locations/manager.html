@@ -164,7 +164,7 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.name}} </a>
+                                           {{metadatum.value.name}}</a>&nbsp;<span class="badge" ng-if="metadatum.value.resultCount">{{metadatum.value.resultCount}}</span>
                                       </td>
                                       <td>
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')">
