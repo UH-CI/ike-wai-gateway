@@ -170,7 +170,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: cancelEditDataDescriptor");
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
-    $scope.refreshMetadata();
+    //$scope.refreshMetadata();
+    $rootScope.$broadcast('metadataUpdated');
     //$scope.close();
   }
 
@@ -270,7 +271,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.getAssociations = function () {
     $scope.locations = [];
     $scope.variables = [];
-    console.log('getAssociation')
+    //console.log('getAssociations')
     if ($scope.data_descriptor_metadatum.associationIds){
       $scope.fetchMetadata("{'uuid':{'$in':['"+$scope.data_descriptor_metadatum.associationIds.join("','")+"']}}");
     }
@@ -300,6 +301,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.fetchMetadataWithLimit = function (metadata_query, limit) {
     console.log("JEN DDC: fetchMetadataWithLimit: " + metadata_query);
     var deferred = $q.defer();
+    $scope.variables = [];
+    $scope.locations = [];
     deferred.resolve(MetaController.listMetadata(metadata_query, limit, 0).then(
       function (response) {
         $scope.totalItems = response.result.length;
@@ -327,7 +330,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           }
           else if (value.name === 'Well' || value.name ==='Site') {
-            console.log('stuff')
+            //console.log('stuff')
             if( $scope.locations.indexOf(value) < 0){
               $scope.locations.push(value);
             }
@@ -345,7 +348,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
         });
         $scope.requesting = false;
-        console.log("Locations count: " + $scope.locations.length)
+        //console.log("Locations count: " + $scope.locations.length)
       },
       function (response) {
         MessageService.handle(response, $translate.instant('error_filemetadata_list'));
@@ -519,7 +522,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         $scope.metadatum = null;
         $timeout(function () {
           //$scope.refresh()
-          $scope.refreshMetadata();
+          //$scope.refreshMetadata();
+          //$rootScope.$broadcast('metadataUpdated');
           $scope.matchingAssociationIds.splice($scope.matchingAssociationIds.indexOf(metadatumUuid))
           $scope.removedAssociationIds.push(metadatumUuid)
         }, 500);
@@ -624,7 +628,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                   message: "Success Data Descriptor Saved",
                   closeInSeconds: 5
                 });
-                $rootScope.$broadcast('metadataUpdated');
+                //$rootScope.$broadcast('metadataUpdated');
                 $scope.cancelEditDataDescriptor();
               },
               function (response) {

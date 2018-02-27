@@ -13,8 +13,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site']
-    $scope.selectedSchema = ['Well','Site']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val3:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.searchAll = function(){
@@ -59,6 +59,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         }
         if ($scope.schemaBox.val2){
           typearray.push('Well')
+        }
+        if ($scope.schemaBox.val3){
+          typearray.push('Water_Quality_Site')
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
@@ -95,7 +98,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           }
       );
     }
-    
+
      $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
         typearray = []
@@ -106,11 +109,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if ($scope.schemaBox.val2){
           typearray.push('Well')
         }
+        if ($scope.schemaBox.val3){
+          typearray.push('Water_Quality_Site')
+        }
         typequery['name'] = {'$in': typearray}
 $scope.requesting = true;
           $scope.query = "{$and: ["+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
-        
+
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -125,7 +131,7 @@ $scope.requesting = true;
             //{ "value": {"latitude": '!!' }});
             $scope.marks = {};
             angular.forEach($scope.siteMarkers, function(datum) {
-                if(datum.value.loc != undefined){
+                if(datum.value.loc != undefined && datum.value.name != undefined){
                 $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
               }
             });
@@ -151,7 +157,7 @@ $scope.requesting = true;
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-				
+
 			})
        $scope.requesting = false;
       //$scope.searchAll()
@@ -195,9 +201,9 @@ $scope.requesting = true;
     }
     $scope.modalSchemas = $scope.modalSchemas
   };
-  
-  
-  
+
+
+
   ///MAP///
 ////////LEAFLET//////////////////
   $scope.markers=[];
@@ -263,7 +269,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
-    //drawControl.hideDrawTools(); 
+    //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
   edited: function(arg) {},
@@ -277,7 +283,7 @@ var handle = {
   editstart: function(arg) {},
   editstop: function(arg) {},
   deletestart: function(arg) {
-    
+
   },
   deletestop: function(arg) {}
 };

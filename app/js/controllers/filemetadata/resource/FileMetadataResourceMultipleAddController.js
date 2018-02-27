@@ -584,7 +584,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 		// an old method and don't want a bunch of arbitrary changes to show 
 		// during a comparison, I just do an assignment on the first line.
 		$scope.addClone = function (dataDescriptorUuid) {
-		    console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
+		    //console.log("JEN FMRMAC: addClone from dd: " + dataDescriptorUuid);
 		    metadatumUuid = dataDescriptorUuid;
 		    if (metadatumUuid) {
 		      $scope.requesting = true;
