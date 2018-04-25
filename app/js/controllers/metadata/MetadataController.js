@@ -27,9 +27,10 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true,val3:true,val4:true};
+    $scope.schemaBox = {val1:false,val2:false,val3:false,val4:false};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
+
     $scope.searchAll = function(){
       //alert($scope.filter)
       $scope.requesting = true;
@@ -65,6 +66,13 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         }
         if ($scope.schemaBox.val4){
           typearray.push('Person')
+        }
+        // if no schema types are selected, select all
+        if (typearray.length == 0) {
+          typearray.push('Site');
+          typearray.push('Well');
+          typearray.push('Variable');
+          typearray.push('Person');
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
@@ -358,4 +366,14 @@ drawEvents.forEach(function(eventName){
         }
       );
     };
+    
+    $scope.confirmAction = function (resourceType, resource, resourceAction, resourceList, resourceIndex) {
+      //resource.id = resource.uuid;
+      ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
+    }
+  
+    $scope.deleteMetadata = function (metadatum) {
+      $scope.confirmAction("meta", metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
+    }
+    
 });
