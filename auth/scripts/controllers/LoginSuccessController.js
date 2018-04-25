@@ -4,7 +4,7 @@ angular.module('AgaveAuth').controller('LoginSuccessController', function ($inje
 
     // explicitely set oAuthAccessToken and BASEURI Configuration for SDK
     //Configuration.oAuthAccessToken = $localStorage.token ? $localStorage.token.access_token : '';
-    Configuration.BASEURI ='https://agaveauth.its.hawaii.edu';
+    Configuration.BASEURI ='https://ikeauth.its.hawaii.edu';
     Configuration.oAuthAccessToken = $localStorage.token.access_token; 
     $scope.authToken = $localStorage.token;
 

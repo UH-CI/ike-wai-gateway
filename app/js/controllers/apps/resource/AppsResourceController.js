@@ -5,7 +5,7 @@ angular.module('AgaveToGo').controller("AppsResourceController", function($scope
 		$scope.go = function(route){
 			$state.go(route);
 		};
-
+ 
 		$scope.active = function(route){
 			// default to details tab
 			if ($state.current.name === "apps"){
