@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService, leafletDrawEvents) {
 
 
 	$scope.close = function () {
@@ -25,10 +25,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.fetchMetadataSchema = function() {
 		$scope.requesting = true;
 
-		MetaController.getMetadataSchema(selectedSchemaUuid)
+		MetaController.listMetadataSchema("{'uuid':'"+selectedSchemaUuid+"'}")
 			.then(
 				function(response){
-					$scope.selectedmetadataschema = response.result;
+					$scope.selectedmetadataschema = response.result[0];
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
@@ -69,6 +69,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		$scope.requesting = true;
 		$scope.$broadcast('schemaFormValidate');
 		// Then we check if the form is valid
+		alert(angular.toJson($scope.model))
 		if (form.$valid) {
 
 			var body = {};
@@ -80,10 +81,15 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					body.value["loc"] = {"type":"Point", "coordinates":[$scope.model.longitude,$scope.model.latitude]}
 					body.geospatial= true;
 			}
+			if($scope.model.polygon){
+				body.value["loc"] = {"type":"Polygon", "coordinates": JSON.parse($scope.model.polygon)}
+				body.geospatial= true;
+			}
 
 			//should be able to create metadata object with permissions set BUT not working at the moment
 			//body.permissions = [{"username":"public","permission":"READ"},{"username":"seanbc","permission":"ALL"},{"username":"jgeis","permission":"ALL"},{"username":"ike-admin","permission":"ALL"}];
-			MetaController.addMetadata(body)
+
+		 	MetaController.addMetadata(body)
 				.then(
 					function(response){
 						$scope.metadataUuid = response.result.uuid;
@@ -132,28 +138,68 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			}
 
 	};
-
-
+  /******** LEAFLET **************/
+	$scope.markers = [];
 	angular.extend($scope, {
-			hawaii: {
-					lat: 21.289373,
-					lng: -157.91,
-					zoom: 7
-			},
-			events: {
+		drawControl: true,
+		hawaii: {
+						lat: 21.289373,
+						lng: -157.91,
+						zoom: 7
+		},
+		events: {
 				map: {
-					enable: ['click', 'drag', 'blur', 'touchstart'],
-					logic: 'emit'
+						enable: ['click', 'drag', 'blur', 'touchstart'],
+						logic: 'emit'
 				}
-			},
-			defaults: {
-					scrollWheelZoom: false
-			},
+		},
+		defaults: {
+						scrollWheelZoom: false
+		},
 	});
 
-	$scope.markers = new Array();
+	var drawnItems = new L.FeatureGroup();
+	$scope.drawnItemsCount = function() {
+	  return drawnItems.getLayers().length;
+	}
 
-	$scope.$on('leafletDirectiveMap.click', function(event, args){
+	angular.extend($scope, {
+	  map: {
+	    center: {
+	        lat: 21.289373,
+	        lng: -157.91,
+	        zoom: 7
+	    },
+	    default:{
+	      attributionControl: false
+	    },
+	    drawOptions: {
+	      position: "bottomright",
+	      draw: {
+	        polyline: false,
+	        polygon: {
+	          metric: false,
+	          showArea: true,
+	          drawError: {
+	            color: '#b00b00',
+	            timeout: 1000
+	          },
+	          shapeOptions: {
+	            color: 'blue'
+	          }
+	        },
+	        circle: false,
+	        marker: true
+	      },
+	      edit: {
+	        featureGroup: drawnItems,
+	        remove: true
+	      }
+	    }
+	  }
+	});
+
+	/*$scope.$on('leafletDirectiveMap.click', function(event, args){
 	 //clear markers
 	 $scope.markers=[];
 	 //$scope.markers = $scope.marks;
@@ -168,6 +214,77 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	 $scope.model['latitude'] = args.leafletEvent.latlng.lat;
 
 	});
+  */
+
+	var getCentroid = function (arr) {
+    var twoTimesSignedArea = 0;
+    var cxTimes6SignedArea = 0;
+    var cyTimes6SignedArea = 0;
+
+    var length = arr.length
+
+    var x = function (i) { return arr[i % length][0] };
+    var y = function (i) { return arr[i % length][1] };
+
+    for ( var i = 0; i < arr.length; i++) {
+        var twoSA = x(i)*y(i+1) - x(i+1)*y(i);
+        twoTimesSignedArea += twoSA;
+        cxTimes6SignedArea += (x(i) + x(i+1)) * twoSA;
+        cyTimes6SignedArea += (y(i) + y(i+1)) * twoSA;
+    }
+    var sixSignedArea = 3 * twoTimesSignedArea;
+    return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
+  }
+
+	var handle = {
+	  created: function(e,leafletEvent, leafletObject, model, modelName) {
+	    drawnItems.addLayer(leafletEvent.layer);
+	    //hide toolbar
+	    angular.element('.leaflet-draw-toolbar-top').hide();
+			///alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates));
+			console.log(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates))
+      if(String(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.type)) == '"Point"'){
+				coordinates = angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates
+				$scope.model['longitude'] = parseFloat(coordinates[0]);
+	 	    $scope.model['latitude'] = parseFloat(coordinates[1]);
+			  $scope.model['polygon'] = "";
+		}
+		else{
+			  centroid = drawnItems.getBounds().getCenter();
+
+				$scope.model['longitude'] = centroid.lng;
+	 	    $scope.model['latitude'] = centroid.lat;
+				$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+		}
+	    //drawControl.hideDrawTools();
+
+	  },
+	  edited: function(arg) {},
+	  deleted: function(arg) {
+	    if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
+	      angular.element('.leaflet-draw-toolbar-top').show();
+	    }
+	  },
+	  drawstart: function(arg) {},
+	  drawstop: function(arg) {},
+	  editstart: function(arg) {},
+	  editstop: function(arg) {},
+	  deletestart: function(arg) {
+
+	  },
+	  deletestop: function(arg) {}
+	};
+	var drawEvents = leafletDrawEvents.getAvailableEvents();
+	drawEvents.forEach(function(eventName){
+	    $scope.$on('leafletDirectiveDraw.' + eventName, function(e, payload) {
+	      //{leafletEvent, leafletObject, model, modelName} = payload
+	      var leafletEvent, leafletObject, model, modelName; //destructuring not supported by chrome yet :(
+	      leafletEvent = payload.leafletEvent, leafletObject = payload.leafletObject, model = payload.model,
+	      modelName = payload.modelName;
+	      handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
+	    });
+	});
+
 
 	$scope.initialize();
 });
