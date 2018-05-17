@@ -478,7 +478,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: on associationsUpdated");
     $scope.refreshMetadata()
     App.alert({
-      message: $translate.instant('success_metadata_assocation_removed'),
+      message: $translate.instant('success_metadata_update_assocation'),
       closeInSeconds: 5
     });
   });
@@ -489,7 +489,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $timeout(function () {
         App.alert({
           container: '#association_notifications',
-          message: "Assocation Successfully Removed",
+          //message: "Assocation Successfully Removed",
+          message: $translate.instant('success_metadata_assocation_removed'),
           closeInSeconds: 5
         })
       }, 500)
