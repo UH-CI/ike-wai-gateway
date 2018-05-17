@@ -80,7 +80,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             //{ "value": {"latitude": '!!' }});
             $scope.marks = {};
             angular.forEach($scope.siteMarkers, function(datum) {
-                if(datum.value.loc != undefined){
+                if(datum.value.loc != undefined && datum.value.name != undefined){
                 $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
               }
             });

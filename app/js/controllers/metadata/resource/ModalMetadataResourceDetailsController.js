@@ -25,8 +25,9 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
 
   $scope.getModalMetadatum = function(){
     $scope.requesting = true;
-    var uuid = this.$parent.metadataUuid;
-    if (uuid !== '' && uuid) {
+
+    if (this.$parent.metadataUuid !== undefined && this.$parent.metadataUuid !== '') {
+      var uuid = this.$parent.metadataUuid;
       MetaController.getMetadata(uuid)
         .then(
           function(response){
