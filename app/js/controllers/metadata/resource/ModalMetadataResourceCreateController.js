@@ -69,7 +69,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		$scope.requesting = true;
 		$scope.$broadcast('schemaFormValidate');
 		// Then we check if the form is valid
-		alert(angular.toJson($scope.model))
+		//alert(angular.toJson($scope.model))
 		if (form.$valid) {
 
 			var body = {};
