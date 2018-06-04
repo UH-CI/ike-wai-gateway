@@ -16,8 +16,41 @@ for (i = 0; i < acc.length; i++) {
         }
     }
 }
+
+// show/play/hide movies start
+
+function onVideoClick(idName, theLink) {
+	document.getElementById(idName).innerHTML = "<video autoplay muted id=\"the_Video\"><source src=\""+theLink+"\" type=\"video/webm\"></video>";
+	document.getElementById(idName).style.display="block";
+} 
+function onPopClick(idName) {
+	document.getElementById(idName).style.display="none";
+	document.getElementById(idName).innerHTML = ""; 
+}
+
+// show/play/hide movies stop
 </script>
 <style>
+#video_pop {
+	z-index: 9999; 
+	position: absolute; 
+	top: 0px; 
+	left: 0px; 
+	width: 100%; 
+	height: 100%; 
+	background: rgba(0,0,0,0.5); 
+	display: none;
+	cursor: pointer;
+}
+#the_Video {
+	width: 50%;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
 button.accordion {
     background-color: #eee;
     color: #444;
@@ -47,8 +80,6 @@ div.panel {
 
 For a step by step guide to using the system, this takes you to the <a href="#/walkthrough">walkthrough</a>.
 
- <!-- <a href="#/help/#sidebar">sidebar</a> -->
-
 <hr />
 
 	<button class="accordion">How do I contact you?</button>
@@ -63,11 +94,10 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 		Bring up <a href="http://ikewai.its.hawaii.edu">`Ike ToGo</a> in your browser.
 		<br />
 		<br />
-		<img src="views/help/Login3.jpg" alt="Enter your username and password" style="max-height: 400px; max-width: 400px;">
-		<!-- <img src="views/help/Login3.jpg" alt="Enter your username and password" height="200" width="200"> -->
+		<img src="views/help/Login1.jpg" alt="Enter your username and password" style="max-height: 400px; max-width: 400px;">
 		<br />
 		<br />
-		Enter your UH username and password here and click the 'Sign in' button.
+		Enter your UH username and password here and click the 'Login' button.
 		After logging in, you will be taken to the "My Data" page:
 		<br />
 		<br />
@@ -101,6 +131,13 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	<button class="accordion">How do I show/hide the sidebar?</button>
 	<div class="panel"><br />
+		<div id="menuHideShow" onclick="onPopClick('menuHideShow')">	 </div>
+		<a id="aIdMenuHideShow"
+		 onclick="onVideoClick('menuHideShow', 'views/help/videos/MenuHideShow.mov');">
+				Watch video
+		</a>
+		<br />
+
 		The sidebar can be hidden by clicking the small icon consisting of 4 horizontal lines
 		next to the `Ike logo in the upper left corner.
 	    <br />
@@ -142,7 +179,13 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I upload my files and folders?</button>
-<div class="panel"><br />
+	<div class="panel"><br />
+		<div id="uploadFile" onclick="onPopClick('uploadFile')">	 </div>
+		<a id="aIdUploadFile" onclick="onVideoClick('uploadFile', 'views/help/videos/UploadFile.mov');">
+			Watch video
+		</a>
+		<br />
+
 		Click on the "My Data" tab in the side bar.  This will bring you to the
 		"My Data" page.  Click on the "Upload File" button in the upper left corner,
 		under the "My Data" header.
@@ -179,7 +222,15 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I create a folder?</button>
-<div class="panel"><br />
+	<div class="panel"><br />
+		
+		<div id="createFolder" onclick="onPopClick('createFolder')">	 </div>
+		<a id="aIdCreateFolder"
+		onclick="onVideoClick('createFolder', 'views/help/videos/CreateFolder.mov');">
+				Watch video
+		</a>
+		<br />
+
 		On the "My Data" page, first go in to the directory in which you want your new
 		folder to be located.  Next, click on the "Create folder" button that is under
 		the "My Data" header in the upper left corner.
@@ -197,7 +248,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	</div>
 	<button class="accordion">How do I rename a folder?</button>
-<div class="panel"><br />
+	<div class="panel"><br />
+		<div id="rename" onclick="onPopClick('rename')">	 </div>
+		<a id="aIdrename" onclick="onVideoClick('rename', 'views/help/videos/Rename.mov');">
+			Watch video
+		</a>
+		<br />
 		To rename a folder, click on the "Actions" menu to the right of the target folder.
 		This brings up a dropdown menu with all folder actions.
 		<br />
@@ -216,7 +272,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I move a folder?</button>
-<div class="panel"><br />
+	<div class="panel"><br />
+		<div id="move" onclick="onPopClick('move')">	 </div>
+		<a id="aIdmove" onclick="onVideoClick('move', 'views/help/videos/Move.mov');">
+			Watch video
+		</a>
+		<br />
 		To move a folder, click on the "Actions" menu to the right of the target folder.
 		This brings up a dropdown menu with all folder actions.
 		<br />
@@ -243,6 +304,11 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	<button class="accordion">How do I copy a folder?</button>
 <div class="panel"><br />
+		<div id="copy" onclick="onPopClick('copy')">	 </div>
+		<a id="aIdcopy" onclick="onVideoClick('copy', 'views/help/videos/CopyFolder.mov');">
+			Watch video
+		</a>
+		<br />
 		To copy a folder, click on the "Actions" menu to the right of the target folder.
 		This brings up a dropdown menu with all folder actions.
 		<br />
@@ -268,7 +334,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I delete a folder?</button>
-<div class="panel"><br />
+		<div class="panel"><br />
+		<div id="delete" onclick="onPopClick('delete')">	 </div>
+		<a id="aIddelete" onclick="onVideoClick('delete', 'views/help/videos/DeleteFolder.mov');">
+			Watch video
+		</a>
+		<br />
 		To delete a folder, click on the "Actions" menu to the right of the target folder.
 		This brings up a dropdown menu with all folder actions.
 		<br />
@@ -287,6 +358,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
     <button class="accordion">How do I rename a file?</button>
 <div class="panel"><br />
+		<div id="rename" onclick="onPopClick('rename')">	 </div>
+		<a id="aIdrename" onclick="onVideoClick('rename', 'views/help/videos/Rename.mov');">
+			Watch video
+		</a> (note that while the video shows renaming a folder, the steps are exactly the same)
+		<br />
+		<br />
 		To rename a file, click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
@@ -306,8 +383,14 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	<button class="accordion">How do I move a file?</button>
 <div class="panel"><br />
-	    To move a file, click on the "Actions" menu to the right of the target file.
-	    This brings up a dropdown menu with all file actions.
+		<div id="move" onclick="onPopClick('move')">	 </div>
+		<a id="aIdmove" onclick="onVideoClick('move', 'views/help/videos/Move.mov');">
+			Watch video
+		</a> (note that while the video shows moving a folder, the steps are exactly the same)
+		<br />
+		<br />
+	  To move a file, click on the "Actions" menu to the right of the target file.
+	  This brings up a dropdown menu with all file actions.
 		<br />
 		<br />
 		<img src="views/help/FileActionsDropdown.jpg" alt="file actions dropdown menu" style="max-height: 300px; max-width: 300px;">
@@ -332,7 +415,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I move multiple files at the same time?</button>
-<div class="panel"><br />
+	  <div class="panel"><br />
+		<div id="moveMultipleFiles" onclick="onPopClick('moveMultipleFiles')">	 </div>
+		<a id="aIdmoveMultipleFiles" onclick="onVideoClick('moveMultipleFiles', 'views/help/videos/MoveMultipleFiles.mov');">
+			Watch video
+		</a>
+		<br />
       To move multiple files at once, the files all need to be in the same directory.
 	  Check the box on the left side next to each file you want to delete.  At the top of
 	  the files section of the page, there is an Actions menu.  Click "Actions" to see the menu.
@@ -358,6 +446,11 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	<button class="accordion">How do I copy a file?</button>
 <div class="panel"><br />
+		<div id="copyFile" onclick="onPopClick('copyFile')">	 </div>
+		<a id="aIdcopyFile" onclick="onVideoClick('copyFile', 'views/help/videos/CopyFile.mov');">
+			Watch video
+		</a>
+		<br />
 		To copy a file, click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
@@ -384,7 +477,13 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I delete a file?</button>
-<div class="panel"><br />
+	<div class="panel"><br />
+		<div id="delete" onclick="onPopClick('delete')">	 </div>
+		<a id="aIddelete" onclick="onVideoClick('delete', 'views/help/videos/DeleteFolder.mov');">
+			Watch video
+		</a> (note that while the video shows deleting a folder, the steps are exactly the same)
+		<br />
+		<br />
 		To delete a file, click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
@@ -402,7 +501,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	</div>
 
 	<button class="accordion">How do I download a file?</button>
-<div class="panel"><br />
+		<div class="panel"><br />
+		<div id="download" onclick="onPopClick('download')">	 </div>
+		<a id="aIddownload" onclick="onVideoClick('download', 'views/help/videos/Download.mov');">
+			Watch video
+		</a>
+		<br />
 		To download a file, click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
@@ -429,7 +533,12 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 	 -->
 	<button class="accordion">How do I delete multiple files at once?</button>
 	<div class="panel"><br />
-      To delete multiple files at once, the files all need to be in the same directory.
+		<div id="deleteMultipleFiles" onclick="onPopClick('deleteMultipleFiles')">	 </div>
+		<a id="aIddeleteMultipleFiles" onclick="onVideoClick('deleteMultipleFiles', 'views/help/videos/DeleteMultipleFiles.mov');">
+			Watch video
+		</a>
+		<br />
+    To delete multiple files at once, the files all need to be in the same directory.
 	  Check the box on the left side next to each file you want to delete.  At the top of
 	  the files section of the page, there is an Actions menu.  Click "Actions" to see the menu.
 	  <br />
@@ -445,13 +554,17 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 
 	<button class="accordion">How do I tag/associate metadata/data-descriptors to my files?</button>
 	<div class="panel"><br />
-
+		<div id="metadataAssociationAdd" onclick="onPopClick('metadataAssociationAdd')">	 </div>
+		<a id="aIdmetadataAssociationAdd" onclick="onVideoClick('metadataAssociationAdd', 'views/help/videos/MetadataAssociationAdd.mov');">
+			Watch video
+		</a>
+		<br />
 		Click on the "Actions" menu to the right of the target file.
 		This brings up a dropdown menu with all file actions.
 		<br />
 		<img src="views/help/FileActionsDropdown.jpg" alt="file actions dropdown menu" style="max-height: 300px; max-width: 300px;">
 		<br />
-		Click on the "Manage Annotations" item.  Assuming you have never added any
+		Click on the "Annotate File" item.  Assuming you have never added any
 		metadata to this file, you will see this:
 		<br />
 		<br />
@@ -459,7 +572,7 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 		<br />
 		<br />
 		At the very top you can see the file that was selected.  If you selected multiple files
-		and picked the "Manage Annotations" items from the group action menu, you would see
+		and picked the "Annotate File" items from the group action menu, you would see
 		all the chosen files listed there.  Below that is the section that would display any
 		data descriptors that are already association with the selected file(s).  Since there 
 		aren't any associations yet, it states there are no data descriptors for this file.
@@ -559,7 +672,7 @@ For a step by step guide to using the system, this takes you to the <a href="#/w
 		<br />
 		<br />
 		If you later decide other files should be associated with an existing data descriptor,
-		select the "Manage Annotations" item from the Actions menu next to the file, then
+		select the "Annotate File" item from the Actions menu next to the file, then
 		look through the Data Descriptors that are displayed at the bottom of the resulting
 		page.  You can either make a copy of any of the data descriptors, or you can 
 		click the "Associate" button next to one or more data descriptors.

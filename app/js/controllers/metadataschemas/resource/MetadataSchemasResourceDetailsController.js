@@ -5,10 +5,10 @@ angular.module('AgaveToGo').controller('MetadataSchemasResourceDetailsController
   $scope.getMetadataSchema = function(){
     $scope.requesting = true;
     if ($stateParams.id !== ''){
-      MetaController.getMetadataSchema($stateParams.id)
+      MetaController.listMetadataSchema("{'uuid':'"+$stateParams.id+"'}")
         .then(
           function(response){
-            $scope.metadataschema = response.result;
+            $scope.metadataschema = response.result[0];
             $scope.prettyProperties = JSON.stringify($scope.metadataschema, null, "     \n");
             $scope.requesting = false;
           },

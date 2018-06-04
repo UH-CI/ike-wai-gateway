@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, $localStorage, $uibModal, MetaController, ActionsService, FilesMetadataService, MetadataService, MessageService) {
+angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, $localStorage, $uibModal, MetaController, FilesMetadataService, MetadataService, MessageService) {
 
   $scope.metadatum = null;
   $scope.requesting = true;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
       MessageService.handle(response, $translate.instant('error_metadata_details'));
       $scope.requesting = false;
     }
-  };
+  }
 
   $scope.openRejectReasonModal = function (fileUuid, size) {
       $scope.rejectedUuid = fileUuid;
@@ -42,7 +42,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
         }
       }
     );
-  };
+  }
 
   $scope.$on("staging.request.rejected", function (event, args) {
     var reason = args;
@@ -70,6 +70,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
            $timeout(function(){$scope.getMetadatum()}, 300);
             $scope.requesting = false;
             App.alert( "File Published");
+            //$scope.$broadcast('broadcastUpdate');
         })
       },function(){
         MessageService.handle(response, $translate.instant('error_fetching_metadata_schema'));

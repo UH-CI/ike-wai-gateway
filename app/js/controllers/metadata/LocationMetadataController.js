@@ -13,8 +13,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site']
-    $scope.selectedSchema = ['Well','Site']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,9 +27,75 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val3:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
+
+    $scope.updateMap = function(){
+      $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
+      $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+      $scope.wqsMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Water_Quality_Site"});
+      $scope.marks = {};
+      $scope.layers.overlays = {};
+      if ($scope.siteMarkers.length > 0){
+        $scope.layers.overlays['ikewai_sites']={
+                        name: 'Ike Wai Sites',
+                        type: 'group',
+                        visible: true
+                    }
+      }
+      if ($scope.wellMarkers.length > 0){
+        $scope.layers.overlays['ikewai_wells']={
+                        name: 'Ike Wai Wells',
+                        type: 'group',
+                        visible: true
+                    }
+      }
+      if ($scope.wqsMarkers.length > 0){
+      $scope.layers.overlays['water_quality_sites']= {
+                        name: 'Water Quality Sites',
+                        type: 'group',
+                        visible: true
+                    }
+      }
+      angular.forEach($scope.siteMarkers, function(datum) {
+          if(datum.value.loc != undefined && datum.value.name != undefined){
+            if(datum.value.loc.type == 'Point'){
+              $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+            }else{
+
+                $scope.layers.overlays[datum.uuid] = {
+                    name: datum.value.name.replace("-"," "),
+                    type: 'geoJSONShape',
+                    data: datum.value.loc,
+                    visible: true,
+                    layerOptions: {
+                        style: {
+                                color: '#00D',
+                                fillColor: 'green',
+                                weight: 2.0,
+                                opacity: 0.6,
+                                fillOpacity: 0.2
+                        }
+                    }
+                }
+
+            }
+        }
+      });
+      angular.forEach($scope.wellMarkers, function(datum) {
+          if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+          $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+        }
+      });
+      /*angular.forEach($scope.wqsMarkers, function(datum) {
+          if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+          $scope.marks['ikewai_wells'][datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+        }
+      });*/
+      $scope.markers = $scope.marks
+    }
+
     $scope.searchAll = function(){
       //alert($scope.filter)
       $scope.requesting = true;
@@ -60,33 +126,22 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if ($scope.schemaBox.val2){
           typearray.push('Well')
         }
+        if ($scope.schemaBox.val3){
+          typearray.push('Water_Quality_Site')
+        }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)
         andquery['$and'] = andarray;
         $scope.query = JSON.stringify(andquery);
-
+        $scope.site_layers={}
         MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
           function (response) {
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
 
-            $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
-            $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
-            //{ "value": {"latitude": '!!' }});
-            $scope.marks = {};
-            angular.forEach($scope.siteMarkers, function(datum) {
-                if(datum.value.loc != undefined){
-                $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
-              }
-            });
-            angular.forEach($scope.wellMarkers, function(datum) {
-                if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
-              }
-            });
-            $scope.markers = $scope.marks
+            $scope.updateMap();
             $scope.requesting = false;
           },
           function(response){
@@ -95,7 +150,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           }
       );
     }
-    
+
      $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
         typearray = []
@@ -106,11 +161,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if ($scope.schemaBox.val2){
           typearray.push('Well')
         }
+        if ($scope.schemaBox.val3){
+          typearray.push('Water_Quality_Site')
+        }
         typequery['name'] = {'$in': typearray}
 $scope.requesting = true;
           $scope.query = "{$and: ["+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
-        
+
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -120,21 +178,7 @@ $scope.requesting = true;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
 
-            $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
-            $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
-            //{ "value": {"latitude": '!!' }});
-            $scope.marks = {};
-            angular.forEach($scope.siteMarkers, function(datum) {
-                if(datum.value.loc != undefined){
-                $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
-              }
-            });
-            angular.forEach($scope.wellMarkers, function(datum) {
-                if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-                $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
-              }
-            });
-            $scope.markers = $scope.marks
+            $scope.updateMap();
             $scope.requesting = false;
           },
           function(response){
@@ -151,7 +195,7 @@ $scope.requesting = true;
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-				
+
 			})
        $scope.requesting = false;
       //$scope.searchAll()
@@ -195,9 +239,9 @@ $scope.requesting = true;
     }
     $scope.modalSchemas = $scope.modalSchemas
   };
-  
-  
-  
+
+
+
   ///MAP///
 ////////LEAFLET//////////////////
   $scope.markers=[];
@@ -218,6 +262,18 @@ $scope.requesting = true;
     defaults: {
             scrollWheelZoom: false
     },
+    layers: {
+        baselayers: {
+            osm: {
+            name: 'OpenStreetMap',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            type: 'xyz'
+            },
+        },
+        overlays:{
+
+        }
+    }
 });
 
 
@@ -263,7 +319,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
-    //drawControl.hideDrawTools(); 
+    //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
   edited: function(arg) {},
@@ -277,7 +333,7 @@ var handle = {
   editstart: function(arg) {},
   editstop: function(arg) {},
   deletestart: function(arg) {
-    
+
   },
   deletestop: function(arg) {}
 };

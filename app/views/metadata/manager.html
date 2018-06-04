@@ -43,7 +43,7 @@
                             <span class="input-group pull-left" aria-hidden="true">
                                 <input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;
                                 <input type="checkbox" ng-model="schemaBox.val2" />Search Wells&nbsp;
-                                <input type="checkbox" ng-model="schemaBox.val3" />Search Variabless&nbsp;
+                                <input type="checkbox" ng-model="schemaBox.val3" />Search Variables&nbsp;
                                 <input type="checkbox" ng-model="schemaBox.val4" />Search People&nbsp;
                             </span>
                         </div>
@@ -174,7 +174,7 @@
                                                   &nbsp; -->
 
                                                   <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
-
+                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="deleteMetadata(metadatum)" role="button"> <i class="fa fa-trash"></i>Delete</a>
                                           </div>
                                       </td>
                                   </tr>

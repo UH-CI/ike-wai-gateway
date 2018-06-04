@@ -15,7 +15,7 @@
 <h3>Browse Location Data</h3>
                     <div class="col-md-12">
                <h5>Draw Bounding Box And Click "Search In Bounding Box" Button To Begin Searching...</h5>
-               <leaflet defaults="defaults" width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
+               <leaflet defaults="defaults" width="100%" height="350px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" layers="layers" event-broadcast="events"></leaflet>
           </div>
 
           <div class="col-md-1"></div>
@@ -47,7 +47,7 @@
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
                         <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
-                        <div class="input-group-addon"><span class="input-group pull-left" aria-hidden="true"><input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;<input type="checkbox" ng-model="schemaBox.val2" />Search Wells</span></div>
+                        <div class="input-group-addon"><span class="input-group pull-left" aria-hidden="true"><input type="checkbox" ng-model="schemaBox.val1" />Search Sites&nbsp;<input type="checkbox" ng-model="schemaBox.val2" />Search Wells&nbsp;<input type="checkbox" ng-model="schemaBox.val3" />Search Water Quality Sites</span></div>
 
                       <br/>
                     </div>
@@ -93,12 +93,12 @@
                           <div class="pull-left">
                               Total Search Results: {{totalItems}}
                               <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>
-        
+
                           </div>
                       </div>
                       <div class="btn-group pull-right">
                           <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-                              <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
+                              <i class="fa fa-plus"></i>&nbsp;Create New Location
                               <i class="fa fa-angle-down pull-right"></i>
                           </a>
                           <ul class="dropdown-menu">
@@ -140,7 +140,7 @@
                                           <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                         </a>
                                       </th>
-                                      
+
                                       <!--
                                       <th width="20%">
                                         <a href="#" ng-click="sortType = 'path'; sortReverse = !sortReverse">
@@ -164,18 +164,18 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.name}} </a>
+                                           {{metadatum.value.name}}</a>&nbsp;<span class="badge" ng-if="metadatum.value.resultCount">{{metadatum.value.resultCount}}</span>
                                       </td>
                                       <td>
-                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')">
                                            {{metadatum.value.wid}} </a>
                                       </td>
                                       <td>
-                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')">
                                            {{metadatum.value.longitude}} </a>
                                       </td>
                                       <td>
-                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> 
+                                          <a href='#' ng-click="openView(metadatum.uuid, 'lg')">
                                            {{metadatum.value.latitude}} </a>
                                       </td>
                                       <!--
