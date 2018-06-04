@@ -42,7 +42,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.wellSortReverse = true;
     $scope.siteSortReverse = true;
     $scope.varSortReverse = false;
-    
+
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -87,8 +87,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           }
        );
      }
-     
-     
+
+
     $scope.textSearch = function(){
       if ($scope.selectedMetadata != null){
         $scope.filequery = "{$and:[{$text:{$search:'"+$scope.searchField.value+"'},{'value.published':'True'}]}";
@@ -112,7 +112,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
 
-          $scope.filequery = "{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}";
+          //$scope.filequery = "{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}";
+          $scope.filequery = "{$and: [{'name':{'$in':['Site','Well','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -174,7 +175,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.requesting = false;
       //$scope.doSearch();
     };
-    
+
 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
@@ -193,14 +194,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                     $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
                 }
             }
-            
+
         })
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
         })
     };
-    
+
     $scope.searchTools = function(query){
       $scope.requesting = true;
       if (query !=''){
@@ -319,7 +320,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
-    //drawControl.hideDrawTools(); 
+    //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
   edited: function(arg) {},
@@ -333,7 +334,7 @@ var handle = {
   editstart: function(arg) {},
   editstop: function(arg) {},
   deletestart: function(arg) {
-    
+
   },
   deletestop: function(arg) {}
 };
@@ -352,8 +353,8 @@ drawEvents.forEach(function(eventName){
 
 /////////Modal Stuff/////////////////////
     $scope.viewFileAnnotations = function(fileUuid,filePath){
-        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath}); 
-    }   
+        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath});
+    }
 
     $scope.openView = function (metadatumuuid, size) {
     	$scope.metadataUuid = metadatumuuid;

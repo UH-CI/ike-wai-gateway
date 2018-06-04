@@ -8,7 +8,7 @@
                <h5>Draw Bounding Box And Click "Search In Bounding Area" Button To Begin Searching...</h5>
                <leaflet defaults="defaults" width="100%" height="450px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions" event-broadcast="events"></leaflet>
        </div>
-        
+
         <div class="col-md-1"></div>
         <div class="col-md-12">
             <button class="btn btn-primary pull-right" ng-click="spatialSearch()"><i class="fa fa-search"/> Search In Bounding Area</button>
@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-1"></div>
     <div class="col-md-12">
-        
+
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
                 <div class="row text-center">
@@ -28,7 +28,7 @@
             <!--    <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
-                          
+
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         <div class="input-group">
                     </div>
@@ -38,7 +38,7 @@
                       <br/>
                     </div>
 
-                    
+
 
 
                 </div>
@@ -48,9 +48,9 @@
                 <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-4">
-                            <button class="btn btn-primary" ng-click="facetSearch()"><i class="fa fa-search"/> Search With Selections</button>
+                            <button class="btn btn-primary" ng-click="facetSearch()" ng-if="files.length > 0"><i class="fa fa-search"/> Search With Selections</button>
                     </br></br>
-                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable" style="overflow-y:scroll;">
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable" style="overflow-y:scroll;" ng-if="facet_wells.length > 0">
                             <table id="well_facet" class="table table-striped table-bordered table-hover management pre-scrollable" >
                                 <thead>
                                     <tr>
@@ -66,13 +66,13 @@
                                 <tbody>
                                     <tr ng-repeat="well in facet_wells | orderBy:wellSortType:!wellSortReverse">
                                         <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-checked="selectedMetadata.indexOf(well.uuid) > -1" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}}
-                                            <a href="#" ng-click="openView(well.uuid, 'lg')"><i class="fa fa-eye"></i></a>    
+                                            <a href="#" ng-click="openView(well.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable">
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable" ng-if="facet_sites.length > 0">
                             <table id="site_facet" class="table table-striped table-bordered table-hover management pre-scrollable">
                                     <thead>
                                         <tr>
@@ -94,7 +94,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable">
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable" ng-if="facet_variables.length > 0">
                             <table class="table table-striped table-bordered table-hover management pre-scrollable">
                                     <thead>
                                         <tr>
@@ -110,7 +110,7 @@
                                 <tbody>
                                     <tr ng-repeat="var in facet_variables | orderBy:varSortType:varSortReverse">
                                         <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}},
-                                            <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>  
+                                            <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -118,7 +118,7 @@
                         </div>
                         <br/>
                         <br/>
-                        <button class="btn btn-primary" ng-click="facetSearch()"><i class="fa fa-search"/> Search With Selections</button>
+                        <button class="btn btn-primary" ng-click="facetSearch()" ng-if="files.length > 0"><i class="fa fa-search"/> Search With Selections</button>
                     </div>
                     <div class="col-md-8">
                     <div class="row text-center" ng-show="requesting">
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                     <h3><i class="fa fa-file"></i> Matching Files: {{files.length}}</h3>
-                    <div class="row">
+                    <div class="row" ng-if="files.length > 0">
                             <div class="input-group">
                                 <div class="input-group-addon">
                                     <label><i class="fa fa-filter" aria-hidden="true"></i></label>
@@ -151,7 +151,7 @@
                             </div>
                             <div class="col-md-12">
                             <div ng-show="files.length > 0" class="pre-scrollable">
-                                <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatabele_files">
+                                <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatable_files">
                                     <thead>
                                         <tr role="row" class="heading">
                                             <th width="20%">
@@ -170,7 +170,7 @@
                                         <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 {{file.href.split('ikewai-annotated-data/')[1]}}
-                                                <a href="#" ng-click="viewFileAnnotations(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-eye"></i></a> 
+                                                <a href="#" ng-click="viewFileAnnotations(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-eye"></i></a>
                                             </td>
                                             <td ng-show="file.href.includes('ikewai-annotated-data')">
                                                 <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>

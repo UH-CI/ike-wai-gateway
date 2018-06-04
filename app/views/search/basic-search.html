@@ -47,7 +47,7 @@
                       </div>
                       <div class="col-md-12">
                       <div ng-show="files.length > 0" class="pre-scrollable">
-                          <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatabele_files">
+                          <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_files">
                               <thead>
                                   <tr role="row" class="heading">
                                       <th width="20%">
@@ -63,11 +63,17 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
+                                  <!-- Jen's note: I think the filter part below is a mistake, likely a residual from
+                                     a copy/paste that had it.  I can't find another reference to "filter" in this
+                                     context, and there shouldn't be a filter action in this context as the filter
+                                     was done as part of the original search.  So I commented that line out and
+                                     replaced it with the same line sans filter action.
+                                  --> 
+                                  <!--<tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">-->
+                                  <tr ng-repeat="file in files | orderBy:sortType:sortReverse">
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                          {{file.href.split('ikewai-annotated-data/')[1]}}
                                           <a href="#" ng-click="viewFileAnnotations(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-eye"></i></a> 
-                                            
                                       </td>
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>

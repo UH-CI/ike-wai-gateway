@@ -27,7 +27,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.action = $stateParams.action;
 
   $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
-  $scope.schemaQuery = ''; //"{'owner':'seanbc'}";
+  $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
+  //$scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
   $scope.people = [];
@@ -183,7 +184,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.refresh();
 	};
 
-  
+
   $scope.refresh = function () {
     console.log("JEN DDC: refresh: action = " + $scope.action);
     if ($stateParams.uuid != undefined) {
@@ -267,7 +268,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.people.length = 0;
     $scope.fetchMetadata("{'name':'Person'}");
   };
-  
+
   $scope.getAssociations = function () {
     $scope.locations = [];
     $scope.variables = [];
@@ -309,13 +310,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
         //$scope[$scope._COLLECTION_NAME] = response.result;
         $scope.filemetadata = response.result;
-        
+
         $scope.makeLocationMarkers($scope.filemetadata);
         angular.forEach($scope[$scope._COLLECTION_NAME], function (value, key) {
           if (value.name === 'DataDescriptor') {
             $scope.has_data_descriptor = true;
             $scope.data_descriptor_metadatum = value;
-            $scope.getAssociations() 
+            $scope.getAssociations()
             if ($scope.action && $scope.action === "edit") {
               $scope.editDataDescriptor();
             }
@@ -340,7 +341,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
               $scope.variables.push(value);
             }
           }
-          
+
           //else if(value.name === 'Subject'){
           //    $scope.subjects.push(value.value);
           //    $scope.subjects[$scope.subjects.length-1]["uuid"] = value.uuid;
@@ -365,7 +366,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   // metadatumUuid is really dataDescriptorUuid, but since I'm modifying
-  // an old method and don't want a bunch of arbitrary changes to show 
+  // an old method and don't want a bunch of arbitrary changes to show
   // during a comparison, I just do an assignment on the first line.
   $scope.addClone = function (dataDescriptorUuid, fileUuid) {
     console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
@@ -409,7 +410,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 //});
 
                 //$scope.openEditDataDescriptor($scope.new_metadataUuid,'lg');
-                
+
               },
               function (response) {
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -478,7 +479,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: on associationsUpdated");
     $scope.refreshMetadata()
     App.alert({
-      message: $translate.instant('success_metadata_assocation_removed'),
+      message: $translate.instant('success_metadata_update_assocation'),
       closeInSeconds: 5
     });
   });
@@ -489,7 +490,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $timeout(function () {
         App.alert({
           container: '#association_notifications',
-          message: "Assocation Successfully Removed",
+          //message: "Assocation Successfully Removed",
+          message: $translate.instant('success_metadata_assocation_removed'),
           closeInSeconds: 5
         })
       }, 500)
@@ -711,7 +713,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       );
 
   }
-  
+
   $scope.addAssociationToDataDescriptor = function (dataDescriptorUuid, metadatumUuid, container_id = "") {
     //alert('trying to associate')
     //metadatumUuid = dataDescriptorUuid;
@@ -769,11 +771,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   //make and association btwn the current datadescriptor
   //object and the given file.
-  //accepts the current datadescriptor uuid 
+  //accepts the current datadescriptor uuid
   //accepts a file uuid to get the dd uuid association
   //accepts a container id to display a message app alert
   // metadatumUuid is really dataDescriptorUuid, but since I'm modifying
-  // an old method and don't want a bunch of arbitrary changes to show 
+  // an old method and don't want a bunch of arbitrary changes to show
   // during a comparison, I just do an assignment on the first line.
   $scope.addAssociation = function (dataDescriptorUuid, fileUuid, container_id = "") {
     metadatumUuid = dataDescriptorUuid;
@@ -839,7 +841,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   /////////Modal Stuff for locations and variables, not data descriptors /////////////////////
-  
+
   // opens modals for location and variables
   $scope.open = function (size, types, title) {
     //Set the
@@ -892,10 +894,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.requesting = true;
     // get the uuid for the schema
     var typeString = "{'schema.title':'" + schemaType + "'}";
+    console.log("schemaType: " + schemaType);
     MetadataService.fetchSystemMetadataSchemaUuid(schemaType)
       .then(function (response) {
         var uuid = response;
-        //console.log("uuid: " + uuid);
+        console.log("uuid: " + uuid);
         $scope.isContrib = isContrib;
         $scope.openCreate(uuid, size);
       });
@@ -916,7 +919,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.openCreateType(size, "Organization");
   };
 
-  // NOTE: This is NOT used to create a data descriptor, it's used for 
+  // NOTE: This is NOT used to create a data descriptor, it's used for
   // other, generic objects, like person or organization
   // JEN TODO: can this work?  Now if I associate a person or org with a data
   // descriptor, I have to edit every file associated with it, too.  Shit.
@@ -954,8 +957,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       }
     });
   };
-  
-  
+
+
 
   ///////Assoc modal search////////
   $scope.schemaBox = {

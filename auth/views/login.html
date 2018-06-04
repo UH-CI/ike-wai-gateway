@@ -7,6 +7,7 @@
     <div class="row" ng-show="!requesting"></div>
         <div class="lock-head">IKE Platform Login</div>
         <div ng-controller="LoginController">
+          <form method="POST">
               <div ng-show="login_error" uib-alert class="lock-body" ng-class="'alert-' + (alert.type || 'danger')">Incorrect Login Credentials or Permissions. Please Try Again.</div>
               <div class="input-group  lock-body">
                 <label style="color:#fff;" for="username">Name: </label>
@@ -19,6 +20,7 @@
              <div class="lock-bottom">
                 <input class="btn btn-default" type="submit" ng-click="getAuthToken()" value="Login" />
              </div>
+          </form>
              <center class="lock-bottom" ><h5>
                  <a href="https://www.hawaii.edu/username/userprefs/password_only.cgi">Forgot Password</a>
              </h5></center>
