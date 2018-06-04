@@ -10,6 +10,7 @@ angular.module('AgaveToGo').controller("AppsResourceController", function($scope
 			// default to details tab
 			if ($state.current.name === "apps"){
 				$state.go("apps.details")
+
 			}
 
 			return $state.is(route);
