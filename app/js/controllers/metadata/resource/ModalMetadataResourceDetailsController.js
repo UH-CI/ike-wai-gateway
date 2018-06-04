@@ -111,15 +111,33 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
     $scope.makeLocationMarkers = function(datum){
         $scope.marks = {};
         if(datum.value.loc != undefined){
-          if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          if(datum.value.loc.type == 'Point'){
+            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+              $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+            }else{
+              $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+            }
           }else{
-            $scope.marks[datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
-          }
-       }
-
+            //var myLayer = L.geoJSON().addTo(map);
+            //myLayer.addData(datum.value.loc.coordinates);
+            //$scope.leafletDirectiveMap
+            angular.extend($scope, {
+              geojson: {
+                data: datum.value.loc,
+                style: {
+                    fillColor: "green",
+                    weight: 2,
+                    opacity: 1,
+                    color: 'green',
+                    dashArray: '3',
+                    fillOpacity: 0.5
+                }
+              }
+            });
+          }//close else
+        }//close if
         $scope.metadata_markers = $scope.marks
-    }
+    }//close function
 
     angular.extend($scope, {
         hawaii: {
