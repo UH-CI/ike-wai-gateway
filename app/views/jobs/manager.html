@@ -29,22 +29,7 @@
               <input type="text" class="form-control" placeholder="Filter" ng-model="$parent.filter">
             </div>
           </div>
-          <div class="row top-buffer" ng-show="showSearch">
-            <query-builder group="filter.group" resource="jobs"></query-builder>
-            <div class="col-md-12 top-buffer">
 
-              <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
-                <input type="text" class="form-control" placeholder="Search" ng-model="query">
-              </div>
-
-              <div class="btn-group">
-                <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
       <div class="portlet-body">
         <div class="row text-center" ng-show="requesting">
