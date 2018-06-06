@@ -3,33 +3,15 @@
 
 
 <h3 class="page-title"> Viewing Annotations For:</h3>
-<table>
-    <tbody>
-        <tr ng-repeat="path in filePaths track by $index| orderBy:sortType:sortReverse | filter:filter">
-            <td>
-                <i class="fa fa-file-o"> {{path | decodeURL}}</i>
-            </td>
-        </tr>
-</table>
+
+<i class="fa fa-file-o"> {{filePaths | decodeURL}}</i>
+
 </div>
 <p />
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <div class="pull-left" ng-show="matchingDataDescriptors.length > 0 && filePaths.length == 1">
-                            Current Annotations <span class="small">(Data Descriptors associated with the above file)</span>
-                        </div>
-                        <div class="pull-left" ng-show="matchingDataDescriptors.length > 0 && filePaths.length > 1">
-                            Current Annotations <span class="small">(Data Descriptors associated with all the above files)</span>
-                        </div>
-                    </div>
-                </div>
-                <div ng-show=" matchingDataDescriptors == '' && filePaths.length !== 1" class="col-md-8 col-md-offset-3">
-                    <h3>No Data Descriptors are associated with all of the above files.  Scroll down to add a Data Descriptor.</h3>
-                </div>
                 <div ng-show=" matchingDataDescriptors == '' && filePaths.length === 1" class="col-md-8 col-md-offset-3">
                     <h3>No Data Descriptors are associated with this file.</h3>
                 </div>
@@ -51,7 +33,6 @@
                                     <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                     </a>
                                 </th>
-                                <th width="25%" class="text-center"> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,9 +47,6 @@
                                     <a href='#' ng-click="openViewDataDescriptor(matchingMetadatum.uuid,'lg')">
                                         {{matchingMetadatum.value.description}}
                                     </a>
-                                </td>
-                                <td class="text-center">
-
                                 </td>
                             </tr>
                         </tbody>

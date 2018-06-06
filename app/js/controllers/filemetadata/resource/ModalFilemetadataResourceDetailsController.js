@@ -66,6 +66,7 @@ angular.module('AgaveToGo').controller('ModalFilemetadataResourceDetailsControll
   }
 
   $scope.fetchDataDescriptors = function(){
+    $scope.requesting = true;
     //find DataDescriptors that are associated with all fileUuids
     $scope.DataDescriptorIds=[];
     MetaController.listMetadata("{'name':'DataDescriptor','associationIds':{$all :['"+$scope.fileUuids+"']}}").then(
@@ -74,6 +75,7 @@ angular.module('AgaveToGo').controller('ModalFilemetadataResourceDetailsControll
         angular.forEach($scope.matchingDataDescriptors, function(value, key) {
             $scope.DataDescriptorIds.push(value.uuid)
         })
+        $scope.requesting = false;
       }
     )
   }
@@ -81,6 +83,7 @@ angular.module('AgaveToGo').controller('ModalFilemetadataResourceDetailsControll
   $scope.fetchDataDescriptors();
 
   $scope.fetchFileMetadataObjects = function(){
+    $scope.requesting = true;
     MetaController.listMetadata("{$and:[{'name':'File'},{'associationIds':{$in :['"+$scope.fileUuids+"']}}]}").then(
 
       function (response) {
@@ -93,6 +96,7 @@ angular.module('AgaveToGo').controller('ModalFilemetadataResourceDetailsControll
               function(resp){
                 $scope.fileMetadataObjects = resp.result;
                 $scope.populateAssociatedMetadata();
+                $scope.requesting = false;
               }
             )
           )
@@ -100,6 +104,7 @@ angular.module('AgaveToGo').controller('ModalFilemetadataResourceDetailsControll
         else{
           //do nothing
           $scope.populateAssociatedMetadata();
+          $scope.requesting = false;
         }
       }
     )
