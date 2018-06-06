@@ -370,4 +370,20 @@ drawEvents.forEach(function(eventName){
         }
       );
     };
+
+    $scope.openAnnotation = function (fileuuid, filepath) {
+    	$scope.fileuuid = fileuuid;
+      $scope.filepath = filepath;//.split('ikewai-annotated-data/')[1].join('');
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/filemetadata/resource/resource.html',
+          controller: 'ModalFilemetadataResourceDetailsController',
+          scope: $scope,
+          size: 'lg',
+          resolve: {
+
+          }
+        }
+      );
+    };
 });
