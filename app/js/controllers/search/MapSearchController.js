@@ -49,6 +49,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.files_hrefs =[]
       $scope.file_uuids =[]
       $scope.wqsites = []
+      $scope.facet_count = {} //store number of file  associated as count
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
       angular.forEach($scope.filemetadata, function(val, key){
@@ -59,6 +60,10 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 if($scope.culled_metadata_uuids.indexOf(val.uuid) < 0){
                     $scope.culled_metadata.push(val)
                     $scope.culled_metadata_uuids.push(val.uuid)
+                    $scope.facet_count[val.uuid] = 1
+                }
+                else{
+                  $scope.facet_count[val.uuid] = $scope.facet_count[val.uuid] +1;
                 }
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
@@ -180,19 +185,20 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       //$scope.doSearch();
     };
 
+    var intersection = function(){
+      return Array.from(arguments).reduce(function(previous, current){
+        return previous.filter(function(element){
+          return current.indexOf(element) > -1;
+        });
+      });
+    };
 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
-        $scope.facet_count = {} //store number of file  associated as count
         $scope.facet_sites =[]
         $scope.facet_variables =[]
         $scope.markers = [];
         angular.forEach($scope.culled_metadata, function(datum){
-            if ($scope.facet_count[datum.uuid] == undefined){
-              $scope.facet_count[datum.uuid] =1
-            }else{
-              $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
-            }
             if(datum.name == 'Well'){
                 $scope.facet_wells.push(datum)
                 if(datum.value.latitude != undefined){
@@ -210,11 +216,12 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         .then(function(response){
             $scope.facet_variables = response.result;
             angular.forEach($scope.facet_variables, function(datum){
-              if ($scope.facet_count[datum.uuid] == undefined){
+              $scope.facet_count[datum.uuid] = intersection(datum.associationIds, $scope.file_uuids).length;
+              /*if ($scope.facet_count[datum.uuid] == undefined){
                 $scope.facet_count[datum.uuid] =1
               }else{
                 $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
-              }
+              }*/
             })
         })
     };
