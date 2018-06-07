@@ -48,6 +48,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.files = []
       $scope.files_hrefs =[]
       $scope.file_uuids =[]
+      $scope.wqsites = []
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
       angular.forEach($scope.filemetadata, function(val, key){
@@ -67,6 +68,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               }
             }
           })
+        }
+        else if(val.name == "Water_Quality_Site" ){
+          $scope.wqsites.push(val)
         }
       })
       $scope.fetchFacetMetadata();
@@ -179,10 +183,16 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
+        $scope.facet_count = {} //store number of file  associated as count
         $scope.facet_sites =[]
         $scope.facet_variables =[]
         $scope.markers = [];
         angular.forEach($scope.culled_metadata, function(datum){
+            if ($scope.facet_count[datum.uuid] == undefined){
+              $scope.facet_count[datum.uuid] =1
+            }else{
+              $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
+            }
             if(datum.name == 'Well'){
                 $scope.facet_wells.push(datum)
                 if(datum.value.latitude != undefined){
@@ -199,6 +209,13 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
+            angular.forEach($scope.facet_variables, function(datum){
+              if ($scope.facet_count[datum.uuid] == undefined){
+                $scope.facet_count[datum.uuid] =1
+              }else{
+                $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
+              }
+            })
         })
     };
 
