@@ -42,15 +42,22 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.wellSortReverse = true;
     $scope.siteSortReverse = true;
     $scope.varSortReverse = false;
+    $scope.filtered_files = []
 
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
       $scope.files_hrefs =[]
       $scope.file_uuids =[]
+      $scope.wqsites = []
+      $scope.file_hash ={}
+      $scope.metadata_hash={}
+      $scope.metadata_file_hash = {}
+      $scope.facet_count = {} //store number of file  associated as count
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
       angular.forEach($scope.filemetadata, function(val, key){
+        $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
@@ -58,17 +65,28 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 if($scope.culled_metadata_uuids.indexOf(val.uuid) < 0){
                     $scope.culled_metadata.push(val)
                     $scope.culled_metadata_uuids.push(val.uuid)
+                    $scope.facet_count[val.uuid] = 1
+                    $scope.metadata_file_hash[val.uuid] = [value];
+                }
+                else{
+                  $scope.metadata_file_hash[val.uuid].push(value)
+                  $scope.facet_count[val.uuid] = $scope.facet_count[val.uuid] +1;
                 }
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
                   $scope.files.push(value)
                   $scope.file_uuids.push(value.rel)
+                  $scope.file_hash[value.rel] = value;
                 }
               }
             }
           })
         }
+        else if(val.name == "Water_Quality_Site" ){
+          $scope.wqsites.push(val)
+        }
       })
+      $scope.filtered_files = $scope.files;
       $scope.fetchFacetMetadata();
       $scope.requesting=false;
     }
@@ -99,14 +117,31 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.doSearch();
     }
 
+    //This should just take existing results and filter them - not a new search
     $scope.facetSearch = function(){
+      $scope.requesting = true;
+      new_filtered_files = []
       if ($scope.selectedMetadata != ''){
-        $scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
+        angular.forEach($scope.selectedMetadata, function(uuid){
+          if (uuid != undefined){
+            angular.forEach($scope.metadata_file_hash[uuid] , function(file){
+              new_filtered_files.push(file)
+            })
+          }
+        })
+        console.log(new_filtered_files)
+        $scope.filtered_files = new_filtered_files;
+        $scope.requesting = false;
+        //$scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
+
+        //$scope.filequery ="{$and: [{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}},{'name':{'$in':['Site','Well','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}"
       }
       else{
-        $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
+        $scope.filtered_files = $scope.files;
+        $scope.requesting = false;
+        //$scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
       }
-      $scope.doSearch();
+      //$scope.doSearch();
     }
 
     $scope.spatialSearch = function(){
@@ -176,6 +211,13 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       //$scope.doSearch();
     };
 
+    var intersection = function(){
+      return Array.from(arguments).reduce(function(previous, current){
+        return previous.filter(function(element){
+          return current.indexOf(element) > -1;
+        });
+      });
+    };
 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
@@ -199,6 +241,23 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
+            angular.forEach($scope.facet_variables, function(datum){
+              $scope.metadata_hash[datum.uuid] = datum;
+              file_uuids = intersection(datum.associationIds, $scope.file_uuids)
+              $scope.facet_count[datum.uuid] = file_uuids.length;
+              angular.forEach(file_uuids, function(file_uuid){
+                if ($scope.metadata_file_hash[datum.uuid] == undefined){
+                  $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
+                }else{
+                  $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
+                }
+              })
+              /*if ($scope.facet_count[datum.uuid] == undefined){
+                $scope.facet_count[datum.uuid] =1
+              }else{
+                $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
+              }*/
+            })
         })
     };
 
@@ -364,6 +423,22 @@ drawEvents.forEach(function(eventName){
           controller: 'ModalMetadataResourceDetailsController',
           scope: $scope,
           size: size,
+          resolve: {
+
+          }
+        }
+      );
+    };
+
+    $scope.openAnnotation = function (fileuuid, filepath) {
+    	$scope.fileuuid = fileuuid;
+      $scope.filepath = filepath;//.split('ikewai-annotated-data/')[1].join('');
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/filemetadata/resource/resource.html',
+          controller: 'ModalFilemetadataResourceDetailsController',
+          scope: $scope,
+          size: 'lg',
           resolve: {
 
           }

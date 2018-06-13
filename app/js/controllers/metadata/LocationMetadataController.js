@@ -95,6 +95,23 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       });*/
       $scope.markers = $scope.marks
     }
+    $scope.fetchLocations = function(){
+      $scope.requesting = true;
+      MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
+        function (response) {
+          $scope.totalItems = response.result.length;
+          $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
+          $scope[$scope._COLLECTION_NAME] = response.result;
+
+          $scope.updateMap();
+          $scope.requesting = false;
+        },
+        function(response){
+          MessageService.handle(response, $translate.instant('error_metadata_list'));
+          $scope.requesting = false;
+        }
+      );
+    }
 
     $scope.searchAll = function(){
       //alert($scope.filter)
@@ -111,7 +128,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             if($scope.approvedSchema.indexOf(value.schema.title) > -1){
               angular.forEach(value.schema.properties, function(val, key){
                 var valquery = {}
-                valquery['value.'+key] = {$regex: $scope.searchField.value}
+                valquery['value.'+key] = {$regex: $scope.searchField.value, $options:'i'}
                 queryarray.push(valquery)
               })
             }
@@ -130,25 +147,24 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           typearray.push('Water_Quality_Site')
         }
         typequery['name'] = {'$in': typearray}
-        andarray.push(typequery)
-        andarray.push(orquery)
-        andquery['$and'] = andarray;
-        $scope.query = JSON.stringify(andquery);
+        if(angular.fromJson(drawnItems.toGeoJSON()).features[0]){
+          $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+        }
+        else {
+          $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+"]}";
+          //$scope.query = "{$and: ["+JSON.stringify(typequery)+",{$text: {$search: '"+$scope.searchField.value+"'}},"+JSON.stringify(orquery)+"]}";
+          //$scope.query = "{$and: ["+JSON.stringify(typequery)+",{$text: {$search: '"+$scope.searchField.value+"'}}]}";
+        }
+        //typequery['name'] = {'$in': typearray}
+        //andarray.push(typequery)
+      //  if (orquery != null){
+          //andarray.push(orquery)
+        //}
+        //andquery['$and'] = andarray;
+        //$scope.query = JSON.stringify(andquery);
+        //$scope.query = "{$and: ["+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         $scope.site_layers={}
-        MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
-          function (response) {
-            $scope.totalItems = response.result.length;
-            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
-
-            $scope.updateMap();
-            $scope.requesting = false;
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_list'));
-            $scope.requesting = false;
-          }
-      );
+        $scope.fetchLocations();
     }
 
      $scope.spatialSearch = function(){
@@ -165,27 +181,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           typearray.push('Water_Quality_Site')
         }
         typequery['name'] = {'$in': typearray}
-$scope.requesting = true;
+        $scope.requesting = true;
           $scope.query = "{$and: ["+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
 
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
-         MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
-          function (response) {
-            $scope.totalItems = response.result.length;
-            $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
-            $scope[$scope._COLLECTION_NAME] = response.result;
-
-            $scope.updateMap();
-            $scope.requesting = false;
-          },
-          function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_list'));
-            $scope.requesting = false;
-          }
-         )
+        $scope.fetchLocations()
       }
 
 
@@ -205,7 +208,7 @@ $scope.requesting = true;
 
     $scope.searchTools = function(query){
       $scope.query = query;
-      $scope.refresh();
+      $scope.fetchLocations();
     };
 
 

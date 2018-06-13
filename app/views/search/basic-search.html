@@ -18,7 +18,7 @@
                       <br/>
                     </div>
 
-                    
+
 
 
                 </div>
@@ -68,15 +68,16 @@
                                      context, and there shouldn't be a filter action in this context as the filter
                                      was done as part of the original search.  So I commented that line out and
                                      replaced it with the same line sans filter action.
-                                  --> 
+                                  -->
                                   <!--<tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">-->
                                   <tr ng-repeat="file in files | orderBy:sortType:sortReverse">
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                          {{file.href.split('ikewai-annotated-data/')[1]}}
-                                          <a href="#" ng-click="viewFileAnnotations(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-eye"></i></a> 
+
                                       </td>
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
+                                        <button type="button" class="btn btn-success text-center"ng-click="openAnnotation(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-tag"></i>&nbsp;Annotations</button>
                                       </td>
                                   </tr>
                               </tbody>
