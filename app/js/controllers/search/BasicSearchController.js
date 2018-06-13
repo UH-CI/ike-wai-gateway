@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor','Water_Quality_Site']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -30,11 +30,13 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.schemaBox = {val1:true,val2:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
+    $scope.wqs_id = MetadataService.fetchSystemMetadataUuid('Water_Quality_Site')
 
   $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
       $scope.files_hrefs =[]
+      $scope.wqsites = []
       angular.forEach($scope.filemetadata, function(val, key){
         if (val._links.associationIds.length > 0){
           angular.forEach(val._links.associationIds, function(value, key){
@@ -47,6 +49,9 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
               }
             }
           })
+        }
+        else if(val.name == "Water_Quality_Site" ){
+          $scope.wqsites.push(val)
         }
       })
       $scope.requesting=false;
@@ -66,7 +71,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
           }
        );
      }
-     
+
     $scope.textSearch = function(){
       if ($scope.searchField.value != ''){
         $scope.filequery = "{$text:{$search:'"+$scope.searchField.value+"'}}";
@@ -164,10 +169,10 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         $scope.requesting = false;
       });
     }
-    
+
     $scope.viewFileAnnotations = function(fileUuid,filePath){
-        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath}); 
-    }   
+        $state.go("filemetadata-multipleadd",{'fileUuids': fileUuid,'filePaths':filePath});
+    }
 /////////Modal Stuff/////////////////////
 
     $scope.openView = function (metadatumuuid, size) {
@@ -178,6 +183,22 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
           controller: 'ModalMetadataResourceDetailsController',
           scope: $scope,
           size: size,
+          resolve: {
+
+          }
+        }
+      );
+    };
+
+    $scope.openAnnotation = function (fileuuid, filepath) {
+      $scope.fileuuid = fileuuid;
+      $scope.filepath = filepath;//.split('ikewai-annotated-data/')[1].join('');
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'views/filemetadata/resource/resource.html',
+          controller: 'ModalFilemetadataResourceDetailsController',
+          scope: $scope,
+          size: 'lg',
           resolve: {
 
           }
