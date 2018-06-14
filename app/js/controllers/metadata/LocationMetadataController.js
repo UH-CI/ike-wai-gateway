@@ -88,11 +88,11 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
         }
       });
-      /*angular.forEach($scope.wqsMarkers, function(datum) {
-          if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-          $scope.marks['ikewai_wells'][datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+      angular.forEach($scope.wqsMarkers, function(datum) {
+          if(datum.value.latitude != undefined && datum.value.name !=undefined){
+          $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
         }
-      });*/
+      });
       $scope.markers = $scope.marks
     }
     $scope.fetchLocations = function(){
