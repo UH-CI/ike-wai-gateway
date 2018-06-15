@@ -61,12 +61,12 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
   };
 
   $scope.openEdit = function (metadatumuuid, size) {
-	  //$scope.close(); // if I close this modal, the new one's buttons don't work
+	    //$scope.close(); // if I close this modal, the new one's buttons don't work
       $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'views/modals/ModalEditMetadata.html',
         controller: 'ModalMetadataResourceEditController',
-        scope: $scope,
+        scope: this.$parent,
         size: size,
         metadataUuid: metadatumuuid,
         resolve: {
@@ -74,6 +74,8 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
         }
       }
     );
+    $scope.close();
+
   };
 
   $scope.getModalMetadatum();

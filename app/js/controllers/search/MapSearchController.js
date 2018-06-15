@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MapSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService, leafletDrawEvents) {
+angular.module('AgaveToGo').controller('MapSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, $filter, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService, leafletDrawEvents) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -43,6 +43,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.siteSortReverse = true;
     $scope.varSortReverse = false;
     $scope.filtered_files = []
+    $scope.culled_metadata = []
+
 
     $scope.parseFiles = function(){
       //fetch related file metadata objects
@@ -83,6 +85,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           })
         }
         else if(val.name == "Water_Quality_Site" ){
+          $scope.culled_metadata.push(val)
           $scope.wqsites.push(val)
         }
       })
@@ -219,6 +222,75 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       });
     };
 
+    $scope.updateMap = function(){
+      if ($scope.culled_metadata && $scope.culled_metadata.length > 0){
+        console.log("culled_metadata length: " + $scope.culled_metadata.length)
+        $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
+        $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
+        $scope.wqsMarkers = $filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
+              console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.wqsMarkers.length)
+        $scope.marks = {};
+        $scope.layers.overlays = {};
+        if ($scope.siteMarkers && $scope.siteMarkers.length > 0){
+          $scope.layers.overlays['ikewai_sites']={
+                          name: 'Ike Wai Sites',
+                          type: 'group',
+                          visible: true
+                      }
+        }
+        if ($scope.wellMarkers && $scope.wellMarkers.length > 0){
+          $scope.layers.overlays['ikewai_wells']={
+                          name: 'Ike Wai Wells',
+                          type: 'group',
+                          visible: true
+                      }
+        }
+        if ($scope.wqsMarkers &&  $scope.wqsMarkers.length > 0){
+        $scope.layers.overlays['water_quality_sites']= {
+                          name: 'Water Quality Sites',
+                          type: 'group',
+                          visible: true
+                      }
+        }
+        angular.forEach($scope.siteMarkers, function(datum) {
+            if(datum.value.loc != undefined && datum.value.name != undefined){
+              if(datum.value.loc.type == 'Point'){
+                $scope.marks[datum.value.name.replace("-"," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+              }else{
+
+                  $scope.layers.overlays[datum.uuid] = {
+                      name: datum.value.name.replace("-"," "),
+                      type: 'geoJSONShape',
+                      data: datum.value.loc,
+                      visible: true,
+                      layerOptions: {
+                          style: {
+                                  color: '#00D',
+                                  fillColor: 'green',
+                                  weight: 2.0,
+                                  opacity: 0.6,
+                                  fillOpacity: 0.2
+                          }
+                      }
+                  }
+
+              }
+          }
+        });
+        angular.forEach($scope.wellMarkers, function(datum) {
+            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+            $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+          }
+        });
+        angular.forEach($scope.wqsMarkers, function(datum) {
+            if(datum.value.latitude != undefined && datum.value.name !=undefined){
+            $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message:  "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
+          }
+        });
+        $scope.markers = $scope.marks
+      }
+    }
+
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
         $scope.facet_sites =[]
@@ -227,17 +299,18 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         angular.forEach($scope.culled_metadata, function(datum){
             if(datum.name == 'Well'){
                 $scope.facet_wells.push(datum)
-                if(datum.value.latitude != undefined){
+                /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
-                }
+                }*/
             }else if(datum.name == 'Site'){
                 $scope.facet_sites.push(datum)
-                if(datum.value.latitude != undefined){
+                /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
-                }
+                }*/
             }
 
         })
+        $scope.updateMap();
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
@@ -314,7 +387,6 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
   };
 ////////LEAFLET//////////////////
   $scope.markers=[];
-
   angular.extend($scope, {
     drawControl: true,
     hawaii: {
@@ -331,7 +403,21 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     defaults: {
             scrollWheelZoom: false
     },
-});
+    layers: {
+        baselayers: {
+            osm: {
+            name: 'OpenStreetMap',
+            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            type: 'xyz'
+            },
+        },
+        overlays:{
+
+        }
+    }
+  });
+
+
 
 
 var drawnItems = new L.FeatureGroup();
@@ -379,6 +465,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
+    angular.element('#search_button').removeAttr("disabled");   
     //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
@@ -386,6 +473,7 @@ var handle = {
   deleted: function(arg) {
     if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
       angular.element('.leaflet-draw-toolbar-top').show();
+      angular.element('#search_button').attr("disabled", "disabled");
     }
   },
   drawstart: function(arg) {},
