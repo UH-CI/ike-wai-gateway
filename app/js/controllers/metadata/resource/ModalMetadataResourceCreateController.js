@@ -268,7 +268,22 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	  drawstart: function(arg) {},
 	  drawstop: function(arg) {},
 	  editstart: function(arg) {},
-	  editstop: function(arg) {},
+	  editstop: function(arg) {
+			console.log(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates))
+      if(String(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.type)) == '"Point"'){
+        coordinates = angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates
+        $scope.model['longitude'] = parseFloat(coordinates[0]);
+        $scope.model['latitude'] = parseFloat(coordinates[1]);
+        $scope.model['polygon'] = "";
+      }
+      else{
+          centroid = drawnItems.getBounds().getCenter();
+
+          $scope.model['longitude'] = centroid.lng;
+          $scope.model['latitude'] = centroid.lat;
+          $scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+      }
+		},
 	  deletestart: function(arg) {
 
 	  },
