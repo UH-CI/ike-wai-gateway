@@ -11,12 +11,8 @@ angular.module('AgaveToGo').controller("AppsResourceController", function($scope
 			if ($state.current.name === "apps"){
 
 				$state.go("apps.details")
-<<<<<<< HEAD
-			}
-=======
-	    }
 
->>>>>>> ef1629a5ec22b1840865190aab9853cbba4535d3
+			}
 
 
 			return $state.is(route);
