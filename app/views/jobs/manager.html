@@ -54,7 +54,7 @@
                       <option value="" disabled>Select an app</option> 
                     </select>
                     <!--<button ng-click="apps.run({appId: selectedApp.id})" class="btn btn-primary">Run New Job</button>-->
-                    <a ui-sref="apps.run({appId: selectedApp.id})" role="button" class="btn btn-primary"></i> Run New Job</a>
+                    <a ui-sref="apps.run({appId: selectedApp.id})" role="button" class="btn btn-primary"><i class="fa fa-rocket"></i> Run New Job</a>
                 </div>
             </body>
         </div>
@@ -171,7 +171,7 @@
                         <div class="btn-group">
                           <a ng-click="browse(job.id)" role="button"> <i class="fa fa-folder-open-o"></i>Browse Output</a>
                           <!--<a ng-click="apps.run({appId: job.appId, jobId: job.id})" role="button"> <i class="fa fa-rocket"></i>Re-run</a>-->
-                          <!--<a ui-sref="apps.rerun({jobId:job.id, appId:job.appId})" role="button" class="btn btn-primary"></i>Re-run</a>-->
+                          <a ui-sref="apps.rerun({jobId:job.id, appId:job.appId})" role="button" class="btn btn-primary"><i class="fa fa-rocket"></i> Re-run</a>
 
                     <!--      <a class="btn red btn-outline" href="#" data-toggle="dropdown">
                                                   Actions

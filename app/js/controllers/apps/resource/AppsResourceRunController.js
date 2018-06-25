@@ -18,7 +18,6 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               $scope.requesting = false;
             }
           );
-          return $scope.job;
       } else {
         //MessageService.handle(response, $translate.instant('error_jobs_details'));
         $scope.requesting = false;
@@ -148,8 +147,10 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
       return schema;
     };
 
-    $scope.resetForm = function(){
-      $scope.job = $scope.getJob();
+    $scope.resetForm = function(onSubmit){
+      if (!onSubmit) {
+        $scope.getJob();
+      }
       if ($stateParams.appId !== ''){
         AppsController.getAppDetails($stateParams.appId)
           .then(
@@ -172,15 +173,17 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                 angular.forEach($scope.form.schema.properties.inputs.properties, function(input, key){
                   
                   // hack to fill in inputs with previously-run job data
-                  if ($scope.job !== undefined) {
-                    jobInput = $scope.job.inputs[key];
-                    if (jobInput != undefined) {
-                      if (typeof $scope.form.model.inputs === 'undefined'){
-                        $scope.form.model.inputs = {};
+                  if (!onSubmit) {
+                    if ($scope.job !== null && $scope.job !== undefined) {
+                      jobInput = $scope.job.inputs[key];
+                      if (jobInput != undefined) {
+                        if (typeof $scope.form.model.inputs === 'undefined'){
+                          $scope.form.model.inputs = {};
+                        }
+                        $scope.form.model.inputs[key] = jobInput;
                       }
-                      $scope.form.model.inputs[key] = jobInput;
                     }
-                  }
+                  } 
                   
                   inputs[0].items.push(
                     {
@@ -448,13 +451,15 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                 angular.forEach($scope.form.schema.properties.parameters.properties, function(input, key){
                   
                   // hack to fill in inputs with previously-run job data
-                  if ($scope.job !== undefined) {
-                    jobParam = $scope.job.parameters[key];
-                    if (jobParam != undefined) {
-                      if (typeof $scope.form.model.parameters === 'undefined'){
-                        $scope.form.model.parameters = {};
+                  if (!onSubmit) {
+                    if ($scope.job !== null && $scope.job !== undefined) {
+                      jobParam = $scope.job.parameters[key];
+                      if (jobParam != undefined) {
+                        if (typeof $scope.form.model.parameters === 'undefined'){
+                          $scope.form.model.parameters = {};
+                        }
+                        $scope.form.model.parameters[key] = jobParam;
                       }
-                      $scope.form.model.parameters[key] = jobParam;
                     }
                   }
                   
@@ -542,16 +547,18 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                 items: ['requestedTime','name', 'archivePath']
               });
 
+              if (!onSubmit) {
+                if ($scope.job !== null && $scope.job !== undefined && $scope.job.maxRunTime !== undefined) {
+                  $scope.form.model.requestedTime = $scope.job.maxRunTime;
+                }
+                if ($scope.job !== null && $scope.job !== undefined && $scope.job.name !== undefined) {
+                  $scope.form.model.name = $scope.job.name + "-" + moment().format("YYYY-MM-DD-HH:mm:ss");
+                }
 
-              if ($scope.job !== undefined && $scope.job.maxRunTime !== undefined) {
-                $scope.form.model.requestedTime = $scope.job.maxRunTime;
-               }
-               if ($scope.job !== undefined && $scope.job.name !== undefined) {
-                $scope.form.model.name = $scope.job.name;
-               }
-               if ($scope.job !== undefined && $scope.job.archivePath !== undefined) {
-                $scope.form.model.archivePath = $scope.job.archivePath;
-               }
+                //if ($scope.job !== null && $scope.job !== undefined && $scope.job.archivePath !== undefined) {
+                //  $scope.form.model.archivePath = $scope.job.archivePath;
+                //}
+              }
 
               /* buttons */
               items = [];
@@ -673,7 +680,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                   }
                 }]
               });
-              $scope.resetForm();
+              $scope.resetForm(true);
               $scope.requesting = false;
             },
             function(response) {
@@ -710,6 +717,6 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
       '../bower_components/angular-ui-codemirror/ui-codemirror.min.js',
     ];
 
-    $scope.resetForm();
+    $scope.resetForm(false);
 
 });
