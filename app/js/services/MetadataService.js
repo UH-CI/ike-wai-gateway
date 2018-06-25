@@ -55,7 +55,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
           promises.push(MetaController.listMetadataSchema()
           .then(function(response){
             angular.forEach(response.result, function(value, key){
-              $localStorage["schema_"+type] = value.uuid;
+              $localStorage["schema_"+value.schema.title] = value.uuid;
               console.log(value.schema.title)
             })
           },function(response){
