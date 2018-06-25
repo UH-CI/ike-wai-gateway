@@ -1,6 +1,11 @@
-angular.module('AgaveToGo').controller('JobsDirectoryController', function ($scope, $state, $translate, JobsController, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('JobsDirectoryController', function ($scope, $state, $translate, JobsController, AppsController, SystemsController, ActionsService, MessageService) {
     $scope._COLLECTION_NAME = 'jobs';
     $scope._RESOURCE_NAME = 'job';
+
+    //$scope._APPS_COLLECTION_NAME = 'apps';
+    $scope.apps = [];
+    $scope.selectedApp = "";
+    //$scope.app = "";
 
     $scope.sortType = 'startTime';
     $scope.sortReverse  = true;
@@ -25,7 +30,47 @@ angular.module('AgaveToGo').controller('JobsDirectoryController', function ($sco
           }
       );
 
+      $scope.getAppsList();
     };
+
+    $scope.getAppsList = function() {
+      $scope.requesting = true;
+
+      SystemsController.listSystems(99999).then(
+          function (response) {
+            $scope.systems = response.result;
+
+            AppsController.searchApps(
+              $scope.query
+            )
+              .then(
+                function(response){
+                  $scope.apps = [];
+                  _.each(response.result, function(app){
+                    if ($scope.query.indexOf("available.eq=false") === -1){
+                      app.available = true;
+                      $scope.apps.push(app);
+                    } else {
+                      $scope.apps.push(app);
+                    }
+                  });
+                  $scope.requesting = false;
+                }, function(response){
+                  MessageService.handle(response, $translate.instant('error_apps_search'));
+                  $scope.requesting = false;
+                }
+              );
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_apps_search'));
+            $scope.requesting = false;
+          }
+      );
+    }
+
+    //$scope.makeNewJob = function() {
+    //  console.log("test");
+    //}
 
     $scope.searchTools = function(query){
       $scope.query = query;
