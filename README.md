@@ -1,4 +1,4 @@
-## IKE ToGo
+## Ike Wai Gateway
 
 * git clone git@github.com:UH-CI/ike-togo-app.git
 * git checkout hawaii
@@ -8,12 +8,12 @@
 
 If you want to make IKE ToGo use the Hawaii Tenant you need to create a client application in the Hawaii Tenant that users can use to access Agave. (NOTE the callbackUrl needs to match the machine that ToGo is deployed on - in this example it is on localhost on port 9000)
 <pre>
-curl -sku "uh-username:uh-password" -X POST -d "clientName=my-app-name&description=Client app for Agave ToGo&callbackUrl=http://localhost:9000/auth" https://agaveauth.its.hawaii.edu/clients/v2
+curl -sku "uh-username:uh-password" -X POST -d "clientName=my-app-name&description=Client app for Ike Wai Gateway &callbackUrl=http://localhost:9000/auth" https://agaveauth.its.hawaii.edu/clients/v2
 </pre>
 
 You should get a response that looks like:
 <pre>
-{"status": "success", "message": "Client created successfully.", "version": "2.0.0-SNAPSHOT-rc3fad", "result": {"description": "Client app for Agave ToGo", "name": "my-app-name", "consumerKey": "AizxkAa42cz3z4IMValzo2MAMgwa", "_links": {"subscriber": {"href": "https://agaveauth.its.hawaii.edu/profiles/v2/uh-username"}, "self": {"href": "https://agaveauth.its.hawaii.edu/clients/v2/my-app-name"}, "subscriptions": {"href": "https://agaveauth.its.hawaii.edu/clients/v2/my-app-name/subscriptions/"}}, "tier": "Unlimited", "consumerSecret": "zR923vrRojJNxC262HFFKPJlzGca", "callbackUrl": "http://localhost:9000/auth"}}
+{"status": "success", "message": "Client created successfully.", "version": "2.0.0-SNAPSHOT-rc3fad", "result": {"description": "Client app for Ike Wai Gateway", "name": "my-app-name", "consumerKey": "AizxkAa42cz3z4IMValzo2MAMgwa", "_links": {"subscriber": {"href": "https://agaveauth.its.hawaii.edu/profiles/v2/uh-username"}, "self": {"href": "https://agaveauth.its.hawaii.edu/clients/v2/my-app-name"}, "subscriptions": {"href": "https://agaveauth.its.hawaii.edu/clients/v2/my-app-name/subscriptions/"}}, "tier": "Unlimited", "consumerSecret": "zR923vrRojJNxC262HFFKPJlzGca", "callbackUrl": "http://localhost:9000/auth"}}
 </pre>
 
 The "consumerKey"and "callbackUrl" field values will be needed for the next part.
