@@ -1346,6 +1346,25 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
+        .state("apps.rerun", {
+            url: "/run/:jobId/:appId",
+            controller: "AppsResourceRunController",
+            templateUrl: "views/apps/resource/job-form.html",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([
+                    {
+                      serie: true,
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/services/MessageService.js',
+                          'js/controllers/apps/resource/AppsResourceRunController.js'
+                      ]
+                    }
+                  ]);
+                }]
+            }
+          })
 
         /**********************************************************************/
         /**********************************************************************/
