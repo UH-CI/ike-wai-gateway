@@ -1,4 +1,29 @@
-angular.module('AgaveToGo').controller('AppsResourceRunController', function($scope, $stateParams, $uibModal, $modalStack, $localStorage, $rootScope, $translate, AppsController, SystemsController, JobsController, NotificationsController, FilesController, MessageService) {
+angular.module('AgaveToGo').controller('AppsResourceRunController', function($scope, $state, $stateParams, $uibModal, $modalStack, $localStorage, $rootScope, $translate, AppsController, SystemsController, JobsController, NotificationsController, FilesController, MessageService) {
+
+    $scope.job = null;
+    $scope.jobId = $stateParams.jobId;
+
+    $scope.getJob = function(){
+      $scope.job = null;
+      $scope.requesting = true;
+      if ($scope.jobId !== undefined && $scope.jobId !== ''){
+        JobsController.getJobDetails($scope.jobId)
+          .then(
+            function(response){
+              $scope.job = response.result;
+              $scope.requesting = false;
+            },
+            function(response){
+              MessageService.handle(response, $translate.instant('error_jobs_details'));
+              $scope.requesting = false;
+            }
+          );
+          return $scope.job;
+      } else {
+        //MessageService.handle(response, $translate.instant('error_jobs_details'));
+        $scope.requesting = false;
+      }
+    };
 
     $scope.formSchema = function(app) {
       var schema = {
@@ -124,6 +149,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
     };
 
     $scope.resetForm = function(){
+      $scope.job = $scope.getJob();
       if ($stateParams.appId !== ''){
         AppsController.getAppDetails($stateParams.appId)
           .then(
@@ -144,6 +170,18 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                   'items': []
                 });
                 angular.forEach($scope.form.schema.properties.inputs.properties, function(input, key){
+                  
+                  // hack to fill in inputs with previously-run job data
+                  if ($scope.job !== undefined) {
+                    jobInput = $scope.job.inputs[key];
+                    if (jobInput != undefined) {
+                      if (typeof $scope.form.model.inputs === 'undefined'){
+                        $scope.form.model.inputs = {};
+                      }
+                      $scope.form.model.inputs[key] = jobInput;
+                    }
+                  }
+                  
                   inputs[0].items.push(
                     {
                       "input": key,
@@ -408,6 +446,18 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                   'items': []
                 });
                 angular.forEach($scope.form.schema.properties.parameters.properties, function(input, key){
+                  
+                  // hack to fill in inputs with previously-run job data
+                  if ($scope.job !== undefined) {
+                    jobParam = $scope.job.parameters[key];
+                    if (jobParam != undefined) {
+                      if (typeof $scope.form.model.parameters === 'undefined'){
+                        $scope.form.model.parameters = {};
+                      }
+                      $scope.form.model.parameters[key] = jobParam;
+                    }
+                  }
+                  
                   parameters[0].items.push(
                     {
                       "input": key,
@@ -492,10 +542,39 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                 items: ['requestedTime','name', 'archivePath']
               });
 
+
+              if ($scope.job !== undefined && $scope.job.maxRunTime !== undefined) {
+                $scope.form.model.requestedTime = $scope.job.maxRunTime;
+               }
+               if ($scope.job !== undefined && $scope.job.name !== undefined) {
+                $scope.form.model.name = $scope.job.name;
+               }
+               if ($scope.job !== undefined && $scope.job.archivePath !== undefined) {
+                $scope.form.model.archivePath = $scope.job.archivePath;
+               }
+
               /* buttons */
               items = [];
-
-              items.push({type: 'submit', title: 'Run', style: 'btn-primary'});
+              // Jen's note: since the following doesn't allow for align right/left,
+              // I commented this out, made a file app/tpl/directives/app-buttons.html,
+              // and included it in job-form.html
+              // or at least that's what I'm trying to do, but to
+              // make a fast release, I had to drop it for now.
+              // the code for these buttons is generated in bootstrap-decorator.js
+            
+              /*
+              items.push({
+                type: 'submit',
+                title: 'Cancel',
+                style: 'btn-primary'
+              });
+              */
+              
+              items.push({
+                type: 'submit',
+                title: 'Run',
+                style: 'btn-primary'
+              });
               $scope.form.form.push({
                 type: 'actions',
                 items: items
@@ -512,8 +591,20 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
       }
     };
 
-    $scope.onSubmit = function(form) {
+    /*
+    $scope.onCancel = function() {
+      console.log("onCancel was clicked");
+      $state.go('jobs');
+      // may need to add params for the job id when
+      // I expand the jobs page to let users re-run jobs
+      // https://github.com/angular-ui/ui-router/wiki/URL-Routing
+      // look at AppsResourceController
+      //		$scope.appId = $stateParams.appId;
+    }
+    */
 
+    $scope.onSubmit = function(form) {
+      
       $scope.$broadcast('schemaFormValidate');
 
       if (form.$valid) {
@@ -546,7 +637,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
         });
 
         $scope.requesting = true;
-
+        
         JobsController.createSubmitJob(jobData)
           .then(
             function(response) {
@@ -587,7 +678,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
             },
             function(response) {
               MessageService.handle(response, $translate.instant('error_jobs_create'));
-          });
+          });  
       }
 
     };
