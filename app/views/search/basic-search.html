@@ -8,12 +8,12 @@
 
                   </div>
                 </div>
-                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer">
+                <form ng-controller="MetadataQueryBuilderCtrl" ng-submit="textSearch()" class="text-center top-buffer">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         <input type="text" class="form-control" placeholder="Enter text here.  Filenames must be surrounded by quotes." ng-model="searchField.value"></div>
-                        <button class="btn btn-primary" ng-click="textSearch()">Search Files</button>
+                        <input type="submit" class="btn btn-primary" value="Search Files"/>
 
                       <br/>
                     </div>
@@ -21,7 +21,7 @@
 
 
 
-                </div>
+                </form>
             </div>
             <div class="portlet-body">
               <div class="row text-center" ng-show="requesting">
