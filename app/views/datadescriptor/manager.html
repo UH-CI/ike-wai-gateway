@@ -103,7 +103,8 @@
     <div class="col-md-12">
       <div class="portlet light portlet-fit portlet-datatable ">
         <h3 class="modal-title">Data Descriptor<button class="btn pull-right" ng-click="close()">X</button></h3>
-
+        <h4 class align="center" ng-if="!wizardSecondPage && !has_data_descriptor">Step 1 of 2</h4>
+        <h4 class align="center" ng-if="wizardSecondPage">Step 2 of 2</h4>
               <div>
               Associated Files:
               <table>
@@ -174,7 +175,7 @@
                 <div ng-show='edit_perm || !data_descriptor_metadatum.value.published' class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
                 </div>
-                <div class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
+                <div class="pull-right" ng-show="!wizardSecondPage" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
                   <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
 
@@ -303,7 +304,7 @@
                           <form novalidate class="simple-form" name="dataDescriptorForm">
 
                             <!-- TITLE -->
-                          <div class="panel panel-default">
+                          <div class="panel panel-default"  ng-show="!wizardSecondPage">
                            <div class="panel-heading">Required</div>
                            <div class="panel-body">
                             <div class="form-group required">
@@ -315,7 +316,7 @@
                             </div>
 
                             <!-- AUTHOR -->
-                            <div class="form-group required">
+                            <div class="form-group required"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="creator" data-toggle="tooltip" title='{{"creator" | translate}}'>Author(s):</label>
                               <button type="button" data-toggle="popover" title="Author Field" data-content='{{"creator" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -404,7 +405,7 @@
                             </div>-->
 
                             <!-- SUBJECT -->
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="subject" data-toggle="tooltip" title='{{"subject" | translate}}'>Subject/Keywords/Search terms:</label>
                               <button type="button" data-toggle="popover" title="Subject Field" data-content='{{"subject" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -448,14 +449,14 @@
                             </div>
 
                              <!-- START DATE -->
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="startDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Data Collection Start Date:</label>
                               <button type="button" data-toggle="popover" title="Start Date Field" data-content='{{"dates" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <div class='input-group date' id='datetimepicker1' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.start_datetime | date:'yyyy-mm-dd'">
                                   <input ng-model="datadescriptor.start_datetime"  min-date="new Date('1900-01-01')" type='text' class="form-control" width="50%" placeholder="Select start date of work referenced in file…"/>
                                   <span class="input-group-addon">
@@ -465,14 +466,14 @@
                             </div>
 
                              <!-- END DATE -->
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="endDate" data-toggle="tooltip" title='{{"dates" | translate}}'>Data Collection End Date:</label>
                               <button type="button" data-toggle="popover" title="End Date Field" data-content='{{"dates" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
                             </div>
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <div class='input-group date' id='datetimepicker2' data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date="datadescriptor.end_datetime">
                                 <input type='text' ng-model="datadescriptor.end_datetime" min-date="new Date('1900-01-01')" class="form-control" value="datadescriptor.end_datetime" placeholder="Select end date of work referenced in file…"/>
                                 <span class="input-group-addon">
@@ -482,7 +483,7 @@
                             </div>
 
                              <!-- FORMAT -->
-                            <div class="form-group">
+                            <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>
                               <button type="button" data-toggle="popover" title="Format Field" data-content='{{"format" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -587,7 +588,7 @@
                             -->
   	                        <!--<div id="association_notifications"></div>-->
                               <!-- DESCRIPTION -->
-                            <div class="form-group">
+                            <div class="form-group" ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="descriptor" data-toggle="tooltip" title='{{"descriptor" | translate}}'>Summary:</label>
                               <button type="button" data-toggle="popover" title="Description Field" data-content='{{"descriptor" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -738,10 +739,15 @@
     <button class="btn btn-default pull-left" ng-click="close()">Close</button>
     <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
     <div ng-if="has_data_descriptor == false" class="form-group">
-      <button type="button" class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save Data Descriptor</button>
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save and go to step 2...</button>
     </div>
     <!--<div ng-if="ddUuid != ''"class="form-group"> -->
-    <div ng-if="has_data_descriptor == true && edit_data_descriptor == true" class="form-group">
-      <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save Changes</button>
+
+    <div ng-if="wizardSecondPage && has_data_descriptor == true && edit_data_descriptor == true" class="form-group">
+        <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Finish</button>
+    </div>
+
+    <div ng-if="!wizardSecondPage && has_data_descriptor == true && edit_data_descriptor == true" class="form-group">
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save</button>
     </div>
 </div>
