@@ -619,10 +619,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wizardSecondPage = false;
     $scope.$broadcast('schemaFormValidate');
 
+     /*
     if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
       $scope.datadescriptor.title && $scope.datadescriptor.license_permission &&
       $scope.datadescriptor.license_rights) {
-
+````*/
+    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
+    $scope.datadescriptor.title) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -657,7 +660,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $scope.requesting = false;
       App.alert({
         type: 'danger',
-        message: "Creator, Title, License Rights, and License Permissions are required fields - Please correct and submit again.",
+        message: "Title and Author are required fields - Please correct and submit again.",
         closeInSeconds: 5
       });
     }
