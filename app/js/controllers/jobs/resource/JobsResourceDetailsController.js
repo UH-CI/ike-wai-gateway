@@ -26,7 +26,7 @@ angular.module('AgaveToGo').controller('JobsResourceDetailsController', function
     JobsController.getJobDetails(id)
       .then(
         function(data){
-          $state.go('data-explorer', {'systemId': data.archiveSystem, path: data.archivePath});
+          $state.go('data-explorer', {'systemId': data.result.archiveSystem, path: data.result.archivePath});
         },
         function(data){
           MessageService.handle(response, $translate.instant('error_jobs_details'));
