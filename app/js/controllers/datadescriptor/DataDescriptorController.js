@@ -548,8 +548,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
 //THe save
-  $scope.saveDataDescriptor = function () {
-    console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
+  $scope.saveDataDescriptor = function (container_id="") {
+    //console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
     //$scope.cancelEditDataDescriptor();
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
@@ -605,15 +605,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $scope.requesting = false;
       App.alert({
         type: 'danger',
-        message: "Title and Author are Required Fields - Please Correct and Submit Again.",
-        closeInSeconds: 5
-      });
+        container: container_id, 
+        message: "Title and Author are required fields - Please correct and submit again.",
+        closeInSeconds: 5,
+        focus: true }
+      );
     }
     //$scope.cancelEditDataDescriptor();
     //$scope.close();
   }
 
-  $scope.updateDataDescriptor = function () {
+  $scope.updateDataDescriptor = function (container_id="") {
     console.log("JEN DDC: updateDataDescriptor");
     $scope.requesting = true;
     $scope.wizardSecondPage = false;
@@ -658,11 +660,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         })
     } else {
       $scope.requesting = false;
+      //$scope.md = $("#data_descriptor_modal");
+      //$("#data_descriptor_modal").scrollTop(0);  
+      //$('#data_descriptor_modal').animate({ scrollTop: 0 }, 'fast');
+      //var container = document.getElementById("data_descriptor_modal");
       App.alert({
         type: 'danger',
+        container: container_id, 
         message: "Title and Author are required fields - Please correct and submit again.",
-        closeInSeconds: 5
-      });
+        closeInSeconds: 5,
+        focus: true }
+      );
     }
     //$scope.cancelEditDataDescriptor();
     //$scope.close();
@@ -937,6 +945,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // JEN TODO: can this work?  Now if I associate a person or org with a data
   // descriptor, I have to edit every file associated with it, too.  Shit.
   $scope.openCreate = function (schemauuid, size) {
+    //console.log("Jen DDC: openCreate");
     $scope.wizardSecondPage = false;
     $scope.fileMetadataObjects = $scope.fileMetadataObject;
     $scope.selectedSchemaUuid = schemauuid;

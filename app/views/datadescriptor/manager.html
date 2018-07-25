@@ -97,7 +97,7 @@
 
 
 <!--<h4><a ng-click="doTheBack()"><i class="glyphicon glyphicon-menu-left"/>Go Back</a></h4>-->
-<div class='modal-header'>
+<div id="data_descriptor_modal" class='modal-header'>
 
   <div class="row">
     <div class="col-md-12">
@@ -739,15 +739,15 @@
     <button class="btn btn-default pull-left" ng-click="close()">Close</button>
     <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
     <div ng-if="has_data_descriptor == false" class="form-group">
-      <button type="button" class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor()" >Save and go to step 2...</button>
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="saveDataDescriptor('#data_descriptor_modal')" >Save and go to step 2...</button>
     </div>
     <!--<div ng-if="ddUuid != ''"class="form-group"> -->
 
     <div ng-if="wizardSecondPage && has_data_descriptor == true && edit_data_descriptor == true" class="form-group">
-        <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Finish</button>
+        <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor('#data_descriptor_modal')" >Finish</button>
     </div>
 
     <div ng-if="!wizardSecondPage && has_data_descriptor == true && edit_data_descriptor == true" class="form-group">
-      <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor()" >Save</button>
+      <button type="button" class="btn btn-primary" type="submit"  ng-click="updateDataDescriptor('#data_descriptor_modal')" >Save</button>
     </div>
 </div>

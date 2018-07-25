@@ -653,7 +653,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               notification.associatedUuid = response.result.id;
               notification.event = '*';
               notification.persistent = true;
-              //notification.url = 'https://9d1e23fc.fanoutcdn.com/fpp';
+              notification.url = $localStorage.activeProfile.email;
 
               NotificationsController.addNotification(notification)
                 .then(
