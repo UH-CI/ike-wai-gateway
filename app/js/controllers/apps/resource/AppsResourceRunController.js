@@ -132,7 +132,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
 
       schema.properties.name = {
         title: 'Job name',
-        description: 'A recognizable name for this job',
+        description: 'A name for this job, used by you to distinguish between your jobs',
         type: 'string',
         required: true
       };
@@ -192,6 +192,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                       "template": '<div class="form-group has-success has-feedback"> <label for="input">{{form.title}}</label> <div class="input-group"> <a class="input-group-addon" ng-click="form.selectFile(form.input)">Select</a> <input type="text" class="form-control" id="input" ng-model="form.model.inputs[form.input]"></div> <span class="help-block">{{form.description}}</span> </div>',
                       "title": input.title,
                       "description": input.description,
+                      //"required": input.required,
                       "model": $scope.form.model,
                       selectFile: function(key){
                         $scope.requesting = true;
@@ -470,6 +471,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                       "template": '<div class="form-group has-success has-feedback"> <label for="input">{{form.title}}</label> <input type="text" class="form-control" id="input" ng-model="form.model.parameters[form.input]"> <span class="help-block">{{form.description}}</span> </div>',
                       "title": input.title,
                       "description": input.description,
+                      //"required": input.required,
                       "model": $scope.form.model,
                       selectFile: function(key){
                         // SystemsController.getSystemDetails($scope.app.deploymentSystem)
@@ -673,17 +675,21 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
                   $scope.cancel = function()
                   {
                       $modalInstance.dismiss('cancel');
+                      $state.go('jobs-manage');
                   };
 
                   $scope.close = function(){
                       $modalInstance.close();
+                      $state.go('jobs-manage');
                   }
                 }]
               });
-              $scope.resetForm(true);
+              //$scope.resetForm(true);
               $scope.requesting = false;
             },
             function(response) {
+              $scope.requesting = false;
+              $scope.resetForm(false);
               MessageService.handle(response, $translate.instant('error_jobs_create'));
           });  
       }
