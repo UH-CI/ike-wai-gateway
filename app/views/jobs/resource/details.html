@@ -121,15 +121,19 @@
     </div>
     <div class="col-xs-3">
       <div ng-if="job" class="btn-group pull-right">
+          <!--
           <a class="btn red btn-outline" href="#" data-toggle="dropdown">
               Actions
               <i class="fa fa-angle-down"></i>
           </a>
-          <ul class="dropdown-menu pull-right">
-            <li>
-              <a ng-click="browse(job.id)" role="button"> <i class="fa fa-folder-open-o"></i> Browse</a>
-            </li>
-          </ul>
+          -->
+          <!--<ul class="dropdown-menu pull-right">-
+            <li>-->
+              <div ng-show="{{job.status === 'FINISHED'}}">
+                <a ng-click="browse(job.id)" role="button"> <i class="fa fa-folder-open-o"></i> Browse</a>
+              </div>
+            <!--</li>
+          </ul>-->
       </div>
     </div>
   </div>
