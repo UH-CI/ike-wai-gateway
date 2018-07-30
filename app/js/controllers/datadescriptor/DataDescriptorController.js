@@ -18,6 +18,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.removedAssociationIds = [''];
   $scope.limit = 500;
   $scope.offset = 0;
+  // used to show the right things on the first/second pages of the data descriptor create modal
+  $scope.wizardSecondPage = false;
+
   //set admin
   $scope.get_editors = function () {
     $scope.editors = MetadataService.getAdmins();
@@ -300,7 +303,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.fetchMetadataWithLimit = function (metadata_query, limit) {
-    console.log("JEN DDC: fetchMetadataWithLimit: " + metadata_query);
+    //console.log("JEN DDC: fetchMetadataWithLimit: " + metadata_query);
     var deferred = $q.defer();
     $scope.variables = [];
     $scope.locations = [];
@@ -545,13 +548,14 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
 //THe save
-  $scope.saveDataDescriptor = function () {
-    console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
+  $scope.saveDataDescriptor = function (container_id="") {
+    //console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
     //$scope.cancelEditDataDescriptor();
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
-    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title &&
-      $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights) {
+    /*if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title &&
+      $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights) {*/
+    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -574,12 +578,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 if ($scope.fileUuid && $scope.fileUuid != undefined) {
                   $scope.addAssociation($scope.metadataUuid, $scope.fileUuid)
                 }
-                $scope.cancelEditDataDescriptor();
+                //$scope.cancelEditDataDescriptor();
                 // JEN TODO: need to add a mechanism to loop through all the files and add the association.
                 App.alert({
                   message: "Success Data Descriptor Saved",
                   closeInSeconds: 5
                 });
+                
+                $scope.wizardSecondPage = true;
+                $scope.edit_data_descriptor = true;
+                $scope.has_data_descriptor = true;
+                $scope.action = "edit";
                 $rootScope.$broadcast('metadataUpdated');
               },
               function (response) {
@@ -596,23 +605,29 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $scope.requesting = false;
       App.alert({
         type: 'danger',
-        message: "Creator, Title, License Rights and License Permissions are Required Fields - Please Correct and Submit Again.",
-        closeInSeconds: 5
-      });
+        container: container_id, 
+        message: "Title and Author are required fields - Please correct and submit again.",
+        closeInSeconds: 5,
+        focus: true }
+      );
     }
     //$scope.cancelEditDataDescriptor();
     //$scope.close();
   }
 
-  $scope.updateDataDescriptor = function () {
+  $scope.updateDataDescriptor = function (container_id="") {
     console.log("JEN DDC: updateDataDescriptor");
     $scope.requesting = true;
+    $scope.wizardSecondPage = false;
     $scope.$broadcast('schemaFormValidate');
 
+     /*
     if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
       $scope.datadescriptor.title && $scope.datadescriptor.license_permission &&
       $scope.datadescriptor.license_rights) {
-
+````*/
+    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
+    $scope.datadescriptor.title) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -645,11 +660,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         })
     } else {
       $scope.requesting = false;
+      //$scope.md = $("#data_descriptor_modal");
+      //$("#data_descriptor_modal").scrollTop(0);  
+      //$('#data_descriptor_modal').animate({ scrollTop: 0 }, 'fast');
+      //var container = document.getElementById("data_descriptor_modal");
       App.alert({
         type: 'danger',
-        message: "Creator, Title, License Rights, and License Permissions are required fields - Please correct and submit again.",
-        closeInSeconds: 5
-      });
+        container: container_id, 
+        message: "Title and Author are required fields - Please correct and submit again.",
+        closeInSeconds: 5,
+        focus: true }
+      );
     }
     //$scope.cancelEditDataDescriptor();
     //$scope.close();
@@ -843,7 +864,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   /////////Modal Stuff for locations and variables, not data descriptors /////////////////////
 
   // opens modals for location and variables
-  $scope.open = function (size, types, title) {
+  $scope.open = function (size, types, title) {    
     //Set the
     $scope.modalSchemas = types.slice(0);
     $scope.selectedSchema = types.slice(0);
@@ -924,6 +945,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // JEN TODO: can this work?  Now if I associate a person or org with a data
   // descriptor, I have to edit every file associated with it, too.  Shit.
   $scope.openCreate = function (schemauuid, size) {
+    //console.log("Jen DDC: openCreate");
+    $scope.wizardSecondPage = false;
     $scope.fileMetadataObjects = $scope.fileMetadataObject;
     $scope.selectedSchemaUuid = schemauuid;
     var modalInstance = $uibModal.open({

@@ -8,12 +8,12 @@
 
                   </div>
                 </div>
-                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer">
+                <form ng-controller="MetadataQueryBuilderCtrl" ng-submit="textSearch()" class="text-center top-buffer">
                     <div class="btn-group top-buffer">
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         <input type="text" class="form-control" placeholder="Enter text here.  Filenames must be surrounded by quotes." ng-model="searchField.value"></div>
-                        <button class="btn btn-primary" ng-click="textSearch()">Search Files</button>
+                        <input type="submit" class="btn btn-primary" value="Search Files"/>
 
                       <br/>
                     </div>
@@ -21,7 +21,7 @@
 
 
 
-                </div>
+                </form>
             </div>
             <div class="portlet-body">
               <div class="row text-center" ng-show="requesting">
@@ -30,6 +30,12 @@
                   </div>
               </div>
               <h3><i class="fa fa-file"></i> Matching Files: {{files.length}}</h3>
+              <div class="input-group">
+                <div class="input-group-addon">
+                    <label><i class="fa fa-filter" aria-hidden="true"></i></label>
+                </div>
+                <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter"></div>
+              </div>
               <div class="row">
                   <div class="col-md-12">
                     <div ng-show="!requesting">
@@ -71,18 +77,26 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                  <!-- Jen's note: I think the filter part below is a mistake, likely a residual from
-                                     a copy/paste that had it.  I can't find another reference to "filter" in this
-                                     context, and there shouldn't be a filter action in this context as the filter
-                                     was done as part of the original search.  So I commented that line out and
-                                     replaced it with the same line sans filter action.
-                                  -->
-                                  <!--<tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">-->
-                                  <tr ng-repeat="file in files | orderBy:sortType:sortReverse">
+                                  <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                     <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         {{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/
 
                                     </td>
+                                    <!--
+                                        <span ng-show="item.model.type === 'file'">
+                                            <i class="fa {{ item.model.name | fileIcon }} mr2" ></i>
+                                            <span ng-show="config.allowedActions.preview && item.isPreviewable()">
+                                              <a href="" tabindex="-1" data-toggle="modal" data-target="#preview" ng-click="item.download(true)">
+                                                  <i class="fa fa-eye"></i> {{item.model.name | strLimit : 64}}
+                                              </a>
+                                            </span>
+                                            <span ng-show="!config.allowedActions.preview || !item.isPreviewable()">
+                                              {{item.model.name | strLimit : 64}}
+                                            </span>
+                                          </span>
+                                    -->
+
+
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                           {{file.href.split('/')[file.href.split('/').length-1]}}
                                       </td>

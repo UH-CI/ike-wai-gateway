@@ -8,6 +8,17 @@ body {
 .page-footer-custom.hide {
     display: block!important;
 }
+
+.page-footer-custom-login {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #465568;
+    color: white;
+    text-align: center;
+}
+
 .page-lock {
     margin: 90px auto 30px auto;
     width: 450px; }
