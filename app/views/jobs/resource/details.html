@@ -50,6 +50,7 @@
            <tr ng-if="job.outputPath">
              <td>Output Path</td>
              <td>{{job.outputPath}}</td>
+             <!--<td><a href="#/data/explorer/{{job.archiveSystem}}/{{job.archivePath}}/output">{{job.archivePath}}/output</a></td>-->
            </tr>
            <tr ng-if="job.batchQueue">
              <td>Batch Queue</td>
@@ -63,7 +64,7 @@
              <td>Inputs</td>
              <td>
                <div ng-repeat="(key,value) in job.inputs">
-                 {{key}}: {{value}}
+                 {{key}}:  <a href="#/data/explorer/{{job.archiveSystem}}{{value[0].split(job.archiveSystem)[1]}}">{{value[0].split(job.archiveSystem)[1]}}</a>
                </div>
              </td>
            </tr>
