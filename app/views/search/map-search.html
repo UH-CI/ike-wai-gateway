@@ -217,7 +217,7 @@
                                       <tbody>
                                           <tr ng-repeat="wqs in wqsites | orderBy:sortType:sortReverse">
                                               <td>
-                                                 {{wqs.value.name}}
+                                                 {{wqs.value.name}}&nbsp;<span class="badge" ng-if="wqs.value.resultCount">{{wqs.value.resultCount}}</span>
                                                   <a href="#" ng-click="openView(wqs.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                               </td>
                                               <td>
