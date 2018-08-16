@@ -85,8 +85,10 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           })
         }
         else if(val.name == "Water_Quality_Site" ){
-          $scope.culled_metadata.push(val)
-          $scope.wqsites.push(val)
+          if(val.value.resultCount >0){
+            $scope.culled_metadata.push(val)
+            $scope.wqsites.push(val)
+          }
         }
       })
       $scope.filtered_files = $scope.files;
@@ -465,7 +467,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
-    angular.element('#search_button').removeAttr("disabled");   
+    angular.element('#search_button').removeAttr("disabled");
     //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
