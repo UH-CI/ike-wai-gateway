@@ -913,6 +913,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                       files: [
                           'js/services/ActionsService.js',
                           'js/services/PermissionsService.js',
+                          'js/services/MessageService.js',
                           'js/controllers/notifications/resource/NotificationsResourceDetailsController.js'
                       ]
                     }
@@ -2630,6 +2631,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
+                            //'../bower_components/angular-filebrowser/src/js/entities/fileitem.js'
                         ]
                     });
                 }]

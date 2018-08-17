@@ -30,7 +30,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.action = $stateParams.action;
 
   $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
-  $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
+  $scope.schemaQuery = "";//{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
   //$scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
@@ -584,7 +584,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                   message: "Success Data Descriptor Saved",
                   closeInSeconds: 5
                 });
-                
+
                 $scope.wizardSecondPage = true;
                 $scope.edit_data_descriptor = true;
                 $scope.has_data_descriptor = true;
@@ -605,7 +605,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $scope.requesting = false;
       App.alert({
         type: 'danger',
-        container: container_id, 
+        container: container_id,
         message: "Title and Author are required fields - Please correct and submit again.",
         closeInSeconds: 5,
         focus: true }
@@ -661,12 +661,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     } else {
       $scope.requesting = false;
       //$scope.md = $("#data_descriptor_modal");
-      //$("#data_descriptor_modal").scrollTop(0);  
+      //$("#data_descriptor_modal").scrollTop(0);
       //$('#data_descriptor_modal').animate({ scrollTop: 0 }, 'fast');
       //var container = document.getElementById("data_descriptor_modal");
       App.alert({
         type: 'danger',
-        container: container_id, 
+        container: container_id,
         message: "Title and Author are required fields - Please correct and submit again.",
         closeInSeconds: 5,
         focus: true }
@@ -864,10 +864,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   /////////Modal Stuff for locations and variables, not data descriptors /////////////////////
 
   // opens modals for location and variables
-  $scope.open = function (size, types, title) {    
+  $scope.open = function (size, types, title) {
     //Set the
     $scope.modalSchemas = types.slice(0);
+    console.log("modalSchemas: " + $scope.modalSchemas);
     $scope.selectedSchema = types.slice(0);
+    console.log("selectedSchema: " + $scope.selectedSchema);
     $scope.modalTitle = title;
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
@@ -1001,7 +1003,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     var innerquery = {}
     var typearray = []
     var typequery = {}
-
+    console.log("$scope.metadataschema: "+$scope.metadataschema)
     angular.forEach($scope.metadataschema, function (value, key) {
       if ($scope.selectedSchema.indexOf(value.schema.title) > -1) {
         //set the schema name(s) to search across
@@ -1027,7 +1029,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     andarray.push(orquery)
     andquery['$and'] = andarray;
     $scope.query = JSON.stringify(andquery);
-
+    console.log("QUERY: "+$scope.query)
     $scope.offset = 0;
     $scope.fetchModalMetadata();
   }
