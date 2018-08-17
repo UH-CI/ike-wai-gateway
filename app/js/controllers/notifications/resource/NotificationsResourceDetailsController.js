@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('NotificationsResourceDetailsController', function($scope, $stateParams, $state, NotificationsController, ActionsService) {
+angular.module('AgaveToGo').controller('NotificationsResourceDetailsController', function($scope, $stateParams, $state, $translate, MessageService, NotificationsController, ActionsService) {
   $scope.notification = null;
 
   $scope.getNotification = function(){
