@@ -77,7 +77,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         $scope.filequery = "{$text:{$search:'"+$scope.searchField.value+"'}}";
       }
       else{
-        $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
+        $scope.filequery="{'name':'PublishedFile'}";
       }
       $scope.doSearch();
     }
