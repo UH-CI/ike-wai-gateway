@@ -108,7 +108,7 @@
                                 ng-disabled="disabled"  
                                 title="Choose creators">
                                 <ui-select-match placeholder="Select author(s)...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-                                <ui-select-choices repeat="person in people | filter: $select.search">
+                                <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
                                   <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
                                   <!--
                                   <small>
@@ -119,7 +119,7 @@
                                 </ui-select-choices>
                               </ui-select>
                               <!-- <p>Selected: {{selected.people}}</p> -->
-							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
+							                <button class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Create New Author</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
