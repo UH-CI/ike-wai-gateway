@@ -25,10 +25,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	$scope.fetchMetadataSchema = function() {
 		$scope.requesting = true;
 
-		MetaController.listMetadataSchema("{'uuid':'"+selectedSchemaUuid+"'}")
+		MetaController.getMetadataSchema(selectedSchemaUuid)
 			.then(
 				function(response){
-					$scope.selectedmetadataschema = response.result[0];
+					$scope.selectedmetadataschema = response.result;//[0];
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
