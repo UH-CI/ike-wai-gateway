@@ -51,19 +51,19 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     this.fetchSystemMetadataSchemaUuid = function(type){
       var promises = [];
       console.log("fetching")
-      if ($localStorage["schema_"+type] == null){
+    //  if ($localStorage["schema_"+type] == null){
           promises.push(MetaController.listMetadataSchema()
           .then(function(response){
             angular.forEach(response.result, function(value, key){
               $localStorage["schema_"+value.schema.title] = value.uuid;
-              console.log(value.schema.title)
+              console.log("Processed: " + value.schema.title)
             })
           },function(response){
               MessageService.handle(response, $translate.instant('Error Could Not Fetch System Metatadata Schema: '+type));
           }));
-      }else{
-        console.log(type +":is not null - " + $localStorage["schema_"+type])
-      }
+    //  }else{
+    //    console.log(type +":is not null - " + $localStorage["schema_"+type])
+    //  }
 
       var deferred = $q.defer();
 

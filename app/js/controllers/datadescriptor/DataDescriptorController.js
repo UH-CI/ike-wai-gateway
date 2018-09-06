@@ -457,25 +457,37 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       else {
         $scope.datadescriptor.creators.push(str);
       }
+      // don't actually want to do association yet until 
+      // user clicks "save", just want to display it.
+      //$scope.addAssociationToDataDescriptor($scope.ddUuid, args.value.uuid);
     } else if (args.type === "Organization") {
       var str = {
         "name": args.value.value.name,
         "uuid": args.value.uuid
       };
       $scope.datadescriptor.organizations.push(str);
+      // don't actually want to do association yet until 
+      // user clicks "save", just want to display it.
+      //$scope.addAssociationToDataDescriptor($scope.ddUuid, args.value.uuid);
     } else if (args.type === "File") {
       var str = {
         "name": args.value.value.name,
         "uuid": args.value.uuid
       };
       $scope.datadescriptor.files.push(str);
+      // don't actually want to do association yet until 
+      // user clicks "save", just want to display it.
+      //$scope.addAssociation($scope.ddUuid, args.value.uuid)
     }
     //else if (args.type === "Subject") {
     //  var str = {"name":args.value.value.word,"uuid":args.value.uuid};
     //  $scope.datadescriptor.subjects.push(str);
     //}
     //$scope.refresh();
-    $rootScope.$broadcast('metadataUpdated');
+
+    // if I call this, it wipes out the above changes as they are only displayed on the form,
+    // but not actually associated yet as the user has to click "save"
+    //$rootScope.$broadcast('metadataUpdated');
   });
 
   $rootScope.$on("associationsUpdated", function () {
@@ -603,6 +615,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         })
     } else {
       $scope.requesting = false;
+      $scope.missing_values_error = true;
       App.alert({
         type: 'danger',
         container: container_id,
@@ -738,7 +751,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.addAssociationToDataDescriptor = function (dataDescriptorUuid, metadatumUuid, container_id = "") {
     //alert('trying to associate')
     //metadatumUuid = dataDescriptorUuid;
-    console.log("JEN DDC: addAssociation");
+    console.log("JEN DDC: addAssociationToDataDescriptor: " + dataDescriptorUuid + ", " + metadatumUuid);
     if (metadatumUuid) {
       $scope.requesting = true;
       MetaController.getMetadata(dataDescriptorUuid)
@@ -921,7 +934,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     MetadataService.fetchSystemMetadataSchemaUuid(schemaType)
       .then(function (response) {
         var uuid = response;
-        console.log("uuid: " + uuid);
+        console.log("schema uuid: " + uuid);
         $scope.isContrib = isContrib;
         $scope.openCreate(uuid, size);
       });

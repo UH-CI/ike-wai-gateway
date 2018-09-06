@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('ImpersonateController', function ($scope, $state, $translate, $localStorage, ActionsService, MessageService) {
+angular.module('AgaveToGo').controller('ImpersonateController', function ($scope, $state, $translate, $localStorage, ActionsService, MessageService, Configuration) {
 
     $scope.profile = $localStorage.activeProfile;
     $scope.token = $localStorage.token;
@@ -14,6 +14,7 @@ angular.module('AgaveToGo').controller('ImpersonateController', function ($scope
     $scope.update = function(user) {
         $localStorage.activeProfile.username = user.name;
         $localStorage.token.access_token = user.token;
+        Configuration.oAuthAccessToken = $localStorage.token.access_token
         $scope.refresh();
     };
 });

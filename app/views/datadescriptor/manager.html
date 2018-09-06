@@ -102,25 +102,28 @@
   <div class="row">
     <div class="col-md-12">
       <div class="portlet light portlet-fit portlet-datatable ">
-        <h3 class="modal-title">Data Descriptor<button class="btn pull-right" ng-click="close()">X</button></h3>
+        <h3 class="modal-title">Data Descriptor
+          <button class="btn pull-right" ng-click="close()">X</button>
+        </h3>
         <h4 class align="center" ng-if="!wizardSecondPage && !has_data_descriptor">Step 1 of 2</h4>
         <h4 class align="center" ng-if="wizardSecondPage">Step 2 of 2</h4>
-              <div>
-              Associated Files:
-              <table>
-                <tbody>
-                  <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
-                      <td ng-if="link.title == 'file'">
-                          <i class="fa fa-file-o">{{link.href.split('system')[1]}}</i>
-                      </td>
-                    </tr>
-                  </table>
-              </table>
-            </div>
-           </div>
-      	</div>
+        <div>
+          Associated Files:
+          <table>
+            <tbody>
+              <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
+                <td ng-if="link.title == 'file'">
+                  <i class="fa fa-file-o">{{link.href.split('system')[1]}}</i>
+                </td>
+              </tr>
+          </table>
+          </table>
+        </div>
+      </div>
     </div>
- </div>
+  </div>
+  <!-- warning shows here -->
+</div>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -312,6 +315,7 @@
                               <button type="button"  data-toggle="popover" title="Title Field" data-content='{{"title" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
+                              <span ng-show="missing_values_error" class="warning" autofocus>Title is a required field.</span>
                               <input class="form-control" type="text" ng-model="datadescriptor.title" />
                             </div>
 
@@ -333,11 +337,11 @@
                                 ng-disabled="disabled"
                                 title="Choose creators">
                                 <ui-select-match placeholder="Select author(s)...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-                                <ui-select-choices repeat="person in people | filter: $select.search">
+                                <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
                                   <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
                                 </ui-select-choices>
                               </ui-select>
-							                <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Add Author</button>
+							                <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Create New Author</button>
                               <script>
                                  $(document).ready(function(){
                                      $('[data-toggle="popover"]').popover();
