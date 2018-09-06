@@ -23,9 +23,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
             $scope.metadatum.schemaId = '5711039176026484250-242ac1110-0001-013'
             }
           }
-          MetaController.listMetadataSchema("{'uuid':'"+$scope.metadatum.schemaId+"'}")
+          MetaController.getMetadataSchema($scope.metadatum.schemaId)
             .then(function(response){
-              $scope.metadataschema = response.result[0];
+              $scope.metadataschema = response.result;
               //$scope.metadataschema = schema_response.result;
               console.log('schema: '+angular.toJson($scope.metadataschema ))
               var formschema = {};
