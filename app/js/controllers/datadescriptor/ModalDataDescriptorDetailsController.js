@@ -6,6 +6,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.order['Variable'] =['variable_name','category','site_type','sample_medium','data_type','speciation','unit','value_type']
   $scope.order['Well'] =['wid','island','well_name','old_name','yr_drilled','driller','latitude','longitude','gps','utm','owner_user','land_owner','pump_installer','old_number','well','casing_dia','ground_el','well_depth','solid_case','perf_case','use','init_head','salinity','init_cl','test_date','test_gpm','test_ddwon','test_chlor','test_temp','test_unit','temp_f','temp_c','pump_gpm','draft_mgy','head_feet','pump_yr','draft_yr','bot_hole','bot_solid','bot_perf','SPEC_CAPAC','pump_mgd','draft_mgd','pump_depth','surveyor','t']
   $scope.order['Site'] =['name','latitude','longitude','description','county','state']
+  $scope.order['Water_Quality_Site'] = ['name','latitude','longitude','description','MonitoringLocationName','siteUrl','MonitoringLocationTypeName','ProviderName','activityCount','HUCEightDigitCode','ResolvedMonitoringLocationTypeName','OrganizationFormalName','OrganizationIdentifier','resultCount','MonitoringLocationIdentifier','variables','keywords']
   $scope.order['Person'] =['first_name','last_name','email','orcid','organization','address','phone','url']
   $scope.order['Organization'] = ['name','email','address','phone','url']
   //$scope.order['Subject'] = ['word','uuid','short_heirarchy','full_heirarchy','display']
@@ -23,7 +24,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.ignoreMetadataType = ['published', 'stagged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
   //Don't display metadata schema types as options
   $scope.ignoreSchemaType = ['PublishedFile'];
-  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
+  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Water_Quality_Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
   $scope.modalSchemas = [''];
   $scope.selectedSchema = [''];
   $scope.matchingAssociationIds = [''];
@@ -38,7 +39,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   $scope.get_editors();
   //$scope.action = $stateParams.action;
 
-  $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
+  $scope.query = "{'name':{$in:['Well','Site','Water_Quality_Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
   $scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
@@ -137,6 +138,9 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
     $scope.wellMarkers = $filter('filter')(metadata, {
       name: "Well"
     });
+    $scope.waterQualitySiteMarkers = $filter('filter')(metadata, {
+      name: "Water_Quality_Site"
+    });
     $scope.marks = {};
     angular.forEach($scope.siteMarkers, function (datum) {
       if (datum.value.loc != undefined) {
@@ -144,6 +148,16 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
           lat: parseFloat(datum.value.latitude),
           lng: parseFloat(datum.value.longitude),
           message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
+          draggable: false
+        }
+      }
+    });
+    angular.forEach($scope.waterQualitySiteMarkers, function (datum) {
+      if (datum.value.loc != undefined) {
+        $scope.marks[datum.uuid.replace(/-/g, "")] = {
+          lat: parseFloat(datum.value.latitude),
+          lng: parseFloat(datum.value.longitude),
+          message: "Water Quality Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
           draggable: false
         }
       }
@@ -251,7 +265,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           }
-          else if (value.name === 'Well' || value.name ==='Site') {
+          else if (value.name === 'Well' || value.name ==='Site' || value.name ==='Water_Quality_Site') {
             console.log('stuff')
             if( $scope.locations.indexOf(value) < 0){
               $scope.locations.push(value);
@@ -354,7 +368,7 @@ angular.module('AgaveToGo').controller('ModalDataDescriptorDetailsController', f
   };
   
  $scope.locFilter = function (item) {
-    if (item.name === 'Well' || item.name === 'Site') {
+    if (item.name === 'Well' || item.name === 'Site' || item.name ==='Water_Quality_Site') {
       return item;
     }
   }

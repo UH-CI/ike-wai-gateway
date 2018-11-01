@@ -297,8 +297,8 @@
                                                 <tbody>
                                                     <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                                         <td>
-                                                            <a ng-click="openViewDataDescriptor(metadatum.uuid,'lg')"><i class="fa fa-eye"/> {{metadatum.value.well_name}}
-                                           {{metadatum.value.title}} {{metadatum.value.variable_name}}
+                                                            <a ng-click="openViewDataDescriptor(metadatum.uuid,'lg')"><i class="fa fa-eye"/> {{metadatum.value.well_name}}{{filemetadatum.value.name}}
+                                           {{filemetadatum.value.name}}{{metadatum.value.title}} {{metadatum.value.variable_name}}
                                            {{metadatum.value.tags.toString()}} </a>
                                                         </td>
                                                         <!--

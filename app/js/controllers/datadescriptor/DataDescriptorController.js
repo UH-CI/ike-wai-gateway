@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.ignoreMetadataType = ['published', 'stagged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
   //Don't display metadata schema types as options
   $scope.ignoreSchemaType = ['PublishedFile'];
-  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
+  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Water_Quality_Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
   $scope.modalSchemas = [''];
   $scope.selectedSchema = [''];
   $scope.matchingAssociationIds = [''];
@@ -29,7 +29,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.get_editors();
   //$scope.action = $stateParams.action;
 
-  $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
+  $scope.query = "{'name':{$in:['Well','Site','Water_Quality_Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
   $scope.schemaQuery = "";//{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
   //$scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
@@ -129,6 +129,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wellMarkers = $filter('filter')(metadata, {
       name: "Well"
     });
+    $scope.waterQualitySiteMarkers = $filter('filter')(metadata, {
+      name: "Water_Quality_Site"
+    });
+    
     $scope.marks = {};
     angular.forEach($scope.siteMarkers, function (datum) {
       if (datum.value.loc != undefined) {
@@ -140,6 +144,18 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         }
       }
     });
+    
+    angular.forEach($scope.waterQualitySiteMarkers, function (datum) {
+      if (datum.value.loc != undefined) {
+        $scope.marks[datum.uuid.replace(/-/g, "")] = {
+          lat: parseFloat(datum.value.latitude),
+          lng: parseFloat(datum.value.longitude),
+          message: "Water Quality Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
+          draggable: false
+        }
+      }
+    });
+    
     angular.forEach($scope.wellMarkers, function (datum) {
       if (datum.value.latitude != undefined && datum.value.wid != undefined) {
         $scope.marks[datum.value.wid.replace(/-/g, "")] = {
@@ -333,7 +349,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           }
-          else if (value.name === 'Well' || value.name ==='Site') {
+          else if (value.name === 'Well' || value.name === 'Site' || value.name === 'Water_Quality_Site') {
             //console.log('stuff')
             if( $scope.locations.indexOf(value) < 0){
               $scope.locations.push(value);
@@ -869,7 +885,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.locFilter = function (item) {
-    if (item.name === 'Well' || item.name === 'Site') {
+    if (item.name === 'Well' || item.name === 'Site'|| item.name === 'Water_Quality_Site') {
       return item;
     }
   }
@@ -1001,7 +1017,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   ///////Assoc modal search////////
   $scope.schemaBox = {
     val1: true,
-    val2: true
+    val2: true,
+    val5: true
   };
   $scope.wellbox = true;
   $scope.searchField = {
@@ -1042,7 +1059,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     andarray.push(orquery)
     andquery['$and'] = andarray;
     $scope.query = JSON.stringify(andquery);
-    console.log("QUERY: "+$scope.query)
+    console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
     $scope.offset = 0;
     $scope.fetchModalMetadata();
   }

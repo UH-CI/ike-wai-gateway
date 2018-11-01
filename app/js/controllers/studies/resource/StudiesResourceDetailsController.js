@@ -89,6 +89,7 @@ angular.module('AgaveToGo').controller('StudiesResourceDetailsController', funct
           $scope[$scope._COLLECTION_NAME] = response.result;
           $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
           $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+          $scope.waterQualitySiteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Water_Quality_Site"});
           //{ "value": {"latitude": '!!' }});
           $scope.marks = {};
           angular.forEach($scope.siteMarkers, function(datum) {
@@ -101,6 +102,11 @@ angular.module('AgaveToGo').controller('StudiesResourceDetailsController', funct
               $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
             }
           });
+          angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
+            if(datum.value.loc != undefined){
+            $scope.marks[datum.uuid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Study Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+          }
+        });
           $scope.markers = $scope.marks
           $scope.requesting = false;
         },

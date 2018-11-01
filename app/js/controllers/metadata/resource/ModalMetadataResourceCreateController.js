@@ -9,7 +9,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 
 	$scope.schemaQuery ='';
 	//$scope.approvedSchema = ['Well','Site','Person','Organization','Subject','Location','Variable'];
-	$scope.approvedSchema = ['Well','Site','Person','Organization','Location','Variable'];
+	$scope.approvedSchema = ['Well','Site','Water_Quality_Site','Person','Organization','Location','Variable'];
 	var selectedSchemaUuid = '';
 
 	$scope.initialize = function() {
