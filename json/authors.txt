@@ -1,0 +1,2147 @@
+initial population of hawaiian language article authors
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"A. P. Kamehalau",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output 
+{
+  "uuid": "210063616669052440-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:02:05.828-06:00",
+  "name": "Author",
+  "value": {
+    "name": "A. P. Kamehalau",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:02:05.828-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/210063616669052440-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/210063616669052440-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"B. Leialoha & M. Haokekai",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "8407058118314693096-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:05:26.461-06:00",
+  "name": "Author",
+  "value": {
+    "name": "B. Leialoha & M. Haokekai",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:05:26.461-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8407058118314693096-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8407058118314693096-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"D. Waianuhea",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7701677558144298520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:06:20.896-06:00",
+  "name": "Author",
+  "value": {
+    "name": "D. Waianuhea",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:06:20.896-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7701677558144298520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7701677558144298520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"David Alawa",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7039994896522538520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:06:36.303-06:00",
+  "name": "Author",
+  "value": {
+    "name": "David Alawa",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:06:36.303-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7039994896522538520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7039994896522538520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"DAW",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "6490024334269738520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:06:49.108-06:00",
+  "name": "Author",
+  "value": {
+    "name": "DAW",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:06:49.108-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6490024334269738520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6490024334269738520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"G. W. M.",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5781011133046058520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:07:05.616-06:00",
+  "name": "Author",
+  "value": {
+    "name": "G. W. M.",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:07:05.616-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5781011133046058520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5781011133046058520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Henry K. Au",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5120874659650858520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:07:20.986-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Henry K. Au",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:07:20.986-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5120874659650858520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5120874659650858520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Hoku",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "4415812828339498520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:07:37.402-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Hoku",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:07:37.402-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4415812828339498520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4415812828339498520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"J.K. Mokumaia",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "3905699562593578520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:07:49.279-06:00",
+  "name": "Author",
+  "value": {
+    "name": "J.K. Mokumaia",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:07:49.279-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3905699562593578520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3905699562593578520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"J.W.H. Isaac",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "3304318241807658520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:08:03.281-06:00",
+  "name": "Author",
+  "value": {
+    "name": "J.W.H. Isaac",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:08:03.281-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3304318241807658520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3304318241807658520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"James F. Morgan",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "2712514698091818520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:08:17.060-06:00",
+  "name": "Author",
+  "value": {
+    "name": "James F. Morgan",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:08:17.060-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2712514698091818520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2712514698091818520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"James Hanuwela",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "2190117825879338520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:08:29.223-06:00",
+  "name": "Author",
+  "value": {
+    "name": "James Hanuwela",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:08:29.223-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2190117825879338520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2190117825879338520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Jno E. A. Kaiewe Jr.",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "1506058384645418520-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:08:45.150-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Jno E. A. Kaiewe Jr.",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:08:45.150-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1506058384645418520-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1506058384645418520-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"John Ioane Papa ʻĪʻī",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "801683748101418520-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:09:01.550-06:00",
+  "name": "Author",
+  "value": {
+    "name": "John Ioane Papa ʻĪʻī",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:09:01.550-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/801683748101418520-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/801683748101418520-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Joseph",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "27159040680727016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:09:20.847-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Joseph",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:09:20.847-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/27159040680727016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/27159040680727016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Joseph Adamu",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "597788395627287016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:09:34.134-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Joseph Adamu",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:09:34.134-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/597788395627287016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/597788395627287016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Ka Hui Heanani",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "1194574101406487016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:09:48.029-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Ka Hui Heanani",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:09:48.029-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1194574101406487016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1194574101406487016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Ka Ohu Haʻaheo i na Kuahiwi Ekolu",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "1707006649492247016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:09:59.960-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Ka Ohu Haʻaheo i na Kuahiwi Ekolu",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:09:59.960-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1707006649492247016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1707006649492247016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Kaikuahineheleloa",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "2301644871623447016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:10:13.805-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Kaikuahineheleloa",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:10:13.805-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2301644871623447016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2301644871623447016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Kaimalino",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "2787062075417367016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:10:25.107-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Kaimalino",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:10:25.107-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2787062075417367016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2787062075417367016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Kalama",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "3359538266301207016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:10:38.436-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Kalama",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:10:38.436-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3359538266301207016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3359538266301207016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Kawaikaumaiikamakaokaopua",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "3971657005327127016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:10:52.688-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Kawaikaumaiikamakaokaopua",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:10:52.688-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3971657005327127016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3971657005327127016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Keiki Heleahiki",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "4568872207835927016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:11:06.593-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Keiki Heleahiki",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:11:06.593-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4568872207835927016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4568872207835927016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Larry Kimura",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5262638275158807016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:11:22.746-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Larry Kimura",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:11:22.746-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5262638275158807016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5262638275158807016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Mahele II",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5810246605398807016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:11:35.496-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Mahele II",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:11:35.496-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5810246605398807016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5810246605398807016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Miss L. Kaonohi",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "6511400016470807016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:11:51.821-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Miss L. Kaonohi",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:11:51.821-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6511400016470807016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6511400016470807016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Mr. J. Keawehawaiʻi",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7118192996049687016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:12:05.949-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Mr. J. Keawehawaiʻi",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:12:05.949-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7118192996049687016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7118192996049687016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Mrs. Milikaʻa",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7851816359879447016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:12:23.030-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Mrs. Milikaʻa",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:12:23.030-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7851816359879447016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7851816359879447016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Mrs. Reinhardt",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "8448215518602007016-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:12:36.916-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Mrs. Reinhardt",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:12:36.916-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8448215518602007016-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8448215518602007016-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Rev. A. Polepe",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "9006561267082007016-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:12:49.916-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Rev. A. Polepe",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:12:49.916-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9006561267082007016-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9006561267082007016-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"S. B. Kaomea",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "8739802489668824600-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:13:06.223-06:00",
+  "name": "Author",
+  "value": {
+    "name": "S. B. Kaomea",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:13:06.223-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8739802489668824600-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8739802489668824600-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"W. K. Apuakehau",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "8160583200130264600-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:13:19.709-06:00",
+  "name": "Author",
+  "value": {
+    "name": "W. K. Apuakehau",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:13:19.709-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8160583200130264600-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8160583200130264600-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"W. Kamau",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7676926932927704600-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:13:30.970-06:00",
+  "name": "Author",
+  "value": {
+    "name": "W. Kamau",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:13:30.970-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7676926932927704600-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7676926932927704600-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"W. M. Kalaiwaa",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "7186312818705624600-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:13:42.393-06:00",
+  "name": "Author",
+  "value": {
+    "name": "W. M. Kalaiwaa",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:13:42.393-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7186312818705624600-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7186312818705624600-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"W.L.M.",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "6516813316605144600-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:13:57.981-06:00",
+  "name": "Author",
+  "value": {
+    "name": "W.L.M.",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:13:57.981-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6516813316605144600-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6516813316605144600-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Will E. Fisher",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5971653117723864600-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:14:10.674-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Will E. Fisher",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:14:10.674-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5971653117723864600-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5971653117723864600-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Z. P. Kalokuokamaile",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "5432892420113624600-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:14:23.218-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Z. P. Kalokuokamaile",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:14:23.218-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5432892420113624600-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5432892420113624600-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "4366005913710358040-242ac1112-0001-013", 
+    "title": "Author",
+	"value": {
+	    "name":"Z.P.K. Lionanohokuahiwi",
+	    "pen_name":""
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Author"
+}'
+
+// dev output
+{
+  "uuid": "4911826987762904600-242ac1112-0001-012",
+  "owner": "jgeis",
+  "schemaId": "4366005913710358040-242ac1112-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T14:14:35.350-06:00",
+  "name": "Author",
+  "value": {
+    "name": "Z.P.K. Lionanohokuahiwi",
+    "pen_name": ""
+  },
+  "created": "2018-11-19T14:14:35.350-06:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4911826987762904600-242ac1112-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4911826987762904600-242ac1112-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4366005913710358040-242ac1112-0001-013"
+    }
+  }
+}
+
+------------

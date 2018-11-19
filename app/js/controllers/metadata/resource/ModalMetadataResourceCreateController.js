@@ -100,7 +100,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 
 						// don't do associations for any person or organization metadata objects
 						//if (metaName != "Person" && metaName != "Organization" && metaName != "Subject") {
-						if (metaName != "Person" && metaName != "Organization") {
+						if (metaName != "Person" 
+								&& metaName != "Organization" 
+								&& metaName != "Newspaper" 
+								&& metaName != "Translator" 
+								&& metaName != "Author") {
 							//check if this is for a data descriptor object or just a new metadata creation
 							if ($scope.data_descriptor_metadatum){
 								console.log($scope.data_descriptor_metadatum)
@@ -121,7 +125,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							$scope.close();
 						}
 						//else if (metaName === "Person" || metaName === "Organization" || metaName === "Subject" ) {
-						else if (metaName === "Person" || metaName === "Organization" ) {
+						else if (metaName === "Person" 
+						|| metaName === "Organization" 
+						|| metaName === "Newspaper" 
+						|| metaName === "Translator" 
+						|| metaName === "Author") {
 							$rootScope.$broadcast('metadataPersonOrgOrSubjectUpdated', { type: metaName, value: response.result});
 							App.alert({message: "Successfully Created "+ " " + metaName,closeInSeconds: 5  });
 						    $scope.close();

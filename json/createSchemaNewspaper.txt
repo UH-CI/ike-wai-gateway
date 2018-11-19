@@ -1,0 +1,57 @@
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaNewspaper.json
+
+OR
+
+
+curl -sk -H "Authorization: Bearer 9691de2023ebd0483bd9688d07068b9" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title" : "Newspaper",
+  "description" : "Information related to a newspaper",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "title" : "Name"
+    }
+  },
+  "required" : [ "name" ]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+// output on dev
+{
+  "internalUsername": null,
+  "lastUpdated": "2018-11-16T19:17:12.808-06:00",
+  "schema": {
+    "title": "Newspaper",
+    "description": "Information related to a newspaper",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "name": {
+        "type": "string",
+        "title": "Name"
+      }
+    },
+    "required": [
+      "name"
+    ]
+  },
+  "uuid": "8986749983805533720-242ac1111-0001-013",
+  "created": "2018-11-16T19:17:12.808-06:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/8986749983805533720-242ac1111-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/8986749983805533720-242ac1111-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
