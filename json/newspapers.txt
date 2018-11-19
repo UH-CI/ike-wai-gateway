@@ -1,3 +1,7 @@
+
+
+// DEV!!!!!  See below the horizontal bar for prod
+
 metadata-addupdate -v -F - <<< '{
     "schemaId": "8986749983805533720-242ac1111-0001-013", 
     "title": "Newspaper",
@@ -1046,7 +1050,1072 @@ metadata-addupdate -v -F - <<< '{
   }
 }
 
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
+
+// PROD
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Elele Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "5843164677864952296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:16:01.733-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Elele Hawaii"
+  },
+  "created": "2018-11-19T15:16:01.733-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5843164677864952296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5843164677864952296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
 ------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Hae Hawaiʻi"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "6504546691775992296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:16:17.132-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Hae Hawaiʻi"
+  },
+  "created": "2018-11-19T15:16:17.132-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6504546691775992296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6504546691775992296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Hoku o ka Pakipika"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "7053357612858872296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:16:29.910-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Hoku o ka Pakipika"
+  },
+  "created": "2018-11-19T15:16:29.910-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7053357612858872296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7053357612858872296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Nupepa Kuokoa"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "7589326581726712296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:16:42.389-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Nupepa Kuokoa"
+  },
+  "created": "2018-11-19T15:16:42.389-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7589326581726712296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7589326581726712296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ke Au Okoa"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "8130535410695672296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:16:54.990-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ke Au Okoa"
+  },
+  "created": "2018-11-19T15:16:54.990-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8130535410695672296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8130535410695672296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Lahui Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "8725646079229432296-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:17:08.846-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Lahui Hawaii"
+  },
+  "created": "2018-11-19T15:17:08.846-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8725646079229432296-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8725646079229432296-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ko Hawaii Pae Aina"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "9146732017986039320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:17:22.219-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ko Hawaii Pae Aina"
+  },
+  "created": "2018-11-19T15:17:22.219-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/9146732017986039320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/9146732017986039320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Nupepa Elele"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "8607971320375799320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:17:34.763-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Nupepa Elele"
+  },
+  "created": "2018-11-19T15:17:34.763-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8607971320375799320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8607971320375799320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Leo o ka Lahui"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "8083426964515319320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:17:46.976-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Leo o ka Lahui"
+  },
+  "created": "2018-11-19T15:17:46.976-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8083426964515319320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/8083426964515319320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Oiaio"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "7481315499289079320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:18:00.995-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Oiaio"
+  },
+  "created": "2018-11-19T15:18:00.995-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7481315499289079320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/7481315499289079320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Loea Kalaiaina"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "6941781707565559320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:18:13.557-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Loea Kalaiaina"
+  },
+  "created": "2018-11-19T15:18:13.557-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6941781707565559320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6941781707565559320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ke Aloha Aina"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "6401474821728759320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:18:26.137-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ke Aloha Aina"
+  },
+  "created": "2018-11-19T15:18:26.137-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6401474821728759320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/6401474821728759320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Naʻi Aupuni"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "5655095405029879320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:18:43.515-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Naʻi Aupuni"
+  },
+  "created": "2018-11-19T15:18:43.515-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5655095405029879320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5655095405029879320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ke Au Hou"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "5065095747578359320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:18:57.252-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ke Au Hou"
+  },
+  "created": "2018-11-19T15:18:57.252-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5065095747578359320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/5065095747578359320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Hoku o Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "4211170349787639320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:19:17.133-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Hoku o Hawaii"
+  },
+  "created": "2018-11-19T15:19:17.133-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/4211170349787639320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/4211170349787639320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ke Alakai o Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "3682674624014839320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:19:29.439-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ke Alakai o Hawaii"
+  },
+  "created": "2018-11-19T15:19:29.439-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/3682674624014839320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/3682674624014839320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Leo Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "3132575212743159320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:19:42.247-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Leo Hawaii"
+  },
+  "created": "2018-11-19T15:19:42.247-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/3132575212743159320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/3132575212743159320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Ka Hae Hawaii"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "2613528415021559320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:19:54.332-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Ka Hae Hawaii"
+  },
+  "created": "2018-11-19T15:19:54.332-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/2613528415021559320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/2613528415021559320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+------------------------------------
+
+metadata-addupdate -v -F - <<< '{
+    "schemaId": "1880572523469467160-242ac1111-0001-013", 
+    "title": "Newspaper",
+	"value": {
+	    "name":"Nupepa Puka La Kuokoa"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	],
+	"name": "Newspaper"
+}'
+
+//output 
+{
+  "uuid": "2106292777363959320-242ac1111-0001-012",
+  "owner": "jgeis",
+  "schemaId": "1880572523469467160-242ac1111-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2018-11-19T15:20:06.142-06:00",
+  "name": "Newspaper",
+  "value": {
+    "name": "Nupepa Puka La Kuokoa"
+  },
+  "created": "2018-11-19T15:20:06.142-06:00",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/2106292777363959320-242ac1111-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/2106292777363959320-242ac1111-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1880572523469467160-242ac1111-0001-013"
+    }
+  }
+}
+
+
 
 
 

@@ -24,7 +24,7 @@ curl -sk -H "Authorization: Bearer 9691de2023ebd0483bd9688d07068b9" -X POST -H "
 }
 ' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
 
-// output
+// dev output
 {
   "internalUsername": null,
   "lastUpdated": "2018-11-16T19:47:38.379-06:00",
@@ -56,6 +56,42 @@ curl -sk -H "Authorization: Bearer 9691de2023ebd0483bd9688d07068b9" -X POST -H "
     },
     "owner": {
       "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
+
+// prod output
+{
+  "internalUsername": null,
+  "lastUpdated": "2018-11-19T15:03:19.720-06:00",
+  "schema": {
+    "title": "Author",
+    "description": "Information related to a newspaper article author",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "name": {
+        "type": "string",
+        "title": "Name"
+      },
+      "pen_name": {
+        "type": "string",
+        "title": "Pen name"
+      }
+    }
+  },
+  "uuid": "8436926000159387160-242ac1111-0001-013",
+  "created": "2018-11-19T15:03:19.720-06:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/8436926000159387160-242ac1111-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/8436926000159387160-242ac1111-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
     }
   }
 }
