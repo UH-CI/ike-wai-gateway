@@ -94,7 +94,7 @@
                               <tbody>
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                       <td>
-                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}
+                                          <a ui-sref="metadata({id: metadatum.uuid})"> {{metadatum.value.well_name}}{{metadatum.value.name}}
                                            {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}} {{metadatum.value.tags.toString()}} </a>
                                       </td>
                                       <td class="hidden-xs">

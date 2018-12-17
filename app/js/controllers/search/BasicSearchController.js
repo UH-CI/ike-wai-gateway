@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('BasicSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService) {
+angular.module('AgaveToGo').controller('BasicSearchController', function ($scope, $state, $q, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor','Water_Quality_Site']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
     $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.wqs_id = MetadataService.fetchSystemMetadataUuid('Water_Quality_Site')
@@ -114,6 +114,9 @@ angular.module('AgaveToGo').controller('BasicSearchController', function ($scope
         }
         if ($scope.schemaBox.val2){
           typearray.push('Well')
+        }
+        if ($scope.schemaBox.val5){
+          typearray.push('Water_Quality_Site')
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)

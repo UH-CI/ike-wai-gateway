@@ -27,6 +27,7 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
             $scope[$scope._COLLECTION_NAME] = response.result;
             $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
             $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+            $scope.waterQualitySiteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Water_Quality_Site"});
             //{ "value": {"latitude": '!!' }});
             $scope.marks = {};
             angular.forEach($scope.siteMarkers, function(datum) {
@@ -37,6 +38,11 @@ angular.module('AgaveToGo').controller('SearchController', function ($scope, $st
             angular.forEach($scope.wellMarkers, function(datum) {
                 if(datum.value.latitude != undefined && datum.value.wid !=undefined){
                 $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false}
+              }
+            });
+            angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
+                if(datum.value.loc != undefined){
+                $scope.marks[datum.value.name.replace("-"," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false}
               }
             });
             $scope.markers = $scope.marks

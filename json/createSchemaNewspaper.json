@@ -1,0 +1,13 @@
+{
+  "title" : "Newspaper",
+  "description" : "Information related to a newspaper",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "title" : "Name"
+    }
+  },
+  "required" : [ "name" ]
+}

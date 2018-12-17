@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
     $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.files_hrefs=[]
@@ -37,6 +37,7 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
     $scope.sortReverse = false;
 
     $scope.wellSortType ='value.well_name'
+    $scope.waterQualitySiteSortType ='value.water_quality_site_name'
     $scope.siteSortType ='value.name'
     $scope.varSortType ='value.variable_name'
     $scope.wellSortReverse = true;
@@ -136,6 +137,9 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
         if ($scope.schemaBox.val2){
           typearray.push('Well')
         }
+        if ($scope.schemaBox.val5){
+          typearray.push('Water_Quality_Site')
+        }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)
@@ -163,6 +167,10 @@ angular.module('AgaveToGo').controller('FacetedSearchController', function ($sco
         .then(function(response){
             $scope.facet_wells = response.result;
            // alert(angular.toJson($scope.facet_wells))
+        })
+      MetaController.listMetadata("{'name':'Water_Quality_Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_water_quality_sites = response.result;
         })
       MetaController.listMetadata("{'name':'Site','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
