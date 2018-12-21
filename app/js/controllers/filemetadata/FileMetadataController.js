@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected','File','unapproved'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['DataDescriptor','Well','Site','Person','Organization','Location','Subject','Variable','Tag','File'];
+    $scope.approvedSchema = ['DataDescriptor','Well','Site','Water_Quality_Site','Person','Organization','Location','Subject','Variable','Tag','File'];
     $scope.modalSchemas = [''];
     $scope.selectedSchema = [''];
     $scope.matchingAssociationIds = [''];
@@ -26,7 +26,7 @@ angular.module('AgaveToGo').controller('FileMetadataController', function ($scop
     $scope.get_editors();
     $scope.action = $stateParams.action;
 
-    $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
+    $scope.query = "{'name':{$in:['Well','Site','Water_Quality_Site','Person','Organization','Location','Subject','Variable','Tag','File']}}"//'{"associationIds":"' +  $stateParams.uuid + '"}';
     $scope.schemaQuery ='';//"{'owner':'seanbc'}";
     $scope.data_descriptor_metadatum = [];
     $scope.associatedDataDescriptors = [];

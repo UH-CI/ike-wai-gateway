@@ -29,7 +29,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
     $scope.schemaQuery = "{'schema.title':'DataDescriptor'}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
@@ -112,7 +112,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 
     $scope.refresh = function() {
       $scope.requesting = true;
-      console.log("query: " + $scope.schemaQuery)
+      console.log("DataDescriptorsController.refresh query: " + $scope.schemaQuery)
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
       .then(function(){
           uuid = $localStorage["schema_DataDescriptor"]

@@ -205,7 +205,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                          function (response) {
                             var schemas = response.result;
                             var myfields = [];
-                            var approvedSchema = ['Well','Site','DataDescriptor']
+                            var approvedSchema = ['Well','Site','Water_Quality_Site','DataDescriptor']
                             angular.forEach(schemas, function(schemaobj){
                               if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
                                  angular.forEach(schemaobj.schema.properties, function(value, key){

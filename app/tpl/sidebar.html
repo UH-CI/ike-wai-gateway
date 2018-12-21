@@ -243,29 +243,35 @@
            </a>
        </li>
         -->
-        <li class="nav-item nav-item warning" ng-if="['seanbc','jgeis','omeier','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+        <li class="nav-item nav-item warning" ng-if="['seanbc','jgeis','ike-admin'].indexOf(authenticatedUser.username) >= 0">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-user"></i>
                     <span class="title">Admin</span>
                     <span class="arrow "></span>
                 </a>
-            <ul class="sub-menu">
-                <li class="nav-item warning" ng-if="['seanbc','jgeis','omeier','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+              <ul class="sub-menu">
+                <li class="nav-item">
                     <a href="#/stagged">
                     </i><i class="fa fa-file"></i>
                         <span class="title">Staged Files</span>
                     </a>
                 </li>
-                <li class="nav-item warning" ng-if="['seanbc','jgeis','omeier','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+                <li class="nav-item">
                     <a href="#/metadata/unapproved">
                     </i><i class="fa fa-exclamation"></i>
                         <span class="title">Unapproved Metadata</span>
                     </a>
                 </li>
-                <li class="nav-item warning" ng-if="['seanbc','jgeis','omeier','ike-admin'].indexOf(authenticatedUser.username) >= 0">
+                <li class="nav-item">
                     <a href="#/metadata">
                     </i><i class="fa fa-tags"></i>
                         <span class="title">Manage Metadata</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#/impersonate">
+                        <i class="fa fa-code"></i>
+                        <span class="title">Impersonate</span>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -503,7 +503,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 				scope: $scope,
 				size: size,
 				backdrop: 'static',
-      		    keyboard : false,
+      	keyboard : false,
 				uuid: dataDescriptorUuid,
 				profile: $scope.profile,
 				resolve: {
@@ -517,22 +517,23 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 
 
 		$scope.openEditDataDescriptor= function (dataDescriptorUuid, size) {
+			console.log("Jen FMRMAC: openEditDataDescriptor: " + dataDescriptorUuid);
 			$scope.uuid = dataDescriptorUuid;
 			$scope.action = "edit";
-	      var modalInstance = $uibModal.open({
-	        animation: $scope.animationsEnabled,
-	        templateUrl: 'views/datadescriptor/manager.html',
-	        controller: 'DataDescriptorController',
-	        scope: $scope,
-	        size: size,
-			backdrop: 'static',
-      		keyboard : false,
-	        uuid: dataDescriptorUuid,
-	        profile: $scope.profile,
-	        resolve: {
-	
-	        }
-	      });
+			var modalInstance = $uibModal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'views/datadescriptor/manager.html',
+				controller: 'DataDescriptorController',
+				scope: $scope,
+				size: size,
+				backdrop: 'static',
+				keyboard : false,
+				uuid: dataDescriptorUuid,
+				profile: $scope.profile,
+				resolve: {
+
+				}
+			});
 		};
 
 
@@ -671,7 +672,7 @@ angular.module('AgaveToGo').controller("FileMetadataResourceMultipleAddControlle
 			 );
 		};*/
 		///////Assoc modal search////////
-		$scope.schemaBox = {val1:true,val2:true};
+		$scope.schemaBox = {val1:true,val2:true,val5:true};
 		$scope.wellbox = true;
 		$scope.searchField = {value:''}
 		query_array = []
