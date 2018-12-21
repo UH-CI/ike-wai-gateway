@@ -343,11 +343,11 @@
   	                        <!--<div id="association_notifications"></div>-->
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group">
-                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site'],'Select Location(s)')">Select Location(s)</button>
+                              <button class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site','Water_Quality_Site'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
                               <button class="btn btn-default btn-sm"  ng-repeat="filemetadatum in filemetadata | filter: locFilter" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
-                                {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                {{filemetadatum.value.well_name}}{{filemetadatum.value.name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i id="filemetadatum.uuid" ng-class="class[uuid]" class="glyphicon glyphicon-remove-sign"></i>
                               </button>
@@ -359,7 +359,7 @@
                             </div>
                             <div id="variable_buttons">
                               <button class="btn btn-default btn-sm" ng-repeat="filemetadatum in filemetadata | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
-                                {{filemetadatum.value.well_name}}{{filemetadatum.value.title}}
+                                {{filemetadatum.value.well_name}}{{filemetadatum.value.name}}{{filemetadatum.value.title}}
                                 {{filemetadatum.value.wid}} {{filemetadatum.value.variable_name}} {{filemetadatum.value.description}} {{filemetadatum.value.tags.toString()}}
                                 <i class="glyphicon glyphicon-remove-sign"></i>
                               </button>

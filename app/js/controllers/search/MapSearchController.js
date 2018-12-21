@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Variable','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,7 +27,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true};
+    $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
     $scope.files_hrefs=[]
@@ -37,6 +37,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.sortReverse = false;
 
     $scope.wellSortType ='value.well_name'
+    $scope.waterQualitySiteSortType ='value.water_quality_site_name'
     $scope.siteSortType ='value.name'
     $scope.varSortType ='value.variable_name'
     $scope.wellSortReverse = true;
@@ -193,6 +194,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         if ($scope.schemaBox.val2){
           typearray.push('Well')
         }
+        if ($scope.schemaBox.val5){
+          typearray.push('Water_Quality_Site')
+        }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)
@@ -229,8 +233,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         console.log("culled_metadata length: " + $scope.culled_metadata.length)
         $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
         $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
-        $scope.wqsMarkers = $filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
-              console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.wqsMarkers.length)
+        $scope.waterQualitySiteMarkers = $filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
+        console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
         $scope.layers.overlays = {};
         if ($scope.siteMarkers && $scope.siteMarkers.length > 0){
@@ -247,7 +251,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                           visible: true
                       }
         }
-        if ($scope.wqsMarkers &&  $scope.wqsMarkers.length > 0){
+        if ($scope.waterQualitySiteMarkers &&  $scope.waterQualitySiteMarkers.length > 0){
         $scope.layers.overlays['water_quality_sites']= {
                           name: 'Water Quality Sites',
                           type: 'group',
@@ -284,7 +288,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
           }
         });
-        angular.forEach($scope.wqsMarkers, function(datum) {
+        angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
             if(datum.value.latitude != undefined && datum.value.name !=undefined){
             $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message:  "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
           }
@@ -296,6 +300,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
         $scope.facet_sites =[]
+        $scope.facet_water_quality_sites =[];
         $scope.facet_variables =[]
         $scope.markers = [];
         angular.forEach($scope.culled_metadata, function(datum){
@@ -309,7 +314,12 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
                 }*/
-            }
+            }else if(datum.name == 'Water_Quality_Site'){
+              $scope.facet_water_quality_sites.push(datum)
+              /*if(datum.value.latitude != undefined){
+                  $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
+              }*/
+          }
 
         })
         $scope.updateMap();

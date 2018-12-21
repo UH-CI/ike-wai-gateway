@@ -11,7 +11,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.ignoreMetadataType = ['published', 'stagged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
   //Don't display metadata schema types as options
   $scope.ignoreSchemaType = ['PublishedFile'];
-  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
+  $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Water_Quality_Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
   $scope.modalSchemas = [''];
   $scope.selectedSchema = [''];
   $scope.matchingAssociationIds = [''];
@@ -20,6 +20,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.offset = 0;
   // used to show the right things on the first/second pages of the data descriptor create modal
   $scope.wizardSecondPage = false;
+  // used to show/hide the hawaiian language newspaper translations section on the data descriptor edit view.
+  $scope.hawaiian = false;
 
   //set admin
   $scope.get_editors = function () {
@@ -29,12 +31,15 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.get_editors();
   //$scope.action = $stateParams.action;
 
-  $scope.query = "{'name':{$in:['Well','Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
+  $scope.query = "{'name':{$in:['Well','Site','Water_Quality_Site','Person','Organization','Location','Subject','Variable','Tag','File']}}";
   $scope.schemaQuery = "";//{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
   //$scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
   $scope.people = [];
+  $scope.translators = [];
+  $scope.newspapers = [];
+  $scope.articleAuthors = [];
   $scope.orgs = [];
   $scope.subjects = [];
   $scope.locations = [];
@@ -96,12 +101,18 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.datadescriptor = {};
   $scope.datadescriptor.organizations = [];
   $scope.datadescriptor.creators = [];
+  $scope.datadescriptor.articleAuthors = [];
+  $scope.datadescriptor.newspapers = [];
+  $scope.datadescriptor.translators = [];
   $scope.datadescriptor.files = [];
   //$scope.datadescriptor.subjects = [];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'subjects', 'start_datetime', 'end_datetime', 'formats',  'description']
-   $scope.data_descriptor_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary']
+  $scope.data_descriptor_order = ['title','creators', 'subjects', 'start_datetime', 'end_datetime', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
+  //$scope.data_descriptor_hawaiian_order = ['newspapers','articleAuthors','translators']
+  //$scope.data_descriptor_hawaiian_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary']
+
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
   $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
@@ -129,6 +140,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wellMarkers = $filter('filter')(metadata, {
       name: "Well"
     });
+    $scope.waterQualitySiteMarkers = $filter('filter')(metadata, {
+      name: "Water_Quality_Site"
+    });
+    
     $scope.marks = {};
     angular.forEach($scope.siteMarkers, function (datum) {
       if (datum.value.loc != undefined) {
@@ -140,6 +155,18 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         }
       }
     });
+    
+    angular.forEach($scope.waterQualitySiteMarkers, function (datum) {
+      if (datum.value.loc != undefined) {
+        $scope.marks[datum.uuid.replace(/-/g, "")] = {
+          lat: parseFloat(datum.value.latitude),
+          lng: parseFloat(datum.value.longitude),
+          message: "Water Quality Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
+          draggable: false
+        }
+      }
+    });
+    
     angular.forEach($scope.wellMarkers, function (datum) {
       if (datum.value.latitude != undefined && datum.value.wid != undefined) {
         $scope.marks[datum.value.wid.replace(/-/g, "")] = {
@@ -220,6 +247,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       console.log("Jen DDC continue in refresh");
       $scope.requesting = true;
       $scope.people.length = 0;
+      $scope.newspapers.length = 0;
+      $scope.articleAuthors.length = 0;
+      $scope.translators.length = 0;
       //$scope.subjects.length = 0;
       $scope.orgs.length = 0;
 
@@ -243,6 +273,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       )
 
       $scope.getPeople();
+      $scope.getNewspapers();
+      $scope.getArticleAuthors();
       //$scope.getSubjects();
       $scope.getOrgs();
       $scope.getFiles();
@@ -269,7 +301,18 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.getPeople = function () {
     $scope.people.length = 0;
+    $scope.translators.length = 0;
     $scope.fetchMetadata("{'name':'Person'}");
+  };
+
+  $scope.getNewspapers = function () {
+    $scope.newspapers.length = 0;
+    $scope.fetchMetadata("{'name':'Newspaper'}");
+  };
+
+  $scope.getArticleAuthors = function () {
+    $scope.articleAuthors.length = 0;
+    $scope.fetchMetadata("{'name':'Author'}");
   };
 
   $scope.getAssociations = function () {
@@ -283,6 +326,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
 
   $scope.getFiles = function () {
+    // JEN: TODO: this likely shouldn't be people, what should it be?
     $scope.people.length = 0;
     //$scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $stateParams.uuid + "'}]}");
     $scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $scope.ddUuid + "'}]}");
@@ -326,14 +370,23 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           } else if (value.name === 'Person') {
             $scope.people.push(value.value);
             $scope.people[$scope.people.length - 1]["uuid"] = value.uuid;
+            $scope.translators.push(value.value);
+            $scope.translators[$scope.translators.length - 1]["uuid"] = value.uuid;
+          } else if (value.name === 'Newspaper') {
+            $scope.newspapers.push(value.value);
+            $scope.newspapers[$scope.newspapers.length - 1]["uuid"] = value.uuid;
+          } else if (value.name === 'Author') {
+            $scope.articleAuthors.push(value.value);
+            $scope.articleAuthors[$scope.articleAuthors.length - 1]["uuid"] = value.uuid;
           } else if (value.name === 'Organization') {
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           } else if (value.name === 'File') {
+            // JEN: TODO: this likely shouldn't be org, what should it be?
             $scope.orgs.push(value.value);
             $scope.orgs[$scope.orgs.length - 1]["uuid"] = value.uuid;
           }
-          else if (value.name === 'Well' || value.name ==='Site') {
+          else if (value.name === 'Well' || value.name === 'Site' || value.name === 'Water_Quality_Site') {
             //console.log('stuff')
             if( $scope.locations.indexOf(value) < 0){
               $scope.locations.push(value);
@@ -460,6 +513,30 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       // don't actually want to do association yet until 
       // user clicks "save", just want to display it.
       //$scope.addAssociationToDataDescriptor($scope.ddUuid, args.value.uuid);
+    } else if (args.type === "Author") {
+      var str = {
+        "name": args.value.value.name,
+        "pen_name": args.value.value.pen_name,
+        "uuid": args.value.uuid
+      };
+      $scope.datadescriptor.articleAuthors.push(str);
+    } else if (args.type === "Newspaper") {
+      var str = {
+        "name": args.value.value.name,
+        //"volume": args.value.value.volume,
+        //"number": args.value.value.number,
+        //"page": args.value.value.page,
+        //"column": args.value.value.column,
+        "uuid": args.value.uuid
+      };
+      $scope.datadescriptor.newspapers.push(str);
+    } else if (args.type === "Translator") {
+      var str = {
+        "first_name": args.value.value.first_name,
+        "last_name": args.value.value.last_name,
+        "uuid": args.value.uuid
+      };
+      $scope.datadescriptor.translators.push(str);
     } else if (args.type === "Organization") {
       var str = {
         "name": args.value.value.name,
@@ -567,6 +644,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.$broadcast('schemaFormValidate');
     /*if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title &&
       $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights) {*/
+    // check for required fields before continuing with the save process
     if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title) {
       // Then we check if the form is valid
       //	if (form.$valid) {
@@ -639,8 +717,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       $scope.datadescriptor.title && $scope.datadescriptor.license_permission &&
       $scope.datadescriptor.license_rights) {
 ````*/
-    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
-    $scope.datadescriptor.title) {
+    // check for required fields before continuing with save process
+    if ($scope.datadescriptor.creators.length > 0 
+        && $scope.datadescriptor.creators != '' 
+        && $scope.datadescriptor.title) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -869,7 +949,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.locFilter = function (item) {
-    if (item.name === 'Well' || item.name === 'Site') {
+    if (item.name === 'Well' || item.name === 'Site'|| item.name === 'Water_Quality_Site') {
       return item;
     }
   }
@@ -1001,7 +1081,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   ///////Assoc modal search////////
   $scope.schemaBox = {
     val1: true,
-    val2: true
+    val2: true,
+    val5: true
   };
   $scope.wellbox = true;
   $scope.searchField = {
@@ -1042,7 +1123,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     andarray.push(orquery)
     andquery['$and'] = andarray;
     $scope.query = JSON.stringify(andquery);
-    console.log("QUERY: "+$scope.query)
+    console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
     $scope.offset = 0;
     $scope.fetchModalMetadata();
   }

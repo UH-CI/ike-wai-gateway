@@ -3,6 +3,19 @@
 Profile: {{profile}}</br></br>
 Token: {{token}}</br></br>
 
+To impersonate another user, generate a token for that user via the CLI:
+<br />
+./auth-tokens-create -x username
+<br />
+Copy the token and paste it in the form below.  You may need to reload/flush your cached data.
+<br />
+<br />
+To get back to being yourself: 
+<br />
+./auth-tokens-create -u your_username
+<br /> (for your CLI) and log out and log back in again (for the site).
+<br />
+<br />
 
 <div ng-controller="ImpersonateController">
   <form novalidate class="form-group schema-form-text">

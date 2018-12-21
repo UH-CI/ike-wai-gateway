@@ -1,0 +1,16 @@
+{
+  "title" : "Author",
+  "description" : "Information related to a newspaper article author",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "name" : {
+      "type" : "string",
+      "title" : "Name"
+    },
+    "pen_name" : {
+      "type" : "string",
+      "title" : "Pen name"
+    }
+  }
+}
