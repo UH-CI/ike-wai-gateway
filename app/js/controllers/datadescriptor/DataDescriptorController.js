@@ -108,8 +108,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.datadescriptor.subjects = [];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'subjects', 'start_datetime', 'end_datetime', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
+  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
   //$scope.data_descriptor_hawaiian_order = ['newspapers','articleAuthors','translators']
   //$scope.data_descriptor_hawaiian_display = ['Title','Author(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Format(s)',  'Summary']
 

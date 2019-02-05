@@ -220,18 +220,18 @@
                                             {{val.first_name}} {{val.last_name}}
                                         <span>
                                     </td>
-                                   <!-- <td ng-if="key=='organizations' ">
+                                   <td ng-if="key=='organizations'">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.name}}
                                       <span>
-                                    </td>-->
+                                    </td>
                                     <!--
                                     <td ng-if="key=='subjects' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.word}}
                                       <span>
                                     </td>
-
+                                    -->
                                     <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
                                       <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
                                       <!--{{data_descriptor_metadatum.value[key]}}-->
@@ -366,6 +366,34 @@
                             </div>
                           </div>
                           </br>
+
+                      <!-- CONTRIBUTING AGENCIES -->
+                      <div class="form-group">
+                          <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
+                          <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                          </button>
+                          <br />
+
+                          <ui-select
+                            class="form-control"
+                            multiple
+                            remove-selected="false"
+                            ng-model="datadescriptor.organizations"
+                            theme="bootstrap"
+                            style="width: 100%;text-align: left;"
+                            sortable="true"
+                            ng-disabled="disabled"
+                            title="Choose contributing people">
+                            <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
+                            <ui-select-choices repeat="org in orgs | filter: $select.search">
+                              <span ng-bind-html="org.name"></span>
+                            </ui-select-choices>
+                          </ui-select>
+                          <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
+
+                      </div>
+                      <br />
 
                           <div class="panel panel-default"  ng-show="!wizardSecondPage">
                               <div class="panel-heading"><button class="btn btn-block" data-toggle="collapse" data-target="#hawaiian">Fields for Hawaiian Language group only</button></div>
@@ -651,33 +679,6 @@
                               </ui-select>
 
                               <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
-                            </div>
-                            <br />-->
-                            <!-- CONTRIBUTING AGENCIES -->
-                           <!-- <div class="form-group">
-                              <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
-                              <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <br />
-
-                              <ui-select
-                                class="form-control"
-                                multiple
-                                remove-selected="false"
-                                ng-model="datadescriptor.organizations"
-                                theme="bootstrap"
-                                style="width: 100%;text-align: left;"
-                                sortable="true"
-                                ng-disabled="disabled"
-                                title="Choose contributing people">
-                                <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
-                                <ui-select-choices repeat="org in orgs | filter: $select.search">
-                                  <span ng-bind-html="org.name"></span>
-                                </ui-select-choices>
-                              </ui-select>
-                              <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateOrg('lg')">Add Contributing Organizations</button>
-
                             </div>
                             <br />-->
                             <!-- LANGUAGE -->
