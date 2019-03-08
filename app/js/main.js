@@ -1954,7 +1954,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         /**********************************************************************/
 
         // Projects
-        .state('projects', {
+        /*.state('projects', {
             url: "/projects",
             templateUrl: "views/projects/dashboard.html",
             data: {pageTitle: 'Projects'},
@@ -1970,6 +1970,36 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/Tasks.js',
                             'js/services/Comments.js',
                             'js/controllers/projects/ProjectDashboardController.js'
+                        ]
+                    });
+                }]
+            }
+        })*/
+
+        .state('projects', {
+            url: "/projects",
+            templateUrl: "views/projects/manager.html",
+            data: {pageTitle: 'Projects'},
+            controller: "ProjectListController",
+            resolve: {
+                deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                    return $ocLazyLoad.load({
+                        serie: true,
+                        name: 'AgaveToGo',
+                        insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                        files: [
+                            //'../bower_components/datatables/media/css/dataTables.bootstrap.min.css',
+                            //'../bower_components/datatables/media/css/jquery.dataTables.min.css',
+                            //
+                            //'../bower_components/datatables/media/js/dataTables.bootstrap.js',
+                            //'../bower_components/datatables/media/js/jquery.dataTables.js',
+                            '../assets/global/scripts/datatable.js',
+                            '../bower_components/holderjs/holder.js',
+                            'js/services/ActionsService.js',
+                            'js/services/MessageService.js',
+                            'js/services/RolesService.js',
+                            'js/controllers/QueryBuilderController.js',
+                            'js/controllers/projects/ProjectListController.js'
                         ]
                     });
                 }]
