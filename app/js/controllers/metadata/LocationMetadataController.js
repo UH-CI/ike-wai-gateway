@@ -245,7 +245,60 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.modalSchemas = $scope.modalSchemas
   };
 
+  //download search results in metadata in CSV format
+  $scope.downloadSearchResults = function(){
+    csvContent = "";
+    for (var i = 0; i < $scope.metadata.length; i++) {
+      var metadatum = $scope.metadata[i];
+      // ignoreMetadataType.indexOf(metadatum.name) < 0
+      if ($scope.ignoreMetadataType.indexOf(metadatum.name) < 0) {
+        if (typeof metadatum.value.name === "undefined") {
+          csvContent += '"",';
+        } else {
+          csvContent += '"' + metadatum.value.name + '",';
+        }
 
+        if (typeof metadatum.value.wid === "undefined") {
+          csvContent += '"",';
+        } else {
+          csvContent += '"' + metadatum.value.wid + '",';
+        }
+
+        if (typeof metadatum.value.longitude === "undefined") {
+          csvContent += '"",';
+        } else {
+          csvContent += '"' + metadatum.value.longitude + '",';
+        }
+
+        if (typeof metadatum.value.latitude === "undefined") {
+          csvContent += '"",';
+        } else {
+          csvContent += '"' + metadatum.value.latitude + '",';
+        }
+        if (typeof metadatum.name === "undefined") {
+          csvContent += '""';
+        } else {
+          csvContent += '"' + metadatum.name + '"';
+        }
+        csvContent += "\n";
+      }
+    }
+    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
+    var filename = 'searchResultsData.csv'
+    var blob = new Blob([csvContent], {type: 'text/csv'});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+      var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/csv', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
+    }
+  } // END downloadSearchResults
 
   ///MAP///
 ////////LEAFLET//////////////////
