@@ -235,6 +235,7 @@ AgaveToGo.config(function($translateProvider) {
     contributorAgency: 'Institutions responsible for funding, collecting, managing, distributing, or otherwise contributing to the development of the resource.',
     dates: 'Start/end date(s) of the collection of data in this resource.',
     language: 'A language of the resource.  Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].',
+    dataState: 'Indicates if this data is raw or processed, or a preliminary or final result.  This will help others know how to approach viewing or using this data.',
     format: 'The format(s) or file type of this resource. Select from the list.',
     version: 'The incremental version number of the resource. Either integers or dates (YYYYMMDD) may be used.',
     rightsLicense: 'Licenses listed are open licenses that support the digital commons, acknowledge your copyright, allow others to use and build upon your work, and require others to credit authors listed. Recommended here: learn more, then use CC-BY for most work, BSD 2-clause for software, and identify existing licenses for legacy or external resources.',
