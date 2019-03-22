@@ -570,19 +570,17 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               // or at least that's what I'm trying to do, but to
               // make a fast release, I had to drop it for now.
               // the code for these buttons is generated in bootstrap-decorator.js
-            
-              /*
+
               items.push({
-                type: 'submit',
+                type: 'button',
                 title: 'Cancel',
-                style: 'btn-primary'
+                style: 'btn-primary',
+                onClick: "onCancel()"
               });
-              */
-              
               items.push({
                 type: 'submit',
                 title: 'Run',
-                style: 'btn-primary'
+                style: 'btn-primary pull-right'
               });
               $scope.form.form.push({
                 type: 'actions',
@@ -600,17 +598,9 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
       }
     };
 
-    /*
     $scope.onCancel = function() {
-      console.log("onCancel was clicked");
       $state.go('jobs');
-      // may need to add params for the job id when
-      // I expand the jobs page to let users re-run jobs
-      // https://github.com/angular-ui/ui-router/wiki/URL-Routing
-      // look at AppsResourceController
-      //		$scope.appId = $stateParams.appId;
     }
-    */
 
     $scope.onSubmit = function(form) {
       
@@ -691,7 +681,7 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
               $scope.requesting = false;
               $scope.resetForm(false);
               MessageService.handle(response, $translate.instant('error_jobs_create'));
-          });  
+          });
       }
 
     };
