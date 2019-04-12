@@ -200,7 +200,11 @@
                           </table>
                       </div>
                       <div ng-show="metadata.length > 0" class="pre-scrollable">
-                          <button class="btn btn-primary" ng-click="downloadSearchResults ()"><i class="fa fa-search"/>&nbsp;Download Search Results</button>
+                          <button class="btn btn-primary" ng-click="prepareForDownloadSearchResults()"><i class="fa"/>&nbsp;Download Search Results</button>
+                          for
+                          <select ng-model="downloadType.value" ng-options="dataType as dataType for dataType in searchResultsTypes">
+                              <option ng-if="false" value=""></option>
+                          </select>
                       </div>
                     </div>
                     </div>

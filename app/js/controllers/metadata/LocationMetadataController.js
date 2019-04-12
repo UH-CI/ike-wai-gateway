@@ -148,6 +148,17 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if ($scope.schemaBox.val5){
           typearray.push('Water_Quality_Site')
         }
+        // update the dropdown options for the download based on the checkboxes
+        $scope.searchResultsTypes = typearray;
+
+        // if the currently selected option is no longer an option, make the first option selected
+        if ($scope.searchResultsTypes.indexOf($scope.downloadType.value) == -1) {
+          if ($scope.searchResultsTypes[0]) {
+            $scope.downloadType.value = $scope.searchResultsTypes[0];
+          }
+        }
+        
+        
         typequery['name'] = {'$in': typearray}
         if(angular.fromJson(drawnItems.toGeoJSON()).features[0]){
           $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
@@ -245,46 +256,120 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.modalSchemas = $scope.modalSchemas
   };
 
-  //download search results in metadata in CSV format
-  $scope.downloadSearchResults = function(){
-    csvContent = "";
+  //*** download search results in metadata in CSV format *** //
+  // downloadType holds the value of the type of download: site, well or water quality site
+  $scope.downloadType = {};
+  // assign to default dropdown value
+  $scope.downloadType.value = "Site";
+  
+  $schemaProperties = {};
+  $schemaProperties.Site = {};
+  $schemaProperties.Well = {};
+  $schemaProperties.Water_Quality_Site = {};
+  
+  $scope.prepareForDownloadSearchResults = function() {
+    if ($scope.downloadType.length == 0) {
+      // shouldn't happen, but in case an empty value is passed for the download type
+      alert ('Please select a download category');
+      return false;
+    }
+
+    // get the UUID for the download type
+    angular.forEach($scope.searchResultsTypes, function(value, key){
+      if (!$schemaProperties[value].uuid) {
+        if (!$localStorage["schema_" + value]) {
+          $schemaProperties[value].uuid = MetadataService.fetchSystemMetadataSchemaUuid(value)
+            .then(function(response){
+               return response;
+          })
+        } else {
+          $schemaProperties[value].uuid = $localStorage["schema_" + value];
+        } // END check if schema uuid was stored in local storage
+      }
+    })
+
+    // get the properties of this download type
+    if (!$schemaProperties[$scope.downloadType.value].properties) {
+      MetaController.listMetadataSchema()
+        .then(function(response) {
+          list_schemas = response.result;
+          for (var c = 0; c < list_schemas.length; c++) {
+            if (list_schemas[c].uuid == $schemaProperties[$scope.downloadType.value].uuid) {
+              $schemaProperties[$scope.downloadType.value].properties = list_schemas[c].schema.properties;
+            }
+          }
+          $scope.downloadSearchResults();
+      })
+    }
+  } // END function prepareForDownloadSearchResults
+
+  $scope.downloadSearchResults = function() {
+    var dataFields = [];
+    angular.forEach($schemaProperties[$scope.downloadType.value].properties, function(value, key) {
+    	dataFields.push(key);
+    })
+
+    // START populating data
+    csvContent = '';
+    for (var c = 0; c < dataFields.length; c++) {
+      if (c > 0) {
+        csvContent += ',';
+      }
+      dataDelimiter = "";
+      if (dataFields[c].indexOf('"') > -1 ||
+        dataFields[c].indexOf(',') > -1) {
+        dataDelimiter = '"';
+      }
+      csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
+    } // END loop through datafields array to populate download headers
+    csvContent += "\n";
+    
     for (var i = 0; i < $scope.metadata.length; i++) {
       var metadatum = $scope.metadata[i];
-      // ignoreMetadataType.indexOf(metadatum.name) < 0
-      if ($scope.ignoreMetadataType.indexOf(metadatum.name) < 0) {
-        if (typeof metadatum.value.name === "undefined") {
-          csvContent += '"",';
-        } else {
-          csvContent += '"' + metadatum.value.name + '",';
-        }
+      if ($scope.downloadType.value == metadatum.name) {
+        for (var c = 0; c < dataFields.length; c++) {
+          var keyName = dataFields[c].split('.');
+          var tempDataObject = metadatum.value;
+          for (var kn = 0; kn < keyName.length; kn++) {
+            if (typeof tempDataObject[keyName[kn]] === "undefined") {
+              tempDataObject = '';
+            } else {
+              tempDataObject = tempDataObject[keyName[kn]];
+            }
+          } // END go through the list of download type's field names to get the data
+          if (c > 0) {
+            csvContent += ',';
+          }
+          // sanitize string data. double quotes must be duplicated for csv.
+          if (typeof tempDataObject == "string") {
+            dataDelimiter = "";
+            if (tempDataObject.indexOf('"') > -1 ||
+              tempDataObject.indexOf(',') > -1) {
+              dataDelimiter = '"';
+            }
+	    if (tempDataObject.substring(0, 1) == '"') {
+	      tempDataObject = tempDataObject.substring(1, tempDataObject.length);
+	    }
+	    if (tempDataObject.substring(tempDataObject.length - 1) == '"') {
+	      tempDataObject = tempDataObject.substring(0, tempDataObject.length - 1);
+	    }
+	    tempDataObject = tempDataObject.replace(/\"/g, "\"\"");
+	  }
+	  
+	  if (!tempDataObject) {
+	    tempDataObject = '';
+	  }
 
-        if (typeof metadatum.value.wid === "undefined") {
-          csvContent += '"",';
-        } else {
-          csvContent += '"' + metadatum.value.wid + '",';
-        }
-
-        if (typeof metadatum.value.longitude === "undefined") {
-          csvContent += '"",';
-        } else {
-          csvContent += '"' + metadatum.value.longitude + '",';
-        }
-
-        if (typeof metadatum.value.latitude === "undefined") {
-          csvContent += '"",';
-        } else {
-          csvContent += '"' + metadatum.value.latitude + '",';
-        }
-        if (typeof metadatum.name === "undefined") {
-          csvContent += '""';
-        } else {
-          csvContent += '"' + metadatum.name + '"';
-        }
+          csvContent += dataDelimiter + tempDataObject + dataDelimiter;
+        } // END loop through data fields array to populate download values
         csvContent += "\n";
       }
     }
+
+    // csvContent = JSON.stringify($scope.metadata);
+    // START download data to file
     // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
-    var filename = 'searchResultsData.csv'
+    var filename = 'searchResultsData' + $scope.downloadType.value + 's.csv';
     var blob = new Blob([csvContent], {type: 'text/csv'});
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(blob, filename);
@@ -298,7 +383,31 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       a.dispatchEvent(e);
       // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
     }
-  } // END downloadSearchResults
+  } // END function downloadSearchResults
+
+  // default types of the search results
+  $scope.searchResultsTypes = ['Site', 'Well', 'Water_Quality_Site'];  
+  // check what is currently selected then return types available to download based on checkboxes. Set in searchAll()
+  $scope.getSearchResultsTypes = function() {
+    if ($scope.searchResultsTypes.length == 0) {
+      if ($scope.schemaBox.val1) {
+        if (!$scope.downloadType.value) {
+          $scope.downloadType.value = 'Site';
+        }
+      }
+      if ($scope.schemaBox.val2) {
+        if (!$scope.downloadType.value) {
+          $scope.downloadType.value = 'Well';
+        }
+      }
+      if ($scope.schemaBox.val5) {
+        if (!$scope.downloadType.value) {
+          $scope.downloadType.value = 'Water_Quality_Site';
+        }
+      }
+    }
+    return $scope.searchResultsTypes;
+  } // END function getSearchResultsTypes
 
   ///MAP///
 ////////LEAFLET//////////////////
