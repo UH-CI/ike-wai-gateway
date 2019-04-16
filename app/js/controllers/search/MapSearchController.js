@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor','Timeseries','Observation']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -45,7 +45,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.varSortReverse = false;
     $scope.filtered_files = []
     $scope.culled_metadata = []
-
+    $scope.sites_to_search = []
 
     $scope.parseFiles = function(){
       //fetch related file metadata objects
@@ -59,9 +59,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.facet_count = {} //store number of file  associated as count
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
+      $scope.sites_to_search = [] //clear sites
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
+        if (val.name == "Site"){
+          $scope.sites_to_search.push(val.uuid)
+        }
         if (val._links.associationIds.length > 0){
+
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
@@ -93,7 +98,22 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
       })
       $scope.filtered_files = $scope.files;
+      console.log("Sites with associations:"+$scope.sites_to_search.length)
+      console.log($scope.sites_to_search)
       $scope.fetchFacetMetadata();
+      $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      console.log($scope.observations_query)
+      MetaController.listMetadata($scope.observations_query,limit=1000,offset=0)
+      .then(function(response){
+        $scope.observations = response.result;
+        console.log("OBS:"+$scope.observations )
+      })
+      MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
+      .then(function(response){
+        $scope.timeseries = response.result;
+        console.log("Timeseries:"+$scope.timeseries )
+      })
       $scope.requesting=false;
     }
 
@@ -344,6 +364,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               }*/
             })
         })
+
     };
 
     $scope.searchTools = function(query){

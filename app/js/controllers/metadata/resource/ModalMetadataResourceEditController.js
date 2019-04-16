@@ -14,15 +14,19 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
 	  MetaController.getMetadata(uuid)
       .then(function(response){
         $scope.metadatum = response.result;
+        console.log($scope.metadatum)
         if($scope.metadatum){
           $scope.metadatum = response.result;
-          $scope.makeLocationMarkers($scope.metadatum)
+          if ($scope.metadatum.name == 'Well' || $scope.metadatum.name == 'Site'){
+              $scope.makeLocationMarkers($scope.metadatum)
+          }
           if ($scope.metadatum.schemaId == null){
             console.log("missing schemaId")
             if($scope.metadatum.name == 'Well'){
             $scope.metadatum.schemaId = '5711039176026484250-242ac1110-0001-013'
             }
           }
+          console.log('schemaId: '+ $scope.metadatum.schemaId)
           MetaController.getMetadataSchema($scope.metadatum.schemaId)
             .then(function(response){
               $scope.metadataschema = response.result;
