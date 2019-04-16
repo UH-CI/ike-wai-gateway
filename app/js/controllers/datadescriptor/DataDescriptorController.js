@@ -1043,7 +1043,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wizardSecondPage = false;
     $scope.fileMetadataObjects = $scope.fileMetadataObject;
     $scope.selectedSchemaUuid = schemauuid;
-    var modalInstance = $uibModal.open({
+    $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'views/modals/ModalCreateMetadata.html',
       controller: 'ModalMetadataResourceCreateController',

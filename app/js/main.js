@@ -2223,6 +2223,34 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('timeseries', {
+          url: "/timeseries",
+          templateUrl: "views/metadata/timeseries.html",
+          controller: "MetadataTimeseriesCreateController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    serie: true,
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/FilesMetadataService.js',
+                        'js/services/MetadataService.js',
+                        'js/controllers/metadata/MetadataTimeseriesCreateController.js',
+                        'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                        'js/controllers/metadata/resource/ModalMetadataResourceEditController.js',
+                        'js/services/FilesMetadataService.js',
+                        'js/controllers/MetadataQueryBuilderController.js',
+                        'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+      })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/

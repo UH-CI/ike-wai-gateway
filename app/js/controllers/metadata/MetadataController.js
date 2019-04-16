@@ -13,8 +13,8 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person']
-    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;

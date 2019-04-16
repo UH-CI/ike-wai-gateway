@@ -32,6 +32,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
+					formschema["properties"]["columns"]["items"]["properties"]["var_select"]= {"type": "submit","title": "Select Variable","onClick": "selectVariable()"}
+					formschema["properties"]["columns"]["items"]["properties"]["var1"]= {"type": "string","style": "btn-warning","title": "String Test","onClick": "selectVariable()"}
+					
 					formschema["required"] = $scope.selectedmetadataschema.schema.required;
 					$scope.schema = formschema;
 					$scope.form = [
@@ -41,12 +44,15 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							title: "Save"
 						}*/
 					];
+					console.log(formschema)
 					$scope.schema_selected = true;
 					$scope.requesting = false;
 				}
 		);
 	}
-
+	$scope.selectVariable = function(){
+		alert("SELECT")
+	}
 	$scope.refresh = function() {
 		$scope.requesting = true;
 
