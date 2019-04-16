@@ -81,16 +81,19 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
       MetaController.listMetadataSchema("{'schema.title':'Timeseries_Template'}"
       ).then(function(resp){
   			var body = {};
-	  		body.name = "Timeseries";
+	  		body.name = "Timeseries_Template";
         body.value = $scope.timeseries_template;
         body.value['columns'] = [];
+        body.value['datetime_column'] = parseInt(body.value['datetime_column'])
+        body.value['site_column'] = parseInt(body.value['site_column'])
+        body.value['variables'] = [];
         angular.forEach($scope.column_vars, function (value, key) {
-          body.value['columns'].push({'column_number':value.column_num,'variable_id':value.variable.uuid});
+          body.value['columns'].push({'column_number':parseInt(value.column_num),'variable_id':value.variable.uuid});
+          body.value['variables'].push(value.variable)
         })
-        body.value['columns']
         body.schemaId = resp.result[0].uuid;
         console.log(body)
-        /*MetaController.addMetadata(body)
+        MetaController.addMetadata(body)
           .then(
             function(response){
               $scope.metadataUuid = response.result.uuid;
@@ -105,7 +108,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
               MessageService.handle(response, $translate.instant('error_metadata_add'));
               $scope.requesting = false;
             }
-          );*/
+          );
         })
 			}
 			else{
