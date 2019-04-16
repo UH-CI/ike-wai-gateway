@@ -3,7 +3,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
 
     //Set the order fields should display
   $scope.order={};
-  $scope.order['Variable'] =['variable_name','category','site_type','sample_medium','data_type','speciation','unit','value_type']
+  $scope.order['Variable'] =['id','variable_name','category','sample_medium','data_type','speciation','unit','value_type']
   $scope.order['Well'] =['wid','island','well_name','old_name','yr_drilled','driller','latitude','longitude','gps','utm','owner_user','land_owner','pump_installer','old_number','well','casing_dia','ground_el','well_depth','solid_case','perf_case','use','init_head','salinity','init_cl','test_date','test_gpm','test_ddwon','test_chlor','test_temp','test_unit','temp_f','temp_c','pump_gpm','draft_mgy','head_feet','pump_yr','draft_yr','bot_hole','bot_solid','bot_perf','SPEC_CAPAC','pump_mgd','draft_mgd','pump_depth','surveyor','t']
   $scope.order['Site'] =['name','latitude','longitude','polygon','description','county','state']
   $scope.order['Person'] =['first_name','last_name','email','orcid','organization','address','phone','url']

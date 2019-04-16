@@ -32,8 +32,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
-					formschema["properties"]["columns"]["items"]["properties"]["var_select"]= {"type": "submit","title": "Select Variable","onClick": "selectVariable()"}
-					formschema["properties"]["columns"]["items"]["properties"]["var1"]= {"type": "string","style": "btn-warning","title": "String Test","onClick": "selectVariable()"}
+				//	formschema["properties"]["columns"]["items"]["properties"]["var_select"]= {"type": "submit","title": "Select Variable","onClick": "selectVariable()"}
+				//	formschema["properties"]["columns"]["items"]["properties"]["var1"]= {"type": "string","style": "btn-warning","title": "String Test","onClick": "selectVariable()"}
 					
 					formschema["required"] = $scope.selectedmetadataschema.schema.required;
 					$scope.schema = formschema;
@@ -58,16 +58,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 
 		MetaController.listMetadataSchema(
 			$scope.schemaQuery
-		).then(function(response){
-			$scope.metadataschema = 	$filter('filter')(response.result, function(item){
-				return $scope.approvedSchema.indexOf(item.schema.title) > -1;
-			}
-		  );
-			$scope.requesting = false;
+		).then(function (response) {
+			$scope.metadataschema = response.result;
 		})
-		if (selectedSchemaUuid != null) {
-				$scope.fetchMetadataSchema(selectedSchemaUuid);
-		}
+
+		
 	};
 
 
