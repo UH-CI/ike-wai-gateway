@@ -106,6 +106,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           $scope[$scope._COLLECTION_NAME] = response.result;
 
           $scope.updateMap();
+          // update download dropdown options for search results types
+          $scope.searchResultsTypes = $scope.getSearchResultsTypes();
           $scope.requesting = false;
         },
         function(response){
@@ -147,17 +149,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         }
         if ($scope.schemaBox.val5){
           typearray.push('Water_Quality_Site')
-        }
-        // update the dropdown options for the download based on the checkboxes
-        $scope.searchResultsTypes = typearray;
-
-        // if the currently selected option is no longer an option, make the first option selected
-        if ($scope.searchResultsTypes.indexOf($scope.downloadType.value) == -1) {
-          if ($scope.searchResultsTypes[0]) {
-            $scope.downloadType.value = $scope.searchResultsTypes[0];
-          }
-        }
-        
+        }      
         
         typequery['name'] = {'$in': typearray}
         if(angular.fromJson(drawnItems.toGeoJSON()).features[0]){
@@ -325,7 +317,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
     } // END loop through datafields array to populate download headers
     csvContent += "\n";
-    
+
     for (var i = 0; i < $scope.metadata.length; i++) {
       var metadatum = $scope.metadata[i];
       if ($scope.downloadType.value == metadatum.name) {
@@ -389,24 +381,40 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
 
   // default types of the search results
   $scope.searchResultsTypes = ['Site', 'Well', 'Water_Quality_Site'];  
-  // check what is currently selected then return types available to download based on checkboxes. Set in searchAll()
+  // check search results for types found
   $scope.getSearchResultsTypes = function() {
-    if ($scope.searchResultsTypes.length == 0) {
-      if ($scope.schemaBox.val1) {
-        if (!$scope.downloadType.value) {
-          $scope.downloadType.value = 'Site';
+    if ($scope.metadata) {
+      $scope.searchResultsTypes = [];
+      siteFound = false;
+      wellFound = false;
+      wqsFound = false;
+      for (var i = 0; i < $scope.metadata.length; i++) {
+        var metadatum = $scope.metadata[i];
+        if (metadatum.name == 'Site' && !siteFound) {
+          siteFound = true;
+        }
+        if (metadatum.name == 'Well' && !wellFound) {
+          wellFound = true;
+        }
+        if (metadatum.name == 'Water_Quality_Site' && !wqsFound) {
+          wqsFound = true;
         }
       }
-      if ($scope.schemaBox.val2) {
-        if (!$scope.downloadType.value) {
-          $scope.downloadType.value = 'Well';
-        }
+      if (siteFound) {      
+        $scope.searchResultsTypes.push('Site');
       }
-      if ($scope.schemaBox.val5) {
-        if (!$scope.downloadType.value) {
-          $scope.downloadType.value = 'Water_Quality_Site';
-        }
+      if (wellFound) {      
+        $scope.searchResultsTypes.push('Well');
       }
+      if (wqsFound) {      
+        $scope.searchResultsTypes.push('Water_Quality_Site');
+      }
+      // if the currently selected option is no longer an option, make the first option selected
+      if ($scope.searchResultsTypes.indexOf($scope.downloadType.value) == -1) {
+        if ($scope.searchResultsTypes[0]) {
+          $scope.downloadType.value = $scope.searchResultsTypes[0];
+        }
+      }      
     }
     return $scope.searchResultsTypes;
   } // END function getSearchResultsTypes
