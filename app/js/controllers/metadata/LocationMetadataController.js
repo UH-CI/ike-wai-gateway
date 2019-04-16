@@ -300,6 +300,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           }
           $scope.downloadSearchResults();
       })
+    } else {
+      $scope.downloadSearchResults();
     }
   } // END function prepareForDownloadSearchResults
 
