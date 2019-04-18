@@ -271,8 +271,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       if (!$schemaProperties[value].uuid) {
         if (!$localStorage["schema_" + value]) {
           $schemaProperties[value].uuid = MetadataService.fetchSystemMetadataSchemaUuid(value)
-            .then(function(response){
-               return response;
+            .then(function(data){
+               return data;
           })
         } else {
           $schemaProperties[value].uuid = $localStorage["schema_" + value];
