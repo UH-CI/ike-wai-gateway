@@ -270,9 +270,17 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     angular.forEach($scope.searchResultsTypes, function(value, key){
       if (!$schemaProperties[value].uuid) {
         if (!$localStorage["schema_" + value]) {
-          $schemaProperties[value].uuid = MetadataService.fetchSystemMetadataSchemaUuid(value)
-            .then(function(data){
-               return data;
+          MetadataService.fetchSystemMetadataSchemaUuid(value)
+            .then(function(data) {
+              if (data) {
+                $schemaProperties[value].uuid = data;
+              } else {
+                App.alert({
+                  type: 'danger',
+                  message: "Error - could not load Schema " + value + ".",
+                  closeInSeconds: 15}
+                );
+              }
           })
         } else {
           $schemaProperties[value].uuid = $localStorage["schema_" + value];
