@@ -631,6 +631,46 @@
                               </div>
                             </div>
 
+                             <!--STATUS: options for file status (raw, processed, preliminary, final) -->
+                             <!--
+                            <div class="form-group"  ng-show="!wizardSecondPage" align="left">
+                              <label class="control-label" for="dataState" data-toggle="tooltip" title='{{"dataState" | translate}}'>Data State:</label>
+                              <button type="button" data-toggle="popover" title="State Field" data-content='{{"dataState" | translate}}' class="btn btn-info btn-circle">
+                                  <i class="glyphicon glyphicon-question-sign"></i>
+                                </button>
+                              <br />
+                              <input type="radio" value="raw" name="dataState" ng-model="datadescriptor.dataState" > Raw &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="processed" name="dataState" ng-model="datadescriptor.dataState" > Processed &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="preliminary" name="dataState" ng-model="datadescriptor.dataState" > Preliminary product/result &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="final" name="dataState" ng-model="datadescriptor.dataState" >  Final product/result                            
+                              {{datadescriptor.dataState}}
+                            </div><br />
+                            -->
+
+                            <!-- DATA TYPE -->
+                            <!--
+                            <div class="form-group"  ng-show="!wizardSecondPage">
+                              <label class="control-label pull-left" for="dataTypes" data-toggle="tooltip" title='{{"dataType" | translate}}'>Data Type:</label>
+                              <button type="button" data-toggle="popover" title="Data Type Field" data-content='{{"dataType" | translate}}' class="btn btn-info btn-circle pull-left">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                              <br />
+                              <ui-select class="form-control"
+                                multiple tagging tagging-label=""
+                                remove-selected="false"
+                                ng-model="datadescriptor.dataTypes"
+                                theme="bootstrap"
+                                style="width: 100%;text-align: left;"
+                                sortable="true"
+                                ng-disabled="disabled"
+                                title="Choose data types">
+                                <ui-select-match placeholder="Select file data type(s)...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="dataType in dataTypes | filter: $select.search">
+                                  <span ng-bind-html="dataType"></span>
+                                </ui-select-choices>
+                              </ui-select>
+                            </div>
+                            -->
                              <!-- FORMAT -->
                             <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>

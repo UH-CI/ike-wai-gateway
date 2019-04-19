@@ -210,8 +210,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
             }
           });*/
         }//close else
-      }//close if
-      L.geoJson($scope.savedItems.geoJSON, {
+      
+        L.geoJson($scope.savedItems.geoJSON, {
                 style: function(feature) {
                     return {
                       fillColor: "green",
@@ -229,6 +229,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
             });
             angular.element('.leaflet-draw-toolbar-top').hide();
       //$scope.markers = $scope.marks
+      }//close if
   }//close function
 
   $scope.getModalMetadatum();
