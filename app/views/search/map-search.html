@@ -214,7 +214,7 @@
                             </div>
                             </div>
                             </div>
-                            <h3><i class="fa fa-file"></i> Matching Water Quality Data: {{wqsites.length}}</h3>
+                            <h3><i class="fa fa-file"></i> Matching Water Quality Data: {{filtered_wqsites.length}}</h3>
                             <div class="row">
 
                               <div class="col-md-12">
@@ -237,7 +237,7 @@
                                           </tr>
                                       </thead>
                                       <tbody>
-                                          <tr ng-repeat="wqs in wqsites | orderBy:sortType:sortReverse">
+                                          <tr ng-repeat="wqs in filtered_wqsites | orderBy:sortType:sortReverse">
                                               <td>
                                                  {{wqs.value.name}}&nbsp;<span class="badge" ng-if="wqs.value.resultCount">{{wqs.value.resultCount}}</span>
                                                   <a href="#" ng-click="openView(wqs.uuid, 'lg')"><i class="fa fa-eye"></i></a>
@@ -250,7 +250,7 @@
                                   </table>
                               </div>
                             </div>
-                            <h3><i class="fa fa-file"></i> Matching Timeseries : {{timeseries.length}}</h3>
+                            <h3><i class="fa fa-file"></i> Matching Timeseries : {{filtered_timeseries.length}}</h3>
                             <div class="row">
 
                               <div class="col-md-12">
@@ -275,7 +275,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="time in timeseries | orderBy:sortType:sortReverse">
+                                            <tr ng-repeat="time in filtered_timeseries | orderBy:sortType:sortReverse">
                                                 <td>
                                                    {{time.value.name}}&nbsp;<span class="badge" ng-if="time.value.resultCount">{{time.value.resultCount}}</span>
                                                     <a href="#" ng-click="openView(time.uuid, 'lg')"><i class="fa fa-eye"></i></a>
@@ -295,7 +295,7 @@
                                 </div>
                               </div>
                             </div>
-                            <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{observations.length}}</h3>
+                            <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{filtered_observations.length}}</h3>
                             <div class="row">
 
                               <div class="col-md-12">
@@ -323,7 +323,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="observation in observations | orderBy:sortType:sortReverse">
+                                            <tr ng-repeat="observation in filtered_observations | orderBy:sortType:sortReverse">
                                                 <td>
                                                    {{observation.value.datetime}}&nbsp;
                                                     <a href="#" ng-click="openView(observation.uuid, 'lg')"><i class="fa fa-eye"></i></a>

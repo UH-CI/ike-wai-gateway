@@ -44,6 +44,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.siteSortReverse = true;
     $scope.varSortReverse = false;
     $scope.filtered_files = []
+    $scope.filtered_wqsites = []
+    $scope.filtered_timeseries = []
+    $scope.filtered_observations = []
     $scope.culled_metadata = []
     $scope.sites_to_search = []
 
@@ -98,6 +101,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
       })
       $scope.filtered_files = $scope.files;
+      $scope.filtered_wqsites = $scope.wqsites;
       console.log("Sites with associations:"+$scope.sites_to_search.length)
       console.log($scope.sites_to_search)
       $scope.fetchFacetMetadata();
@@ -108,12 +112,16 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       .then(function(response){
         $scope.observations = response.result;
         console.log("OBS:"+$scope.observations )
+        $scope.filtered_observations = $scope.observations;
       })
       MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
       .then(function(response){
         $scope.timeseries = response.result;
         console.log("Timeseries:"+$scope.timeseries )
+        $scope.filtered_timeseries = $scope.timeseries;
       })
+      
+      
       $scope.requesting=false;
     }
 
@@ -147,16 +155,44 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.facetSearch = function(){
       $scope.requesting = true;
       new_filtered_files = []
+      new_filtered_wqsites = []
+      new_filtered_timeseries= [];
+      new_filtered_observations = [];
       if ($scope.selectedMetadata != ''){
         angular.forEach($scope.selectedMetadata, function(uuid){
           if (uuid != undefined){
+            //Files
             angular.forEach($scope.metadata_file_hash[uuid] , function(file){
               new_filtered_files.push(file)
+            })
+          //WQ Sites  
+            angular.forEach($scope.wqsites, function(wqs){
+              if (wqs.uuid == uuid){
+                new_filtered_wqsites.push(wqs)
+              }
+              else if (wqs.associationIds.indexOf(uuid) > -1){
+                new_filtered_wqsites.push(wqs)
+              }
+            })
+            //Timeseries
+            angular.forEach($scope.timeseries, function(ts){
+              if (ts.associationIds.indexOf(uuid) > -1){
+                new_filtered_timeseries.push(ts)
+              }
+            })
+            //Observations
+            angular.forEach($scope.observations, function(obs){
+              if (obs.associationIds.indexOf(uuid) > -1){
+                new_filtered_observations.push(obs)
+              }
             })
           }
         })
         console.log(new_filtered_files)
         $scope.filtered_files = new_filtered_files;
+        $scope.filtered_wqsites = new_filtered_wqsites
+        $scope.filtered_timeseries = new_filtered_timeseries;
+        $scope.filtered_observations =new_filtered_observations;
         $scope.requesting = false;
         //$scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
 
@@ -164,6 +200,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       }
       else{
         $scope.filtered_files = $scope.files;
+        $scope.filtered_wqsites = $scope.wqsites;
+        $scope.filtered_timeseries = $scope.timeseries;
+        $scope.filtered_observations = $scope.observations;
         $scope.requesting = false;
         //$scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
       }
