@@ -1,0 +1,52 @@
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+<div class="row" ng-show="!requesting">
+  <div class="col-lg-12">
+    <h2><em>{{app.label}}</em></h2>
+    <p>{{app.longDescription}}</p>
+    <p ng-if="app.helpURI">
+      <a href="{{app.helpURI}}" target="_blank">
+          <i class="fa fa-book"></i> <span><em>{{app.label}}</em> Documentation</span>
+      </a>
+    </p>
+    <form novalidate class="simple-form" name="TimeseriesTemplateForm">
+            <div class="input-group has-success has-feedback"> 
+                <label for="input">Timeseries Parsing Template to use when processing file.</label> 
+                <div class="input-group">
+                    <a class="input-group-addon" ng-click="open('lg',['Timeseries_Template'],'Select Timeseries Parsing Template')">Select Parsing Template</a> 
+                    <input type="text" class="form-control" id="input" ng-model="parse_form.uuid">
+                </div> 
+                <span class="help-block">CSV file to serialize.</span>
+            </div>
+            <div class="form-group has-success has-feedback"> 
+                <label for="input">File To Parse</label> 
+                <div class="input-group"> 
+                    <a class="input-group-addon" ng-click="selectFile(form.input)">Select File</a> 
+                    <input type="text" class="form-control" id="input" ng-model="parse_form.input">
+                </div> 
+                <span class="help-block">CSV file to serialize.</span>
+            </div>
+    
+    </form>
+    <div class="form-group">
+            <button type="button" class="btn btn-primary" type="submit"  
+            ng-click="onSubmit()">Submit Parsing Job</button>
+          </div>
+    <form name="appForm"
+      sf-schema="form.schema"
+      sf-form="form.form"
+      sf-model="form.model"
+      sf-options="{ supressPropertyTitles: true,formDefaults: { ngModelOptions: { updateOn: 'blur' } }}"
+      ng-submit="onSubmit(appForm)">
+    </form>
+    <div ng-if="data.submitting">
+      <span class="label label-info">
+          <i class="fa fa-refresh fa-spin"></i>
+          Submitting job...
+      </span>
+    </div>
+  </div>
+</div>
