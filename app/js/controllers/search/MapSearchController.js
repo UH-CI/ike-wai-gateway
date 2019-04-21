@@ -459,12 +459,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.selectedMetadata.push(uuid);
     }
   };
-  
-  $scope.load_test = function(){
-    $.getJSON("/assets/obs.json", function(json) {
-      console.log(json); // this will show the info it in firebug console
-      $scope.test_obs = json.result;
-    
+  $scope.downloadObservations = function(theobs){
+    $scope.test_obs = theobs;
     $scope.ts_hash = {}
     //loop through obs
     angular.forEach($scope.test_obs, function(obs) {
@@ -476,19 +472,17 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       if($scope.ts_hash[dt] == null){
         $scope.ts_hash[dt] = {}
       }
+      //store observations keyed by datetime so all mathing datetimes are grouped
       angular.forEach(obs.value, function(val,key) {
         if (key != 'site-id' && key != 'datetime'){
           var newkey = siteid + "-"+ key
-          console.log(newkey)
-          console.log(val)
-          //col = {newkey: val}
-          console.log(dt)
-          //$scope.ts_hash[dt].push({ [newkey] : val})
           $scope.ts_hash[dt][[newkey]] = val;
         }
       })
     })
     console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    //convert hash to array of hash objects with datetime as field with all measurement field
+    //easier for csv conversion
     $scope.csv_json = []
     angular.forEach($scope.ts_hash, function(val,key) {
       var temp = val;
@@ -496,13 +490,18 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.csv_json.push(temp);
     })
     console.log("csv_hash: " + angular.toJson($scope.csv_json))
-    var dataFields = [];
-    angular.forEach($scope.csv_json[0], function(value, key) {
-    	dataFields.push(key);
+    //Define the header fields and what fields are being pulled 
+    var dataFields = ['datetime'];
+    angular.forEach($scope.csv_json, function(row) {
+      angular.forEach(row, function(value, key) {
+        if(dataFields.indexOf(key) < 0 ){
+          dataFields.push(key);
+        }
+      })
     })
     console.log()
     console.log(dataFields)
-    // START populating data
+    // START populating csv content
     csvContent = '';
     for (var c = 0; c < dataFields.length; c++) {
       if (c > 0) {
@@ -558,7 +557,6 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       
     }
 
-    // csvContent = JSON.stringify($scope.metadata);
     // START download data to file
     // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
     var filename = 'Observations.csv';
@@ -575,7 +573,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       a.dispatchEvent(e);
       // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
     }
-  });
+  
+  }
+  $scope.load_test = function(){
+    $.getJSON("/assets/obs.json", function(json) {
+      console.log(json); // this will show the info it in firebug console
+      //$scope.test_obs = json.result;
+      $scope.downloadObservations(json.result)
+    });
   }
 
   
