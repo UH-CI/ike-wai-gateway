@@ -113,6 +113,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.observations = response.result;
         console.log("OBS:"+$scope.observations )
         $scope.filtered_observations = $scope.observations;
+        $scope.downloadSearchResults();
       })
       MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
       .then(function(response){
@@ -218,6 +219,10 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
         $scope.doSearch();
+        $.getJSON("/assets/obs.json", function(json) {
+          console.log(json); // this will show the info it in firebug console
+          $scope.test_obs = json;
+      });
       }
 
     $scope.searchAll = function(){
@@ -457,6 +462,112 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.selectedMetadata.push(uuid);
     }
   };
+
+  $scope.downloadSearchResults = function() {
+    $scope.ts_hash = {}
+    //loop through obs
+    angular.forEach($scope.filtered_observations, function(obs) {
+      //index by datetime
+      //store siteid-var:value
+      var siteid = obs.value['site-id'];
+      var dt = obs.value['datetime'];  
+      if($scope.ts_hash[dt] == null){
+        $scope.ts_hash[dt] = []
+      }
+      angular.forEach(obs.value, function(val,key) {
+        if (key != 'site-id' && key != 'datetime'){
+          var newkey = siteid + "-"+ key
+          console.log(newkey)
+          console.log(val)
+          //col = {newkey: val}
+          console.log(dt)
+          $scope.ts_hash[dt].push({ [newkey] : val})
+        }
+      })
+    })
+    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    /*var dataFields = [];
+    angular.forEach($schemaProperties[$scope.downloadType.value].properties, function(value, key) {
+    	dataFields.push(key);
+    })
+
+    // START populating data
+    csvContent = '';
+    for (var c = 0; c < dataFields.length; c++) {
+      if (c > 0) {
+        csvContent += ',';
+      }
+      dataDelimiter = "";
+      if (dataFields[c].indexOf('"') > -1 ||
+        dataFields[c].indexOf(',') > -1) {
+        dataDelimiter = '"';
+      }
+      csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
+    } // END loop through datafields array to populate download headers
+    csvContent += "\n";
+
+    for (var i = 0; i < $scope.metadata.length; i++) {
+      var metadatum = $scope.metadata[i];
+      if ($scope.downloadType.value == metadatum.name) {
+        for (var c = 0; c < dataFields.length; c++) {
+          var keyName = dataFields[c].split('.');
+          var tempDataObject = metadatum.value;
+          for (var kn = 0; kn < keyName.length; kn++) {
+            if (typeof tempDataObject[keyName[kn]] === "undefined") {
+              tempDataObject = '';
+            } else {
+              tempDataObject = tempDataObject[keyName[kn]];
+            }
+          } // END go through the list of download type's field names to get the data
+          if (c > 0) {
+            csvContent += ',';
+          }
+          // sanitize string data. double quotes must be duplicated for csv.
+          if (typeof tempDataObject == "string") {
+            dataDelimiter = "";
+            if (tempDataObject.indexOf('"') > -1 ||
+              tempDataObject.indexOf(',') > -1) {
+              dataDelimiter = '"';
+            }
+	    if (tempDataObject.substring(0, 1) == '"') {
+	      tempDataObject = tempDataObject.substring(1, tempDataObject.length);
+	    }
+	    if (tempDataObject.substring(tempDataObject.length - 1) == '"') {
+	      tempDataObject = tempDataObject.substring(0, tempDataObject.length - 1);
+	    }
+	    tempDataObject = tempDataObject.replace(/\"/g, "\"\"");
+	  }
+	  
+	  if (!tempDataObject) {
+	    tempDataObject = '';
+	  }
+
+          csvContent += dataDelimiter + tempDataObject + dataDelimiter;
+        } // END loop through data fields array to populate download values
+        csvContent += "\n";
+      }
+    }
+
+    // csvContent = JSON.stringify($scope.metadata);
+    // START download data to file
+    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
+    var filename = 'searchResultsData' + $scope.downloadType.value + 's.csv';
+    var blob = new Blob([csvContent], {type: 'text/csv'});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+      var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/csv', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
+    }*/
+  } // END function downloadSearchResults
+
+
 ////////LEAFLET//////////////////
   $scope.markers=[];
   angular.extend($scope, {
