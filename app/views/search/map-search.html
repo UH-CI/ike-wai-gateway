@@ -9,7 +9,11 @@
                <leaflet defaults="defaults" width="100%" height="450px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions"  layers="layers" event-broadcast="events"></leaflet>
        </div>
 
-        <div class="col-md-1"></div>
+        <div class="col-md-1"></div><div class="col-md-12">
+            <button id="search_button" class="btn btn-primary pull-right" ng-click="load_test()" ><i class="fa fa-search"/> Load Test</button>
+            <br/>
+            <br/>
+        </div>
         <div class="col-md-12">
             <button id="search_button" class="btn btn-primary pull-right" ng-click="spatialSearch()" disabled="disabled"><i class="fa fa-search"/> Search In Bounding Area</button>
             <br/>
@@ -340,6 +344,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    {{test_obs}}
                                   </div>
                                 </div>
                               </div>
