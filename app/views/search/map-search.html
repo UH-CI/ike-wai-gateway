@@ -1,4 +1,5 @@
 
+
 <div class="row">
     <h3><i class="fa fa-search"></i> Search Ike Annotated Repository Files</h3>
     <div class="row">
@@ -10,7 +11,7 @@
        </div>
 
         <div class="col-md-1"></div><div class="col-md-12">
-            <button id="search_button" class="btn btn-primary pull-right" ng-click="load_test()" ><i class="fa fa-search"/> Load Test</button>
+            <button id="test_button" class="btn btn-primary pull-right" ng-click="load_test()" ><i class="fa fa-search"/> Load Test</button>
             <br/>
             <br/>
         </div>
@@ -260,6 +261,7 @@
                               <div class="col-md-12">
                                 <div ng-show="!requesting">
                                   <div class="col-md-12">
+                                    <div class="pre-scrollable">
                                     <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_timeseries">
                                         <thead>
                                             <tr role="row" class="heading">
@@ -295,17 +297,20 @@
                                             </tr>
                                         </tbody>
                                     </table>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{filtered_observations.length}}</h3>
+                            <button id="test_button" class="btn btn-primary pull-right" ng-click="downloadCSVObservations()" ><i class="fa fa-search"/> Download Observations</button>
                             <div class="row">
 
                               <div class="col-md-12">
                                 <div ng-show="!requesting">
                                   <div class="col-md-12">
-                                    <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_timeseries">
+                                    <div class="pre-scrollable">
+                                    <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatable_timeseries">
                                         <thead>
                                             <tr role="row" class="heading">
                                                 <th width="20%">
@@ -344,10 +349,11 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    {{test_obs}}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
+
                             </div>
                           </div>
                     </div>
@@ -358,4 +364,28 @@
           </div>
         </div>
     </div>
+    <div class="col-md-12">
+            <div ng-show="!requesting">
+                <div class="col-md-12">
+                 <div class="pre-scrollable">
+                <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatable_observations">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="key in header | orderBy:sortType:sortReverse">
+                            {{key}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="observation in csv_json | orderBy:sortType:sortReverse">
+                        <td ng-repeat="key in header | orderBy:sortType:sortReverse">
+                            {{observation[key]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+            </div>
 </div>

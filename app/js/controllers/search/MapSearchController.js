@@ -115,6 +115,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         console.log("OBS:"+$scope.observations )
         $scope.filtered_observations = $scope.observations;
         //$scope.downloadSearchResults();
+        $scope.formatObservationsForTable($scope.filtered_observations)
 
       })
       MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
@@ -480,6 +481,53 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.selectedMetadata.push(uuid);
     }
   };
+
+  $scope.formatObservationsForTable = function(theobs){
+    $scope.test_obs = theobs;
+    $scope.ts_hash = {}
+    //loop through obs
+    angular.forEach($scope.test_obs, function(obs) {
+      //index by datetime
+      //store siteid-var:value
+      console.log(obs)
+      var siteid = obs.value['site-id'];
+      var dt = obs.value['datetime'];  
+      if($scope.ts_hash[dt] == null){
+        $scope.ts_hash[dt] = {}
+      }
+      //store observations keyed by datetime so all mathing datetimes are grouped
+      angular.forEach(obs.value, function(val,key) {
+        if (key != 'site-id' && key != 'datetime'){
+          var newkey = siteid + "-"+ key
+          $scope.ts_hash[dt][[newkey]] = val;
+        }
+      })
+    })
+    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    //convert hash to array of hash objects with datetime as field with all measurement field
+    //easier for csv conversion
+    $scope.csv_json = []
+    angular.forEach($scope.ts_hash, function(val,key) {
+      var temp = val;
+      temp['datetime']= key;
+      $scope.csv_json.push(temp);
+    })
+    console.log("csv_hash: " + angular.toJson($scope.csv_json))
+    //Define the header fields and what fields are being pulled 
+    var dataFields = ['datetime'];
+    angular.forEach($scope.csv_json, function(row) {
+      angular.forEach(row, function(value, key) {
+        if(dataFields.indexOf(key) < 0 ){
+          dataFields.push(key);
+        }
+      })
+    })
+    $scope.header = dataFields;
+  }
+
+  $scope.downloadCSVObservations = function(){
+    $scope.downloadObservations($scope.filtered_observations)
+  }
   $scope.downloadObservations = function(theobs){
     $scope.requesting = true;
     $scope.test_obs = theobs;
