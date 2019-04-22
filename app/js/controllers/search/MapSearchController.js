@@ -49,7 +49,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.filtered_observations = []
     $scope.culled_metadata = []
     $scope.sites_to_search = []
-
+    $scope.csv_json = []
+    
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -104,7 +105,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.filtered_wqsites = $scope.wqsites;
       console.log("Sites with associations:"+$scope.sites_to_search.length)
       console.log($scope.sites_to_search)
-      $scope.fetchFacetMetadata();
+     // $scope.fetchFacetMetadata();
       $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
       $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
       console.log($scope.observations_query)
@@ -113,13 +114,15 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.observations = response.result;
         console.log("OBS:"+$scope.observations )
         $scope.filtered_observations = $scope.observations;
-        $scope.downloadSearchResults();
+        //$scope.downloadSearchResults();
+
       })
       MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
       .then(function(response){
         $scope.timeseries = response.result;
         console.log("Timeseries:"+$scope.timeseries )
         $scope.filtered_timeseries = $scope.timeseries;
+        $scope.fetchFacetMetadata();
       })
       
       
@@ -387,6 +390,24 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
+            angular.forEach($scope.timeseries, function(ts){
+              angular.forEach(ts.value.variables, function(vr){
+                console.log("timeseries-vars: " + angular.toJson(vr))
+                $scope.exists=false;
+                angular.forEach($scope.facet_variables, function(fvar){
+                  if (fvar['uuid'] == vr['uuid']){
+                    $scope.exists = true;
+                    console.log(fvar)
+                    console.log(vr)
+                  }
+                })
+                if ($scope.exists == false){
+                  $scope.facet_variables.push(vr)
+                }
+                
+                
+              })  
+            })
             angular.forEach($scope.facet_variables, function(datum){
               $scope.metadata_hash[datum.uuid] = datum;
               file_uuids = intersection(datum.associationIds, $scope.file_uuids)
@@ -460,6 +481,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     }
   };
   $scope.downloadObservations = function(theobs){
+    $scope.requesting = true;
     $scope.test_obs = theobs;
     $scope.ts_hash = {}
     //loop through obs
@@ -499,6 +521,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
       })
     })
+    $scope.header = dataFields;
     console.log()
     console.log(dataFields)
     // START populating csv content
@@ -573,7 +596,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       a.dispatchEvent(e);
       // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
     }
-  
+    $scope.requesting = false
   }
   $scope.load_test = function(){
     $.getJSON("/assets/obs.json", function(json) {
