@@ -1,3 +1,16 @@
+<head>
+    <title>`Ike Wai Gateway | Search for Annotated Repository Files </title> 
+    <!-- Start: Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127746084-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-127746084-1');
+    </script>
+    <!-- End: Global site tag (gtag.js) - Google Analytics -->
+</head>
 <h2 class="page-title"><i class="fa fa-search"></i> Search Ike Annotated Repository Files</h2>
 <div class="row">
     <div class="col-md-12">
@@ -80,6 +93,7 @@
                                   <tr ng-repeat="file in files | orderBy:sortType:sortReverse | filter:filter">
                                     <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         {{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/
+                                        <!--<a href="#/data/explorer/ikewai-annotated-data/{{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/">{{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/</a>-->
 
                                     </td>
                                     <!--
@@ -94,11 +108,25 @@
                                               {{item.model.name | strLimit : 64}}
                                             </span>
                                           </span>
-                                    -->
+                                        -->
 
 
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
-                                          {{file.href.split('/')[file.href.split('/').length-1]}}
+                                            {{file.href.split('/')[file.href.split('/').length-1]}}
+                                            <!-- jen testing start-->
+                                            <!--<span ng-show="config.allowedActions.preview && item.isPreviewable()">-->
+                                            <!--
+                                                <a href="" tabindex="-1" data-toggle="modal" data-target="#preview" ng-click="preview(file.href)">
+                                                    <i class="fa fa-eye"></i> {{file.href.split('/')[file.href.split('/').length-1]}}
+                                                </a>
+                                            -->
+                                            <!--</span>-->
+                                            <!-- jen testing end-->
+
+
+                                          <!--
+                                              <a href="#/data/explorer/ikewai-annotated-data/{{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1).join('/')}}">{{file.href.split('/')[file.href.split('/').length-1]}}</a>
+                                          -->
                                       </td>
                                       <td ng-show="file.href.includes('ikewai-annotated-data')">
                                         <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
