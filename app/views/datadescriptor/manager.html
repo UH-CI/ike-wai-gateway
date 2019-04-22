@@ -95,10 +95,19 @@
       });
 </script>
 
+<title>`Ike Wai Gateway | Data Descriptor</title>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127746084-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-127746084-1');
+</script>
 <!--<h4><a ng-click="doTheBack()"><i class="glyphicon glyphicon-menu-left"/>Go Back</a></h4>-->
 <div id="data_descriptor_modal" class='modal-header'>
-
+  
   <div class="row">
     <div class="col-md-12">
       <div class="portlet light portlet-fit portlet-datatable ">
@@ -633,7 +642,7 @@
 
                              <!--STATUS: options for file status (raw, processed, preliminary, final) -->
                              <!--
-                            <div class="form-group"  ng-show="!wizardSecondPage" align="left">
+                             <div class="form-group"  ng-show="!wizardSecondPage" align="left">
                               <label class="control-label" for="dataState" data-toggle="tooltip" title='{{"dataState" | translate}}'>Data State:</label>
                               <button type="button" data-toggle="popover" title="State Field" data-content='{{"dataState" | translate}}' class="btn btn-info btn-circle">
                                   <i class="glyphicon glyphicon-question-sign"></i>
@@ -649,7 +658,7 @@
 
                             <!-- DATA TYPE -->
                             <!--
-                            <div class="form-group"  ng-show="!wizardSecondPage">
+                              <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="dataTypes" data-toggle="tooltip" title='{{"dataType" | translate}}'>Data Type:</label>
                               <button type="button" data-toggle="popover" title="Data Type Field" data-content='{{"dataType" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -670,7 +679,7 @@
                                 </ui-select-choices>
                               </ui-select>
                             </div>
-                            -->
+                            -->                            
                              <!-- FORMAT -->
                             <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>
