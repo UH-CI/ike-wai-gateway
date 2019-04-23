@@ -161,6 +161,29 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		defaults: {
 						scrollWheelZoom: false
 		},
+		layers: {
+			baselayers: {
+					google: {
+						name: 'Google Satellite',
+						url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					googleStreet: {
+						name: 'Google Roads',
+						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					/*osm: {
+					name: 'OpenStreetMap',
+					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+					type: 'xyz'
+					}*/
+					
+			},
+			overlays:{
+
+			}
+	}
 	});
 
 	var drawnItems = new L.FeatureGroup();
@@ -175,13 +198,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	        lng: -157.91,
 	        zoom: 7
 	    },
-	    default:{
-	      attributionControl: false
-	    },
 	    drawOptions: {
 	      position: "bottomright",
 	      draw: {
-	        polyline: false,
+	        polyline: true,
 	        polygon: {
 	          metric: false,
 	          showArea: true,
@@ -260,6 +280,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				$scope.model['longitude'] = centroid.lng;
 	 	    $scope.model['latitude'] = centroid.lat;
 				$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+				console.log(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry)
 		}
 	    //drawControl.hideDrawTools();
 
