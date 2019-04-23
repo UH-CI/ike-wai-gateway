@@ -320,10 +320,15 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 type: 'xyz'
                 },*/
                 google: {
-                  name: 'Google',
+                  name: 'Google Satellite',
                   url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
                   type: 'xyz'
-                }
+                },
+                googleStreet: {
+                  name: 'Google Roads',
+                  url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+                  type: 'xyz'
+                },
 
             },
             overlays:{

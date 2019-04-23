@@ -76,7 +76,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
                                 weight: 2.0,
                                 opacity: 0.6,
                                 fillOpacity: 0.2
-                        }
+                        },
+                        message: datum.value.description
                     }
                 }
 
@@ -449,22 +450,22 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     },
     layers: {
         baselayers: {
-            /*osm: {
-            name: 'OpenStreetMap',
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            type: 'xyz'
-            },*/
-            google: {
-              name: 'Google',
-              url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
-              type: 'xyz'
-            }
+          google: {
+						name: 'Google Satellite',
+						url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					googleStreet: {
+						name: 'Google Roads',
+						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					}
         },
         overlays:{
 
         }
     }
-});
+  });
 
 
 var drawnItems = new L.FeatureGroup();
