@@ -178,6 +178,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 
         }
       });
+      ga('create', 'UA-127746084-1', 'auto');
+      ga('send', 'pageview', {
+        page:'/app/views/datadescriptor/manager.html', 
+        title:'`Ike Wai Gateway | Data Descriptor Create' 
+      });
     };
 
     $scope.openClone = function (dataDescriptorUuid, size) {
@@ -198,6 +203,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         resolve: {
 
         }
+      });
+      ga('create', 'UA-127746084-1', 'auto');
+      ga('send', 'pageview', {
+        page:'/app/views/datadescriptor/manager.html', 
+        title:'`Ike Wai Gateway | Data Descriptor Clone' 
       });
     };
     
@@ -310,6 +320,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         resolve: {
 
         }
+      });
+      ga('create', 'UA-127746084-1', 'auto');
+      ga('send', 'pageview', {
+        page:'/app/views/datadescriptor/manager.html', 
+        title:'`Ike Wai Gateway | Data Descriptor View' 
       });
     };
     

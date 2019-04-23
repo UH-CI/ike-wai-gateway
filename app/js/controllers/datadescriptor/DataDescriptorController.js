@@ -774,6 +774,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: editDataDescriptor");
     $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
     $scope.edit_data_descriptor = true;
+    ga('create', 'UA-127746084-1', 'auto');
+    ga('send', 'pageview', {
+      page:'/app/views/datadescriptor/manager.html', 
+      title:'`Ike Wai Gateway | Data Descriptor Edit' 
+    });
   }
 
   $scope.doTheBack = function () {
@@ -1018,6 +1023,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         $scope.openCreate(uuid, size);
       });
     $scope.requesting = false;
+    var gaString = "`Ike Wai Gateway | Create Metadata " + schemaType;
+    ga('create', 'UA-127746084-1', 'auto');
+    ga('send', 'pageview', {
+      page:'views/modals/ModalCreateMetadata.html', 
+      title:gaString  
+    });
   };
 
   // open the modal to create a new person schema object
