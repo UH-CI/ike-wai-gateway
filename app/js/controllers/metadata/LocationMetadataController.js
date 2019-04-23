@@ -449,11 +449,16 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     },
     layers: {
         baselayers: {
-            osm: {
+            /*osm: {
             name: 'OpenStreetMap',
             url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             type: 'xyz'
-            },
+            },*/
+            google: {
+              name: 'Google',
+              url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+              type: 'xyz'
+            }
         },
         overlays:{
 
