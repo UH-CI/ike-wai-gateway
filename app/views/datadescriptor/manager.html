@@ -113,7 +113,10 @@
             <tbody>
               <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
                 <td ng-if="link.title == 'file'">
-                  <i class="fa fa-file-o">{{link.href.split('system')[1]}}</i>
+                  <a href="#/data/explorer/{{link.href.split('system')[1]}}"><i class="fa fa-file-o">{{link.href.split('system')[1]}}</i></a>
+                  <td ng-show="link.href.includes('ikewai-annotated-data')">
+                      <button type="button" class="btn btn-success text-center"  ng-click="download([link.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
+                    </td>
                 </td>
               </tr>
           </table>
@@ -178,6 +181,9 @@
                 <div ng-show='edit_perm || !data_descriptor_metadatum.value.published' class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
                   <a class="btn btn-default" href="#" ng-click="editDataDescriptor()"><i class="fa fa-pencil"/> Edit Annotations</a>
                 </div>
+                <div ng-show='edit_perm || !data_descriptor_metadatum.value.published' class="pull-right" ng-if="has_data_descriptor == true && edit_data_descriptor == false">
+                    <a class="btn btn-default" href="#" ng-click="exportDataDescriptor()"><i class="fa fa-pencil"/> Export to text file</a>
+                  </div>
                 <div class="pull-right" ng-show="!wizardSecondPage" ng-if="has_data_descriptor == true && edit_data_descriptor == true">
                   <a class="btn btn-default" href="#" ng-click="cancelEditDataDescriptor()"><i class="fa fa-pencil"/> Cancel Editing Without Saving</a>
                 </div>
@@ -232,17 +238,12 @@
                                       <span>
                                     </td>
                                     -->
-                                    <td ng-if="key=='start_datetime' || key=='end_datetime' || key==='publication_date' ">
-                                      <!--{{ data_descriptor_metadatum.value[key] | date:'medium'}}-->
-                                      <!--{{data_descriptor_metadatum.value[key]}}-->
-                                      {{data_descriptor_metadatum.value[key]}}
-                                    </td>
-                                    <td ng-if="key=='subjects' || key=='formats' ">
+                                    <td ng-if="key=='subjects' || key=='formats' || key=='dataTypes' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(', ')}}
                                     </td>
-                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' ">
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='dataState'|| key==='publication_date' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key]}}
@@ -251,7 +252,6 @@
                                     <!--<td ng-if="key !='creators' &&  key!='contributors'&& key!='organizations' && key!='subjects' && key!='formats' && key!='languages' && key!='start_datetime' && key!='end_datetime' && key!='publication_date'">
                                       {{data_descriptor_metadatum.value[key]}}
                                     </td>-->
-
                                   </tr>
                                 </tbody>
                               </table>
@@ -368,7 +368,7 @@
                           </br>
 
                       <!-- CONTRIBUTING AGENCIES -->
-                      <div class="form-group">
+                      <div class="form-group"  ng-show="!wizardSecondPage">
                           <label class="control-label pull-left" for="contributorAgency" data-toggle="tooltip" title='{{"contributorAgency" | translate}}'>Contributor - Agency:</label>
                           <button type="button" data-toggle="popover" title="Contributing Agency Field" data-content='{{"contributorAgency" | translate}}' class="btn btn-info btn-circle pull-left">
                             <i class="glyphicon glyphicon-question-sign"></i>
@@ -632,7 +632,7 @@
                             </div>
 
                              <!--STATUS: options for file status (raw, processed, preliminary, final) -->
-                             <!--
+                            <!--
                              <div class="form-group"  ng-show="!wizardSecondPage" align="left">
                               <label class="control-label" for="dataState" data-toggle="tooltip" title='{{"dataState" | translate}}'>Data State:</label>
                               <button type="button" data-toggle="popover" title="State Field" data-content='{{"dataState" | translate}}' class="btn btn-info btn-circle">
@@ -670,7 +670,7 @@
                                 </ui-select-choices>
                               </ui-select>
                             </div>
-                            -->                            
+                            -->
                              <!-- FORMAT -->
                             <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>

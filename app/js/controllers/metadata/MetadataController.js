@@ -13,8 +13,10 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person']
-    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person']
+
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
+
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -70,6 +72,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         if ($scope.schemaBox.val5){
           typearray.push('Water_Quality_Site')
         }
+        if ($scope.schemaBox.val6){
+          typearray.push('Timeseries')
+        }
         // if no schema types are selected, select all
         if (typearray.length == 0) {
           typearray.push('Site');
@@ -77,6 +82,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           typearray.push('Variable');
           typearray.push('Person');
           typearray.push('Water_Quality_Site');
+          typearray.push('Timeseries');
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
@@ -119,13 +125,13 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           }
       );
     }
-    
+
      $scope.spatialSearch = function(){
         //if ($scope.selectedMetadata != ''){
   	     $scope.requesting = true;
           $scope.query = "{$and: [{'name': {'$in':['Well','Site','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
           $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
-        
+
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -172,7 +178,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
 				$scope.schemaQuery
 			).then(function(response){
 				$scope.metadataschema = response.result;
-				
+
 			})
        $scope.requesting = false;
       //$scope.searchAll()
@@ -216,9 +222,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     }
     $scope.modalSchemas = $scope.modalSchemas
   };
-  
-  
-  
+
+
+
   ///MAP///
 ////////LEAFLET//////////////////
   $scope.markers=[];
@@ -290,7 +296,7 @@ var handle = {
     drawnItems.addLayer(leafletEvent.layer);
     //hide toolbar
     angular.element('.leaflet-draw-toolbar-top').hide();
-    //drawControl.hideDrawTools(); 
+    //drawControl.hideDrawTools();
     //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
   },
   edited: function(arg) {},
@@ -304,7 +310,7 @@ var handle = {
   editstart: function(arg) {},
   editstop: function(arg) {},
   deletestart: function(arg) {
-    
+
   },
   deletestop: function(arg) {}
 };
@@ -382,14 +388,14 @@ drawEvents.forEach(function(eventName){
         }
       );
     };
-    
+
     $scope.confirmAction = function (resourceType, resource, resourceAction, resourceList, resourceIndex) {
       //resource.id = resource.uuid;
       ActionsService.confirmAction(resourceType, resource, resourceAction, resourceList, resourceIndex);
     }
-  
+
     $scope.deleteMetadata = function (metadatum) {
       $scope.confirmAction("meta", metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
     }
-    
+
 });

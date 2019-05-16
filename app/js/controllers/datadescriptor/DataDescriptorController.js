@@ -87,6 +87,21 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     ".zip - zip compression (select internal file formats also)"
   ];
 
+  $scope.dataTypes = [
+    "Figure - figures, images",
+    "Map",
+    "Media - videos, audio",
+    "Dataset - tables, statistics",
+    "Fileset - Multiple associated files",
+    "Poster - illustrations, diagrams",
+    "Paper - publication documents",
+    "Preprint - pre-peer review papers",
+    "Presentation - Slides",
+    "Thesis - essays, dissertations",
+    "Code - scripts, binaries",
+    "Books - monograph, books"
+  ];
+
   // Licenses from: https://creativecommons.org/licenses/
   $scope.license_rights = [
     "Creative Commons Attribution CC BY",
@@ -109,8 +124,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.datadescriptor.subjects = [];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'dataState', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
+  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'dataState', 'dataTypes', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
@@ -196,8 +211,156 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     },
   });
 
+  //
+  // START of methods to export a data descriptor to a text file
+  //
+  $scope.exportGeneralData = function (a, header, newline, indent) {
+    exportContent = '';
+    if (a.length > 0) {
+      exportContent += header + newline;
+      for (var i in a) {
+        exportContent += indent + a[i] + newline;
+      }
+    }
+    //console.log(header + exportContent);
+    return exportContent;
+  };
+
+  $scope.exportPersonData = function (a, header, newline, indent) {
+    exportContent = '';
+    if (a.length > 0) {
+      exportContent += header + newline;
+      for (var i in a) {
+        p = a[i];
+        name = p.first_name + " " + p.last_name;
+        email = p.email;
+        org = p.organization;
+        phone = p.phone;
+        exportContent += indent + "Name: " + name + newline;
+        exportContent += indent + "Email: " + email + newline;
+        exportContent += indent + "Organization: " + org + newline;
+        exportContent += indent + "Phone: " + phone + newline;
+      }
+    }
+    //console.log(header + exportContent);
+    return exportContent;
+  };
+
+  $scope.exportFileData = function (a, header, newline, indent) {
+    exportContent = '';
+    if (a.length > 0) {
+      exportContent += header + newline;
+      for (var i in a) {
+        item = a[i];
+        if (item.title == 'file') {
+          link = item.href;
+          console.log("link: " + link);
+          exportContent += indent + link.split('system')[1] + newline;
+        }
+      }
+    }
+    //console.log(header + exportContent);
+    return exportContent;
+  };
+
+  $scope.exportVariablesAndLocations = function (varArray, header, subHeader, newline, indent) {
+    exportContent = '';
+    extraIndent = "  ";
+    var index = 0;
+    if (varArray.length > 0) {
+      exportContent += header + newline;
+      // get a variable or location
+      for (var i in varArray) {
+        index = index + 1;
+        variable = varArray[i];
+        exportContent += extraIndent + subHeader + " " + index + ": " + newline;
+        // loop through the variable/location's properties
+        for (var v in variable.value) {
+          str = v + ": " + variable.value[v];
+          console.log(str);
+          exportContent += extraIndent + indent + str + newline;
+        }
+      }
+    }
+    //console.log(header + exportContent);
+    return exportContent;
+  };
+
+  $scope.exportBasicData = function (val, header, newline, indent) {
+    exportContent = '';
+    if (typeof val !== 'undefined') {
+      exportContent += header + val + newline;
+    }
+    //console.log(header + exportContent);
+    return exportContent;
+  };
+
+  $scope.exportDataDescriptor = function () {
+    //$scope.fetchMetadata("{'uuid':'" + $scope.ddUuid + "'}");
+    exportContent = '';
+    //dataDelimiter = "";
+    newline = "\n";
+    indent = "  ";
+
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["title"], "Title: ", newline, indent);
+    exportContent += $scope.exportPersonData($scope.data_descriptor_metadatum.value.creators, "Creators: ", newline, indent);
+    exportContent += $scope.exportGeneralData($scope.datadescriptor.organizations, "Organizations: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["subjects"], "Subjects: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["start_datetime"], "Start Data/Time: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["end_datetime"], "End Data/Time: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["dataState"], "Data State: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["dataTypes"], "Data Types: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["formats"], "Formats: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["Description"], "Title: ", newline, indent);
+    exportContent += $scope.exportFileData($scope.data_descriptor_metadatum._links.associationIds, "Associated Files: ", newline, indent);
+    exportContent += $scope.exportPersonData($scope.data_descriptor_metadatum.value.contributors, "Contributors: ", newline, indent);
+    exportContent += $scope.exportGeneralData($scope.datadescriptor.newspapers, "Newspapers: ", newline, indent);
+    exportContent += $scope.exportPersonData($scope.datadescriptor.articleAuthors, "Article Authors: ", newline, indent);
+    exportContent += $scope.exportPersonData($scope.datadescriptor.translators, "Translators: ", newline, indent);
+    exportContent += $scope.exportVariablesAndLocations($scope.variables, "Variables: ", "Variable", newline, indent);
+    exportContent += $scope.exportVariablesAndLocations($scope.locations, "Locations: ", "Location", newline, indent);
+
+    console.log(exportContent);
+ 
+    // START download data to file
+    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
+    var filename = 'MetadataExport' + '.txt';
+    var blob = new Blob([exportContent], {type: 'text/plain'});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+      var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/plain', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
+    }
+  };
+  //
+  // END of methods to export a data descriptor to a text file
+  //
+
+  $scope.download = function(file_url){
+    $scope.requesting = true;
+    FilesMetadataService.downloadSelected(file_url).then(function(result){
+      $scope.requesting = false;
+    });
+  }
+
   $scope.cancelEditDataDescriptor = function () {
     console.log("JEN DDC: cancelEditDataDescriptor");
+    $scope.edit_data_descriptor = false;
+    $scope.action = "view";
+    //$scope.refreshMetadata();
+    //$rootScope.$broadcast('metadataUpdated');
+    //$scope.close();
+  }
+
+  $scope.cancelEditDataDescriptorWithBroadcast = function () {
+    console.log("JEN DDC: cancelEditDataDescriptorWithBroadcast");
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
     //$scope.refreshMetadata();
@@ -638,7 +801,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 //THe save
   $scope.saveDataDescriptor = function (container_id="") {
     //console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
-    //$scope.cancelEditDataDescriptor();
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
     /*if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title &&
@@ -667,7 +829,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 if ($scope.fileUuid && $scope.fileUuid != undefined) {
                   $scope.addAssociation($scope.metadataUuid, $scope.fileUuid)
                 }
-                //$scope.cancelEditDataDescriptor();
                 // JEN TODO: need to add a mechanism to loop through all the files and add the association.
                 App.alert({
                   message: "Success Data Descriptor Saved",
@@ -738,7 +899,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                   closeInSeconds: 5
                 });
                 //$rootScope.$broadcast('metadataUpdated');
-                $scope.cancelEditDataDescriptor();
+                $scope.cancelEditDataDescriptorWithBroadcast();
               },
               function (response) {
                 MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -1054,7 +1215,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wizardSecondPage = false;
     $scope.fileMetadataObjects = $scope.fileMetadataObject;
     $scope.selectedSchemaUuid = schemauuid;
-    var modalInstance = $uibModal.open({
+    $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'views/modals/ModalCreateMetadata.html',
       controller: 'ModalMetadataResourceCreateController',
