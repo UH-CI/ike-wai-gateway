@@ -18,7 +18,7 @@
 
         <div class="col-md-1"></div>
         <div class="col-md-12">
-               <h5>Draw Bounding Box And Click "Search In Bounding Area" Button To Begin Searching...</h5>
+               <h4><b>Draw Bounding Box And Click "Search In Bounding Area" Button To Begin Searching...</b></h4>
                <leaflet defaults="defaults" width="100%" height="450px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions"  layers="layers" event-broadcast="events"></leaflet>
        </div>
 <!--
@@ -66,6 +66,12 @@
                     <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
                 </div>
             </div>
+            <div class="row text-center" ng-show="!requesting" ng-if="wqsites.length == 0">
+                    <div class="col-md-8">
+                        <h4><b>No results were returned for this search.</b></h4>
+                    </div>
+            </div>
+
             <div class="portlet-body" ng-if="filtered_files.length > 0 || wqsites.length > 0">
             <div class="row">
                 <div class="col-md-12">
