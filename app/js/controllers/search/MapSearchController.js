@@ -13,7 +13,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','DataDescriptor','Timeseries','Observation']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -44,9 +44,13 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.siteSortReverse = true;
     $scope.varSortReverse = false;
     $scope.filtered_files = []
+    $scope.filtered_wqsites = []
+    $scope.filtered_timeseries = []
+    $scope.filtered_observations = []
     $scope.culled_metadata = []
-
-
+    $scope.sites_to_search = []
+    $scope.csv_json = []
+    
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -59,9 +63,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.facet_count = {} //store number of file  associated as count
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
+      $scope.sites_to_search = [] //clear sites
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
+        if (val.name == "Site"){
+          $scope.sites_to_search.push(val.uuid)
+        }
         if (val._links.associationIds.length > 0){
+
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
@@ -93,7 +102,31 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
       })
       $scope.filtered_files = $scope.files;
-      $scope.fetchFacetMetadata();
+      $scope.filtered_wqsites = $scope.wqsites;
+      console.log("Sites with associations:"+$scope.sites_to_search.length)
+      console.log($scope.sites_to_search)
+     // $scope.fetchFacetMetadata();
+      $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      console.log($scope.observations_query)
+      MetaController.listMetadata($scope.observations_query,limit=1000,offset=0)
+      .then(function(response){
+        $scope.observations = response.result;
+        console.log("OBS:"+$scope.observations )
+        $scope.filtered_observations = $scope.observations;
+        //$scope.downloadSearchResults();
+        $scope.formatObservationsForTable($scope.filtered_observations)
+
+      })
+      MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
+      .then(function(response){
+        $scope.timeseries = response.result;
+        console.log("Timeseries:"+$scope.timeseries )
+        $scope.filtered_timeseries = $scope.timeseries;
+        $scope.fetchFacetMetadata();
+      })
+      
+      
       $scope.requesting=false;
     }
 
@@ -127,16 +160,44 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.facetSearch = function(){
       $scope.requesting = true;
       new_filtered_files = []
+      new_filtered_wqsites = []
+      new_filtered_timeseries= [];
+      new_filtered_observations = [];
       if ($scope.selectedMetadata != ''){
         angular.forEach($scope.selectedMetadata, function(uuid){
           if (uuid != undefined){
+            //Files
             angular.forEach($scope.metadata_file_hash[uuid] , function(file){
               new_filtered_files.push(file)
+            })
+          //WQ Sites  
+            angular.forEach($scope.wqsites, function(wqs){
+              if (wqs.uuid == uuid){
+                new_filtered_wqsites.push(wqs)
+              }
+              else if (wqs.associationIds.indexOf(uuid) > -1){
+                new_filtered_wqsites.push(wqs)
+              }
+            })
+            //Timeseries
+            angular.forEach($scope.timeseries, function(ts){
+              if (ts.associationIds.indexOf(uuid) > -1){
+                new_filtered_timeseries.push(ts)
+              }
+            })
+            //Observations
+            angular.forEach($scope.observations, function(obs){
+              if (obs.associationIds.indexOf(uuid) > -1){
+                new_filtered_observations.push(obs)
+              }
             })
           }
         })
         console.log(new_filtered_files)
         $scope.filtered_files = new_filtered_files;
+        $scope.filtered_wqsites = new_filtered_wqsites
+        $scope.filtered_timeseries = new_filtered_timeseries;
+        $scope.filtered_observations =new_filtered_observations;
         $scope.requesting = false;
         //$scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
 
@@ -144,6 +205,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       }
       else{
         $scope.filtered_files = $scope.files;
+        $scope.filtered_wqsites = $scope.wqsites;
+        $scope.filtered_timeseries = $scope.timeseries;
+        $scope.filtered_observations = $scope.observations;
         $scope.requesting = false;
         //$scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
       }
@@ -159,6 +223,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
         $scope.doSearch();
+        
       }
 
     $scope.searchAll = function(){
@@ -326,6 +391,24 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
+            angular.forEach($scope.timeseries, function(ts){
+              angular.forEach(ts.value.variables, function(vr){
+                console.log("timeseries-vars: " + angular.toJson(vr))
+                $scope.exists=false;
+                angular.forEach($scope.facet_variables, function(fvar){
+                  if (fvar['uuid'] == vr['uuid']){
+                    $scope.exists = true;
+                    console.log(fvar)
+                    console.log(vr)
+                  }
+                })
+                if ($scope.exists == false){
+                  $scope.facet_variables.push(vr)
+                }
+                
+                
+              })  
+            })
             angular.forEach($scope.facet_variables, function(datum){
               $scope.metadata_hash[datum.uuid] = datum;
               file_uuids = intersection(datum.associationIds, $scope.file_uuids)
@@ -344,6 +427,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               }*/
             })
         })
+
     };
 
     $scope.searchTools = function(query){
@@ -397,6 +481,285 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.selectedMetadata.push(uuid);
     }
   };
+
+  $scope.formatObservationsForTable = function(theobs){
+    $scope.test_obs = theobs;
+    $scope.ts_hash = {}
+    //loop through obs
+    angular.forEach($scope.test_obs, function(obs) {
+      //index by datetime
+      //store siteid-var:value
+      console.log(obs)
+      var siteid = obs.value['site-id'];
+      var dt = obs.value['datetime'];  
+      if($scope.ts_hash[dt] == null){
+        $scope.ts_hash[dt] = {}
+      }
+      //store observations keyed by datetime so all mathing datetimes are grouped
+      angular.forEach(obs.value, function(val,key) {
+        if (key != 'site-id' && key != 'datetime'){
+          var newkey = siteid + "-"+ key
+          $scope.ts_hash[dt][[newkey]] = val;
+        }
+      })
+    })
+    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    //convert hash to array of hash objects with datetime as field with all measurement field
+    //easier for csv conversion
+    $scope.csv_json = []
+    angular.forEach($scope.ts_hash, function(val,key) {
+      var temp = val;
+      temp['datetime']= key;
+      $scope.csv_json.push(temp);
+    })
+    console.log("csv_hash: " + angular.toJson($scope.csv_json))
+    //Define the header fields and what fields are being pulled 
+    var dataFields = ['datetime'];
+    angular.forEach($scope.csv_json, function(row) {
+      angular.forEach(row, function(value, key) {
+        if(dataFields.indexOf(key) < 0 ){
+          dataFields.push(key);
+        }
+      })
+    })
+    $scope.header = dataFields;
+  }
+
+  $scope.downloadCSVObservations = function(){
+    $scope.downloadObservations($scope.filtered_observations)
+  }
+  $scope.downloadObservations = function(theobs){
+    $scope.requesting = true;
+    $scope.test_obs = theobs;
+    $scope.ts_hash = {}
+    //loop through obs
+    angular.forEach($scope.test_obs, function(obs) {
+      //index by datetime
+      //store siteid-var:value
+      console.log(obs)
+      var siteid = obs.value['site-id'];
+      var dt = obs.value['datetime'];  
+      if($scope.ts_hash[dt] == null){
+        $scope.ts_hash[dt] = {}
+      }
+      //store observations keyed by datetime so all mathing datetimes are grouped
+      angular.forEach(obs.value, function(val,key) {
+        if (key != 'site-id' && key != 'datetime'){
+          var newkey = siteid + "-"+ key
+          $scope.ts_hash[dt][[newkey]] = val;
+        }
+      })
+    })
+    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    //convert hash to array of hash objects with datetime as field with all measurement field
+    //easier for csv conversion
+    $scope.csv_json = []
+    angular.forEach($scope.ts_hash, function(val,key) {
+      var temp = val;
+      temp['datetime']= key;
+      $scope.csv_json.push(temp);
+    })
+    console.log("csv_hash: " + angular.toJson($scope.csv_json))
+    //Define the header fields and what fields are being pulled 
+    var dataFields = ['datetime'];
+    angular.forEach($scope.csv_json, function(row) {
+      angular.forEach(row, function(value, key) {
+        if(dataFields.indexOf(key) < 0 ){
+          dataFields.push(key);
+        }
+      })
+    })
+    $scope.header = dataFields;
+    console.log()
+    console.log(dataFields)
+    // START populating csv content
+    csvContent = '';
+    for (var c = 0; c < dataFields.length; c++) {
+      if (c > 0) {
+        csvContent += ',';
+      }
+      dataDelimiter = "";
+      if (dataFields[c].indexOf('"') > -1 ||
+        dataFields[c].indexOf(',') > -1) {
+        dataDelimiter = '"';
+      }
+      csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
+    } // END loop through datafields array to populate download headers
+    csvContent += "\n";
+    $scope.metadata = $scope.csv_json;
+    for (var i = 0; i < $scope.metadata.length; i++) {
+      var metadatum = $scope.metadata[i];
+        for (var c = 0; c < dataFields.length; c++) {
+          var keyName = dataFields[c].split('.');
+          var tempDataObject = metadatum;
+          for (var kn = 0; kn < keyName.length; kn++) {
+            if (typeof tempDataObject[keyName[kn]] === "undefined") {
+              tempDataObject = '';
+            } else {
+              tempDataObject = tempDataObject[keyName[kn]];
+            }
+          } // END go through the list of download type's field names to get the data
+          if (c > 0) {
+            csvContent += ',';
+          }
+          // sanitize string data. double quotes must be duplicated for csv.
+          if (typeof tempDataObject == "string") {
+            dataDelimiter = "";
+            if (tempDataObject.indexOf('"') > -1 ||
+              tempDataObject.indexOf(',') > -1) {
+              dataDelimiter = '"';
+            }
+	    if (tempDataObject.substring(0, 1) == '"') {
+	      tempDataObject = tempDataObject.substring(1, tempDataObject.length);
+	    }
+	    if (tempDataObject.substring(tempDataObject.length - 1) == '"') {
+	      tempDataObject = tempDataObject.substring(0, tempDataObject.length - 1);
+	    }
+	    tempDataObject = tempDataObject.replace(/\"/g, "\"\"");
+	  }
+	  
+	  if (!tempDataObject) {
+	    tempDataObject = '';
+	  }
+
+          csvContent += dataDelimiter + tempDataObject + dataDelimiter;
+        } // END loop through data fields array to populate download values
+        csvContent += "\n";
+      
+    }
+
+    // START download data to file
+    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
+    var filename = 'Observations.csv';
+    var blob = new Blob([csvContent], {type: 'text/csv'});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+      var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/csv', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
+    }
+    $scope.requesting = false
+  }
+  $scope.load_test = function(){
+    $.getJSON("/assets/obs.json", function(json) {
+      console.log(json); // this will show the info it in firebug console
+      //$scope.test_obs = json.result;
+      $scope.downloadObservations(json.result)
+    });
+  }
+
+  
+  $scope.downloadSearchResults = function() {
+    $scope.ts_hash = {}
+    //loop through obs
+    angular.forEach($scope.filtered_observations, function(obs) {
+      //index by datetime
+      //store siteid-var:value
+      var siteid = obs.value['site-id'];
+      var dt = obs.value['datetime'];  
+      if($scope.ts_hash[dt] == null){
+        $scope.ts_hash[dt] = []
+      }
+      angular.forEach(obs.value, function(val,key) {
+        if (key != 'site-id' && key != 'datetime'){
+          var newkey = siteid + "-"+ key
+          console.log(newkey)
+          console.log(val)
+          //col = {newkey: val}
+          console.log(dt)
+          $scope.ts_hash[dt].push({ [newkey] : val})
+        }
+      })
+    })
+    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
+    /*var dataFields = [];
+    angular.forEach($schemaProperties[$scope.downloadType.value].properties, function(value, key) {
+    	dataFields.push(key);
+    })
+
+    // START populating data
+    csvContent = '';
+    for (var c = 0; c < dataFields.length; c++) {
+      if (c > 0) {
+        csvContent += ',';
+      }
+      dataDelimiter = "";
+      if (dataFields[c].indexOf('"') > -1 ||
+        dataFields[c].indexOf(',') > -1) {
+        dataDelimiter = '"';
+      }
+      csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
+    } // END loop through datafields array to populate download headers
+    csvContent += "\n";
+
+    for (var i = 0; i < $scope.metadata.length; i++) {
+      var metadatum = $scope.metadata[i];
+      if ($scope.downloadType.value == metadatum.name) {
+        for (var c = 0; c < dataFields.length; c++) {
+          var keyName = dataFields[c].split('.');
+          var tempDataObject = metadatum.value;
+          for (var kn = 0; kn < keyName.length; kn++) {
+            if (typeof tempDataObject[keyName[kn]] === "undefined") {
+              tempDataObject = '';
+            } else {
+              tempDataObject = tempDataObject[keyName[kn]];
+            }
+          } // END go through the list of download type's field names to get the data
+          if (c > 0) {
+            csvContent += ',';
+          }
+          // sanitize string data. double quotes must be duplicated for csv.
+          if (typeof tempDataObject == "string") {
+            dataDelimiter = "";
+            if (tempDataObject.indexOf('"') > -1 ||
+              tempDataObject.indexOf(',') > -1) {
+              dataDelimiter = '"';
+            }
+	    if (tempDataObject.substring(0, 1) == '"') {
+	      tempDataObject = tempDataObject.substring(1, tempDataObject.length);
+	    }
+	    if (tempDataObject.substring(tempDataObject.length - 1) == '"') {
+	      tempDataObject = tempDataObject.substring(0, tempDataObject.length - 1);
+	    }
+	    tempDataObject = tempDataObject.replace(/\"/g, "\"\"");
+	  }
+	  
+	  if (!tempDataObject) {
+	    tempDataObject = '';
+	  }
+
+          csvContent += dataDelimiter + tempDataObject + dataDelimiter;
+        } // END loop through data fields array to populate download values
+        csvContent += "\n";
+      }
+    }
+
+    // csvContent = JSON.stringify($scope.metadata);
+    // START download data to file
+    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
+    var filename = 'searchResultsData' + $scope.downloadType.value + 's.csv';
+    var blob = new Blob([csvContent], {type: 'text/csv'});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+    } else{
+      var e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = filename;
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/csv', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
+      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
+    }*/
+  } // END function downloadSearchResults
+
+
 ////////LEAFLET//////////////////
   $scope.markers=[];
   angular.extend($scope, {
