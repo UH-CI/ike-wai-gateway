@@ -11,6 +11,7 @@
       <a href="{{app.helpURI}}" target="_blank">
           <i class="fa fa-book"></i> <span><em>{{app.label}}</em> Documentation</span>
       </a>
+    <h3>Parse And Store CSV Timeseries Data File</h3>
     </p>
     <form novalidate class="simple-form" name="TimeseriesTemplateForm">
             <div class="input-group has-success has-feedback"> 
@@ -21,6 +22,18 @@
                 </div> 
                 <span class="help-block">CSV file to serialize.</span>
             </div>
+          </br>
+            <div class="input-group has-success has-feedback"> 
+                <label for="input">Data QA/QC Level.</label> 
+                <select class="form-control" type="text" ng-model="timeseries_template.type">
+                    <option value="sample">Raw Data</option>
+                    <option value="logger">Quality Contolled</option>
+                    <option value="logger">Derived Data Product</option>
+                    <option value="logger">Interpreted Products</option>
+                    <option value="logger">Knowledge Products</option>
+                  </select>
+            </div>
+          </br>
             <div class="form-group has-success has-feedback"> 
                 <label for="input">File To Parse</label> 
                 <div class="input-group"> 
