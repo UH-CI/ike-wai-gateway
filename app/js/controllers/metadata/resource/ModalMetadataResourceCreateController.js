@@ -59,9 +59,17 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		MetaController.listMetadataSchema(
 			$scope.schemaQuery
 		).then(function (response) {
-			$scope.metadataschema = response.result;
+			$scope.metadataschema = 	$filter('filter')(response.result, function(item){			
+				//	$scope.metadataschema = response.result;
+				return $scope.approvedSchema.indexOf(item.schema.title) > -1;	
+			}	
+		  );	
+			$scope.requesting = false;	
 		})
-
+		if (selectedSchemaUuid != null) {	
+				 $scope.fetchMetadataSchema(selectedSchemaUuid);	
+				 $scope.requesting = false;	
+ 		}
 		
 	};
 
