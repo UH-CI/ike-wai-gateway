@@ -37,7 +37,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
             $scope.metadatum = response.result;
             $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
             $scope.makeLocationMarkers($scope.metadatum)
-            if (length($scope.order[$scope.metadatum.name]) ==0){
+            if ($scope.order[$scope.metadatum.name].length ==0){
               alert(Object.keys($scope.metadatum.value))
               $scope.order[$scope.metadatum.name] = Object.keys($scope.metadatum.value)
             }
