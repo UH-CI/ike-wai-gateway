@@ -1,0 +1,402 @@
+
+<head>
+    <title>`Ike Wai Gateway | Map Search for Annotated Repository Files </title> 
+    <!-- Start: Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127746084-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-127746084-1');
+    </script>
+    <!-- End: Global site tag (gtag.js) - Google Analytics -->
+</head>
+<h3><i class="fa fa-search"></i> Search Ike Annotated Repository Data</h3>
+<div class="row">
+    
+    <div class="row">
+
+        <div class="col-md-1"></div>
+        <div class="col-md-12">
+               <h4><b>Select Variables to Search ...</b></h4>
+               <leaflet defaults="defaults" width="100%" height="450px" markers="markers" lf-center="map.center" lf-draw="map.drawOptions"  layers="layers" event-broadcast="events"></leaflet>
+       </div>
+
+        
+        <div class="col-md-1"></div>
+    <div class="col-md-12">
+
+        <div class="portlet light portlet-fit portlet-datatable bordered">
+            <div class="portlet-title">
+                <div class="row text-center">
+                  <div class="col-md-12">
+
+                  </div>
+                </div>
+            <!--    <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer">
+                    <div class="btn-group top-buffer">
+                      <div class="input-group">
+
+                        <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        <div class="input-group">
+                    </div>
+                        <input type="text" class="form-control" placeholder="Search Annotated Filenames" ng-model="searchField.value"></div>
+                        <button class="btn btn-primary" ng-click="textSearch()">Search Files</button>
+
+                      <br/>
+                    </div>
+
+
+
+
+                </div>
+            </div>-->
+            <div class="row text-center" ng-show="requesting">
+                <div class="col-md-8">
+                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+                </div>
+            </div>
+
+
+            <div class="portlet-body" ng-if="variables.length > 0 || wqsites.length > 0">
+            <div class="row">
+                <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                            <button class="btn btn-primary" ng-click="variableSearch()"><i class="fa fa-search"/> Search With Selections</button>
+                    </br></br>
+                    <div class="portlet light portlet-fit portlet-datatable pre-scrollable">
+                        <table class="table table-striped table-bordered table-hover management pre-scrollable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <a href="#" ng-click="varSortType = 'value.variable_name'; varSortReverse = !varSortReverse">
+                                                Variables
+                                                <span ng-show="varSortType == 'value.variable_name' && !varSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="varSortType == 'value.variable_name' && varSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            <tbody>
+                                <tr ng-repeat="var in facet_variables | orderBy:varSortType:varSortReverse">
+                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
+                                        <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!--
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable" style="overflow-y:scroll;">
+                            <table id="well_facet" class="table table-striped table-bordered table-hover management pre-scrollable" >
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <a href="#" ng-click="wellSortType = 'value.well_name'; wellSortReverse = !wellSortReverse">
+                                                Wells
+                                                <span ng-show="wellSortType == 'value.well_name' && !wellSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="wellSortType == 'value.well_name' && wellSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="well in facet_wells | orderBy:wellSortType:!wellSortReverse">
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-checked="selectedMetadata.indexOf(well.uuid) > -1" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}} <span class="badge">{{facet_count[well.uuid]}}</span>
+                                            <a href="#" ng-click="openView(well.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable">
+                            <table id="site_facet" class="table table-striped table-bordered table-hover management pre-scrollable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <a href="#" ng-click="siteSortType = 'site.value.name'; sortReverse = !sortReverse">
+                                                    Sites
+                                                    <span ng-show="siteSortType == 'site.value.name' && !sortReverse" class="fa fa-caret-down"></span>
+                                                    <span ng-show="siteSortType == 'site.value.name' && sortReverse" class="fa fa-caret-up"></span>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    <tr ng-repeat="site in facet_sites | orderBy:siteSortType:!sortReverse">
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{site.uuid}}" ng-checked="selectedMetadata.indexOf(site.uuid) > -1" ng-click="toggleSelectedMetadata(site.uuid)"/>{{site.value.name}}, {{site.value.description}}<span class="badge">{{facet_count[site.uuid]}}</span>
+                                        <a href="#" ng-click="openView(site.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="portlet light portlet-fit portlet-datatable pre-scrollable">
+                            <table id="wq_site_facet" class="table table-striped table-bordered table-hover management pre-scrollable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <a href="#" ng-click="siteSortType = 'value.name'; sortReverse = !sortReverse">
+                                                    Water Quality Sites
+                                                    <span ng-show="siteSortType == 'value.name' && !sortReverse" class="fa fa-caret-down"></span>
+                                                    <span ng-show="siteSortType == 'value.name' && sortReverse" class="fa fa-caret-up"></span>
+                                                </a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    <tr ng-repeat="wq_site in facet_water_quality_sites | orderBy:siteSortType:!sortReverse">
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{wq_site.uuid}}" ng-checked="selectedMetadata.indexOf(wq_site.uuid) > -1" ng-click="toggleSelectedMetadata(wq_site.uuid)"/>{{wq_site.value.name}}, {{wq_site.value.description}}<span class="badge">{{facet_count[wq_site.uuid]}}</span>
+                                        <a href="#" ng-click="openView(wq_site.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>-->
+                        
+                       </div>
+                    <div class="col-md-8">
+                    <h3><i class="fa fa-file"></i> Matching Files: {{filtered_files.length}}</h3>
+                    <div class="row">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <label><i class="fa fa-filter" aria-hidden="true"></i></label>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter"></div>
+                            </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div ng-show="!requesting">
+                            <div ng-show="metadata.length === 0  && filtered_files.length < 0" class="text-center">
+                                <div class="row text-center">
+                                <div class="col-md-12">
+                                    No Matching Files Found
+                                </div>
+                                </div>
+                            </div>
+                            <div ng-show="metadata.length > 0"class="text-left">
+                                <div class="pull-left">
+                                    Total Matching Files: {{filtered_files.length || 0}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                            <div ng-show="filtered_files.length > 0" class="pre-scrollable">
+                                <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatabele_files">
+                                    <thead>
+                                        <tr role="row" class="heading">
+                                          <th width="20%">
+                                              <a href="#" ng-click="sortType = 'href'; sortReverse = !sortReverse">
+                                              Path
+                                              <span ng-show="sortType == 'href' && !sortReverse" class="fa fa-caret-down"></span>
+                                              <span ng-show="sortType == 'href' && sortReverse" class="fa fa-caret-up"></span>
+                                              </a>
+                                          </th>
+                                            <th width="20%">
+                                                <a href="#" ng-click="sortType = 'href'; sortReverse = !sortReverse">
+                                                Filename
+                                                <span ng-show="sortType == 'href' && !sortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'href' && sortReverse" class="fa fa-caret-up"></span>
+                                                </a>
+                                            </th>
+                                            <th width="10%" class="hidden-xs">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="file in filtered_files | orderBy:sortType:sortReverse | filter:filter">
+                                          <td ng-show="file.href.includes('ikewai-annotated-data')">
+                                              {{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/
+
+                                          </td>
+                                            <td ng-show="file.href.includes('ikewai-annotated-data')">
+                                                {{file.href.split('/')[file.href.split('/').length-1]}}
+                                            </td>
+                                            <td ng-show="file.href.includes('ikewai-annotated-data')">
+                                                <button type="button" class="btn btn-success text-center"  ng-click="download([file.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
+                                                <button type="button" class="btn btn-success text-center"ng-click="openAnnotation(file.rel, file.href.split('ikewai-annotated-data/')[1])"><i class="fa fa-tag"></i>&nbsp;Annotations</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                            </div>
+                            <h3><i class="fa fa-file"></i> Matching Water Quality Data: {{filtered_wqsites.length}}</h3>
+                            <div class="row">
+
+                              <div class="col-md-12">
+                                <div >
+                              <div class="col-md-12">
+                              <div ng-show="wqsites.length > 0" class="pre-scrollable">
+                                  <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_files">
+                                      <thead>
+                                          <tr role="row" class="heading">
+                                              <th width="20%">
+                                                <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                                  Water Quality Site Name
+                                                  <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                                  <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                                </a>
+                                              </th>
+                                              <th width="10%" class="hidden-xs">
+                                                Actions
+                                              </th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          <tr ng-repeat="wqs in filtered_wqsites | orderBy:sortType:sortReverse">
+                                              <td>
+                                                 {{wqs.value.name}}&nbsp;<span class="badge" ng-if="wqs.value.resultCount">{{wqs.value.resultCount}}</span>
+                                                  <a href="#" ng-click="openView(wqs.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                              </td>
+                                              <td>
+                                                 <a class="btn btn-success" href='https://www.waterqualitydata.us/Result/search?siteid={{wqs.value.MonitoringLocationIdentifier}}&mimeType=csv&zip=yes&sorted=no' target="_blank" ><i class='fa fa-download'/> Download</a>
+                                              </td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                            <h3><i class="fa fa-file"></i> Matching Timeseries : {{filtered_timeseries.length}}</h3>
+                            <div class="row">
+
+                              <div class="col-md-12">
+                                <div >
+                                  <div class="col-md-12">
+                                    <div class="pre-scrollable">
+                                    <table class="table table-striped table-bordered table-hover management pre-scrollable"" width="100%" id="datatable_timeseries">
+                                        <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="20%">
+                                                  <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                                    Timeseries Name
+                                                    <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                                    <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                                  </a>
+                                                </th>
+                                                <th>
+                                                  Variables
+                                                </th>
+                                                <th width="10%" class="hidden-xs">
+                                                  Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="time in filtered_timeseries | orderBy:sortType:sortReverse">
+                                                <td>
+                                                   {{time.value.name}}&nbsp;<span class="badge" ng-if="time.value.resultCount">{{time.value.resultCount}}</span>
+                                                    <a href="#" ng-click="openView(time.uuid, 'lg')"><i class="fa fa-eye"></i></a>
+                                                </td>
+                                                <td>
+                                                  <li ng-repeat="var in time.value.variables">
+                                                   {{var.value.variable_name}} | {{var.value.unit}}
+                                                  </li>
+                                                </td>
+                                                <td>
+                                                  Action
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{filtered_observations.length}}</h3>
+                            <button id="test_button" class="btn btn-primary pull-right" ng-click="downloadCSVObservations()" ><i class="fa fa-search"/> Download Observations</button>
+                            <div class="row">
+
+                              <div class="col-md-12">
+                                <div >
+                                  <div class="col-md-12">
+                                    <div class="pre-scrollable">
+                                    <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatable_timeseries">
+                                        <thead>
+                                            <tr role="row" class="heading">
+                                                <th width="20%">
+                                                  <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                                    Datetime
+                                                    <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                                    <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                                  </a>
+                                                </th>
+                                                <th>
+                                                  Site
+                                                </th>
+                                                <th>
+                                                  Variables
+                                                </th>
+                                                <th width="10%" class="hidden-xs">
+                                                  Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="observation in filtered_observations | orderBy:sortType:sortReverse">
+                                                <td>
+                                                   {{observation.value.datetime}}&nbsp;
+                                                    <!--<a href="#" ng-click="openView(observation.uuid, 'lg')"><i class="fa fa-eye"></i></a>-->
+                                                </td>
+                                                <td>
+                                                  {{observation.value['site-id']}}
+                                                </td>
+                                                <td>
+                                               
+                                                    <ul>
+                                                  <li ng-repeat="(key,val)   in observation.value" ng-if='key != "datetime" && key !="site-id"'>
+                                                      
+                                                        {{key}} = {{val}} 
+                                                      
+                                                    </li>
+                                                 </ul>
+                                                </td>
+                                                <td>
+                                                  Action
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                    </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+   <!-- <div class="col-md-12">
+            <div ng-show="!requesting">
+                <div class="col-md-12">
+                 <div class="pre-scrollable">
+                <table class="table table-striped table-bordered table-hover management pre-scrollable" width="100%" id="datatable_observations">
+                    <thead>
+                    <tr>
+                        <th ng-repeat="key in header | orderBy:sortType:sortReverse">
+                            {{key}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="observation in csv_json | orderBy:sortType:sortReverse">
+                        <td ng-repeat="key in header | orderBy:sortType:sortReverse">
+                            {{observation[key]}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+            </div>-->
+</div>

@@ -2789,6 +2789,42 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('var-search', {
+          url: "/var-search",
+          templateUrl: "views/search/var-search.html",
+          data: {pageTitle: 'Search Ike Wai'},
+          controller: "VariableSearchController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      serie: true,
+                      name: 'AgaveToGo',
+                      insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                      files: [
+                          '../assets/global/scripts/datatable.js',
+                          '../bower_components/holderjs/holder.js',
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/PermissionsService.js',
+                          'js/services/MetadataService.js',
+                          'js/services/FilesMetadataService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/search/VariableSearchController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/filemetadata/resource/ModalFilemetadataResourceDetailsController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
+                          '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                          '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
+                          'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
+                      ]
+                  });
+              }]
+          }
+      })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
