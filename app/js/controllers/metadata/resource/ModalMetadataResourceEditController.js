@@ -251,6 +251,29 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
     defaults: {
             scrollWheelZoom: false
     },
+    layers: {
+			baselayers: {
+					google: {
+						name: 'Google Satellite',
+						url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					googleStreet: {
+						name: 'Google Roads',
+						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					/*osm: {
+					name: 'OpenStreetMap',
+					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+					type: 'xyz'
+					}*/
+					
+			},
+			overlays:{
+
+			}
+	  }
   });
 
   var drawnItems = new L.FeatureGroup();
