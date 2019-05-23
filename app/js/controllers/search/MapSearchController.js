@@ -50,7 +50,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.culled_metadata = []
     $scope.sites_to_search = []
     $scope.csv_json = []
-    
+    $scope.filtered_association_ids = [];
+
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -64,10 +65,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
       $scope.sites_to_search = [] //clear sites
+      $scope.filtered_association_ids =[]
+      $scope.filtered_association_ids =[]
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
-        if (val.name == "Site"){
+        //$scope.filtered_association_ids = $scope.filtered_association_ids.push(val.uuid)
+        if (val.name == "Site" ){//|| val.name == "Well"){
           $scope.sites_to_search.push(val.uuid)
+          $scope.culled_metadata.push(val)
         }
         if (val._links.associationIds.length > 0){
 
@@ -123,6 +128,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.timeseries = response.result;
         console.log("Timeseries:"+$scope.timeseries )
         $scope.filtered_timeseries = $scope.timeseries;
+        //angular.forEach($scope.timeseries, function(val, key){
+//
+  //      })
         $scope.fetchFacetMetadata();
       })
       
@@ -163,41 +171,68 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       new_filtered_wqsites = []
       new_filtered_timeseries= [];
       new_filtered_observations = [];
+      new_obs_uuids = []
+      new_files_uuids = []
+      new_wqsites_uuids = []
+      new_timeseries_uuids =[]
+      $scope.filtered_association_ids =$scope.selectedMetadata ;
       if ($scope.selectedMetadata != ''){
+        console.log("selected: "+ $scope.selectedMetadata)
         angular.forEach($scope.selectedMetadata, function(uuid){
+  
           if (uuid != undefined){
             //Files
             angular.forEach($scope.metadata_file_hash[uuid] , function(file){
-              new_filtered_files.push(file)
+              //if (new_files_uuids.indexOf(file.uuid) < 0){
+                new_files_uuids.push(file.uuid)
+                new_filtered_files.push(file)
+                $scope.filtered_association_ids = $scope.filtered_association_ids.concat(file.associationIds);
+              //}
             })
           //WQ Sites  
             angular.forEach($scope.wqsites, function(wqs){
               if (wqs.uuid == uuid){
-                new_filtered_wqsites.push(wqs)
+                if(new_wqsites_uuids.indexOf(wqs.uuid) < 0){
+                  new_wqsites_uuids.push  (wqs.uuid)
+                  new_filtered_wqsites.push(wqs)
+                }
               }
               else if (wqs.associationIds.indexOf(uuid) > -1){
-                new_filtered_wqsites.push(wqs)
+                if(new_wqsites_uuids.indexOf(wqs.uuid) < 0){
+                  new_wqsites_uuids.push(wqs.uuid)
+                  new_filtered_wqsites.push(wqs)
+                }
               }
             })
             //Timeseries
             angular.forEach($scope.timeseries, function(ts){
               if (ts.associationIds.indexOf(uuid) > -1){
-                new_filtered_timeseries.push(ts)
+                if(new_timeseries_uuids.indexOf(ts.uuid) < 0){
+                  new_timeseries_uuids.push(ts.uuid)
+                 new_filtered_timeseries.push(ts)
+                 $scope.filtered_association_ids = $scope.filtered_association_ids.concat(ts.associationIds);
+                }
               }
             })
             //Observations
             angular.forEach($scope.observations, function(obs){
               if (obs.associationIds.indexOf(uuid) > -1){
-                new_filtered_observations.push(obs)
+                if(new_obs_uuids.indexOf(obs.uuid) < 0 ){ 
+                  new_obs_uuids.push(obs.uuid)
+                  new_filtered_observations.push(obs)
+                  $scope.filtered_association_ids = $scope.filtered_association_ids.concat(obs.associationIds);
+                }
               }
             })
           }
         })
-        console.log(new_filtered_files)
+        console.log("FILETERD FILES: "+new_filtered_files)
         $scope.filtered_files = new_filtered_files;
         $scope.filtered_wqsites = new_filtered_wqsites
         $scope.filtered_timeseries = new_filtered_timeseries;
         $scope.filtered_observations =new_filtered_observations;
+        console.log("Subset: " + $scope.filtered_association_ids)
+        $scope.updateMap(facet=true);
         $scope.requesting = false;
         //$scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
 
@@ -280,7 +315,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       .then(function(response){
 				$scope.metadataschema = response.result;
       })
-      $scope.fetchFacetMetadata();
+      //$scope.fetchFacetMetadata();
       $scope.requesting = false;
       //$scope.doSearch();
     };
@@ -293,13 +328,146 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       });
     };
 
-    $scope.updateMap = function(){
+    ////////LEAFLET//////////////////
+      $scope.markers=[];
+      angular.extend($scope, {
+        drawControl: true,
+        hawaii: {
+                lat: 21.289373,
+                lng: -157.91,
+                zoom: 7
+        },
+        events: {
+            map: {
+                enable: ['click', 'drag', 'blur', 'touchstart'],
+                logic: 'emit'
+            }
+        },
+        defaults: {
+                scrollWheelZoom: false,
+                controls :{
+                  layers : {
+                      visible: true,
+                      position: 'topright',
+                      collapsed: false
+                           }
+                  }
+        },
+        layers: {
+            baselayers: {
+               /* osm: {
+                name: 'OpenStreetMap',
+                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                type: 'xyz'
+                },*/
+                google: {
+                  name: 'Google Satellite',
+                  url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+                  type: 'xyz'
+                },
+                googleStreet: {
+                  name: 'Google Roads',
+                  url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+                  type: 'xyz'
+                },
+
+            },
+            overlays:{
+
+            }
+        }
+      });
+
+
+
+
+    var drawnItems = new L.FeatureGroup();
+    $scope.drawnItemsCount = function() {
+      return drawnItems.getLayers().length;
+    }
+    angular.extend($scope, {
+      map: {
+        center: {
+            lat: 21.289373,
+            lng: -157.91,
+            zoom: 7
+        },
+        default:{
+          attributionControl: false
+        },
+        drawOptions: {
+          position: "bottomright",
+          draw: {
+            polyline: false,
+            polygon: {
+              metric: false,
+              showArea: true,
+              drawError: {
+                color: '#b00b00',
+                timeout: 1000
+              },
+              shapeOptions: {
+                color: 'blue'
+              }
+            },
+            circle: false,
+            marker: false
+          },
+          edit: {
+            featureGroup: drawnItems,
+            remove: true
+          }
+        }
+      }
+    });
+
+    var handle = {
+      created: function(e,leafletEvent, leafletObject, model, modelName) {
+        drawnItems.addLayer(leafletEvent.layer);
+        //hide toolbar
+        angular.element('.leaflet-draw-toolbar-top').hide();
+        angular.element('#search_button').removeAttr("disabled");
+        //drawControl.hideDrawTools();
+        //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
+      },
+      edited: function(arg) {},
+      deleted: function(arg) {
+        if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
+          angular.element('.leaflet-draw-toolbar-top').show();
+          angular.element('#search_button').attr("disabled", "disabled");
+        }
+      },
+      drawstart: function(arg) {},
+      drawstop: function(arg) {},
+      editstart: function(arg) {},
+      editstop: function(arg) {},
+      deletestart: function(arg) {
+
+      },
+      deletestop: function(arg) {}
+    };
+    var drawEvents = leafletDrawEvents.getAvailableEvents();
+    drawEvents.forEach(function(eventName){
+        $scope.$on('leafletDirectiveDraw.' + eventName, function(e, payload) {
+          //{leafletEvent, leafletObject, model, modelName} = payload
+          var leafletEvent, leafletObject, model, modelName; //destructuring not supported by chrome yet :(
+          leafletEvent = payload.leafletEvent, leafletObject = payload.leafletObject, model = payload.model,
+          modelName = payload.modelName;
+          handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
+        });
+    });
+
+////////////////////////////
+  
+    $scope.updateMap = function(facet=false){
+      $scope.site_uuids = []
+      $scope.well_uuids = []
       if ($scope.culled_metadata && $scope.culled_metadata.length > 0){
-        console.log("culled_metadata length: " + $scope.culled_metadata.length)
+        //console.log("culled_metadata length: " + $scope.culled_metadata.length)
         $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
         $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
-        $scope.waterQualitySiteMarkers = $filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
-        console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
+        $scope.waterQualitySiteMarkers = $scope.filtered_wqsites;//$filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
+        //console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
         $scope.layers.overlays = {};
         if ($scope.siteMarkers && $scope.siteMarkers.length > 0){
@@ -324,34 +492,63 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                       }
         }
         angular.forEach($scope.siteMarkers, function(datum) {
-            if(datum.value.loc != undefined && datum.value.name != undefined){
-              if(datum.value.loc.type == 'Point'){
-                $scope.marks[datum.value.name.replace("-"," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
-              }else{
-
-                  $scope.layers.overlays[datum.uuid] = {
-                      name: datum.value.name.replace("-"," "),
-                      type: 'geoJSONShape',
-                      data: datum.value.loc,
-                      visible: true,
-                      layerOptions: {
-                          style: {
-                                  color: '#00D',
-                                  fillColor: 'green',
-                                  weight: 2.0,
-                                  opacity: 0.6,
-                                  fillOpacity: 0.2
-                          }
-                      }
-                  }
-
+            var render_site = false;
+            if(facet){
+              if($scope.filtered_association_ids.indexOf(datum.uuid) > -1){
+                render_site = true;
               }
-          }
+              else{
+                render_site=false
+              }
+            }
+            else{
+              render_site = true;
+            }
+            if(render_site == true){
+              if(datum.value.loc != undefined && datum.value.name != undefined){
+                if(datum.value.loc.type == 'Point'){
+                  $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+                }else{
+
+                    $scope.layers.overlays[datum.uuid] = {
+                        name: datum.value.name.replace("-"," "),
+                        type: 'geoJSONShape',
+                        data: datum.value.loc,
+                        visible: true,
+                        layerOptions: {
+                            style: {
+                                    color: '#00D',
+                                    fillColor: 'green',
+                                    weight: 2.0,
+                                    opacity: 0.6,
+                                    fillOpacity: 0.2
+                            }
+                        }
+                    }
+
+                }
+            }
+           }
         });
         angular.forEach($scope.wellMarkers, function(datum) {
-            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-            $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
-          }
+           // $scope.well_uuids.push(datum.uuid)
+           var render_well = false;
+            if(facet){
+              if($scope.filtered_association_ids.indexOf(datum.uuid)> -1){
+                render_well = true;
+              }
+              else{
+                render_well=false
+              }
+            }
+            else{
+              render_well = true;
+            }
+            if(render_well == true){
+              if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+                  $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+              }
+            }
         });
         angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
             if(datum.value.latitude != undefined && datum.value.name !=undefined){
@@ -362,32 +559,44 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       }
     }
 
+
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
         $scope.facet_sites =[]
         $scope.facet_water_quality_sites =[];
         $scope.facet_variables =[]
         $scope.markers = [];
+        site_uuids = []
+        well_uuids =[]
+        wq_uuids = []
         angular.forEach($scope.culled_metadata, function(datum){
             if(datum.name == 'Well'){
+              if(well_uuids.indexOf(datum.uuid) < 0){
+                well_uuids.push(datum.uuid)
                 $scope.facet_wells.push(datum)
+              }
                 /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
                 }*/
             }else if(datum.name == 'Site'){
+              if(site_uuids.indexOf(datum.uuid) < 0){
+                site_uuids.push(datum.uuid)
                 $scope.facet_sites.push(datum)
+              }
                 /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
                 }*/
             }else if(datum.name == 'Water_Quality_Site'){
-              $scope.facet_water_quality_sites.push(datum)
+              if(wq_uuids.indexOf(datum.uuid) < 0){
+                wq_uuids.push(datum.uuid)
+                $scope.facet_water_quality_sites.push(datum)
+              }
               /*if(datum.value.latitude != undefined){
                   $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
               }*/
           }
 
         })
-        $scope.updateMap();
         MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
             $scope.facet_variables = response.result;
@@ -426,6 +635,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
               }*/
             })
+            $scope.updateMap();
         })
 
     };
@@ -653,223 +863,6 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.downloadObservations(json.result)
     });
   }
-
-  
-  $scope.downloadSearchResults = function() {
-    $scope.ts_hash = {}
-    //loop through obs
-    angular.forEach($scope.filtered_observations, function(obs) {
-      //index by datetime
-      //store siteid-var:value
-      var siteid = obs.value['site-id'];
-      var dt = obs.value['datetime'];  
-      if($scope.ts_hash[dt] == null){
-        $scope.ts_hash[dt] = []
-      }
-      angular.forEach(obs.value, function(val,key) {
-        if (key != 'site-id' && key != 'datetime'){
-          var newkey = siteid + "-"+ key
-          console.log(newkey)
-          console.log(val)
-          //col = {newkey: val}
-          console.log(dt)
-          $scope.ts_hash[dt].push({ [newkey] : val})
-        }
-      })
-    })
-    console.log("OBS_hash: " + angular.toJson($scope.ts_hash))
-    /*var dataFields = [];
-    angular.forEach($schemaProperties[$scope.downloadType.value].properties, function(value, key) {
-    	dataFields.push(key);
-    })
-
-    // START populating data
-    csvContent = '';
-    for (var c = 0; c < dataFields.length; c++) {
-      if (c > 0) {
-        csvContent += ',';
-      }
-      dataDelimiter = "";
-      if (dataFields[c].indexOf('"') > -1 ||
-        dataFields[c].indexOf(',') > -1) {
-        dataDelimiter = '"';
-      }
-      csvContent += dataDelimiter + dataFields[c] + dataDelimiter;
-    } // END loop through datafields array to populate download headers
-    csvContent += "\n";
-
-    for (var i = 0; i < $scope.metadata.length; i++) {
-      var metadatum = $scope.metadata[i];
-      if ($scope.downloadType.value == metadatum.name) {
-        for (var c = 0; c < dataFields.length; c++) {
-          var keyName = dataFields[c].split('.');
-          var tempDataObject = metadatum.value;
-          for (var kn = 0; kn < keyName.length; kn++) {
-            if (typeof tempDataObject[keyName[kn]] === "undefined") {
-              tempDataObject = '';
-            } else {
-              tempDataObject = tempDataObject[keyName[kn]];
-            }
-          } // END go through the list of download type's field names to get the data
-          if (c > 0) {
-            csvContent += ',';
-          }
-          // sanitize string data. double quotes must be duplicated for csv.
-          if (typeof tempDataObject == "string") {
-            dataDelimiter = "";
-            if (tempDataObject.indexOf('"') > -1 ||
-              tempDataObject.indexOf(',') > -1) {
-              dataDelimiter = '"';
-            }
-	    if (tempDataObject.substring(0, 1) == '"') {
-	      tempDataObject = tempDataObject.substring(1, tempDataObject.length);
-	    }
-	    if (tempDataObject.substring(tempDataObject.length - 1) == '"') {
-	      tempDataObject = tempDataObject.substring(0, tempDataObject.length - 1);
-	    }
-	    tempDataObject = tempDataObject.replace(/\"/g, "\"\"");
-	  }
-	  
-	  if (!tempDataObject) {
-	    tempDataObject = '';
-	  }
-
-          csvContent += dataDelimiter + tempDataObject + dataDelimiter;
-        } // END loop through data fields array to populate download values
-        csvContent += "\n";
-      }
-    }
-
-    // csvContent = JSON.stringify($scope.metadata);
-    // START download data to file
-    // from: https://stackoverflow.com/questions/38462894/how-to-create-and-save-file-to-local-filesystem-using-angularjs
-    var filename = 'searchResultsData' + $scope.downloadType.value + 's.csv';
-    var blob = new Blob([csvContent], {type: 'text/csv'});
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, filename);
-    } else{
-      var e = document.createEvent('MouseEvents'),
-      a = document.createElement('a');
-      a.download = filename;
-      a.href = window.URL.createObjectURL(blob);
-      a.dataset.downloadurl = ['text/csv', a.download, a.href].join(':');
-      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      a.dispatchEvent(e);
-      // window.URL.revokeObjectURL(a.href); // clean the url.createObjectURL resource
-    }*/
-  } // END function downloadSearchResults
-
-
-////////LEAFLET//////////////////
-  $scope.markers=[];
-  angular.extend($scope, {
-    drawControl: true,
-    hawaii: {
-            lat: 21.289373,
-            lng: -157.91,
-            zoom: 7
-    },
-    events: {
-        map: {
-            enable: ['click', 'drag', 'blur', 'touchstart'],
-            logic: 'emit'
-        }
-    },
-    defaults: {
-            scrollWheelZoom: false
-    },
-    layers: {
-        baselayers: {
-            osm: {
-            name: 'OpenStreetMap',
-            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            type: 'xyz'
-            },
-        },
-        overlays:{
-
-        }
-    }
-  });
-
-
-
-
-var drawnItems = new L.FeatureGroup();
-$scope.drawnItemsCount = function() {
-  return drawnItems.getLayers().length;
-}
-angular.extend($scope, {
-  map: {
-    center: {
-        lat: 21.289373,
-        lng: -157.91,
-        zoom: 7
-    },
-    default:{
-      attributionControl: false
-    },
-    drawOptions: {
-      position: "bottomright",
-      draw: {
-        polyline: false,
-        polygon: {
-          metric: false,
-          showArea: true,
-          drawError: {
-            color: '#b00b00',
-            timeout: 1000
-          },
-          shapeOptions: {
-            color: 'blue'
-          }
-        },
-        circle: false,
-        marker: false
-      },
-      edit: {
-        featureGroup: drawnItems,
-        remove: true
-      }
-    }
-  }
-});
-
-var handle = {
-  created: function(e,leafletEvent, leafletObject, model, modelName) {
-    drawnItems.addLayer(leafletEvent.layer);
-    //hide toolbar
-    angular.element('.leaflet-draw-toolbar-top').hide();
-    angular.element('#search_button').removeAttr("disabled");
-    //drawControl.hideDrawTools();
-    //alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
-  },
-  edited: function(arg) {},
-  deleted: function(arg) {
-    if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
-      angular.element('.leaflet-draw-toolbar-top').show();
-      angular.element('#search_button').attr("disabled", "disabled");
-    }
-  },
-  drawstart: function(arg) {},
-  drawstop: function(arg) {},
-  editstart: function(arg) {},
-  editstop: function(arg) {},
-  deletestart: function(arg) {
-
-  },
-  deletestop: function(arg) {}
-};
-var drawEvents = leafletDrawEvents.getAvailableEvents();
-drawEvents.forEach(function(eventName){
-    $scope.$on('leafletDirectiveDraw.' + eventName, function(e, payload) {
-      //{leafletEvent, leafletObject, model, modelName} = payload
-      var leafletEvent, leafletObject, model, modelName; //destructuring not supported by chrome yet :(
-      leafletEvent = payload.leafletEvent, leafletObject = payload.leafletObject, model = payload.model,
-      modelName = payload.modelName;
-      handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
-    });
-});
 
 
 

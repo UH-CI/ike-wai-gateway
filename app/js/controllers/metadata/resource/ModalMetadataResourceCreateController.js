@@ -28,13 +28,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		MetaController.getMetadataSchema(selectedSchemaUuid)
 			.then(
 				function(response){
+
 					$scope.selectedmetadataschema = response.result;//[0];
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
-				//	formschema["properties"]["columns"]["items"]["properties"]["var_select"]= {"type": "submit","title": "Select Variable","onClick": "selectVariable()"}
-				//	formschema["properties"]["columns"]["items"]["properties"]["var1"]= {"type": "string","style": "btn-warning","title": "String Test","onClick": "selectVariable()"}
-					
 					formschema["required"] = $scope.selectedmetadataschema.schema.required;
 					$scope.schema = formschema;
 					$scope.form = [
@@ -44,15 +42,12 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 							title: "Save"
 						}*/
 					];
-					console.log(formschema)
 					$scope.schema_selected = true;
 					$scope.requesting = false;
 				}
 		);
 	}
-	$scope.selectVariable = function(){
-		alert("SELECT")
-	}
+
 	$scope.refresh = function() {
 		$scope.requesting = true;
 
@@ -65,6 +60,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			}	
 		  );	
 			$scope.requesting = false;	
+
 		})
 		if (selectedSchemaUuid != null) {	
 				 $scope.fetchMetadataSchema(selectedSchemaUuid);	
@@ -173,6 +169,29 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		defaults: {
 						scrollWheelZoom: false
 		},
+		layers: {
+			baselayers: {
+					google: {
+						name: 'Google Satellite',
+						url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					googleStreet: {
+						name: 'Google Roads',
+						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					/*osm: {
+					name: 'OpenStreetMap',
+					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+					type: 'xyz'
+					}*/
+					
+			},
+			overlays:{
+
+			}
+	}
 	});
 
 	var drawnItems = new L.FeatureGroup();
@@ -187,13 +206,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	        lng: -157.91,
 	        zoom: 7
 	    },
-	    default:{
-	      attributionControl: false
-	    },
 	    drawOptions: {
 	      position: "bottomright",
 	      draw: {
-	        polyline: false,
+	        polyline: true,
 	        polygon: {
 	          metric: false,
 	          showArea: true,
@@ -272,6 +288,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				$scope.model['longitude'] = centroid.lng;
 	 	    $scope.model['latitude'] = centroid.lat;
 				$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+				console.log(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry)
 		}
 	    //drawControl.hideDrawTools();
 
