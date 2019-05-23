@@ -50,7 +50,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.culled_metadata = []
     $scope.sites_to_search = []
     $scope.csv_json = []
-    
+    $scope.filtered_association_ids = [];
+
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -64,9 +65,12 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.culled_metadata = []
       $scope.culled_metadata_uuids = []
       $scope.sites_to_search = [] //clear sites
+      $scope.filtered_association_ids =[]
+      $scope.filtered_association_ids =[]
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
-        if (val.name == "Site"){
+        //$scope.filtered_association_ids = $scope.filtered_association_ids.push(val.uuid)
+        if (val.name == "Site" ){//|| val.name == "Well"){
           $scope.sites_to_search.push(val.uuid)
           $scope.culled_metadata.push(val)
         }
@@ -124,6 +128,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.timeseries = response.result;
         console.log("Timeseries:"+$scope.timeseries )
         $scope.filtered_timeseries = $scope.timeseries;
+        //angular.forEach($scope.timeseries, function(val, key){
+//
+  //      })
         $scope.fetchFacetMetadata();
       })
       
@@ -164,41 +171,68 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       new_filtered_wqsites = []
       new_filtered_timeseries= [];
       new_filtered_observations = [];
+      new_obs_uuids = []
+      new_files_uuids = []
+      new_wqsites_uuids = []
+      new_timeseries_uuids =[]
+      $scope.filtered_association_ids =$scope.selectedMetadata ;
       if ($scope.selectedMetadata != ''){
+        console.log("selected: "+ $scope.selectedMetadata)
         angular.forEach($scope.selectedMetadata, function(uuid){
+  
           if (uuid != undefined){
             //Files
             angular.forEach($scope.metadata_file_hash[uuid] , function(file){
-              new_filtered_files.push(file)
+              //if (new_files_uuids.indexOf(file.uuid) < 0){
+                new_files_uuids.push(file.uuid)
+                new_filtered_files.push(file)
+                $scope.filtered_association_ids = $scope.filtered_association_ids.concat(file.associationIds);
+              //}
             })
           //WQ Sites  
             angular.forEach($scope.wqsites, function(wqs){
               if (wqs.uuid == uuid){
-                new_filtered_wqsites.push(wqs)
+                if(new_wqsites_uuids.indexOf(wqs.uuid) < 0){
+                  new_wqsites_uuids.push  (wqs.uuid)
+                  new_filtered_wqsites.push(wqs)
+                }
               }
               else if (wqs.associationIds.indexOf(uuid) > -1){
-                new_filtered_wqsites.push(wqs)
+                if(new_wqsites_uuids.indexOf(wqs.uuid) < 0){
+                  new_wqsites_uuids.push(wqs.uuid)
+                  new_filtered_wqsites.push(wqs)
+                }
               }
             })
             //Timeseries
             angular.forEach($scope.timeseries, function(ts){
               if (ts.associationIds.indexOf(uuid) > -1){
-                new_filtered_timeseries.push(ts)
+                if(new_timeseries_uuids.indexOf(ts.uuid) < 0){
+                  new_timeseries_uuids.push(ts.uuid)
+                 new_filtered_timeseries.push(ts)
+                 $scope.filtered_association_ids = $scope.filtered_association_ids.concat(ts.associationIds);
+                }
               }
             })
             //Observations
             angular.forEach($scope.observations, function(obs){
               if (obs.associationIds.indexOf(uuid) > -1){
-                new_filtered_observations.push(obs)
+                if(new_obs_uuids.indexOf(obs.uuid) < 0 ){ 
+                  new_obs_uuids.push(obs.uuid)
+                  new_filtered_observations.push(obs)
+                  $scope.filtered_association_ids = $scope.filtered_association_ids.concat(obs.associationIds);
+                }
               }
             })
           }
         })
-        console.log(new_filtered_files)
+        console.log("FILETERD FILES: "+new_filtered_files)
         $scope.filtered_files = new_filtered_files;
         $scope.filtered_wqsites = new_filtered_wqsites
         $scope.filtered_timeseries = new_filtered_timeseries;
         $scope.filtered_observations =new_filtered_observations;
+        console.log("Subset: " + $scope.filtered_association_ids)
+        $scope.updateMap(facet=true);
         $scope.requesting = false;
         //$scope.filequery = "{'uuid':{$in:['"+$scope.selectedMetadata.join('\',\'')+"']}}";
 
@@ -310,7 +344,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             }
         },
         defaults: {
-                scrollWheelZoom: false
+                scrollWheelZoom: false,
+                controls :{
+                  layers : {
+                      visible: true,
+                      position: 'topright',
+                      collapsed: false
+                           }
+                  }
         },
         layers: {
             baselayers: {
@@ -418,12 +459,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
 
 ////////////////////////////
   
-    $scope.updateMap = function(){
+    $scope.updateMap = function(facet=false){
+      $scope.site_uuids = []
+      $scope.well_uuids = []
       if ($scope.culled_metadata && $scope.culled_metadata.length > 0){
         //console.log("culled_metadata length: " + $scope.culled_metadata.length)
         $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
         $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
-        $scope.waterQualitySiteMarkers = $filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
+        $scope.waterQualitySiteMarkers = $scope.filtered_wqsites;//$filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
         //console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
         $scope.layers.overlays = {};
@@ -449,34 +492,63 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                       }
         }
         angular.forEach($scope.siteMarkers, function(datum) {
-            if(datum.value.loc != undefined && datum.value.name != undefined){
-              if(datum.value.loc.type == 'Point'){
-                $scope.marks[datum.value.name.replace("-"," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
-              }else{
-
-                  $scope.layers.overlays[datum.uuid] = {
-                      name: datum.value.name.replace("-"," "),
-                      type: 'geoJSONShape',
-                      data: datum.value.loc,
-                      visible: true,
-                      layerOptions: {
-                          style: {
-                                  color: '#00D',
-                                  fillColor: 'green',
-                                  weight: 2.0,
-                                  opacity: 0.6,
-                                  fillOpacity: 0.2
-                          }
-                      }
-                  }
-
+            var render_site = false;
+            if(facet){
+              if($scope.filtered_association_ids.indexOf(datum.uuid) > -1){
+                render_site = true;
               }
-          }
+              else{
+                render_site=false
+              }
+            }
+            else{
+              render_site = true;
+            }
+            if(render_site == true){
+              if(datum.value.loc != undefined && datum.value.name != undefined){
+                if(datum.value.loc.type == 'Point'){
+                  $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+                }else{
+
+                    $scope.layers.overlays[datum.uuid] = {
+                        name: datum.value.name.replace("-"," "),
+                        type: 'geoJSONShape',
+                        data: datum.value.loc,
+                        visible: true,
+                        layerOptions: {
+                            style: {
+                                    color: '#00D',
+                                    fillColor: 'green',
+                                    weight: 2.0,
+                                    opacity: 0.6,
+                                    fillOpacity: 0.2
+                            }
+                        }
+                    }
+
+                }
+            }
+           }
         });
         angular.forEach($scope.wellMarkers, function(datum) {
-            if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-            $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
-          }
+           // $scope.well_uuids.push(datum.uuid)
+           var render_well = false;
+            if(facet){
+              if($scope.filtered_association_ids.indexOf(datum.uuid)> -1){
+                render_well = true;
+              }
+              else{
+                render_well=false
+              }
+            }
+            else{
+              render_well = true;
+            }
+            if(render_well == true){
+              if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+                  $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+              }
+            }
         });
         angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
             if(datum.value.latitude != undefined && datum.value.name !=undefined){
@@ -487,25 +559,38 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       }
     }
 
+
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
         $scope.facet_sites =[]
         $scope.facet_water_quality_sites =[];
         $scope.facet_variables =[]
         $scope.markers = [];
+        site_uuids = []
+        well_uuids =[]
+        wq_uuids = []
         angular.forEach($scope.culled_metadata, function(datum){
             if(datum.name == 'Well'){
+              if(well_uuids.indexOf(datum.uuid) < 0){
+                well_uuids.push(datum.uuid)
                 $scope.facet_wells.push(datum)
+              }
                 /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false})
                 }*/
             }else if(datum.name == 'Site'){
+              if(site_uuids.indexOf(datum.uuid) < 0){
+                site_uuids.push(datum.uuid)
                 $scope.facet_sites.push(datum)
+              }
                 /*if(datum.value.latitude != undefined){
                     $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
                 }*/
             }else if(datum.name == 'Water_Quality_Site'){
-              $scope.facet_water_quality_sites.push(datum)
+              if(wq_uuids.indexOf(datum.uuid) < 0){
+                wq_uuids.push(datum.uuid)
+                $scope.facet_water_quality_sites.push(datum)
+              }
               /*if(datum.value.latitude != undefined){
                   $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
               }*/
