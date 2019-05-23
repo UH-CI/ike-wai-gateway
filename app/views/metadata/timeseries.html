@@ -60,7 +60,7 @@
     
                                 <!-- TITLE -->
                               <div class="panel panel-default"  ng-show="!wizardSecondPage">
-                               <div class="panel-heading">Spreadsheet parsing template</div>
+                               <div class="panel-heading">Create Spreadsheet Parsing Template</div>
                                <div class="panel-body">
                                 <div class="form-group required">
                                   <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"name" | translate}}'>Name:</label>
@@ -76,17 +76,20 @@
                                       <i class="glyphicon glyphicon-question-sign"></i>
                                     </button>
                                     <span ng-show="missing_values_error" class="warning" autofocus>Type is a required field.</span>
-                                    <input class="form-control" type="text" ng-model="timeseries_template.type" />
+                                    <select class="form-control" type="text" ng-model="timeseries_template.type">
+                                      <option value="sample">Sample</option>
+                                      <option value="logger">Logger</option>
+                                    </select>
                                   </div>
 
-                                  <div class="form-group required">
+                                  <!--<div class="form-group required">
                                     <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"extension" | translate}}'>Extension:</label>
                                     <button type="button"  data-toggle="popover" title="Extension Field" data-content='{{"extension" | translate}}' class="btn btn-info btn-circle pull-left">
                                       <i class="glyphicon glyphicon-question-sign"></i>
                                     </button>
                                     <span ng-show="missing_values_error" class="warning" autofocus>Extension is a required field.</span>
                                     <input class="form-control" type="text" ng-model="timeseries_template.extension" />
-                                  </div>
+                                  </div>-->
 
                                   <div class="form-group required">
                                     <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"description" | translate}}'>Description:</label>
@@ -97,7 +100,7 @@
                                     <input class="form-control" type="text" ng-model="timeseries_template.description" />
                                   </div>
                                   <div class="form-group required">
-                                    <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"datetime_column" | translate}}'>Date Time Column:</label>
+                                    <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"datetime_column" | translate}}'>Date Time Column (columns start at 1 for leftmost column):</label>
                                     <button type="button"  data-toggle="popover" title="Date Time Column " data-content='{{"datetime_column" | translate}}' class="btn btn-info btn-circle pull-left">
                                       <i class="glyphicon glyphicon-question-sign"></i>
                                     </button>
@@ -105,18 +108,20 @@
                                     <input class="form-control" type="text" ng-model="timeseries_template.datetime_column" />
                                   </div>
                                   <div class="form-group required">
-                                    <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'>Site Column:</label>
+                                    <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'>Site Column (columns start at 1 for leftmost column):</label>
                                     <button type="button"  data-toggle="popover" title="Site Column " data-content='{{"site_column" | translate}}' class="btn btn-info btn-circle pull-left">
                                       <i class="glyphicon glyphicon-question-sign"></i>
                                     </button>
                                     <span ng-show="missing_values_error" class="warning" autofocus>Number of the Site/Location ID Column (columns starting at 1 for leftmost column) is a required field.</span>
                                     <input class="form-control" type="text" ng-model="timeseries_template.site_column" />
                                   </div>
-                                  <div class="form-group required" >
-                                    <ul>
-                                      <li ng-repeat="column in column_vars">
-                                        <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'> Column: {{column.column_num}} | Variable:{{column.variable.value.id}}-{{column.variable.value.name}}</label>
-                                        <button type="button"  title="Remove" ng-click="removeColumn(column)" class="btn btn-info btn-sm pull-left">
+                                  <div class="form-group" >
+                                      <label align="left" class="control-label pull-left" for="title" data-toggle="tooltip" title='Column Definitions'>Column Definitions</label>
+                                    <br/><br/>
+                                      <ul>
+                                      <li ng-repeat="column in column_vars" align="left">
+                                        <label class="control-label" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'> Column: {{column.column_num}} | Variable:{{column.variable.value.id}}-{{column.variable.value.name}}</label>
+                                        <button type="button"  title="Remove" ng-click="removeColumn(column)" class="btn btn-info btn-sm">
                                                 <i class="glyphicon glyphicon-remove-sign"></i>
                                         </button>
                                       </li>

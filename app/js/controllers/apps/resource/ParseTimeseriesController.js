@@ -1,6 +1,7 @@
 angular.module('AgaveToGo').controller('ParseTimeseriesController', function($scope, $state, $stateParams, $uibModal, $modalStack, $localStorage, $rootScope, $translate, AppsController, SystemsController, JobsController, NotificationsController, FilesController,MetaController, MessageService) {
 
     $scope.parse_form={};
+    //$scope.app.id = "ApplicationIDHere"
     $scope.schemaQuery =''; 
     $scope.parse_form = {'uuid':'','input':''}
     $scope.searchField = {
