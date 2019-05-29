@@ -193,7 +193,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           });
         }
       )
-      
+
     }
 
     this.removeAssociation = function(metadataUuid, uuidToRemove){
@@ -219,6 +219,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           return $q.all(promises).then(
             function(data) {
               $rootScope.$broadcast('associationRemoved',{message:"File Associations Removed Successfully."});
+              $rootScope.$broadcast('broadcastUpdate');
               return true;
           },
           function(data) {
@@ -227,7 +228,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           });
         }
       )
-      
+
     }
 
     this.addMultipleAssociationIds = function(metadataUuid, uuidsToAdd){
@@ -257,7 +258,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
         }
       )
     }
-    
+
     this.addAssociation = function(metadataUuid, uuidToAdd){
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
@@ -428,36 +429,44 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           console.log("new-uuid: " + newfile_uuid )
           console.log("old-uuid: " + fileUuid)
           //fetch all file objects associated with oldfile
-          MetaController.listMetadata('{"associationIds":"' +  fileUuid+ '"}',1000,0)
-            .then(function(response){
-              angular.forEach(response.result, function(value){
-                  //loop through File metadata associations
-                  // angular.forEach(value, function(val,index){
-                    //associate newfile with oldfiles metadatum object
-                    if( associations.indexOf(value.uuid) < 0){
-                     associations.push(value.uuid)
-                     self.addPublishedAssociation(value.uuid, newfile_uuid);
-                   }
-                 //})
-              })
-              //create a a File Metadata Object, assocaiate metadata objects
-              promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
-              promises.push(
-                MetadataService.fetchSystemMetadataUuid('published')
-                  .then(function(published_uuid){
-                    MetadataService.addAssociation(published_uuid,fileUuid);
-                    console.log('published: '+published_uuid+' , FileUUID: '+fileUuid)
-                  }
-                )
-              );
+          MetadataService.fetchSystemMetadataUuid('stagged')
+            .then(function(stagged_uuid){
+
+
+            MetaController.listMetadata('{"associationIds":"' +  fileUuid+ '"}',1000,0)
+              .then(function(response){
+                angular.forEach(response.result, function(value){
+                    //loop through File metadata associations
+                    // angular.forEach(value, function(val,index){
+                      //associate newfile with oldfiles metadatum object
+                      if( associations.indexOf(value.uuid) < 0 && value.uuid != stagged_uuid){
+                       associations.push(value.uuid)
+                       self.addPublishedAssociation(value.uuid, newfile_uuid);
+                     }
+                   //})
+                })
+                //create a a File Metadata Object, assocaiate metadata objects
+                promises.push(self.createPublishedFileMetadata(newfile_uuid, newpath, fileUuid, associations));
+                promises.push(
+                  MetadataService.fetchSystemMetadataUuid('published')
+                    .then(function(published_uuid){
+                      MetadataService.addAssociation(published_uuid,fileUuid);
+                      console.log('published: '+published_uuid+' , FileUUID: '+fileUuid)
+                    }
+                  )
+                );
+
               promises.push(
                 MetadataService.fetchSystemMetadataUuid('stagged')
                   .then(function(stagged_uuid){
                     self.removeAssociation(stagged_uuid, fileUuid);
+
                   }
                 )
               );
             })
+          }
+        )
         },
         function(response){
           //failed
@@ -498,7 +507,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){
-              
+
               // put the rejected uuid and reason in the rejected metadata container object
               // get the metadata object that holds all rejected file ids.
               MetadataService.fetchSystemMetadataUuid('rejected')
