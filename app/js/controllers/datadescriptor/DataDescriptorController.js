@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('DataDescriptorController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage, $modalInstance, $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('DataDescriptorController', function ($scope, $filter, $state, $stateParams, $translate, $timeout, $window, $localStorage, $modalInstance, $uibModal, $rootScope, $q, MetaController, FilesController, FilesMetadataService, ActionsService, MessageService, MetadataService, leafletDrawEvents,leafletData) {
   $scope._COLLECTION_NAME = 'filemetadata';
   $scope._RESOURCE_NAME = 'filemetadatum';
 
@@ -1139,8 +1139,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
       }
     });
+    
     //$scope.fetchModalMetadata();
-    $scope.searchAll();
+    //$scope.searchAll();
   };
 
   $scope.openEditMetadata = function (metadatumuuid, size) {
@@ -1320,18 +1321,142 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.modalSchemas = $scope.modalSchemas
   };
 
-}).controller('ModalAssociateMetadatCtrl', function ($scope, $modalInstance, MetaController) {
+}).controller('ModalAssociateMetadatCtrl', function ($scope, $filter,$modalInstance, MetaController,leafletDrawEvents,leafletData) {
   $scope.cancel = function () {
     $modalInstance.close();
   };
 
+  leafletData.getMap("associateMap").then(function(map) {
+    map.invalidateSize();
+  });
+  
+  $scope.updateMap = function(){
+    $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
+    $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+    $scope.waterQualitySiteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Water_Quality_Site"});
+    $scope.marks = {};
+    $scope.layers.overlays = {};
+    if ($scope.siteMarkers.length > 0){
+      $scope.layers.overlays['ikewai_sites']={
+                      name: 'Ike Wai Sites',
+                      type: 'group',
+                      visible: true
+                  }
+    }
+    if ($scope.wellMarkers.length > 0){
+      $scope.layers.overlays['ikewai_wells']={
+                      name: 'Ike Wai Wells',
+                      type: 'group',
+                      visible: true
+                  }
+    }
+    if ($scope.waterQualitySiteMarkers.length > 0){
+    $scope.layers.overlays['water_quality_sites']= {
+                      name: 'Water Quality Sites',
+                      type: 'group',
+                      visible: true
+                  }
+    }
+    angular.forEach($scope.siteMarkers, function(datum) {
+        if(datum.value.loc != undefined && datum.value.name != undefined){
+          if(datum.value.loc.type == 'Point'){
+            $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+          }else{
+
+              $scope.layers.overlays[datum.uuid] = {
+                  name: datum.value.name.replace(/-/g," "),
+                  type: 'geoJSONShape',
+                  data: datum.value.loc,
+                  visible: true,
+                  layerOptions: {
+                      style: {
+                              color: '#00D',
+                              fillColor: 'green',
+                              weight: 2.0,
+                              opacity: 0.6,
+                              fillOpacity: 0.2
+                      },
+                      message: datum.value.description
+                  }
+              }
+
+          }
+      }
+    });
+    angular.forEach($scope.wellMarkers, function(datum) {
+        if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+          $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+      }
+    });
+    angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
+        if(datum.value.latitude != undefined && datum.value.name !=undefined){
+          $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
+      }
+    });
+    $scope.assoc_markers = $scope.marks
+  }
+
+  $scope.spatialSearch = function(){
+    //if ($scope.selectedMetadata != ''){
+    typearray = []
+    typequery = {}
+    angular.forEach($scope.selectedSchema,function(schema) {
+      typearray.push(schema);
+    });
+   /* if ($scope.schemaBox.val1){
+      typearray.push('Site')
+    }
+    if ($scope.schemaBox.val2){
+      typearray.push('Well')
+    }
+    if ($scope.schemaBox.val5){
+      typearray.push('Water_Quality_Site')
+    }*/
+    typequery['name'] = {'$in': typearray}
+    $scope.requesting = true;
+    if (angular.fromJson(drawnItems.toGeoJSON()).features[0] != null)
+    {
+      $scope.query = "{$and: [{'$text':{ '$search':'"+$scope.searchField.value+"'}},"+JSON.stringify(typequery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+    }
+    else{
+      $scope.query = "{$and: [{'$text':{ '$search': '"+$scope.searchField.value+"'}},"+JSON.stringify(typequery)+"]}"
+    }
+       //  $scope.query = "{$and: [{'name': {'$in':['Landuse']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+
+    //else{
+    //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
+    //}
+    $scope.fetchModalMetadata()
+  }
+
+  $scope.fetchLocations = function(){
+    $scope.requesting = true;
+    MetaController.listMetadata($scope.query,limit=10000,offset=0).then(
+      function (response) {
+        $scope.totalItems = response.result.length;
+        $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
+        $scope[$scope._COLLECTION_NAME] = response.result;
+
+        $scope.updateMap();
+        // update download dropdown options for search results types
+        $scope.searchResultsTypes = $scope.getSearchResultsTypes();
+        $scope.requesting = false;
+      },
+      function(response){
+        MessageService.handle(response, $translate.instant('error_metadata_list'));
+        $scope.requesting = false;
+      }
+    );
+  }
   $scope.fetchModalMetadata = function () {
     MetaController.listMetadata(
-        $scope.query, $scope.limit, $scope.offset
+        $scope.query, 10000, 0
       )
       .then(
         function (response) {
           $scope.metadata = response.result;
+          
+          $scope.updateMap();
           $scope.requesting = false;
         },
         function (response) {
@@ -1341,4 +1466,132 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       );
 
   }
+
+   ///MAP///
+////////LEAFLET//////////////////
+$scope.assoc_markers=[];
+$scope.mylayers = {
+  baselayers: {
+    google: {
+      name: 'Google Satellite',
+      url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+      type: 'xyz'
+    },
+    googleStreet: {
+      name: 'Google Roads',
+      url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+      type: 'xyz'
+    }
+  },
+  overlays:{
+
+  }
+}
+angular.extend($scope, {
+  drawControl: true,
+  hawaii: {
+          lat: 21.289373,
+          lng: -157.91,
+          zoom: 7
+  },
+  events: {
+      map: {
+          enable: ['click', 'drag', 'blur', 'touchstart'],
+          logic: 'emit'
+      }
+  },
+  defaults: {
+          scrollWheelZoom: false
+  },
+  layers: {
+    baselayers: {
+      google: {
+        name: 'Google Satellite',
+        url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+        type: 'xyz'
+      },
+      googleStreet: {
+        name: 'Google Roads',
+        url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+        type: 'xyz'
+      }
+    },
+    overlays:{
+
+    }
+  },
+});
+
+angular.extend($scope, {
+  map: {
+    id:"associateMap",
+    center: {
+        lat: 21.289373,
+        lng: -157.91,
+        zoom: 7
+    },
+    drawOptions: {
+      position: "bottomright",
+      draw: {
+        polyline: false,
+        polygon: {
+          metric: false,
+          showArea: true,
+          drawError: {
+            color: '#b00b00',
+            timeout: 1000
+          },
+          shapeOptions: {
+            color: 'blue'
+          }
+        },
+        circle: false,
+        marker: false
+      },
+      edit: {
+        featureGroup: drawnItems,
+        remove: true
+      }
+    }
+  }
+  });
+var drawnItems = new L.FeatureGroup();
+$scope.drawnItemsCount = function() {
+return drawnItems.getLayers().length;
+}
+
+
+var handle = {
+created: function(e,leafletEvent, leafletObject, model, modelName) {
+  drawnItems.addLayer(leafletEvent.layer);
+  //hide toolbar
+  angular.element('.leaflet-draw-toolbar-top').hide();
+  //drawControl.hideDrawTools();
+  alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
+},
+edited: function(arg) {},
+deleted: function(arg) {
+  if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
+    angular.element('.leaflet-draw-toolbar-top').show();
+  }
+},
+drawstart: function(arg) {console.log("drawing")},
+drawstop: function(arg) {},
+editstart: function(arg) {},
+editstop: function(arg) {},
+deletestart: function(arg) {
+
+},
+deletestop: function(arg) {}
+};
+var drawEvents = leafletDrawEvents.getAvailableEvents("associateMap");
+drawEvents.forEach(function(eventName){
+  $scope.$on('leafletDirectiveDraw.' + eventName, function(e, payload) {
+    //{leafletEvent, leafletObject, model, modelName} = payload
+    var leafletEvent, leafletObject, model, modelName; //destructuring not supported by chrome yet :(
+    leafletEvent = payload.leafletEvent, leafletObject = payload.leafletObject, model = payload.model,
+    modelName = payload.modelName;
+    handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
+  });
+});
 });
