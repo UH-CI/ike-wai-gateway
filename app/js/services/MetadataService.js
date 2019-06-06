@@ -77,17 +77,20 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       });
     }
 
-    this.removeAssociation = function(metadataUuid, uuidToRemove){
+    this.removeAssociation = function(metadataUuid, uuidToRemove, stagged=false){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
-          var body = {};
+          var body =metadatum;
           body.associationIds = metadatum.associationIds;
           body.associationIds.splice(body.associationIds.indexOf(uuidToRemove), 1);
-          body.name = metadatum.name;
-          body.value = metadatum.value;
-          body.schemaId = metadatum.schemaId;
+          if (stagged == true){
+            delete body.value.emails[uuidToRemove]
+          }
+          //body.name = metadatum.name;
+          //body.value = metadatum.value;
+          //body.schemaId = metadatum.schemaId;
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){

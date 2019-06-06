@@ -196,18 +196,21 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
     }
 
-    this.removeAssociation = function(metadataUuid, uuidToRemove){
+    this.removeAssociation = function(metadataUuid, uuidToRemove, stagged=false){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
-          var body = {};
+          var body = metadatum;
           body.associationIds = metadatum.associationIds;
           var index = body.associationIds.indexOf(uuidToRemove);
           body.associationIds.splice(index, 1);
-          body.name = metadatum.name;
-          body.value = metadatum.value;
-          body.schemaId = metadatum.schemaId;
+          //body.name = metadatum.name;
+          //body.value = metadatum.value;
+          //body.schemaId = metadatum.schemaId;
+          if (stagged == true){
+            delete body.value.emails[uuidToRemove]
+          }
           if (body.name === "rejected") {
             body.value.title = metadatum.value.title;
             body.value.reasons = metadatum.value.reasons;
@@ -422,7 +425,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
       var promises = [];
       var associations = [];
 
-      FilesController.importFileItem(filepath, newpath, "ikewai-annotated-data")
+      FilesController.importFileItem(encodeURI(filepath), newpath, "ikewai-annotated-data")
         .then(function(response){
           //success - get the newfiles uuid
           newfile_uuid = response.result.uuid;
@@ -459,7 +462,7 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
               promises.push(
                 MetadataService.fetchSystemMetadataUuid('stagged')
                   .then(function(stagged_uuid){
-                    self.removeAssociation(stagged_uuid, fileUuid);
+                    self.removeAssociation(stagged_uuid, fileUuid,true);
 
                   }
                 )
