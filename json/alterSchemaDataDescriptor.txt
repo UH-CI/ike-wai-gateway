@@ -1,0 +1,396 @@
+metadata-schema-addupdate -V -F - 4635683822558122471-242ac1110-0001-013 <<< '{
+  "title" : "DataDescriptor",
+  "description" : "Information needed to describe a piece of data",
+  "type" : "object",
+  "ikewai" : true,
+  "properties" : {
+    "title" : {
+      "title" : "Title ",
+      "type" : "string"
+    },
+    "creators" : {
+      "type" : "array",
+      "items" : {
+        "first_name" : "string",
+        "last_name" : "string",
+        "uuid" : "string"
+      }
+    },
+    "formats" : {
+      "type" : "array",
+      "items" : {
+        "title" : "Format",
+        "type" : "string"
+      }
+    },
+    "constributors_person" : {
+      "type" : "array",
+      "items" : {
+        "first_name" : "string",
+        "last_name" : "string",
+        "uuid" : "string"
+      }
+    },
+    "contributors_agency" : {
+      "type" : "array",
+      "items" : {
+        "name" : "string",
+        "uuid" : "string"
+      }
+    },
+    "license_rights" : {
+      "title" : "License Rights",
+      "type" : "string"
+    },
+    "license_permission" : {
+      "title" : "License Permission",
+      "type" : "string"
+    },
+    "subject" : {
+      "title" : "Subject",
+      "type" : "string"
+    },
+    "start_date" : {
+      "title" : "Start Date",
+      "format" : "date-time",
+      "type" : "string"
+    },
+    "end_date" : {
+      "title" : "End Date",
+      "format" : "date-time",
+      "type" : "string"
+    },
+    "sharable": {
+      "title": "Sharable",
+      "type": "string"
+    },
+    "data_state": {
+      "title": "Data State",
+      "type": "string"
+    },
+    "data_types" : {
+      "type" : "array",
+      "items" : {
+        "title" : "Data Type",
+        "type" : "string"
+      }
+    },
+    "description" : {
+      "title" : "Description",
+      "type" : "string"
+    },
+    "relations" : {
+      "title" : "Relations",
+      "type" : "string"
+    },
+    "language" : {
+      "title" : "Language",
+      "type" : "string"
+    },
+    "publisher" : {
+      "type" : "string",
+      "title" : "Publisher"
+    },
+    "date_published" : {
+      "title" : "Date Published",
+      "format" : "date-time",
+      "type" : "string"
+    },
+    "project_type" : {
+      "title" : "Project Type",
+      "type" : "string"
+    },
+    "funding" : {
+      "title" : "Funding Agency and Award Number",
+      "type" : "array",
+      "items" : {
+        "name" : "string",
+        "award" : "string"
+      }
+    },
+    "institution" : {
+      "title" : "Participant Institution",
+      "type" : "string"
+    }
+  },
+  "required" : [ "title", "creators" ]
+}'
+
+
+
+
+
+
+<!---- output ---->
+Calling curl -sk -H "Authorization: Bearer 85c099e6dc3ba2bce827f127db7973" -X POST -F "fileToUpload=@-" 'https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013?pretty=true'
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : {
+    "uuid" : "4635683822558122471-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2019-05-31T19:25:54.670-05:00",
+    "schema" : {
+      "title" : "DataDescriptor",
+      "description" : "Information needed to describe a piece of data",
+      "type" : "object",
+      "ikewai" : true,
+      "properties" : {
+        "title" : {
+          "title" : "Title ",
+          "type" : "string"
+        },
+        "creators" : {
+          "type" : "array",
+          "items" : {
+            "first_name" : "string",
+            "last_name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "formats" : {
+          "type" : "array",
+          "items" : {
+            "title" : "Format",
+            "type" : "string"
+          }
+        },
+        "constributors_person" : {
+          "type" : "array",
+          "items" : {
+            "first_name" : "string",
+            "last_name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "contributors_agency" : {
+          "type" : "array",
+          "items" : {
+            "name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "license_rights" : {
+          "title" : "License Rights",
+          "type" : "string"
+        },
+        "license_permission" : {
+          "title" : "License Permission",
+          "type" : "string"
+        },
+        "subject" : {
+          "title" : "Subject",
+          "type" : "string"
+        },
+        "start_date" : {
+          "title" : "Start Date",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "end_date" : {
+          "title" : "End Date",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "sharable" : {
+          "title" : "Sharable",
+          "type" : "string"
+        },
+        "data_state" : {
+          "title" : "Data State",
+          "type" : "string"
+        },
+        "data_types" : {
+          "type" : "array",
+          "items" : {
+            "title" : "Data Type",
+            "type" : "string"
+          }
+        },
+        "description" : {
+          "title" : "Description",
+          "type" : "string"
+        },
+        "relations" : {
+          "title" : "Relations",
+          "type" : "string"
+        },
+        "language" : {
+          "title" : "Language",
+          "type" : "string"
+        },
+        "publisher" : {
+          "type" : "string",
+          "title" : "Publisher"
+        },
+        "date_published" : {
+          "title" : "Date Published",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "project_type" : {
+          "title" : "Project Type",
+          "type" : "string"
+        },
+        "funding" : {
+          "title" : "Funding Agency and Award Number",
+          "type" : "array",
+          "items" : {
+            "name" : "string",
+            "award" : "string"
+          }
+        },
+        "institution" : {
+          "title" : "Participant Institution",
+          "type" : "string"
+        }
+      },
+      "required" : [ "title", "creators" ]
+    },
+    "created" : "2017-05-01T13:16:09.725-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  }
+}
+
+
+
+<!-- original Data Descriptor schema 5/31/19 -->
+~/Work/agave/agave-cli/bin$ metadata-schema-list -V 4635683822558122471-242ac1110-0001-013
+Calling curl -sk -H "Authorization: Bearer 85c099e6dc3ba2bce827f127db7973" 'https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013?pretty=true'
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : {
+    "uuid" : "4635683822558122471-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2017-06-28T23:23:06.652-05:00",
+    "schema" : {
+      "title" : "DataDescriptor",
+      "description" : "Information needed to describe a piece of data",
+      "type" : "object",
+      "ikewai" : true,
+      "properties" : {
+        "title" : {
+          "title" : "Title ",
+          "type" : "string"
+        },
+        "creators" : {
+          "type" : "array",
+          "items" : {
+            "first_name" : "string",
+            "last_name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "formats" : {
+          "type" : "array",
+          "items" : {
+            "title" : "Format",
+            "type" : "string"
+          }
+        },
+        "constributors_person" : {
+          "type" : "array",
+          "items" : {
+            "first_name" : "string",
+            "last_name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "contributors_agency" : {
+          "type" : "array",
+          "items" : {
+            "name" : "string",
+            "uuid" : "string"
+          }
+        },
+        "license_rights" : {
+          "title" : "License Rights",
+          "type" : "string"
+        },
+        "license_permission" : {
+          "title" : "License Permissino",
+          "type" : "string"
+        },
+        "subject" : {
+          "title" : "Subject",
+          "type" : "string"
+        },
+        "start_date" : {
+          "title" : "Start Date",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "end_date" : {
+          "title" : "End Date",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "description" : {
+          "title" : "Description",
+          "type" : "string"
+        },
+        "relations" : {
+          "title" : "Relations",
+          "type" : "string"
+        },
+        "language" : {
+          "title" : "Language",
+          "type" : "string"
+        },
+        "publisher" : {
+          "type" : "string",
+          "title" : "Publisher"
+        },
+        "date_published" : {
+          "title" : "Date Published",
+          "format" : "date-time",
+          "type" : "string"
+        },
+        "project_type" : {
+          "title" : "Project Type",
+          "type" : "string"
+        },
+        "funding" : {
+          "title" : "Funding Agency and Award Number",
+          "type" : "array",
+          "items" : {
+            "name" : "string",
+            "award" : "string"
+          }
+        },
+        "institution" : {
+          "title" : "Participant Institution",
+          "type" : "string"
+        }
+      },
+      "required" : [ "title", "creators", "license_rights", "license_permission" ]
+    },
+    "created" : "2017-05-01T13:16:09.725-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://agaveauth.its.hawaii.edu/meta/v2/schemas/4635683822558122471-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  }
+}

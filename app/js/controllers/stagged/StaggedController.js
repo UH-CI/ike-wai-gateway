@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, $localStorage, $uibModal, MetaController, FilesMetadataService, MetadataService, MessageService) {
+angular.module('AgaveToGo').controller('StaggedController', function($scope, $stateParams, $state, $translate, $timeout, $localStorage, $uibModal, $http, MetaController, FilesMetadataService, MetadataService, MessageService) {
 
   $scope.metadatum = null;
   $scope.requesting = true;
@@ -44,17 +44,55 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
     );
   }
 
-  $scope.$on("staging.request.rejected", function (event, args) {
-    var reason = args;
+  $scope.$on("staging.request.rejected", function (event, reason) { 
     $scope.requesting = true;
     MetadataService.fetchSystemMetadataUuid('stagged')
       .then(function(stagged_uuid){
+        MetaController.getMetadata(stagged_uuid)
+        .then(function(resp){
+        var current_stagged = resp.result
+        console.log(current_stagged)
+        console.log($scope.rejectedUuid)
         FilesMetadataService.rejectStaggingRequest(stagged_uuid, $scope.rejectedUuid, reason).then(function(result){
-        $scope.metadatum = null;
+       // $scope.metadatum = null;
         //pause to let model update
+       // MetaController.getMetadata($scope.rejectedUuid)
+        //  .then(function(resp){
+         //   console.log("metadata:" + resp)
+            var href = "";
+            angular.forEach(current_stagged._links.associationIds, function(association){
+              if ($scope.rejectedUuid == association.rel){
+                 href = association.href
+              }
+            })
+            var user_email = current_stagged.value.emails[$scope.rejectedUuid]
+            var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
+            var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to='+user_email+'&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review. \nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
+            var options = {
+             headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token}
+            }
+            $http.post(url,post_data, options)
+              .success(function (data, status, headers, config) {
+                console.log({message:angular.toJson(data)})
+                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
+                $http.post(url2,post_data, options)
+                  .success(function (data, status, headers, config) {
+                  })
+                  .error(function (data, status, header, config) {
+                      console.log({error_message:angular.toJson(data)});
+                  });
+              })
+              .error(function (data, status, header, config) {
+                  console.log({error_message:angular.toJson(data)});
+              });
+
+              
+         // })
         $timeout(function(){$scope.getMetadatum()}, 400);
-        $scope.requesting = false;
+        $scope.getMetadatum();
+        //$scope.requesting = false;
       });
+    })
     },function(){
       MessageService.handle(response, $translate.instant('error_metadata_uuid'));
       $scope.requesting = false;
