@@ -535,6 +535,8 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
                     MetaController.updateMetadata(body,rejected_uuid)
                       .then(
                         function(response){
+                         
+                          $rootScope.$broadcast('broadcastUpdate');
                           //App.alert({message: $translate.instant('success_metadata_update'),closeInSeconds: 5 });
                         },
                         function(response){
