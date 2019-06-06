@@ -2,12 +2,13 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
 
   $scope.metadatum = null;
   $scope.requesting = true;
-
+  $scope.stagged_uuid =null;
   $scope.getMetadatum = function(){
     $scope.requesting = true;
     if ($stateParams.id !== ''){
       MetadataService.fetchSystemMetadataUuid('stagged')
         .then(function(stagged_uuid){
+          $scope.stagged_uuid = stagged_uuid
           MetaController.getMetadata(stagged_uuid)
             .then(
               function(response){
@@ -103,13 +104,43 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
     $scope.requesting = true;
     MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
       .then(function(published_uuid){
-        FilesMetadataService.publishStaggedFile(fileUuid, filepath).then(function(result){
+        MetaController.getMetadata($scope.stagged_uuid)
+        .then(function(resp){
+          var current_stagged = resp.result
+          FilesMetadataService.publishStaggedFile(fileUuid, filepath).then(function(result){
            //pause to let model update
            $timeout(function(){$scope.getMetadatum()}, 300);
             $scope.requesting = false;
             App.alert( "File Published");
+            var href = "";
+            angular.forEach(current_stagged._links.associationIds, function(association){
+              if (fileUuid == association.rel){
+                 href = association.href
+              }
+            })
             //$scope.$broadcast('broadcastUpdate');
+            var user_email = current_stagged.value.emails[fileUuid]
+            var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
+            var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to='+user_email+'&from=noReply-ikewai@hawaii.edu&subject=Staged File '+href.split('system')[1]+' Approved!"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was approved and is now available to other Ike Wai users!"';
+            var options = {
+             headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token}
+            }
+            $http.post(url,post_data, options)
+              .success(function (data, status, headers, config) {
+                console.log({message:angular.toJson(data)})
+                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Staged File '+href.split('system')[1]+' Approved!"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was approved and is now available to other Ike Wai users!"';
+                $http.post(url2,post_data, options)
+                  .success(function (data, status, headers, config) {
+                  })
+                  .error(function (data, status, header, config) {
+                      console.log({error_message:angular.toJson(data)});
+                  });
+              })
+              .error(function (data, status, header, config) {
+                  console.log({error_message:angular.toJson(data)});
+              });
         })
+      })
       },function(){
         MessageService.handle(response, $translate.instant('error_fetching_metadata_schema'));
         $scope.requesting = false;
