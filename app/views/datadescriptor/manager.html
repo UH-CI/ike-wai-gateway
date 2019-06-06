@@ -230,7 +230,7 @@
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.name}}
                                       <span>
-                                    </td>
+                                    </td>                               
                                     <!--
                                     <td ng-if="key=='subjects' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
@@ -238,12 +238,12 @@
                                       <span>
                                     </td>
                                     -->
-                                    <td ng-if="key=='subjects' || key=='formats' || key=='dataTypes' ">
+                                    <td ng-if="key=='subjects' || key=='formats' || key=='data_types' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(', ')}}
                                     </td>
-                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='dataState'|| key==='publication_date' ">
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' ">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key]}}
@@ -632,45 +632,64 @@
                             </div>
 
                              <!--STATUS: options for file status (raw, processed, preliminary, final) -->
-                            <!--
                              <div class="form-group"  ng-show="!wizardSecondPage" align="left">
-                              <label class="control-label" for="dataState" data-toggle="tooltip" title='{{"dataState" | translate}}'>Data State:</label>
-                              <button type="button" data-toggle="popover" title="State Field" data-content='{{"dataState" | translate}}' class="btn btn-info btn-circle">
+                              <label class="control-label" for="data_state" data-toggle="tooltip" title='{{"data_state" | translate}}'>Data State:</label>
+                              <button type="button" data-toggle="popover" title="Data State Field" data-content='{{"data_state" | translate}}' class="btn btn-info btn-circle">
                                   <i class="glyphicon glyphicon-question-sign"></i>
                                 </button>
                               <br />
-                              <input type="radio" value="raw" name="dataState" ng-model="datadescriptor.dataState" > Raw &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="processed" name="dataState" ng-model="datadescriptor.dataState" > Processed &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="preliminary" name="dataState" ng-model="datadescriptor.dataState" > Preliminary product/result &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="final" name="dataState" ng-model="datadescriptor.dataState" >  Final product/result                            
-                              {{datadescriptor.dataState}}
+                              <input type="radio" value="Raw" name="data_state" ng-model="datadescriptor.data_state" > Raw &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Processed" name="data_state" ng-model="datadescriptor.data_state" > Processed &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Preliminary" name="data_state" ng-model="datadescriptor.data_state" > Preliminary product/result &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Final" name="data_state" ng-model="datadescriptor.data_state" >  Final product/result &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Unknown" name="data_state" ng-model="datadescriptor.data_state" >  Unknown                           
                             </div><br />
-                            -->
+                           <!--
+                              0 Raw (unedited) data, such as the output from a sensor
+                              1 Data that have passed some objective quality assurance procedure (edited data)
+                              2 Derived product, potentially from multiple sensors, that require some subjective judgment
+                              (e.g., inference of a basin average precipitation from multiple rain gages)
+                              3 Interpreted product, requiring more assumptions and judgments (e.g., rainfall inferred from
+                              radar reflectance)
+                              4 Knowledge product, requiring inferences, potentially from multiple disciplines, and
+                              combining multiple measurements, each with their own assumptions (e.g., proportion of
+                              “new” and “old” water in streamflow inferred from stable isotopes)
+                              -9999 Unknown
+                           -->
+
+                           <div class="form-group"  ng-show="!wizardSecondPage" align="left">
+                            <label class="control-label" for="sensitive" data-toggle="tooltip" title='{{"sensitive" | translate}}'>Can this data be made available to the general public?:</label>
+                            <button type="button" data-toggle="popover" title="State Field" data-content='{{"sensitive" | translate}}' class="btn btn-info btn-circle">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                            <br />
+                            <input type="radio" value="Public" name="sensitive" ng-model="datadescriptor.sensitive" > Public &nbsp;&nbsp;&nbsp;
+                            <input type="radio" value="Private" name="sensitive" ng-model="datadescriptor.sensitive" > Private &nbsp;&nbsp;&nbsp;                        
+                          </div><br />
 
                             <!-- DATA TYPE -->
-                            <!--
                               <div class="form-group"  ng-show="!wizardSecondPage">
-                              <label class="control-label pull-left" for="dataTypes" data-toggle="tooltip" title='{{"dataType" | translate}}'>Data Type:</label>
-                              <button type="button" data-toggle="popover" title="Data Type Field" data-content='{{"dataType" | translate}}' class="btn btn-info btn-circle pull-left">
+                              <label class="control-label pull-left" for="data_types" data-toggle="tooltip" title='{{"data_types" | translate}}'>Data Type:</label>
+                              <button type="button" data-toggle="popover" title="Data Type Field" data-content='{{"data_types" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
                               </button>
                               <br />
                               <ui-select class="form-control"
                                 multiple tagging tagging-label=""
                                 remove-selected="false"
-                                ng-model="datadescriptor.dataTypes"
+                                ng-model="datadescriptor.data_types"
                                 theme="bootstrap"
                                 style="width: 100%;text-align: left;"
                                 sortable="true"
                                 ng-disabled="disabled"
                                 title="Choose data types">
                                 <ui-select-match placeholder="Select file data type(s)...">{{$item}}</ui-select-match>
-                                <ui-select-choices repeat="dataType in dataTypes | filter: $select.search">
-                                  <span ng-bind-html="dataType"></span>
+                                <ui-select-choices repeat="data_type in data_types | filter: $select.search">
+                                  <span ng-bind-html="data_type"></span>
                                 </ui-select-choices>
                               </ui-select>
                             </div>
-                            -->
+                            
                              <!-- FORMAT -->
                             <div class="form-group"  ng-show="!wizardSecondPage">
                               <label class="control-label pull-left" for="format" data-toggle="tooltip" title='{{"format" | translate}}'>Format:</label>
