@@ -67,14 +67,14 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
             })
             var user_email = current_stagged.value.emails[$scope.rejectedUuid]
             var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
-            var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to='+user_email+'&from=noReply-ikewai@hawaii.edu&subject="Staged Updated"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review. \nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
+            var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to='+user_email+'&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review. \nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
             var options = {
              headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token}
             }
             $http.post(url,post_data, options)
               .success(function (data, status, headers, config) {
                 console.log({message:angular.toJson(data)})
-                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Staged Updated"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
+                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
                 $http.post(url2,post_data, options)
                   .success(function (data, status, headers, config) {
                   })
