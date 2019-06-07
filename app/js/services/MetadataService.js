@@ -1,7 +1,7 @@
 angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope', '$localStorage', '$location', '$state', '$timeout', '$q', '$translate', 'PostitsController', 'MetaController', 'MessageService', function($uibModal, $rootScope, $localStorage, $location, $state, $timeout, $q, $translate, PostitsController, MetaController, MessageService){
 
   this.getAdmins = function(){
-    return ['seanbc','jgeis','mduman','acomerfo'];
+    return ['seanbc','jgeis','mduman','acomerfo','gwenj'];
   }
 
 
@@ -77,17 +77,20 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       });
     }
 
-    this.removeAssociation = function(metadataUuid, uuidToRemove){
+    this.removeAssociation = function(metadataUuid, uuidToRemove, stagged=false){
       var promises = [];
   	  MetaController.getMetadata(metadataUuid)
         .then(function(response){
           var metadatum = response.result;
-          var body = {};
+          var body =metadatum;
           body.associationIds = metadatum.associationIds;
           body.associationIds.splice(body.associationIds.indexOf(uuidToRemove), 1);
-          body.name = metadatum.name;
-          body.value = metadatum.value;
-          body.schemaId = metadatum.schemaId;
+          if (stagged == true){
+            delete body.value.emails[uuidToRemove]
+          }
+          //body.name = metadatum.name;
+          //body.value = metadatum.value;
+          //body.schemaId = metadatum.schemaId;
           MetaController.updateMetadata(body,metadataUuid)
           .then(
             function(response){

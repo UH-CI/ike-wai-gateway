@@ -7,7 +7,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.sortType = 'name';
   $scope.sortReverse = true;
   $scope.has_data_descriptor = false;
-  $scope.dataState = '';
   //Don't display metadata of these types
   $scope.ignoreMetadataType = ['published', 'stagged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
   //Don't display metadata schema types as options
@@ -37,6 +36,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.schemaQuery = ''; //"{'owner':'seanbc'}";
   //$scope.subjects = ['Wells', 'SGD', 'Bacteria'];
 
+  $scope.data_state = '';
+  $scope.sensitive = '';
   $scope.people = [];
   $scope.translators = [];
   $scope.newspapers = [];
@@ -87,7 +88,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     ".zip - zip compression (select internal file formats also)"
   ];
 
-  $scope.dataTypes = [
+  $scope.data_types = [
     "Figure - figures, images",
     "Map",
     "Media - videos, audio",
@@ -115,6 +116,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.languages = ['English', 'Hawaiian'];
   $scope.datadescriptor = {};
+  $scope.datadescriptor.data_state = '';
+  $scope.datadescriptor.sensitive = '';
   $scope.datadescriptor.organizations = [];
   $scope.datadescriptor.creators = [];
   $scope.datadescriptor.articleAuthors = [];
@@ -124,8 +127,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   //$scope.datadescriptor.subjects = [];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'dataState', 'dataTypes', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
+  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
@@ -309,10 +312,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["subjects"], "Subjects: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["start_datetime"], "Start Data/Time: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["end_datetime"], "End Data/Time: ", newline, indent);
-    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["dataState"], "Data State: ", newline, indent);
-    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["dataTypes"], "Data Types: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["data_state"], "Data State: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["sensitive"], "Sensitivity: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["data_types"], "Data Types: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["formats"], "Formats: ", newline, indent);
-    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["Description"], "Title: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["Description"], "Description: ", newline, indent);
     exportContent += $scope.exportFileData($scope.data_descriptor_metadatum._links.associationIds, "Associated Files: ", newline, indent);
     exportContent += $scope.exportPersonData($scope.data_descriptor_metadatum.value.contributors, "Contributors: ", newline, indent);
     exportContent += $scope.exportGeneralData($scope.datadescriptor.newspapers, "Newspapers: ", newline, indent);
