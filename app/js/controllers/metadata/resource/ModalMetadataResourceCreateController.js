@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService, leafletDrawEvents) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService, leafletData, leafletDrawEvents) {
 
 
 	$scope.close = function () {
@@ -57,6 +57,158 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			$scope.metadataschema = 	$filter('filter')(response.result, function(item){			
 				//	$scope.metadataschema = response.result;
 				return $scope.approvedSchema.indexOf(item.schema.title) > -1;	
+				})
+				leafletData.getMap("metadataCreateMap").then(function(map) {
+					/*map = new L.Map('metadataCreateMap', 
+					{
+					center: {
+						lat: 21.289373,
+						lng: -157.91,
+						zoom: 7
+					},
+					layers: {
+						baselayers: {
+								google: {
+									name: 'Google Satellite',
+									url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+									type: 'xyz'
+								},
+								googleStreet: {
+									name: 'Google Roads',
+									url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+									type: 'xyz'
+								},
+								osm: {
+								name: 'OpenStreetMap',
+								url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+								type: 'xyz'
+								}
+								
+						},
+						overlays:{
+			
+						}
+					},
+					events: {
+								map: {
+										enable: ['click', 'drag', 'blur', 'touchstart'],
+										logic: 'emit'
+								}
+						},
+						defaults: {
+										scrollWheelZoom: false
+						}
+					})
+					*/
+					setTimeout(function() {
+						map.invalidateSize();
+					}, 0.1 * 1000);
+					
+					var drawnItems = new L.FeatureGroup();
+					map.addLayer(drawnItems);
+					var options = {
+						position: 'topright',
+						draw: {
+							polyline: {
+								shapeOptions: {
+									color: '#f357a1',
+									weight: 10
+								}
+							},
+							polygon: {
+								allowIntersection: false, // Restricts shapes to simple polygons
+								drawError: {
+									color: '#e1e100', // Color the shape will turn when intersects
+									message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
+								},
+								shapeOptions: {
+									color: '#bada55'
+								}
+							},
+							circle: false, // Turns off this drawing tool
+							rectangle: {
+								shapeOptions: {
+									clickable: true
+								}
+							}
+						},
+						edit: {
+							featureGroup: drawnItems, //REQUIRED!!
+							remove: true
+						}
+					};
+					var drawControl = new L.Control.Draw(options);
+					//map.addControl(drawControl);
+
+					var getCentroid = function (arr) {
+						var twoTimesSignedArea = 0;
+						var cxTimes6SignedArea = 0;
+						var cyTimes6SignedArea = 0;
+				
+						var length = arr.length
+				
+						var x = function (i) { return arr[i % length][0] };
+						var y = function (i) { return arr[i % length][1] };
+				
+						for ( var i = 0; i < arr.length; i++) {
+								var twoSA = x(i)*y(i+1) - x(i+1)*y(i);
+								twoTimesSignedArea += twoSA;
+								cxTimes6SignedArea += (x(i) + x(i+1)) * twoSA;
+								cyTimes6SignedArea += (y(i) + y(i+1)) * twoSA;
+						}
+						var sixSignedArea = 3 * twoTimesSignedArea;
+						return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
+					}
+
+					map.on('draw:created', function (e,leafletEvent, leafletObject, model, modelName) {
+						var type = e.layerType,
+							layer = e.layer;
+
+						
+
+						drawnItems.addLayer(layer);
+						
+						//hide toolbar
+						angular.element('.leaflet-draw-toolbar-top').hide();
+						///alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates));
+						console.log(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates))
+						if(String(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.type)) == '"Point"'){
+							coordinates = angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates
+							$scope.model['longitude'] = parseFloat(coordinates[0]);
+								$scope.model['latitude'] = parseFloat(coordinates[1]);
+							$scope.model['polygon'] = "";
+						}
+						else{
+								centroid = drawnItems.getBounds().getCenter();
+				
+								$scope.model['longitude'] = centroid.lng;
+								$scope.model['latitude'] = centroid.lat;
+								$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+								console.log(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry)
+						}
+					});//end created
+					map.on('draw:deleted', function (e,leafletEvent, leafletObject, model, modelName) {
+						if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
+							angular.element('.leaflet-draw-toolbar-top').show();
+						}
+					})
+					map.on('draw:editstop', function (e,leafletEvent, leafletObject, model, modelName) {
+						console.log(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates))
+						if(String(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.type)) == '"Point"'){
+							coordinates = angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates
+							$scope.model['longitude'] = parseFloat(coordinates[0]);
+							$scope.model['latitude'] = parseFloat(coordinates[1]);
+							$scope.model['polygon'] = "";
+						}
+						else{
+								centroid = drawnItems.getBounds().getCenter();
+			
+								$scope.model['longitude'] = centroid.lng;
+								$scope.model['latitude'] = centroid.lat;
+								$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+						}
+					})
+
 			}	
 		  );	
 			$scope.requesting = false;	
@@ -151,25 +303,26 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			}
 
 	};
-  /******** LEAFLET **************/
-	$scope.markers = [];
+	/******** LEAFLET **************/
+  
+	$scope.meta_markers = [];
 	angular.extend($scope, {
-		drawControl: true,
+		//drawControl: true,
 		hawaii: {
 						lat: 21.289373,
 						lng: -157.91,
 						zoom: 7
 		},
-		events: {
+		meta_events: {
 				map: {
 						enable: ['click', 'drag', 'blur', 'touchstart'],
 						logic: 'emit'
 				}
 		},
-		defaults: {
+		meta_defaults: {
 						scrollWheelZoom: false
 		},
-		layers: {
+		meta_layers: {
 			baselayers: {
 					google: {
 						name: 'Google Satellite',
@@ -181,11 +334,11 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
 						type: 'xyz'
 					},
-					/*osm: {
+					osm: {
 					name: 'OpenStreetMap',
 					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					type: 'xyz'
-					}*/
+					}
 					
 			},
 			overlays:{
@@ -193,7 +346,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 			}
 	}
 	});
-
+	/*
 	var drawnItems = new L.FeatureGroup();
 	$scope.drawnItemsCount = function() {
 	  return drawnItems.getLayers().length;
@@ -232,7 +385,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	  }
 	});
 
-	/*$scope.$on('leafletDirectiveMap.click', function(event, args){
+	$scope.$on('leafletDirectiveMap.click', function(event, args){
 	 //clear markers
 	 $scope.markers=[];
 	 //$scope.markers = $scope.marks;
@@ -247,8 +400,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	 $scope.model['latitude'] = args.leafletEvent.latlng.lat;
 
 	});
-  */
-
+  
+ leafletData.getMap("metadataCreateMap").then(function(map) {
 	var getCentroid = function (arr) {
     var twoTimesSignedArea = 0;
     var cxTimes6SignedArea = 0;
@@ -333,7 +486,6 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 	      handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
 	    });
 	});
-
-
+})*/
 	$scope.initialize();
 });

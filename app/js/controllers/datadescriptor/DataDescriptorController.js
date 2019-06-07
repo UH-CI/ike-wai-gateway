@@ -142,6 +142,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //$scope.fetchMetadata("{'uuid':'" + $stateParams.uuid + "'}");
     $scope.fetchMetadata("{'uuid':'" + $scope.ddUuid + "'}");
     return deferred.promise;
+    
   }
 
   //MAP STUFF
@@ -450,6 +451,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       jQuery('#datetimepicker2').datepicker();
       jQuery('#datetimepicker3').datepicker();
       $scope.refreshMetadata();
+      
     }
   };
 
@@ -566,6 +568,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           //}
 
         });
+        leafletData.getMap("datadescriptorMap").then(function(map) {
+          setTimeout(function() {
+            map.invalidateSize();
+          }, 0.1 * 1000);
+            
+        })
         $scope.requesting = false;
         //console.log("Locations count: " + $scope.locations.length)
       },
@@ -1144,6 +1152,32 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //$scope.searchAll();
   };
 
+  $scope.openLocations = function (size, types, title) {
+    //Set the
+    $scope.modalSchemas = types.slice(0);
+    console.log("modalSchemas: " + $scope.modalSchemas);
+    $scope.selectedSchema = types.slice(0);
+    console.log("selectedSchema: " + $scope.selectedSchema);
+    $scope.modalTitle = title;
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'views/modals/ModalLocationsAssociate.html',
+      controller: 'ModalAssociateMetadatCtrl',
+      scope: $scope,
+      size: size,
+      resolve: {
+
+      }
+    })
+    leafletData.getMap("associateMap").then(function(map) {
+      setTimeout(function() {
+        map.invalidateSize();
+      }, 0.1 * 1000);
+        
+    })
+  
+  };
+
   $scope.openEditMetadata = function (metadatumuuid, size) {
     $scope.metadataUuid = metadatumuuid;
     var modalInstance = $uibModal.open({
@@ -1321,7 +1355,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.modalSchemas = $scope.modalSchemas
   };
 
-}).controller('ModalAssociateMetadatCtrl', function ($scope, $filter,$modalInstance, MetaController,leafletDrawEvents,leafletData) {
+}).controller('ModalAssociateMetadatCtrl', function ($scope, $filter,$modalInstance, MetaController,MessageService,leafletDrawEvents,leafletData) {
   $scope.cancel = function () {
     $modalInstance.close();
   };
@@ -1398,6 +1432,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.spatialSearch = function(){
     //if ($scope.selectedMetadata != ''){
+      
+   leafletData.getMap("associateMap").then(function(map) {
+        alert(angular.toJson(map.getBounds()))
+        //GeoIP.centerMapOnPosition(map, 15);
+    });
+      
+    
     typearray = []
     typequery = {}
     angular.forEach($scope.selectedSchema,function(schema) {
@@ -1488,7 +1529,7 @@ $scope.mylayers = {
   }
 }
 angular.extend($scope, {
-  drawControl: true,
+  //drawControl: true,
   hawaii: {
           lat: 21.289373,
           lng: -157.91,
@@ -1530,7 +1571,7 @@ angular.extend($scope, {
         lng: -157.91,
         zoom: 7
     },
-    drawOptions: {
+  /*  drawOptions: {
       position: "bottomright",
       draw: {
         polyline: false,
@@ -1552,10 +1593,10 @@ angular.extend($scope, {
         featureGroup: drawnItems,
         remove: true
       }
-    }
+    }*/
   }
   });
-var drawnItems = new L.FeatureGroup();
+/*var drawnItems = new L.FeatureGroup();
 $scope.drawnItemsCount = function() {
 return drawnItems.getLayers().length;
 }
@@ -1593,5 +1634,5 @@ drawEvents.forEach(function(eventName){
     modelName = payload.modelName;
     handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
   });
-});
+});*/
 });
