@@ -125,7 +125,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					map.on('draw:created', function (e,leafletEvent, leafletObject, model, modelName) {
 						var type = e.layerType,
 							layer = e.layer;
-
+						$scope.requesting = true;
 						
 
 						drawnItems.addLayer(layer);
@@ -137,8 +137,10 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						if(String(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.type)) == '"Point"'){
 							coordinates = angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates
 							$scope.model['longitude'] = parseFloat(coordinates[0]);
-								$scope.model['latitude'] = parseFloat(coordinates[1]);
+							$scope.model['latitude'] = parseFloat(coordinates[1]);
 							$scope.model['polygon'] = "";
+							//document.getElementsByName("longitude").focus();
+							$scope.requesting = false;
 						}
 						else{
 								centroid = drawnItems.getBounds().getCenter();
@@ -146,8 +148,14 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 								$scope.model['longitude'] = centroid.lng;
 								$scope.model['latitude'] = centroid.lat;
 								$scope.model['polygon'] = angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry.coordinates);
+								//document.getElementsById("polygon")[0].focus()
+								//$('#metadataCreateMap').focus();
 								console.log(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry)
+								$scope.requesting = false;
 						}
+					//	var bounds = layer.getBounds()
+					//	map.fitBounds(bounds)
+					//	map.invalidateSize();
 					});//end created
 					map.on('draw:deleted', function (e,leafletEvent, leafletObject, model, modelName) {
 						if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
@@ -273,7 +281,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 		hawaii: {
 						lat: 21.289373,
 						lng: -157.91,
-						zoom: 7
+						zoom: 6
 		},
 		meta_events: {
 				map: {
@@ -282,7 +290,14 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				}
 		},
 		meta_defaults: {
-						scrollWheelZoom: false
+						scrollWheelZoom: false,
+						controls :{
+							layers : {
+									visible: true,
+									position: 'topright',
+									collapsed: false
+											 }
+							}
 		},
 		meta_layers: {
 			baselayers: {
@@ -300,8 +315,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					name: 'OpenStreetMap',
 					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					type: 'xyz'
-					},
-					collapsed: false
+					}
 			},
 			overlays:{
 
