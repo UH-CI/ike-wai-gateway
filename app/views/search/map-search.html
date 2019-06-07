@@ -316,7 +316,7 @@
                               </div>
                             </div>
                             <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{filtered_observations.length}}</h3>
-                            <button id="test_button" class="btn btn-primary pull-right" ng-click="downloadCSVObservations()" ><i class="fa fa-search"/> Download Observations</button>
+                            <button id="test_button" ng-show="filtered_observations.length > 0" class="btn btn-primary pull-right" ng-click="downloadCSVObservations()" ><i class="fa fa-search"/> Download Observations</button>
                             <div class="row">
 
                               <div class="col-md-12">
