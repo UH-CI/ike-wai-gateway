@@ -521,6 +521,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.locations = [];
     deferred.resolve(MetaController.listMetadata(metadata_query, limit, 0).then(
       function (response) {
+        $scope.variables = [];
+        $scope.locations = [];
         $scope.totalItems = response.result.length;
         $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
         //$scope[$scope._COLLECTION_NAME] = response.result;
@@ -772,7 +774,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.unAssociateMetadata = function (metadatumUuid, container_id = "") {
     console.log("JEN DDC: unAssociateMetadata");
-    $scope.requesting = true;
+   // $scope.requesting = true;
     $scope.class[metadatumUuid] = "btn-warning"
     var unAssociate = $window.confirm('Are you sure you want to remove the metadata/file association?');
     //$scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
@@ -1010,7 +1012,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //metadatumUuid = dataDescriptorUuid;
     console.log("JEN DDC: addAssociationToDataDescriptor: " + dataDescriptorUuid + ", " + metadatumUuid);
     if (metadatumUuid) {
-      $scope.requesting = true;
+     // $scope.requesting = true;
       MetaController.getMetadata(dataDescriptorUuid)
         .then(function (response) {
           $scope.dataDescriptor = response.result;
@@ -1072,7 +1074,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     metadatumUuid = dataDescriptorUuid;
     console.log("JEN DDC: addAssociation");
     if (metadatumUuid) {
-      $scope.requesting = true;
+     // $scope.requesting = true;
       MetaController.getMetadata(fileUuid)
         .then(function (response) {
           $scope.metadatum = response.result;
