@@ -1132,7 +1132,23 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   /////////Modal Stuff for locations and variables, not data descriptors /////////////////////
+  $scope.fetchVarModalMetadata = function () {
+    $scope.requesting = true;
+    MetaController.listMetadata(
+        $scope.query, $scope.limit, $scope.offset
+      )
+      .then(
+        function (response) {
+          $scope.associate_metadata = response.result;
+          $scope.requesting = false;
+        },
+        function (response) {
+          MessageService.handle(response, $translate.instant('error_metadata_list'));
+          $scope.requesting = false;
+        }
+      );
 
+  }
   // opens modals for location and variables
   $scope.open = function (size, types, title) {
     //Set the
@@ -1151,9 +1167,33 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
       }
     });
+
+    
     
     //$scope.fetchModalMetadata();
     //$scope.searchAll();
+  };
+
+  $scope.openVariables = function (size, types, title) {
+    //Set the
+    $scope.modalSchemas = types.slice(0);
+    console.log("modalSchemas: " + $scope.modalSchemas);
+    $scope.selectedSchema = types.slice(0);
+    console.log("selectedSchema: " + $scope.selectedSchema);
+    $scope.modalTitle = title;
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'views/modals/ModalAssociateMetadata.html',
+      controller: 'ModalAssociateVariableCtrl',
+      scope: $scope,
+      size: size,
+      resolve: {
+
+      }
+    });
+    $scope.selectedSchema =['Variable']
+    $scope.searchAll()
+
   };
 
   $scope.openLocations = function (size, types, title) {
@@ -1313,7 +1353,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         //set the schema name(s) to search across
         typearray.push(value.schema.title);
         //add schema properties to search across
-        if ($scope.searchField.value != '') {
+       /* if ($scope.searchField.value != '') {
           angular.forEach(value.schema.properties, function (val, key) {
             var valquery = {}
             valquery['value.' + key] = {
@@ -1322,20 +1362,32 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             }
             queryarray.push(valquery)
           })
+          if ($scope.searchField.value != null && $scope.searchField.value !=''){
+            queryarray.push({'$text':{'$search':$scope.searchField.value}})
+          }
           orquery['$or'] = queryarray;
-        }
+        }*/
       }
     })
     typequery['name'] = {
       '$in': typearray
     }
+    if ($scope.searchField.value != null && $scope.searchField.value !=''){
+      andarray.push({'$text':{'$search':$scope.searchField.value}})
+    }
     andarray.push(typequery)
-    andarray.push(orquery)
+   //andarray.push(orquery)
+    
     andquery['$and'] = andarray;
-    $scope.query = JSON.stringify(andquery);
-    console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
+    if ($scope.searchField.value != null && $scope.searchField.value !=''){
+        $scope.query = "{$and: [{'$text':{ '$search': '"+$scope.searchField.value+"'}},"+JSON.stringify(typequery)+"]}"//JSON.stringify(andquery);
+    }
+    else{ 
+      $scope.query = JSON.stringify(typequery)
+    }
+        console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
     $scope.offset = 0;
-    $scope.fetchModalMetadata();
+    $scope.fetchVarModalMetadata();
   }
 
   // Toggle selection for a given fruit by name
@@ -1603,6 +1655,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   }
 
+
    ///MAP///
 ////////LEAFLET//////////////////
 $scope.assoc_markers=[];
@@ -1737,4 +1790,79 @@ drawEvents.forEach(function(eventName){
     handle[eventName.replace('draw:','')](e,leafletEvent, leafletObject, model, modelName);
   });
 });*/
+}).controller('ModalAssociateVariableCtrl', function ($scope, $modalInstance, MetaController,MessageService) {
+  $scope.cancel = function () {
+    $modalInstance.close();
+  };
+
+  $scope.fetchVariableModalMetadata = function () {
+    $scope.requesting = true;
+    MetaController.listMetadata(
+        $scope.query, $scope.limit, $scope.offset
+      )
+      .then(
+        function (response) {
+          $scope.associate_metadata = response.result;
+          $scope.requesting = false;
+        },
+        function (response) {
+          MessageService.handle(response);
+          $scope.requesting = false;
+        }
+      );
+
+  }
+  $scope.fetchVariableModalMetadata(); 
+  $scope.searchVariables = function () {
+    $scope.requesting = true;
+    var orquery = {}
+    var andquery = {}
+    var queryarray = []
+    var andarray = []
+    var innerquery = {}
+    var typearray = []
+    var typequery = {}
+    console.log("$scope.metadataschema: "+$scope.metadataschema)
+    angular.forEach($scope.metadataschema, function (value, key) {
+      if ($scope.selectedSchema.indexOf(value.schema.title) > -1) {
+        //set the schema name(s) to search across
+        typearray.push(value.schema.title);
+        //add schema properties to search across
+        if ($scope.searchField.value != '') {
+          angular.forEach(value.schema.properties, function (val, key) {
+            var valquery = {}
+            valquery['value.' + key] = {
+              $regex: $scope.searchField.value,
+              '$options': 'i'
+            }
+            queryarray.push(valquery)
+          })
+          /*if ($scope.searchField.value != null && $scope.searchField.value !=''){
+            queryarray.push({'$text':{'$search':$scope.searchField.value}})
+          }*/
+          orquery['$or'] = queryarray;
+        }
+      }
+    })
+    typequery['name'] = {
+      '$in': typearray
+    }
+    //if ($scope.searchField.value != null && $scope.searchField.value !=''){
+    //  andarray.push({'$text':{'$search':$scope.searchField.value}})
+    //}
+    andarray.push(typequery)
+    andarray.push(orquery)
+    
+    andquery['$and'] = andarray;
+    $scope.query =JSON.stringify(andquery);
+    /*if ($scope.searchField.value != null && $scope.searchField.value !=''){
+        $scope.query = "{$and: [{'$text':{ '$search': '"+$scope.searchField.value+"'}},"+JSON.stringify(typequery)+"]}"//JSON.stringify(andquery);
+    }
+    else{ 
+      $scope.query = JSON.stringify(typequery)
+    }*/
+        console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
+    $scope.offset = 0;
+    $scope.fetchVariableModalMetadata();
+  }
 });
