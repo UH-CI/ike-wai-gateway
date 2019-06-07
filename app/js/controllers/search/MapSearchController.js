@@ -597,9 +597,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           }
 
         })
-        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+ $scope.file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        var_file_uuids = $scope.file_uuids;
+        $scope.facet_variables =[];
+        while(var_file_uuids.length > 20){
+          var_search_uuids = var_file_uuids.splice(0,19)
+          var_file_uuids = var_file_uuids.slice(19)
+        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+var_search_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
         .then(function(response){
-            $scope.facet_variables = response.result;
+          $scope.facet_variables.push(response.result);
             angular.forEach($scope.timeseries, function(ts){
               angular.forEach(ts.value.variables, function(vr){
                 console.log("timeseries-vars: " + angular.toJson(vr))
@@ -620,23 +625,64 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             })
             angular.forEach($scope.facet_variables, function(datum){
               $scope.metadata_hash[datum.uuid] = datum;
-              file_uuids = intersection(datum.associationIds, $scope.file_uuids)
-              $scope.facet_count[datum.uuid] = file_uuids.length;
-              angular.forEach(file_uuids, function(file_uuid){
-                if ($scope.metadata_file_hash[datum.uuid] == undefined){
-                  $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
-                }else{
-                  $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
-                }
-              })
+              if(datum.associationIds != null){
+                file_uuids = intersection(datum.associationIds, $scope.file_uuids)
+                $scope.facet_count[datum.uuid] = file_uuids.length;
+                angular.forEach(file_uuids, function(file_uuid){
+                  if ($scope.metadata_file_hash[datum.uuid] == undefined){
+                    $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
+                  }else{
+                    $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
+                  }
+                })
+              }
               /*if ($scope.facet_count[datum.uuid] == undefined){
                 $scope.facet_count[datum.uuid] =1
               }else{
                 $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
               }*/
             })
+            
+        })
+      }//close while
+      MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+var_file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
+        .then(function(response){
+            $scope.facet_variables.push(response.result);
+            angular.forEach($scope.timeseries, function(ts){
+              angular.forEach(ts.value.variables, function(vr){
+                console.log("timeseries-vars: " + angular.toJson(vr))
+                $scope.exists=false;
+                angular.forEach($scope.facet_variables, function(fvar){
+                  if (fvar['uuid'] == vr['uuid']){
+                    $scope.exists = true;
+                    console.log(fvar)
+                    console.log(vr)
+                  }
+                })
+                if ($scope.exists == false){
+                  $scope.facet_variables.push(vr)
+                }
+                
+                
+              })  
+            })
+            angular.forEach($scope.facet_variables, function(datum){
+              $scope.metadata_hash[datum.uuid] = datum;
+              if(datum.associationIds != null){
+                file_uuids = intersection(datum.associationIds, $scope.file_uuids)
+                $scope.facet_count[datum.uuid] = file_uuids.length;
+                angular.forEach(file_uuids, function(file_uuid){
+                  if ($scope.metadata_file_hash[datum.uuid] == undefined){
+                    $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
+                  }else{
+                    $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
+                  }
+                })
+              }
+            })
             $scope.updateMap();
         })
+      
 
     };
 
