@@ -1,157 +1,157 @@
 <div id="associate_modal" class="modal-header">
-    <h3 class="page-title">{{modalTitle}}</h3>
+  <h3 class="page-title">{{modalTitle}}</h3>
 
 </div>
 <div class="btn-group pull-right">
-    <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
-        <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
-        <i class="fa fa-angle-down pull-right"></i>
-    </a>
-    <ul class="dropdown-menu">
-      <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="modalSchemas.indexOf(metadataschemata.schema.title) > -1">
-        <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
-      </li>
-    </ul>
+  <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
+      <i class="fa fa-plus"></i>&nbsp;Create New Metadata Object
+      <i class="fa fa-angle-down pull-right"></i>
+  </a>
+  <ul class="dropdown-menu">
+    <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="modalSchemas.indexOf(metadataschemata.schema.title) > -1">
+      <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
+    </li>
+  </ul>
 </div>
 <div class="row">
-    <div class="col-md-12">
-        <div class="portlet light portlet-fit portlet-datatable bordered">
-            <div class="portlet-title">
-                <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
-                    <div class="btn-group top-buffer">
+  <div class="col-md-12">
+      <div class="portlet light portlet-fit portlet-datatable bordered">
+          <div class="portlet-title">
+              <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+                  <div class="btn-group top-buffer">
+                    <div class="input-group">
+                      <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                      <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
+
+                      <div class="input-group-addon">
+                        <span class="input-group pull-left" aria-hidden="true">
+                          <label ng-repeat="schema in modalSchemas">
+                            <input
+                              type="checkbox"
+                              id="{{schema}}_box"
+                              name="selectedMetadata[]"
+                              value="{{schema}}"
+                              ng-checked="selectedSchema.indexOf(schema) > -1"
+                              ng-click="toggleSelectedSchema(schema)"
+                            > Search {{schema}}&nbsp;
+                          </label>
+                        </span>
+                      </div>
+                      </div>
+                    <button class="btn btn-primary" ng-click="searchVariables()">Search All Fields</button>
+                  <br/>
+                  <div class="row top-buffer" ng-show="showSearch">
+                    <query-builder group="filter.group" resource="metadata" schemas="selectedSchema.join(',')"></query-builder>
+                    <div class="col-md-12 top-buffer">
+
                       <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
-                        <input type="text" class="form-control" placeholder="Search All Fields" ng-model="searchField.value"></div>
-
-                        <div class="input-group-addon">
-                          <span class="input-group pull-left" aria-hidden="true">
-                            <label ng-repeat="schema in modalSchemas">
-                              <input
-                                type="checkbox"
-                                id="{{schema}}_box"
-                                name="selectedMetadata[]"
-                                value="{{schema}}"
-                                ng-checked="selectedSchema.indexOf(schema) > -1"
-                                ng-click="toggleSelectedSchema(schema)"
-                              > Search {{schema}}&nbsp;
-                            </label>
-                          </span>
-                        </div>
-                        </div>
-                      <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
-                    <br/>
-                    <div class="row top-buffer" ng-show="showSearch">
-                      <query-builder group="filter.group" resource="metadata" schemas="selectedSchema.join(',')"></query-builder>
-                      <div class="col-md-12 top-buffer">
-
-                        <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
-                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
-                        </div>
-
-                        <div class="btn-group">
-                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
-                        </div>
+                        <input type="text" class="form-control" placeholder="Search" ng-model="query">
                       </div>
+
+                      <div class="btn-group">
+                        <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
                       </div>
-                    <hr/>
-                    <div class="btn-group top-buffer">
-                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Show Advanced Search Tools'}}
-                      </button>
                     </div>
+                    </div>
+                  <hr/>
+                  <div class="btn-group top-buffer">
+                    <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                      <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Show Advanced Search Tools'}}
+                    </button>
+                  </div>
+              </div>
+          </div>
+          <div class="portlet-body">
+            <div class="row text-center" ng-show="requesting">
+                <div class="col-md-12">
+                  <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
                 </div>
             </div>
-            <div class="portlet-body">
-              <div class="row text-center" ng-show="requesting">
-                  <div class="col-md-12">
-                    <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
-                  </div>
-              </div>
 
-              <div class="row">
-                  <div class="col-md-12">
-                    <div ng-show="!requesting">
-                      <div ng-show="metadata.length === 0" class="text-center">
-                        <div class="row text-center">
-                          <div class="col-md-12">
-                              No Metadata found
-                          </div>
-                        </div>
-                      </div>
-                      <div ng-show="metadata.length > 0" >
-                                                  
-                        <div class="caption">
-                            Total Objects: {{ metadata.length}}
-                            <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreModalMetadata()'>Fetch More Results</button>
-                        </div>
-                        <div class="btn-group top-buffer">
-                            <div class="input-group">
-                              <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
-                              <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter">
-                            </div>
-                        </div>
-                        <div class="pre-scrollable" style="max-height:200px;">
-                          <table class="table table-striped table-bordered table-hover management" width="100%"  id="datatable_collection" class="pre-scrollable">
-                              <thead>
-                                  <tr role="row" class="heading">
-                                      <th width="20%">
-                                        <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
-                                          Description
-                                          <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
-                                          <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
-                                        </a>
-                                      </th>
-                                      <th width="5%" class="hidden-xs">
-                                        <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
-                                          Type
-                                          <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-                                          <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-                                        </a>
-                                      </th>
-                                      <th width="15%" class="text-center"> Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
-                                      <td>
-                                          <a ng-click="openViewMetadata(metadatum.uuid,'lg')"> {{metadatum.value.well_name}}{{metadatum.value.name}}
-                                           {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}}
-                                           {{metadatum.value.tags.toString()}} </a>
-                                      </td>
-                                      <td class="hidden-xs">
-                                          {{metadatum.name}}
-                                      </td>
-                                      <td class="text-center">
-                                          <div class="btn-group pull-left">
-                                              <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
-                                              <a ng-if="(data_descriptor_metadatum.associationIds.indexOf(metadatum.uuid) < 0)" class="btn btn-sm green btn-outline" ng-click="addAssociationToDataDescriptor(data_descriptor_metadatum.uuid, metadatum.uuid, '#associate_modal')">
-                                                  Associate
-                                                  <i class="fa fa-link"></i>
-                                              </a>
-                                              <a ng-if="(data_descriptor_metadatum.associationIds.indexOf(metadatum.uuid) > -1 && removedAssociationIds.indexOf(metadatum.uuid) < 0)|| matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid, '#associate_modal')">
-                                                  Remove Association
-                                                  <i class="fa fa-trash"></i>
-                                              </a>
-                                              <a class="btn btn-sm green btn-outline pull-right" ng-click="addClone(metadatum.uuid)">
-                                                  Clone
-                                                  <i class="fa fa-plus"></i>
-                                              </a>
-                                          </div>
-                                      </td>
-                                  </tr>
-                              </tbody>
-                          </table>
+            <div class="row">
+                <div class="col-md-12">
+                  <div ng-show="!requesting">
+                    <div ng-show="associate_metadata.length === 0" class="text-center">
+                      <div class="row text-center">
+                        <div class="col-md-12">
+                            No Metadata found
                         </div>
                       </div>
                     </div>
+                    <div ng-show="associate_metadata.length > 0" >
+                                                
+                      <div class="caption">
+                          Total Objects: {{ associate_metadata.length}}
+                          <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreModalMetadata()'>Fetch More Results</button>
+                      </div>
+                      <div class="btn-group top-buffer">
+                          <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-filter" aria-hidden="true"></i></div>
+                            <input type="text" class="form-control" placeholder="Filter Current Local Search Results" ng-model="$parent.filter">
+                          </div>
+                      </div>
+                      <div class="pre-scrollable" style="max-height:200px;">
+                        <table class="table table-striped table-bordered table-hover management" width="100%"  id="datatable_collection" class="pre-scrollable">
+                            <thead>
+                                <tr role="row" class="heading">
+                                    <th width="20%">
+                                      <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                                        Description
+                                        <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="5%" class="hidden-xs">
+                                      <a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+                                        Type
+                                        <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+                                        <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+                                      </a>
+                                    </th>
+                                    <th width="15%" class="text-center"> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="metadatum in associate_metadata | orderBy:sortType:sortReverse | filter:filter">
+                                    <td>
+                                        <a ng-click="openViewMetadata(metadatum.uuid,'lg')"> {{metadatum.value.well_name}}{{metadatum.value.name}}
+                                         {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}}
+                                         {{metadatum.value.tags.toString()}} </a>
+                                    </td>
+                                    <td class="hidden-xs">
+                                        {{metadatum.name}}
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group pull-left">
+                                            <!-- Note, this still works even if we have no filemetadata as it fails as we want it to, not good code though -->
+                                            <a ng-if="(data_descriptor_metadatum.associationIds.indexOf(metadatum.uuid) < 0)" class="btn btn-sm green btn-outline" ng-click="addAssociationToDataDescriptor(data_descriptor_metadatum.uuid, metadatum.uuid, '#associate_modal')">
+                                                Associate
+                                                <i class="fa fa-link"></i>
+                                            </a>
+                                            <a ng-if="(data_descriptor_metadatum.associationIds.indexOf(metadatum.uuid) > -1 && removedAssociationIds.indexOf(metadatum.uuid) < 0)|| matchingAssociationIds.indexOf(metadatum.uuid) > -1" class="btn btn-sm green btn-outline" ng-click="unAssociateMetadata(metadatum.uuid, '#associate_modal')">
+                                                Remove Association
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                            <a class="btn btn-sm green btn-outline pull-right" ng-click="addClone(metadatum.uuid)">
+                                                Clone
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
-              </div>
+                </div>
             </div>
-        </div>
-    </div>
+          </div>
+      </div>
+  </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
-    <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
+  <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
+  <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
 </div>

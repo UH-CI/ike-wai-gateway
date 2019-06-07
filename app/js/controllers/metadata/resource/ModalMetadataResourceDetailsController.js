@@ -161,8 +161,38 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
           }
         },
         defaults: {
-            scrollWheelZoom: false
+          scrollWheelZoom: false,
+          controls :{
+            layers : {
+                visible: true,
+                position: 'topright',
+                collapsed: false
+                     }
+            }
         },
+        layers: {
+            baselayers: {
+              /* osm: {
+                name: 'OpenStreetMap',
+                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                type: 'xyz'
+                },*/
+                google: {
+                  name: 'Google Satellite',
+                  url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+                  type: 'xyz'
+                },
+                googleStreet: {
+                  name: 'Google Roads',
+                  url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+                  type: 'xyz'
+                },
+
+            },
+            overlays:{
+
+            }
+        }
     });
 
 

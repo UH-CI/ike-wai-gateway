@@ -38,7 +38,7 @@
           </form>
 		 -->
      <div ng-show="schema.properties.hasOwnProperty('latitude')">Use Drawing Controls to set Marker for lat/long or draw polygon.
-         <leaflet defaults="defaults" width="800px" height="300px" center="hawaii" defaults="defaults" markers="metadata_markers" layers="layers" lf-draw="map.drawOptions" geojson="geojson" event-broadcast="events"></leaflet>
+         <leaflet id="editMetadataMap" defaults="defaults" width="800px" height="300px" center="hawaii" defaults="defaults" markers="metadata_markers" layers="layers" lf-draw="map.drawOptions" geojson="geojson" event-broadcast="events"></leaflet>
      </div>
           <form name="updateFilemetadataForm">
            <div sf-schema="schema" sf-form="form" sf-model="model"></div>
