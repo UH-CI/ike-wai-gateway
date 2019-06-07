@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService, leafletData, leafletDrawEvents) {
+angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", function($scope, $modalInstance, $state, $translate, $window, $rootScope, $timeout, $filter, MetaController, MetadataService, ActionsService, FilesMetadataService, MessageService, leafletData) {
 
 
 	$scope.close = function () {
@@ -125,6 +125,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 									color: '#bada55'
 								}
 							},
+							marker: true,
 							circle: false, // Turns off this drawing tool
 							rectangle: {
 								shapeOptions: {
@@ -138,7 +139,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 						}
 					};
 					var drawControl = new L.Control.Draw(options);
-					//map.addControl(drawControl);
+					map.addControl(drawControl);
 
 					var getCentroid = function (arr) {
 						var twoTimesSignedArea = 0;
@@ -307,7 +308,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
   
 	$scope.meta_markers = [];
 	angular.extend($scope, {
-		//drawControl: true,
+		drawControl: false,
 		hawaii: {
 						lat: 21.289373,
 						lng: -157.91,
