@@ -788,7 +788,7 @@
 
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
-                              <button type="button" class="btn btn-success pull-left form-control" ng-click="open('lg' ,['Well','Site','Water_Quality_Site'],'Select Location(s)')">Select Location(s)</button>
+                              <button type="button" class="btn btn-success pull-left form-control" ng-click="openLocations('lg' ,['Well','Site','Water_Quality_Site'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
                               <button type="button" class="btn btn-default btn-sm"  ng-repeat="filemetadatum in locations" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
@@ -800,7 +800,7 @@
 
                             <!-- CHOOSE VARIABLES -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
-                              <button type="button" class="btn btn-success pull-left form-control" ng-click="open('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
+                              <button type="button" class="btn btn-success pull-left form-control" ng-click="openVariables('lg',['Variable'],'Select Variable(s)')">Select Variable(s)</button>
                             </div>
                             <div id="variable_buttons">
                               <button type="button" class="btn btn-default btn-sm" ng-repeat="filemetadatum in variables | filter: {name:'Variable'}" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
