@@ -1,13 +1,12 @@
 <div id="associate_modal" class="modal-header">
-    <h3 class="page-title">{{modalTitle}}</h3>
-
+    <h3>{{modalTitle}}</h3>
 </div>
 <div class="btn-group pull-right">
     <a class="btn green btn-outline pull-right" href="#" data-toggle="dropdown">
         <i class="fa fa-plus"></i>&nbsp;Create New Location
         <i class="fa fa-angle-down pull-right"></i>
     </a>
-    <ul class="dropdown-menu">
+    <ul style="z-index: 10000;" class="dropdown-menu">
       <li ng-repeat="metadataschemata in metadataschema | orderBy:sortType:sortReverse | filter:filter" ng-show="modalSchemas.indexOf(metadataschemata.schema.title) > -1">
         <a href='#' ng-click="openCreate(metadataschemata.uuid,'lg')" role="button"> <i class="fa fa-tag"></i> {{metadataschemata.schema.title}}</a>
       </li>
@@ -17,7 +16,7 @@
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
             <div class="portlet-title">
-                <h3>Search For Location Information</h3>
+                <h4>Search For Location Information</h3>
                 <div>
                     <h5>Draw A Bounding Area To Narrow Your Search Region.</h5>
                   
@@ -62,14 +61,11 @@
                         <div class="btn-group">
                           <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
                         </div>
+                        <button class="btn btn-default" ng-click="showSearch = !showSearch">
+                          <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Show Advanced Search Tools'}}
+                        </button>
                       </div>
                       </div>
-                    <hr/>
-                    <div class="btn-group top-buffer">
-                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Show Advanced Search Tools'}}
-                      </button>
-                    </div>
                 </div>
             </div>
             <div class="portlet-body">
@@ -160,6 +156,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
