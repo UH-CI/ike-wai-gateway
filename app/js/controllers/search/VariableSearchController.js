@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('MapSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, $filter, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService, leafletDrawEvents,leafletData) {
+angular.module('AgaveToGo').controller('VariableSearchController', function ($scope, $state, $translate, $uibModal, $rootScope, $localStorage, $filter, MetaController, FilesController, ActionsService, MessageService, MetadataService, FilesMetadataService, leafletDrawEvents) {
     $scope._COLLECTION_NAME = 'metadata';
     $scope._RESOURCE_NAME = 'metadatum';
 
@@ -23,9 +23,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.sortReverse  = true;
     $scope.status = 'active';
     $scope.available = true;
-    $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }},{'_links.associationIds':1,'value.name':1,'name':1,'value.well_name':1,'value.wid':1}";
+    $scope.query = "{'name':'Variable'}";
     $scope.filequery="{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
-    //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
+   // $scope.schemaQuery = "{'schema.title': 'Variable'}"
 
     $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
@@ -52,6 +52,10 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.csv_json = []
     $scope.filtered_association_ids = [];
 
+    function onlyUnique(value, index, self) { 
+        return self.indexOf(value) === index;
+    }
+
     $scope.parseFiles = function(){
       //fetch related file metadata objects
       $scope.files = []
@@ -66,7 +70,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.culled_metadata_uuids = []
       $scope.sites_to_search = [] //clear sites
       $scope.filtered_association_ids =[]
-      $scope.filtered_association_ids =[]
+      ts_uuids=[]
+      obs_uuids=[]
+      $scope.uuids_for_location_search = []
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
         //$scope.filtered_association_ids = $scope.filtered_association_ids.push(val.uuid)
@@ -75,7 +81,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           $scope.culled_metadata.push(val)
         }
         if (val._links.associationIds.length > 0){
-
+           // $scope.uuids_for_location_search.push(val.associationIds)
           angular.forEach(val._links.associationIds, function(value, key){
             if(value.href != null){
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
@@ -99,22 +105,55 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             }
           })
         }
-        else if(val.name == "Water_Quality_Site" ){
+        if(val.name == "Water_Quality_Site" ){
           if(val.value.resultCount >0){
             $scope.culled_metadata.push(val)
             $scope.wqsites.push(val)
           }
+        }
+        if(val.name == "Timeseries" ){
+            if(ts_uuids.indexOf(val.uuid) < 0 ){
+              ts_uuids.push(val.uuid)
+              $scope.culled_metadata.push(val)
+              $scope.filtered_timeseries.push(val)
+            //  $scope.uuids_for_location_search.push(val.associationIds)
+            }
+        }
+        if(val.name == "Observation" ){
+          if(obs_uuids.indexOf(val.uuid) < 0){
+              obs_uuids.push(val.uuid)
+              $scope.culled_metadata.push(val)
+              $scope.filtered_observations.push(val)
+              $scope.uuids_for_location_search.concat(val.associationIds)    
+          } 
         }
       })
       $scope.filtered_files = $scope.files;
       $scope.filtered_wqsites = $scope.wqsites;
       console.log("Sites with associations:"+$scope.sites_to_search.length)
       console.log($scope.sites_to_search)
-     // $scope.fetchFacetMetadata();
-      $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
-      $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
-      console.log($scope.observations_query)
-      MetaController.listMetadata($scope.observations_query,limit=1000,offset=0)
+      
+    
+    var unique_uuids = $scope.uuids_for_location_search.filter( onlyUnique );
+    
+    $scope.locations_query="{'name':['Site','Well','Water_Quality_Site'],'uuid':{$in: ['"+unique_uuids.join("','")+"']}}"
+      
+    $scope.locations=[]
+      console.log()
+      loopnum = Math.floor(unique_uuids.length/25) 
+      for (i = 0; i < loopnum; i++) {// $scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $scope.ddUuid + "'}]}");
+        var lquery='{"uuid":{$in: ["'+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+'"]}}'
+        MetaController.listMetadata(lquery,limit=1000,offset=0)
+        .then(function(response){
+                $scope.locations.concat(response.result);
+                $scope.updateMap()
+        })
+    }
+       // $scope.fetchFacetMetadata();
+     // $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      //$scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+      //console.log($scope.observations_query)
+      /*MetaController.listMetadata($scope.observations_query,limit=1000,offset=0)
       .then(function(response){
         $scope.observations = response.result;
         console.log("OBS:"+$scope.observations )
@@ -130,13 +169,20 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.filtered_timeseries = $scope.timeseries;
         //angular.forEach($scope.timeseries, function(val, key){
 //
-  //      })
-        $scope.fetchFacetMetadata();
-      })
-      
+  //      })*/
+       
+     // })
+      //$scope.fetchFacetMetadata();
       
       $scope.requesting=false;
     }
+
+     $scope.variableSearch = function(){
+        $scope.requesting = true;
+        $scope.filequery = "{'associationIds':{'$in':['"+$scope.selectedMetadata.join("','")+"']}}"
+        $scope.doSearch();
+     }
+
 
      $scope.doSearch = function(){
        $scope.requesting=true;
@@ -183,11 +229,11 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           if (uuid != undefined){
             //Files
             angular.forEach($scope.metadata_file_hash[uuid] , function(file){
-              //if (new_files_uuids.indexOf(file.uuid) < 0){
+              if (new_files_uuids.indexOf(file.uuid) < 0){
                 new_files_uuids.push(file.uuid)
                 new_filtered_files.push(file)
                 $scope.filtered_association_ids = $scope.filtered_association_ids.concat(file.associationIds);
-              //}
+              }
             })
           //WQ Sites  
             angular.forEach($scope.wqsites, function(wqs){
@@ -226,7 +272,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             })
           }
         })
-        console.log("FILETERD FILES: "+new_filtered_files)
+        console.log(new_filtered_files)
         $scope.filtered_files = new_filtered_files;
         $scope.filtered_wqsites = new_filtered_wqsites
         $scope.filtered_timeseries = new_filtered_timeseries;
@@ -253,7 +299,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         //if ($scope.selectedMetadata != ''){
 
           //$scope.filequery = "{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}";
-          $scope.filequery = "{$and: [{'name':{'$in':['Site','Well','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          $scope.filequery = "{$and: [{'name':{'$in':['Site','Well','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -314,6 +360,11 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       MetaController.listMetadataSchema($scope.schemaQuery)
       .then(function(response){
 				$scope.metadataschema = response.result;
+      })
+      MetaController.listMetadata($scope.query)
+      .then(function(response){
+                $scope.variables = response.result;
+                $scope.facet_variables =  $scope.variables;
       })
       //$scope.fetchFacetMetadata();
       $scope.requesting = false;
@@ -378,97 +429,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
       });
 
-      $scope.initializeMap = function(){
-        leafletData.getMap("searchMap").then(function(map) {
-          
-          
-          setTimeout(function() {
-            map.invalidateSize();
-          }, 0.1 * 1000);
-          
-          var drawnItems = new L.FeatureGroup();
-          $scope.drawnItems = drawnItems
-          map.addLayer(drawnItems);
-          var options = {
-            position: 'topright',
-            collapsed: false,
-            draw: {
-              polyline: false,
-              polygon: {
-                allowIntersection: false, // Restricts shapes to simple polygons
-                drawError: {
-                  color: '#e1e100', // Color the shape will turn when intersects
-                  message: '<strong>Oh snap!<strong> you can\'t draw that!' // Message that will show when intersect
-                },
-                shapeOptions: {
-                  color: '#bada55'
-                }
-              },
-              marker: false,
-              circle: false, // Turns off this drawing tool
-              rectangle: {
-                shapeOptions: {
-                  clickable: true
-                }
-              }
-            },
-            edit: {
-              featureGroup: drawnItems, //REQUIRED!!
-              remove: true
-            }
-          };
-          var drawControl = new L.Control.Draw(options);
-          map.addControl(drawControl);
-    
-          var getCentroid = function (arr) {
-            var twoTimesSignedArea = 0;
-            var cxTimes6SignedArea = 0;
-            var cyTimes6SignedArea = 0;
-        
-            var length = arr.length
-        
-            var x = function (i) { return arr[i % length][0] };
-            var y = function (i) { return arr[i % length][1] };
-        
-            for ( var i = 0; i < arr.length; i++) {
-                var twoSA = x(i)*y(i+1) - x(i+1)*y(i);
-                twoTimesSignedArea += twoSA;
-                cxTimes6SignedArea += (x(i) + x(i+1)) * twoSA;
-                cyTimes6SignedArea += (y(i) + y(i+1)) * twoSA;
-            }
-            var sixSignedArea = 3 * twoTimesSignedArea;
-            return [ cxTimes6SignedArea / sixSignedArea, cyTimes6SignedArea / sixSignedArea];
-          }
-    
-          map.on('draw:created', function (e,leafletEvent, leafletObject, model, modelName) {
-            var type = e.layerType,
-              layer = e.layer;
-    
-            
-    
-            drawnItems.addLayer(layer);
-            //hide toolbar
-            angular.element('.leaflet-draw-toolbar-top').hide();
-            var bounds = layer.getBounds()
-    
-            // Fit the map to the polygon bounds
-            map.fitBounds(bounds)
-            angular.element('#search_button').removeAttr("disabled");
-            //drawControl.hideDrawTools();
-           // alert(angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry));
-          });//end created
-          map.on('draw:deleted', function (e,leafletEvent, leafletObject, model, modelName) {
-            if (angular.fromJson(drawnItems.toGeoJSON()).features[0] == null){
-              angular.element('.leaflet-draw-toolbar-top').show();
-              $scope.layers.overlays = {}
-            }
-          })
-          
-        });
-      }
-      $scope.initializeMap();
 
-/*
+
+
     var drawnItems = new L.FeatureGroup();
     $scope.drawnItemsCount = function() {
       return drawnItems.getLayers().length;
@@ -545,8 +508,6 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         });
     });
 
-    */
-
 ////////////////////////////
   
     $scope.updateMap = function(facet=false){
@@ -554,9 +515,9 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.well_uuids = []
       if ($scope.culled_metadata && $scope.culled_metadata.length > 0){
         //console.log("culled_metadata length: " + $scope.culled_metadata.length)
-        $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
-        $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
-        $scope.waterQualitySiteMarkers = $scope.filtered_wqsites;//$filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
+        $scope.siteMarkers = $filter('filter')($scope.locations, {name: "Site"});
+        $scope.wellMarkers = $filter('filter')($scope.location, {name: "Well"});
+        $scope.waterQualitySiteMarkers = $filter('filter')($scope.locations, {name: "Water_Quality_Site"});
         //console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
         $scope.layers.overlays = {};
@@ -597,7 +558,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             if(render_site == true){
               if(datum.value.loc != undefined && datum.value.name != undefined){
                 if(datum.value.loc.type == 'Point'){
-                  $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+                  $scope.marks[datum.value.name.replace("-"," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
                 }else{
 
                     $scope.layers.overlays[datum.uuid] = {
@@ -654,7 +615,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         $scope.facet_wells =[]
         $scope.facet_sites =[]
         $scope.facet_water_quality_sites =[];
-        $scope.facet_variables =[]
+       // $scope.facet_variables =[]
         $scope.markers = [];
         site_uuids = []
         well_uuids =[]
@@ -687,93 +648,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           }
 
         })
-        var_file_uuids = $scope.file_uuids;
-        $scope.facet_variables =[];
-        while(var_file_uuids.length > 20){
-          var_search_uuids = var_file_uuids.splice(0,19)
-          var_file_uuids = var_file_uuids.slice(19)
-        MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+var_search_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-        .then(function(response){
-          $scope.facet_variables.push(response.result);
-            angular.forEach($scope.timeseries, function(ts){
-              angular.forEach(ts.value.variables, function(vr){
-                console.log("timeseries-vars: " + angular.toJson(vr))
-                $scope.exists=false;
-                angular.forEach($scope.facet_variables, function(fvar){
-                  if (fvar['uuid'] == vr['uuid']){
-                    $scope.exists = true;
-                    console.log(fvar)
-                    console.log(vr)
-                  }
-                })
-                if ($scope.exists == false){
-                  $scope.facet_variables.push(vr)
-                }
-                
-                
-              })  
-            })
-            angular.forEach($scope.facet_variables, function(datum){
-              $scope.metadata_hash[datum.uuid] = datum;
-              if(datum.associationIds != null){
-                file_uuids = intersection(datum.associationIds, $scope.file_uuids)
-                $scope.facet_count[datum.uuid] = file_uuids.length;
-                angular.forEach(file_uuids, function(file_uuid){
-                  if ($scope.metadata_file_hash[datum.uuid] == undefined){
-                    $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
-                  }else{
-                    $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
-                  }
-                })
-              }
-              /*if ($scope.facet_count[datum.uuid] == undefined){
-                $scope.facet_count[datum.uuid] =1
-              }else{
-                $scope.facet_count[datum.uuid] = $scope.facet_count[datum.uuid] +1;
-              }*/
-            })
-            
-        })
-      }//close while
-      MetaController.listMetadata("{'name':'Variable','value.published':'True','associationIds':{$in:['"+var_file_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-        .then(function(response){
-            $scope.facet_variables.push(response.result);
-            angular.forEach($scope.timeseries, function(ts){
-              angular.forEach(ts.value.variables, function(vr){
-                console.log("timeseries-vars: " + angular.toJson(vr))
-                $scope.exists=false;
-                angular.forEach($scope.facet_variables, function(fvar){
-                  if (fvar['uuid'] == vr['uuid']){
-                    $scope.exists = true;
-                    console.log(fvar)
-                    console.log(vr)
-                  }
-                })
-                if ($scope.exists == false){
-                  $scope.facet_variables.push(vr)
-                }
-                
-                
-              })  
-            })
-            angular.forEach($scope.facet_variables, function(datum){
-              $scope.metadata_hash[datum.uuid] = datum;
-              if(datum.associationIds != null){
-                file_uuids = intersection(datum.associationIds, $scope.file_uuids)
-                $scope.facet_count[datum.uuid] = file_uuids.length;
-                angular.forEach(file_uuids, function(file_uuid){
-                  if ($scope.metadata_file_hash[datum.uuid] == undefined){
-                    $scope.metadata_file_hash[datum.uuid] = [$scope.file_hash[file_uuid]]
-                  }else{
-                    $scope.metadata_file_hash[datum.uuid].push($scope.file_hash[file_uuid])
-                  }
-                })
-              }
-            })
-            $scope.updateMap();
-        })
-      
-
+        $scope.updateMap();
+        $scope.requesting=false;
     };
 
     $scope.searchTools = function(query){
