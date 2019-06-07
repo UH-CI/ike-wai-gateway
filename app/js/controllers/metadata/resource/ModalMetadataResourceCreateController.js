@@ -59,47 +59,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 				return $scope.approvedSchema.indexOf(item.schema.title) > -1;	
 				})
 				leafletData.getMap("metadataCreateMap").then(function(map) {
-					/*map = new L.Map('metadataCreateMap', 
-					{
-					center: {
-						lat: 21.289373,
-						lng: -157.91,
-						zoom: 7
-					},
-					layers: {
-						baselayers: {
-								google: {
-									name: 'Google Satellite',
-									url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
-									type: 'xyz'
-								},
-								googleStreet: {
-									name: 'Google Roads',
-									url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
-									type: 'xyz'
-								},
-								osm: {
-								name: 'OpenStreetMap',
-								url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-								type: 'xyz'
-								}
-								
-						},
-						overlays:{
-			
-						}
-					},
-					events: {
-								map: {
-										enable: ['click', 'drag', 'blur', 'touchstart'],
-										logic: 'emit'
-								}
-						},
-						defaults: {
-										scrollWheelZoom: false
-						}
-					})
-					*/
+				
 					setTimeout(function() {
 						map.invalidateSize();
 					}, 0.1 * 1000);
@@ -108,6 +68,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					map.addLayer(drawnItems);
 					var options = {
 						position: 'topright',
+						collapsed: false,
 						draw: {
 							polyline: {
 								shapeOptions: {
@@ -339,8 +300,8 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceCreateController", 
 					name: 'OpenStreetMap',
 					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					type: 'xyz'
-					}
-					
+					},
+					collapsed: false
 			},
 			overlays:{
 
