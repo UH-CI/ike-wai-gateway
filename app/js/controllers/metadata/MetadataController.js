@@ -335,7 +335,7 @@ drawEvents.forEach(function(eventName){
           templateUrl: 'views/modals/ModalCreateMetadata.html',
           controller: 'ModalMetadataResourceCreateController',
           scope: $scope,
-          size: size,
+          size: 'lg',
           schemaUuid: schemauuid,
           resolve: {
 

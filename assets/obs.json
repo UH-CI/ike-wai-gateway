@@ -1,0 +1,2513 @@
+{
+	"status": "success",
+	"message": null,
+	"version": "2.2.15-r46b36d1",
+	"result": [{
+		"uuid": "510473768632390121-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:36:35.011-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:36:35.011-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/510473768632390121-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/510473768632390121-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	},{
+		"uuid": "510473768632390121-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:36:35.011-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:36:35.011-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/510473768632390121-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/510473768632390121-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	} ,{
+		"uuid": "259184370810875415-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:36:17.091-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:36:17.091-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/259184370810875415-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/259184370810875415-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "978118946488315415-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:36:00.352-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:36:00.352-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/978118946488315415-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/978118946488315415-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "1781191931494395415-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:35:41.654-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:35:41.654-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1781191931494395415-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1781191931494395415-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "2488143548415995415-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "4198700173393915415-242ac1112-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:35:25.194-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:35:25.194-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2488143548415995415-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2488143548415995415-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "3422771381698555415-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4198700173393915415-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:35:03.433-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:35:03.433-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3422771381698555415-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3422771381698555415-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4198700173393915415-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4198700173393915415-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8228582087884795415-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:33:11.539-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:33:11.539-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8228582087884795415-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8228582087884795415-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "9001805050183675415-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:32:53.536-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:32:53.536-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9001805050183675415-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9001805050183675415-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8633533801965556201-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:32:34.644-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:32:34.644-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8633533801965556201-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8633533801965556201-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7805292308604916201-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:32:15.360-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:32:15.360-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7805292308604916201-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7805292308604916201-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6984395209320436201-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:31:56.247-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:31:56.247-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6984395209320436201-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6984395209320436201-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "5995350140397556201-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["5202370328537076201-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:31:33.219-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:31:33.219-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5995350140397556201-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5995350140397556201-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "5202370328537076201-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5202370328537076201-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "5585685575882829335-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:27:03.576-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:27:03.576-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5585685575882829335-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5585685575882829335-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6390605396826189335-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:26:44.836-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:26:44.836-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6390605396826189335-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6390605396826189335-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7175210022459469335-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:26:26.568-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:26:26.568-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7175210022459469335-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7175210022459469335-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7977724661717069335-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:26:07.883-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:26:07.883-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7977724661717069335-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7977724661717069335-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8739866608392269335-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:25:50.137-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:25:50.137-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8739866608392269335-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8739866608392269335-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8790546192715682281-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "8009377540919202281-242ac1112-0001-012"],
+		"lastUpdated": "2019-01-22T13:25:28.803-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:25:28.803-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8790546192715682281-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8790546192715682281-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8009377540919202281-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8009377540919202281-242ac1112-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "695852666025808361-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:15:10.836-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:15:10.836-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/695852666025808361-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/695852666025808361-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "90813543909617175-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:14:52.521-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:14:52.521-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/90813543909617175-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/90813543909617175-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "879927885203697175-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:14:34.148-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:14:34.148-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/879927885203697175-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/879927885203697175-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "1702027575331057175-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:14:15.007-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:14:15.007-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1702027575331057175-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1702027575331057175-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "2581078531803377175-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:13:54.540-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:13:54.540-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2581078531803377175-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2581078531803377175-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "3562478558939377175-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["4338450300307697175-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:13:31.690-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:13:31.690-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3562478558939377175-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3562478558939377175-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "4338450300307697175-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4338450300307697175-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7378939014029054441-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:10:36.942-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:10:36.942-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7378939014029054441-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7378939014029054441-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6590340068810494441-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:10:18.582-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:10:18.582-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6590340068810494441-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6590340068810494441-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "5781382978608894441-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:09:59.747-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:09:59.747-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5781382978608894441-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5781382978608894441-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "4971695743966974441-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:09:40.895-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:09:40.895-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4971695743966974441-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4971695743966974441-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "4211228834537214441-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:09:23.189-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:09:23.189-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4211228834537214441-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4211228834537214441-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "3237345000169214441-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "2449733897428734441-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:09:00.514-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:09:00.514-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3237345000169214441-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3237345000169214441-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "2449733897428734441-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/2449733897428734441-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "5984293381726531095-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "7444082054317740521-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:05:25.805-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T13:05:25.805-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5984293381726531095-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5984293381726531095-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6772677578580291095-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "7444082054317740521-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:05:07.450-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:05:07.450-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6772677578580291095-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6772677578580291095-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7575707613913411095-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "7444082054317740521-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:04:48.753-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T13:04:48.753-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7575707613913411095-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7575707613913411095-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8345065105645891095-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "7444082054317740521-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:04:30.840-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T13:04:30.840-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8345065105645891095-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8345065105645891095-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "9172061058490691095-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "7444082054317740521-242ac1112-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:04:11.585-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T13:04:11.585-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9172061058490691095-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9172061058490691095-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8235988124354220521-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["7444082054317740521-242ac1112-0001-012", "795257175808152041-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T13:03:47.401-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T13:03:47.401-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8235988124354220521-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8235988124354220521-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "7444082054317740521-242ac1112-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7444082054317740521-242ac1112-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6143554273755786775-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:36:44.111-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 66,
+			"Chloride, dissolved:percent(%)": 3.2
+		},
+		"created": "2019-01-22T12:36:44.111-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6143554273755786775-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6143554273755786775-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6945295818900106775-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:36:25.444-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 63,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T12:36:25.444-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6945295818900106775-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6945295818900106775-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7699964522480266775-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:36:07.873-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T12:36:07.873-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7699964522480266775-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7699964522480266775-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8421347229516426775-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:35:51.077-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T12:35:51.077-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8421347229516426775-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8421347229516426775-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "9191778463072906775-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:35:33.139-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T12:35:33.139-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9191778463072906775-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/9191778463072906775-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8302599562421604841-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["795257175808152041-242ac1111-0001-012", "7517092993656164841-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "8528391283572076055-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:35:10.965-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T12:35:10.965-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8302599562421604841-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8302599562421604841-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7517092993656164841-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7517092993656164841-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "5987756087440174615-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:22:28.745-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 64,
+			"Chloride, dissolved:percent(%)": 3.0
+		},
+		"created": "2019-01-22T12:22:28.745-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5987756087440174615-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5987756087440174615-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7503879542928174615-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:21:53.445-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 59,
+			"Chloride, dissolved:percent(%)": 1.5
+		},
+		"created": "2019-01-22T12:21:53.445-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7503879542928174615-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7503879542928174615-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8854689707193134615-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:21:21.994-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"Temperature:degree celsius(degC)": 65,
+			"Chloride, dissolved:percent(%)": 2.0
+		},
+		"created": "2019-01-22T12:21:21.994-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8854689707193134615-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8854689707193134615-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8524626144441537001-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "7748267856016577001-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-22T12:20:57.141-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"Temperature:degree celsius(degC)": 60,
+			"Chloride, dissolved:percent(%)": 1.0
+		},
+		"created": "2019-01-22T12:20:57.141-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8524626144441537001-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8524626144441537001-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7748267856016577001-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7748267856016577001-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "6585255444996091415-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:41:07.873-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2018-05-18T17:00:00Z",
+			"temp": 66,
+			"chloride": 3.2
+		},
+		"created": "2019-01-21T16:41:07.873-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6585255444996091415-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/6585255444996091415-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7806915942670331415-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:40:39.429-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2018-05-18T16:00:00Z",
+			"temp": 63,
+			"chloride": 1.0
+		},
+		"created": "2019-01-21T16:40:39.429-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7806915942670331415-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7806915942670331415-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8907028865867771415-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:40:13.815-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2017-05-18T17:00:00Z",
+			"temp": 64,
+			"chloride": 3.0
+		},
+		"created": "2019-01-21T16:40:13.815-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8907028865867771415-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8907028865867771415-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "8582581745928180201-242ac1112-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:39:51.529-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2017-05-18T16:00:00Z",
+			"temp": 59,
+			"chloride": 1.5
+		},
+		"created": "2019-01-21T16:39:51.529-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8582581745928180201-242ac1112-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8582581745928180201-242ac1112-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7827397646272500201-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012", "3902794863483032041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:39:33.947-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "punchbowl-wtr",
+			"datetime": "2016-05-18T17:00:00Z",
+			"temp": 65,
+			"chloride": 2.0
+		},
+		"created": "2019-01-21T16:39:33.947-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7827397646272500201-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7827397646272500201-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "3902794863483032041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/3902794863483032041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}, {
+		"uuid": "7001260686886900201-242ac1111-0001-012",
+		"owner": "seanbc",
+		"schemaId": null,
+		"internalUsername": null,
+		"associationIds": ["8528391283572076055-242ac1111-0001-012", "7419369018632835561-242ac1111-0001-012", "795257175808152041-242ac1111-0001-012"],
+		"lastUpdated": "2019-01-21T16:39:14.712-06:00",
+		"name": "Observation",
+		"value": {
+			"site-id": "its-fountain1",
+			"datetime": "2016-05-18T16:00:00Z",
+			"temp": 60,
+			"chloride": 1.0
+		},
+		"created": "2019-01-21T16:39:14.712-06:00",
+		"_links": {
+			"self": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7001260686886900201-242ac1111-0001-012"
+			},
+			"permissions": {
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7001260686886900201-242ac1111-0001-012/pems"
+			},
+			"owner": {
+				"href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+			},
+			"associationIds": [{
+				"rel": "8528391283572076055-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/8528391283572076055-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "7419369018632835561-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/7419369018632835561-242ac1111-0001-012",
+				"title": "metadata"
+			}, {
+				"rel": "795257175808152041-242ac1111-0001-012",
+				"href": "https://agaveauth.its.hawaii.edu/meta/v2/data/795257175808152041-242ac1111-0001-012",
+				"title": "metadata"
+			}]
+		}
+	}]
+}
