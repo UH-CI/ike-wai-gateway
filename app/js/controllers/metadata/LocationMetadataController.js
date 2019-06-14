@@ -154,8 +154,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         
         typequery['name'] = {'$in': typearray}
         if(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0]){
-          $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'$text':{ '$search':'"+$scope.searchField.value+"'}},{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
-        //  $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          if($scope.searchField.value == '')
+          {
+            $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          }
+          else{
+            $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'$text':{ '$search':'"+$scope.searchField.value+"'}},{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          }
+            //  $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         }
         else {          
           $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'$text':{ '$search':'"+$scope.searchField.value+"'}}]}";
