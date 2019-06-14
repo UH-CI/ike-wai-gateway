@@ -154,7 +154,8 @@
                                     </thead>
                                 <tbody>
                                     <tr ng-repeat="var in facet_variables | orderBy:varSortType:varSortReverse">
-                                        <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>
+                                            {{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
                                             <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
@@ -164,6 +165,7 @@
                         <br/>
                         <br/>
                         <button class="btn btn-primary" ng-click="facetSearch()"><i class="fa fa-search"/> Filter With Selections</button>
+                    {{keywords}}
                     </div>
                     <div class="col-md-8">
                     <h3><i class="fa fa-file"></i> Matching Files: {{filtered_files.length}}</h3>
@@ -214,7 +216,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="file in filtered_files | orderBy:sortType:sortReverse | filter:filter">
+                                        <tr ng-repeat="file in filtered_files | orderBy:sortType:sortReverse | unique: 'rel' | filter:filter">
                                           <td ng-show="file.href.includes('ikewai-annotated-data')">
                                               {{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/
 
