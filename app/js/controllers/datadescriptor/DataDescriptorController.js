@@ -1185,7 +1185,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.modalTitle = title;
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
-      templateUrl: 'views/modals/ModalAssociateMetadata.html',
+      templateUrl: 'views/modals/ModalAssociateVariable.html',
       controller: 'ModalAssociateVariableCtrl',
       scope: $scope,
       size: size,
