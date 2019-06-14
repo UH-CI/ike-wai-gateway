@@ -593,6 +593,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 }
               },
               marker: false,
+              circlemarker:false,
               circle: false, // Turns off this drawing tool
               rectangle: {
                 shapeOptions: {

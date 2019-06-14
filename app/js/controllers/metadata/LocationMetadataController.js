@@ -509,6 +509,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             }
           },
           marker: false,
+          circlemarker:false,
           circle: false, // Turns off this drawing tool
           rectangle: {
             shapeOptions: {

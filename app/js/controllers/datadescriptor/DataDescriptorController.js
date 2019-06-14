@@ -1441,6 +1441,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             }
           },
           marker: false,
+          circlemarker:false,
           circle: false, // Turns off this drawing tool
           rectangle: {
             shapeOptions: {
