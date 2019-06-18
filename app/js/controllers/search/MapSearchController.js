@@ -83,7 +83,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         if (val._links.associationIds.length > 0){
 
           angular.forEach(val._links.associationIds, function(value, key){
-            if(value.href != null){
+            if(value.href != undefined && value.rel != undefined){  
               if(value.title == "file" && value.href.includes('ikewai-annotated-data')){
                 if($scope.culled_metadata_uuids.indexOf(val.uuid) < 0){
                     $scope.culled_metadata.push(val)
@@ -102,7 +102,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                   $scope.file_hash[value.rel] = value;
                 }
               }else{
-                $scope.metadata_to_check.push(value.rel)
+               // $scope.metadata_to_check.push(value.rel)
               }
             }
           })
@@ -179,59 +179,62 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             //$scope.site_dd_query = "{'name':'DataDescriptor','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
           MetaController.listMetadata("{'name':'DataDescriptor','value.published':'True','associationIds':{$in:['"+meta_search_uuids.join('\',\'')+"']}}",limit=10000,offset=0)
           .then(function(response){
+            $scope.requesting = true;
             if (response.result.length > 0 ){
               angular.forEach(response.result, function(dd){
                 angular.forEach(dd._links.associationIds, function(assoc){
-                  if(assoc.title == "file" && assoc.href.includes('ikewai-annotated-data')){
-                    console.log("filematch")
-                    if(dd.value.keywords != null){
-                      $scope.keywords = $scope.keywords.concat(dd.value.keywords)
-                    }
-                    if( $scope.files_hrefs.indexOf(assoc.href) < 0){
-                      $scope.files_hrefs.push(assoc.href)
-                      $scope.files.push(assoc)
-                      $scope.file_uuids.push(assoc.rel)
-                      $scope.file_hash[assoc.rel] = assoc;
-                      angular.forEach(dd.associationIds, function(assoc_uuid){
-                        if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
-                          if($scope.metadata_file_hash[assoc_uuid] == undefined){
-                          $scope.metadata_file_hash[assoc_uuid] = [assoc];
-                          $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
-                          }
-                          else{
-                            $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                  if(assoc.href != undefined && assoc.rel != undefined){
+                    if(assoc.title == "file" && assoc.href.includes('ikewai-annotated-data')){
+                      console.log("filematch")
+                      if(dd.value.keywords != null){
+                        $scope.keywords = $scope.keywords.concat(dd.value.keywords)
+                      }
+                      if( $scope.files_hrefs.indexOf(assoc.href) < 0){
+                        $scope.files_hrefs.push(assoc.href)
+                        $scope.files.push(assoc)
+                        $scope.file_uuids.push(assoc.rel)
+                        $scope.file_hash[assoc.rel] = assoc;
+                        angular.forEach(dd.associationIds, function(assoc_uuid){
+                          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
+                            if($scope.metadata_file_hash[assoc_uuid] == undefined){
+                            $scope.metadata_file_hash[assoc_uuid] = [assoc];
                             $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
+                            else{
+                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
                           }
-                        }
-                      })
-                    }
-                    else{
-                      angular.forEach(dd.associationIds, function(assoc_uuid){
-                        if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
-                          if($scope.metadata_file_hash[assoc_uuid] == undefined){
-                          $scope.metadata_file_hash[assoc_uuid] = [assoc];
-                          $scope.facet_count[assoc_uuid] = 1;
-                          }
-                          else{
-                            $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                            $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
-                          }
-                        }
-                      })
-                      //$scope.facet_count[.uuid] = $scope.facet_count[val.uuid] +1;
-                    }
-                  }
-                  else if(assoc.title == "metadata"){
-                    //console.log("meta")
-                    if($scope.var_hash[assoc.rel] != null){
-                      console.log("var_match")
-                      if($scope.facet_variables_hash[assoc.rel] == undefined){
-                        $scope.facet_variables_hash[assoc.rel]=true;
-                        $scope.facet_count[assoc.rel] = 1;
-                        $scope.facet_variables.push($scope.var_hash[assoc.rel])
+                        })
                       }
                       else{
-                        $scope.facet_count[assoc.rel] = $scope.facet_count[assoc.rel] = +1;
+                        angular.forEach(dd.associationIds, function(assoc_uuid){
+                          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
+                            if($scope.metadata_file_hash[assoc_uuid] == undefined){
+                            $scope.metadata_file_hash[assoc_uuid] = [assoc];
+                            $scope.facet_count[assoc_uuid] = 1;
+                            }
+                            else{
+                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
+                          }
+                        })
+                        //$scope.facet_count[.uuid] = $scope.facet_count[val.uuid] +1;
+                      }
+                    }
+                    else if(assoc.title == "metadata"){
+                      //console.log("meta")
+                      if($scope.var_hash[assoc.rel] != null){
+                        console.log("var_match")
+                        if($scope.facet_variables_hash[assoc.rel] == undefined){
+                          $scope.facet_variables_hash[assoc.rel]=true;
+                          $scope.facet_count[assoc.rel] = 1;
+                          $scope.facet_variables.push($scope.var_hash[assoc.rel])
+                        }
+                        else{
+                          $scope.facet_count[assoc.rel] = $scope.facet_count[assoc.rel] = +1;
+                        }
                       }
                     }
                   }
@@ -241,7 +244,8 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           })
         }//close while
         MetaController.listMetadata("{'name':'DataDescriptor','value.published':'True','associationIds':{$in:['"+all_meta_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
-          .then(function(response){   
+          .then(function(response){ 
+            $scope.requesting=true;  
             /*if (response.result.length > 0 ){
               angular.forEach(response.result, function(dd){
                 angular.forEach(dd._links.associationIds, function(assoc){
@@ -258,61 +262,64 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             if (response.result.length > 0 ){
               angular.forEach(response.result, function(dd){
                 angular.forEach(dd._links.associationIds, function(assoc){
-                  if(assoc.title == "file" && assoc.href.includes('ikewai-annotated-data')){
-                    console.log("filematch")
-                    if(dd.value.keywords != null){
-                      $scope.keywords = $scope.keywords.concat(dd.value.keywords)
-                    }
-                    if( $scope.files_hrefs.indexOf(assoc.href) < 0){
-                      $scope.files_hrefs.push(assoc.href)
-                      $scope.files.push(assoc)
-                      $scope.file_uuids.push(assoc.rel)
-                      $scope.file_hash[assoc.rel] = assoc;
-                      angular.forEach(dd.associationIds, function(assoc_uuid){
-                        if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
-                          if($scope.metadata_file_hash[assoc_uuid] == undefined){
-                          $scope.metadata_file_hash[assoc_uuid] = [assoc];
-                          $scope.facet_count[assoc_uuid] = 1;
+                  if(value.href != undefined && value.rel != undefined){
+                    if(assoc.title == "file" && assoc.href.includes('ikewai-annotated-data')){
+                      console.log("filematch")
+                      if(dd.value.keywords != null){
+                        $scope.keywords = $scope.keywords.concat(dd.value.keywords)
+                      }
+                      if( $scope.files_hrefs.indexOf(assoc.href) < 0){
+                        $scope.files_hrefs.push(assoc.href)
+                        $scope.files.push(assoc)
+                        $scope.file_uuids.push(assoc.rel)
+                        $scope.file_hash[assoc.rel] = assoc;
+                        angular.forEach(dd.associationIds, function(assoc_uuid){
+                          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
+                            if($scope.metadata_file_hash[assoc_uuid] == undefined){
+                            $scope.metadata_file_hash[assoc_uuid] = [assoc];
+                            $scope.facet_count[assoc_uuid] = 1;
+                            }
+                            else{
+                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
                           }
-                          else{
-                            $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                            $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
-                          }
-                        }
-                      })
-                    }
-                    else{
-                      angular.forEach(dd.associationIds, function(assoc_uuid){
-                        if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
-                          if($scope.metadata_file_hash[val.uuid].length < 0){
-                          $scope.metadata_file_hash[assoc_uuid] = [assoc];
-                          $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
-                          }
-                          else{
-                            $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                            $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
-                          }
-                        }
-                      })
-                      //$scope.facet_count[.uuid] = $scope.facet_count[val.uuid] +1;
-                    }
-                  }
-                  else if(assoc.title == "metadata"){
-                    console.log("meta")
-                    if($scope.var_hash[assoc.rel] != null){
-                      console.log("var_match")
-                      if($scope.facet_variables_hash[assoc.rel] == undefined){
-                        $scope.facet_variables_hash[assoc.rel]=true;
-                        $scope.facet_count[assoc.rel] = 1;
-                        $scope.facet_variables.push($scope.var_hash[assoc.rel])
+                        })
                       }
                       else{
-                        $scope.facet_count[assoc.rel] = $scope.facet_count[assoc.rel] = +1;
+                        angular.forEach(dd.associationIds, function(assoc_uuid){
+                          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
+                            if($scope.metadata_file_hash[val.uuid].length < 0){
+                            $scope.metadata_file_hash[assoc_uuid] = [assoc];
+                            $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
+                            else{
+                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                            }
+                          }
+                        })
+                        //$scope.facet_count[.uuid] = $scope.facet_count[val.uuid] +1;
+                      }
+                    }
+                    else if(assoc.title == "metadata"){
+                      console.log("meta")
+                      if($scope.var_hash[assoc.rel] != null){
+                        console.log("var_match")
+                        if($scope.facet_variables_hash[assoc.rel] == undefined){
+                          $scope.facet_variables_hash[assoc.rel]=true;
+                          $scope.facet_count[assoc.rel] = 1;
+                          $scope.facet_variables.push($scope.var_hash[assoc.rel])
+                        }
+                        else{
+                          $scope.facet_count[assoc.rel] = $scope.facet_count[assoc.rel] = +1;
+                        }
                       }
                     }
                   }
                 })  
               })
+              $scope.requesting=false;
             }   
           })
           $scope.fetchFacetMetadata();
