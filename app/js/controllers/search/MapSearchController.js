@@ -88,12 +88,20 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 if($scope.culled_metadata_uuids.indexOf(val.uuid) < 0){
                     $scope.culled_metadata.push(val)
                     $scope.culled_metadata_uuids.push(val.uuid)
-                    $scope.facet_count[val.uuid] = 1
-                    $scope.metadata_file_hash[val.uuid] = [value];
+                   // $scope.facet_count[val.uuid] = 1
+                   // $scope.metadata_file_hash[val.uuid] = [value];
                 }
                 else{
-                  $scope.metadata_file_hash[val.uuid].push(value)
-                  $scope.facet_count[val.uuid] = $scope.facet_count[val.uuid] +1;
+                  var already_exists = false;
+                  angular.forEach($scope.metadata_file_hash[val.uuid], function(file_val, key){
+                    if(file_val.uuid == value.rel){
+                      already_exists = true;
+                    }
+                  })
+                  if(already_exists == false){
+                  //  $scope.metadata_file_hash[val.uuid].push(value)
+                   // $scope.facet_count[val.uuid] = $scope.facet_count[val.uuid] +1;
+                  }
                 }
                 if( $scope.files_hrefs.indexOf(value.href) < 0){
                   $scope.files_hrefs.push(value.href)
@@ -201,8 +209,17 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                             $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
                             }
                             else{
-                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              var already_exists = false;
+                              angular.forEach($scope.metadata_file_hash[assoc_uuid], function(file_val, key){
+                                if(file_val.uuid == assoc.rel){
+                                  already_exists = true;
+                                }
+                              })
+                              if(already_exists == false){
+                                $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                                $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              }
+                              
                             }
                           }
                         })
@@ -215,8 +232,16 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                             $scope.facet_count[assoc_uuid] = 1;
                             }
                             else{
-                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              var already_exists = false;
+                              angular.forEach($scope.metadata_file_hash[assoc_uuid], function(file_val, key){
+                                if(file_val.uuid == assoc.rel){
+                                  already_exists = true;
+                                }
+                              })
+                              if(already_exists == false){
+                                $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                                $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              }
                             }
                           }
                         })
@@ -240,7 +265,11 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                   }
                 })  
               })
-            }            
+              $scope.requesting=false;
+              $scope.filtered_files = $filter('unique')($scope.files,'rel');
+            }  
+            $scope.requesting=false;  
+            $scope.filtered_files = $filter('unique')($scope.files,'rel');        
           })
         }//close while
         MetaController.listMetadata("{'name':'DataDescriptor','value.published':'True','associationIds':{$in:['"+all_meta_uuids.join('\',\'')+"']}}",limit=1000,offset=0)
@@ -280,8 +309,16 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                             $scope.facet_count[assoc_uuid] = 1;
                             }
                             else{
-                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              var already_exists = false;
+                              angular.forEach($scope.metadata_file_hash[assoc_uuid], function(file_val, key){
+                                if(file_val.uuid == assoc.rel){
+                                  already_exists = true;
+                                }
+                              })
+                              if(already_exists == false){
+                                $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                                $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              }
                             }
                           }
                         })
@@ -294,8 +331,16 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                             $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
                             }
                             else{
-                              $scope.metadata_file_hash[assoc_uuid].push(assoc)
-                              $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              var already_exists = false;
+                              angular.forEach($scope.metadata_file_hash[assoc_uuid], function(file_val, key){
+                                if(file_val.uuid == assoc.rel){
+                                  already_exists = true;
+                                }
+                              })
+                              if(already_exists == false){
+                                $scope.metadata_file_hash[assoc_uuid].push(assoc)
+                                $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
+                              }
                             }
                           }
                         })
@@ -320,15 +365,20 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
                 })  
               })
               $scope.requesting=false;
+              $scope.filtered_files = $filter('unique')($scope.files,'rel');
             }   
+            $scope.requesting=false;
+            $scope.filtered_files = $filter('unique')($scope.files,'rel');
           })
           $scope.fetchFacetMetadata();
           $scope.keywords = $.unique($scope.keywords)
-          $scope.filtered_files = $scope.files;
+         // $scope.filtered_files = $scope.files;
+          $scope.filtered_files = $filter('unique')($scope.files,'rel');
+          $scope.requesting=false;
         })//end variable fetch
        
      // $scope.keywords.unique() //$.unique($scope.keywords)
-      $scope.filtered_files = $scope.files;
+      $scope.filtered_files =  $filter('unique')($scope.files,'rel');
       //$scope.requesting=false;
     }
 
@@ -422,7 +472,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
           }
         })
         console.log("FILETERD FILES: "+new_filtered_files)
-        $scope.filtered_files = new_filtered_files;
+        $scope.filtered_files = $filter('unique')(new_filtered_files,'rel');//new_filtered_files;
         $scope.filtered_wqsites = new_filtered_wqsites
         $scope.filtered_timeseries = new_filtered_timeseries;
         $scope.filtered_observations =new_filtered_observations;
