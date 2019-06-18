@@ -88,7 +88,7 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="well in facet_wells | orderBy:wellSortType:!wellSortReverse">
-                                        <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-checked="selectedMetadata.indexOf(well.uuid) > -1" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}} <span class="badge">{{facet_count[well.uuid]}}</span>
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{{well.uuid}}" ng-checked="selectedMetadata.indexOf(well.uuid) > -1" ng-click="toggleSelectedMetadata(well.uuid)"/> {{well.value.well_name}}, {{well.value.wid}} <span class="badge">{{metadata_file_hash[well.uuid].length}}</span>
                                             <a href="#" ng-click="openView(well.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
@@ -110,7 +110,7 @@
                                     </thead>
                                 <tbody>
                                     <tr ng-repeat="site in facet_sites | orderBy:siteSortType:!sortReverse">
-                                        <td><input type="checkbox"name="selectedMetadata[]" value="{site.uuid}}" ng-checked="selectedMetadata.indexOf(site.uuid) > -1" ng-click="toggleSelectedMetadata(site.uuid)"/>{{site.value.name}}, {{site.value.description}}<span class="badge">{{facet_count[site.uuid]}}</span>
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{site.uuid}}" ng-checked="selectedMetadata.indexOf(site.uuid) > -1" ng-click="toggleSelectedMetadata(site.uuid)"/>{{site.value.name}}, {{site.value.description}}<span class="badge">{{metadata_file_hash[site.uuid].length}}</span>
                                         <a href="#" ng-click="openView(site.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
@@ -132,7 +132,7 @@
                                     </thead>
                                 <tbody>
                                     <tr ng-repeat="wq_site in facet_water_quality_sites | orderBy:siteSortType:!sortReverse">
-                                        <td><input type="checkbox"name="selectedMetadata[]" value="{wq_site.uuid}}" ng-checked="selectedMetadata.indexOf(wq_site.uuid) > -1" ng-click="toggleSelectedMetadata(wq_site.uuid)"/>{{wq_site.value.name}}, {{wq_site.value.description}}<span class="badge">{{facet_count[wq_site.uuid]}}</span>
+                                        <td><input type="checkbox"name="selectedMetadata[]" value="{wq_site.uuid}}" ng-checked="selectedMetadata.indexOf(wq_site.uuid) > -1" ng-click="toggleSelectedMetadata(wq_site.uuid)"/>{{wq_site.value.name}}, {{wq_site.value.description}}<span class="badge">{{metadata_file_hash[wq_site.uuid].length}}</span>
                                         <a href="#" ng-click="openView(wq_site.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
@@ -155,7 +155,7 @@
                                 <tbody>
                                     <tr ng-repeat="var in facet_variables | orderBy:varSortType:varSortReverse">
                                         <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>
-                                            {{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
+                                            {{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{metadata_file_hash[var.uuid].length}}</span>
                                             <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
@@ -216,7 +216,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="file in filtered_files | orderBy:sortType:sortReverse | unique: 'rel' | filter:filter">
+                                        <tr ng-repeat="file in filtered_files | orderBy:sortType:sortReverse | filter:filter">
                                           <td ng-show="file.href.includes('ikewai-annotated-data')">
                                               {{file.href.split('ikewai-annotated-data/')[1].split('/').slice(1,-1).join('/')}}/
 
