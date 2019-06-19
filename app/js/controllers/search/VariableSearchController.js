@@ -74,6 +74,7 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
       obs_uuids=[]
       $scope.uuids_for_location_search = []
       angular.forEach($scope.filemetadata, function(val, key){
+        $scope.uuids_for_location_search = $scope.uuids_for_location_search.concat(val.associationIds)
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
         //$scope.filtered_association_ids = $scope.filtered_association_ids.push(val.uuid)
         if (val.name == "Site" ){//|| val.name == "Well"){
@@ -124,7 +125,7 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
               obs_uuids.push(val.uuid)
               $scope.culled_metadata.push(val)
               $scope.filtered_observations.push(val)
-              $scope.uuids_for_location_search.concat(val.associationIds)    
+              //$scope.uuids_for_location_search.concat(val.associationIds)    
           } 
         }
       })
@@ -134,18 +135,20 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
       console.log($scope.sites_to_search)
       
     
-    var unique_uuids = $scope.uuids_for_location_search.filter( onlyUnique );
+    var unique_uuids = $scope.uuids_for_location_search//.filter( onlyUnique );
     
-    $scope.locations_query="{'name':['Site','Well','Water_Quality_Site'],'uuid':{$in: ['"+unique_uuids.join("','")+"']}}"
+    $scope.locations_query="{'name': {'$in': ['Site','Well','Water_Quality_Site']},'uuid':{$in: ['"+unique_uuids.join("','")+"']}}"
       
     $scope.locations=[]
-      console.log()
+      console.log(unique_uuids)
       loopnum = Math.floor(unique_uuids.length/25) 
       for (i = 0; i < loopnum; i++) {// $scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $scope.ddUuid + "'}]}");
         var lquery='{"uuid":{$in: ["'+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+'"]}}'
+        console.log(lquery)
         MetaController.listMetadata(lquery,limit=1000,offset=0)
-        .then(function(response){
-                $scope.locations.concat(response.result);
+        .then(function(resp){
+                console.log(resp.results)
+                $scope.locations= $scope.locations.concat(resp.result);
                 $scope.updateMap()
         })
     }
@@ -513,10 +516,10 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
     $scope.updateMap = function(facet=false){
       $scope.site_uuids = []
       $scope.well_uuids = []
-      if ($scope.culled_metadata && $scope.culled_metadata.length > 0){
+      if ($scope.locations && $scope.locations.length > 0){
         //console.log("culled_metadata length: " + $scope.culled_metadata.length)
         $scope.siteMarkers = $filter('filter')($scope.locations, {name: "Site"});
-        $scope.wellMarkers = $filter('filter')($scope.location, {name: "Well"});
+        $scope.wellMarkers = $filter('filter')($scope.locations, {name: "Well"});
         $scope.waterQualitySiteMarkers = $filter('filter')($scope.locations, {name: "Water_Quality_Site"});
         //console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
