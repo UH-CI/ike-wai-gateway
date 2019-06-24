@@ -13,8 +13,8 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.ignoreMetadataType = ['published','stagged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site']
-    $scope.selectedSchema = ['Well','Site','Water_Quality_Site']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','RainfallStation']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','RainfallStation']
     $scope.queryLimit = 99999;
 
     $scope.offset = 0;
@@ -27,13 +27,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:true,val2:true,val5:true};
+    $scope.schemaBox = {val1:true,val2:true,val5:true,val4:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
     $scope.updateMap = function(){
       $scope.siteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Site"});
       $scope.wellMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Well"});
+      $scope.rfMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "RainfallStation"});
       $scope.waterQualitySiteMarkers = $filter('filter')($scope[$scope._COLLECTION_NAME], {name: "Water_Quality_Site"});
       $scope.marks = {};
       $scope.layers.overlays = {};
@@ -58,6 +59,13 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
                         visible: true
                     }
       }
+      if ($scope.rfMarkers.length > 0){
+        $scope.layers.overlays['rainfall_stations']= {
+                          name: 'Rainfall Stations',
+                          type: 'group',
+                          visible: true
+                      }
+        }
       angular.forEach($scope.siteMarkers, function(datum) {
           if(datum.value.loc != undefined && datum.value.name != undefined){
             if(datum.value.loc.type == 'Point'){
@@ -89,6 +97,11 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             $scope.marks[datum.value.wid.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
         }
       });
+      angular.forEach($scope.rfMarkers, function(datum) {
+        if(datum.value.latitude != undefined && datum.value.name !=undefined){
+          $scope.marks[datum.value.skn] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Rainfall Station ID: " + datum.value.skn + "<br/>" + "Name: " + datum.value.station_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'rainfall_stations'}
+      }
+    });
       angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
           if(datum.value.latitude != undefined && datum.value.name !=undefined){
             $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
@@ -151,7 +164,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if ($scope.schemaBox.val5){
           typearray.push('Water_Quality_Site')
         }      
-        
+        if ($scope.schemaBox.val4){
+          typearray.push('RainfallStation')
+        }
         typequery['name'] = {'$in': typearray}
         if(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0]){
           if($scope.searchField.value == '')
@@ -193,6 +208,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         }
         if ($scope.schemaBox.val5){
           typearray.push('Water_Quality_Site')
+        }
+        if ($scope.schemaBox.val4){
+          typearray.push('RainfallStation')
         }
         typequery['name'] = {'$in': typearray}
         $scope.requesting = true;
@@ -267,6 +285,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
   $schemaProperties.Site = {};
   $schemaProperties.Well = {};
   $schemaProperties.Water_Quality_Site = {};
+  $schemaProperties.RainfallStation = {};
   
   $scope.prepareForDownloadSearchResults = function() {
     if ($scope.downloadType.length == 0) {
@@ -276,6 +295,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     }
 
     // get the UUID for the download type
+    console.log("Search Result Types " + $scope.searchResultsTypes)
     angular.forEach($scope.searchResultsTypes, function(value, key){
       if (!$schemaProperties[value].uuid) {
         if (!$localStorage["schema_" + value]) {
@@ -283,6 +303,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             .then(function(data) {
               if (data) {
                 $schemaProperties[value].uuid = data;
+                console.log(data)
               } else {
                 App.alert({
                   type: 'danger',
@@ -292,6 +313,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
               }
           })
         } else {
+          console.log("local store "+$localStorage["schema_" + value])
           $schemaProperties[value].uuid = $localStorage["schema_" + value];
         } // END check if schema uuid was stored in local storage
       }
@@ -307,6 +329,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
               $schemaProperties[$scope.downloadType.value].properties = list_schemas[c].schema.properties;
             }
           }
+          console.log("properties: " + $schemaProperties[$scope.downloadType.value].properties)
           $scope.downloadSearchResults();
       })
     } else {
@@ -405,6 +428,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       siteFound = false;
       wellFound = false;
       wqsFound = false;
+      rfFound = false;
       for (var i = 0; i < $scope.metadata.length; i++) {
         var metadatum = $scope.metadata[i];
         if (metadatum.name == 'Site' && !siteFound) {
@@ -416,6 +440,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         if (metadatum.name == 'Water_Quality_Site' && !wqsFound) {
           wqsFound = true;
         }
+        if (metadatum.name == 'RainfallStation' && !rfFound) {
+          rfFound = true;
+        }
       }
       if (siteFound) {      
         $scope.searchResultsTypes.push('Site');
@@ -425,6 +452,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       }
       if (wqsFound) {      
         $scope.searchResultsTypes.push('Water_Quality_Site');
+      }
+      if (rfFound) {      
+        $scope.searchResultsTypes.push('RainfallStation');
       }
       // if the currently selected option is no longer an option, make the first option selected
       if ($scope.searchResultsTypes.indexOf($scope.downloadType.value) == -1) {
