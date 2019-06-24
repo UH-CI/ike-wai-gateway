@@ -138,22 +138,23 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
     var unique_uuids = $scope.uuids_for_location_search//.filter( onlyUnique );
     
     $scope.locations_query="{'name': {'$in': ['Site','Well','Water_Quality_Site']},'uuid':{$in: ['"+unique_uuids.join("','")+"']}}"
-      
+      console.log("Unique uuids: " + unique_uuids)
     $scope.locations=[]
       console.log(unique_uuids)
-      loopnum = Math.floor(unique_uuids.length/25) 
+      loopnum = Math.floor(unique_uuids.length/25) +1
+      console.log("Loopnum:" + loopnum)
       for (i = 0; i < loopnum; i++) {// $scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $scope.ddUuid + "'}]}");
         /*if(drawnItems.toGeoJSON()).features[0].geometryz){
           $scope.filequery = "{$and: [{'uuid':{$in: ['"+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+"']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         }
         else{*/
-          var lquery='{"uuid":{$in: ["'+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+'"]}}'
+        //  var lquery='{"uuid":{$in: ["'+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+'"]}}'
         //}
         var lquery='{"uuid":{$in: ["'+unique_uuids.slice(i*25,(i+1)*25).join('\",\"')+'"]}}'
         console.log(lquery)
         MetaController.listMetadata(lquery,limit=1000,offset=0)
         .then(function(resp){
-                console.log(resp.results)
+                console.log("Locations update:"+resp.results)
                 $scope.locations= $scope.locations.concat(resp.result);
                 $scope.updateMap()
         })
@@ -188,7 +189,8 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
 
      $scope.variableSearch = function(){
         $scope.requesting = true;
-        $scope.filequery = "{'associationIds':{'$in':['"+$scope.selectedMetadata.join("','")+"']}}"
+        $scope.filequery = "{'associationIds':{'$all':['"+$scope.selectedMetadata.join("','")+"']}}"
+       // $scope.filequery = "{'associationIds':['"+$scope.selectedMetadata.join("','")+"']}"
         $scope.doSearch();
      }
 
@@ -528,10 +530,10 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
 
 
 
-    var drawnItems = new L.FeatureGroup();
+   /* var drawnItems = new L.FeatureGroup();
     $scope.drawnItemsCount = function() {
       return drawnItems.getLayers().length;
-    }
+    }*/
     angular.extend($scope, {
       map: {
         center: {
@@ -653,6 +655,7 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
                 }
             }
            }
+            
         });
         angular.forEach($scope.wellMarkers, function(datum) {
            // $scope.well_uuids.push(datum.uuid)
@@ -680,6 +683,12 @@ angular.module('AgaveToGo').controller('VariableSearchController', function ($sc
           }
         });
         $scope.markers = $scope.marks
+        leafletData.getMap("variableMap").then(function(map) {
+          var bounds = L.latLngBounds($scope.markers);
+          console.log("Bounds:" + angular.toJson(bounds))
+          map.fitBounds(bounds)
+          //map.fitBounds($scope.drawnItems.getBounds());
+        })   
       }
     }
 
