@@ -840,7 +840,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               render_site = true;
             }
             if(render_site == true){
-              if(datum.value.loc != undefined && datum.value.name != undefined){
+              if(datum.name == "Site" && datum.value.loc != undefined && datum.value.name != undefined){
                 if(datum.value.loc.type == 'Point'){
                   $scope.marks["site"+datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
                     getMessageScope: function() { return $scope; },
