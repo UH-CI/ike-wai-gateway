@@ -4,6 +4,11 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
     //Set the order fields should display
   $scope.order={};
 
+  $scope.order['RainfallStation'] =['station_name','skn','station_id','name','nws_id','nws_name','island','start_year','end_year',
+  'network','latitude','longitude','elevation','observer','data_source','rf','ta','rh','ws','sw','lw','nwsli','nesdis_id',
+  'name_hads','has_elev','owner_code_HADS','vars_hads','latitude_d_hads','longitude_d_hads','name_ncei','mindate_ncei',
+  'maxdate_ncei','latitude_ncei','longitude_ncei','name_scan','id_scan','latitude_scan','longitude_scan','nws_kk_name',
+  'match_notes','edit_notes']
   $scope.order['Timeseries'] =['name','extension','type','site_column','datetime_column','columns','variables']
   $scope.order['Timeseries_Template'] =['name','extension','type','site_column','datetime_column','columns','variables']
   $scope.order['Variable'] =['id','variable_name','category','sample_medium','data_type','speciation','unit','value_type']
