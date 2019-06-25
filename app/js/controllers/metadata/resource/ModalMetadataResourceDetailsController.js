@@ -154,52 +154,116 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
         $scope.metadata_markers = $scope.marks
     }//close function
 
-    angular.extend($scope, {
-        hawaii: {
+
+     /******** LEAFLET **************/
+  $scope.markers = [];
+  angular.extend($scope, {
+    drawControl: true,
+    hawaii: {
             lat: 21.289373,
             lng: -157.91,
             zoom: 7
-        },
-        events: {
-          map: {
+    },
+    events: {
+        map: {
             enable: ['click', 'drag', 'blur', 'touchstart'],
             logic: 'emit'
-          }
-        },
-        defaults: {
-          scrollWheelZoom: false,
-          controls :{
-            layers : {
-                visible: true,
-                position: 'topright',
-                collapsed: false
-                     }
-            }
-        },
-        layers: {
-            baselayers: {
-              /* osm: {
-                name: 'OpenStreetMap',
-                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                type: 'xyz'
-                },*/
-                google: {
-                  name: 'Google Satellite',
-                  url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
-                  type: 'xyz'
-                },
-                googleStreet: {
-                  name: 'Google Roads',
-                  url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
-                  type: 'xyz'
-                },
-
-            },
-            overlays:{
-
-            }
         }
-    });
+    },
+    defaults: {
+            scrollWheelZoom: false
+    },
+    layers: {
+			baselayers: {
+					google: {
+						name: 'Google Satellite',
+						url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					googleStreet: {
+						name: 'Google Roads',
+						url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+						type: 'xyz'
+					},
+					/*osm: {
+					name: 'OpenStreetMap',
+					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+					type: 'xyz'
+					}*/
+					
+			},
+			overlays:{
+
+			}
+	  }
+  });
+
+  var drawnItems = new L.FeatureGroup();
+  $scope.drawnItemsCount = function() {
+    return drawnItems.getLayers().length;
+  }
+
+  
+   /******** LEAFLET **************/
+   $scope.markers = [];
+   angular.extend($scope, {
+     drawControl: false,
+     hawaii: {
+             lat: 21.289373,
+             lng: -157.91,
+             zoom: 6
+     },
+     events: {
+         map: {
+             enable: ['click', 'drag', 'blur', 'touchstart'],
+             logic: 'emit'
+         }
+     },
+     defaults: {
+             scrollWheelZoom: false
+     },
+     layers: {
+       baselayers: {
+           google: {
+             name: 'Google Satellite',
+             url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+             type: 'xyz'
+           },
+           googleStreet: {
+             name: 'Google Roads',
+             url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+             type: 'xyz'
+           },
+           /*osm: {
+           name: 'OpenStreetMap',
+           url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+           type: 'xyz'
+           }*/
+           
+       },
+       overlays:{
+ 
+       }
+     }
+   });
+ 
+   var drawnItems = new L.FeatureGroup();
+   $scope.drawnItemsCount = function() {
+     return drawnItems.getLayers().length;
+   }
+ 
+   angular.extend($scope, {
+     map: {
+       center: {
+           lat: 21.289373,
+           lng: -157.91,
+           zoom: 7
+       },
+       default:{
+         attributionControl: false
+       }
+     }
+   });
 
 
 });

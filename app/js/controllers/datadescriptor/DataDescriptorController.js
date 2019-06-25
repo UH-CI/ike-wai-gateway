@@ -202,7 +202,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     hawaii: {
       lat: 21.289373,
       lng: -157.91,
-      zoom: 7
+      zoom: 6
     },
     events: {
       map: {
@@ -211,8 +211,32 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       }
     },
     defaults: {
-      scrollWheelZoom: false
+      scrollWheelZoom: false,
+      controls :{
+        layers : {
+            visible: true,
+            position: 'topright',
+            collapsed: false
+                 }
+        }
     },
+    layers: {
+      baselayers: {
+        google: {
+          name: 'Google Satellite',
+          url: 'http://www.google.com/maps/vt?lyrs=y@189&gl=en&x={x}&y={y}&z={z}',
+          type: 'xyz'
+        },
+        googleStreet: {
+          name: 'Google Roads',
+          url: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+          type: 'xyz'
+        }
+      },
+      overlays:{
+  
+      }
+    }
   });
 
   //
