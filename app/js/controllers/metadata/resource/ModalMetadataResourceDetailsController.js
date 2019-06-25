@@ -210,7 +210,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
      hawaii: {
              lat: 21.289373,
              lng: -157.91,
-             zoom: 7
+             zoom: 6
      },
      events: {
          map: {
