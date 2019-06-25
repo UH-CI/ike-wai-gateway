@@ -842,11 +842,15 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             if(render_site == true){
               if(datum.value.loc != undefined && datum.value.name != undefined){
                 if(datum.value.loc.type == 'Point'){
-                  $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
+                  $scope.marks["site"+datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
+                    getMessageScope: function() { return $scope; },
+                    message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"</br>Description: "+datum.value.description+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_sites'}
+                
+                 // $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: datum.value.description, draggable:false, layer:'ikewai_sites'}
                 }else{
 
                     $scope.layers.overlays[datum.uuid] = {
-                        name: datum.value.name.replace("-"," "),
+                        name: datum.value.name.replace(/-/g,""),
                         type: 'geoJSONShape',
                         data: datum.value.loc,
                         visible: true,
@@ -880,14 +884,29 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               render_well = true;
             }
             if(render_well == true){
-              if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-                  $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+              if(datum.value.latitude != undefined && datum.value.longitude != undefined && datum.value.wid !=undefined){
+                $scope.marks["well"+datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude),icon: {
+                  type: 'awesomeMarker',
+                  icon: 'tint',
+                  markerColor: 'gray'
+              },  
+              getMessageScope: function() { return $scope; },
+              message: "<h5>Well</h5>ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude +"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_wells'}
+               //   $scope.marks[datum.value.wid.replace(/-/g,"")] ={lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message: "Well ID: " + datum.value.wid.replace(' ','-') + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
               }
             }
         });
         angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
             if(datum.value.latitude != undefined && datum.value.name !=undefined){
-            $scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message:  "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
+              $scope.marks[datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, icon: {
+                type: 'awesomeMarker',
+                icon: 'tint',
+                markerColor: 'green'
+            },
+            getMessageScope: function() { return $scope; },
+            message: "<h5>Water Quality Site</h5>Name: " + datum.value.name + "<br/>Provider: " +datum.value.provider+ + "<br/>Measurments: " +datum.value.resultcount+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'water_quality_sites'}
+         
+            //$scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message:  "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
           }
         });
         $scope.markers = $scope.marks
