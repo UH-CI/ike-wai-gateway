@@ -69,7 +69,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
                       }
         }
       angular.forEach($scope.siteMarkers, function(datum) {
-          if(datum.value.loc != undefined && datum.value.name != undefined){
+          if(datum.name == "Site" && datum.value.loc != undefined && datum.value.name != undefined){
             if(datum.value.loc.type == 'Point'){
               $scope.marks["site"+datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
                 getMessageScope: function() { return $scope; },
