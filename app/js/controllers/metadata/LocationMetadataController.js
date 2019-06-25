@@ -71,13 +71,13 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       angular.forEach($scope.siteMarkers, function(datum) {
           if(datum.value.loc != undefined && datum.value.name != undefined){
             if(datum.value.loc.type == 'Point'){
-              $scope.marks[datum.value.name.replace("-","")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
+              $scope.marks["site"+datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
                 getMessageScope: function() { return $scope; },
                 message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"</br>Description: "+datum.value.description+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_sites'}
             }else{
 
                 $scope.layers.overlays[datum.uuid] = {
-                    name: datum.value.name.replace("-",""),
+                    name: datum.value.name.replace(/-/g,""),
                     type: 'geoJSONShape',
                     data: datum.value.loc,
                     visible: true,
@@ -98,7 +98,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       });
       angular.forEach($scope.wellMarkers, function(datum) {
           if(datum.value.latitude != undefined && datum.value.wid !=undefined){
-            $scope.marks[datum.value.wid.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude,icon: {
+            $scope.marks["well"+datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude),icon: {
               type: 'awesomeMarker',
               icon: 'tint',
               markerColor: 'gray'
@@ -109,7 +109,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       });
       angular.forEach($scope.rfMarkers, function(datum) {
         if(datum.value.latitude != undefined && datum.value.name !=undefined){
-          $scope.marks[datum.value.skn] = {lat: datum.value.latitude, lng: datum.value.longitude, icon: {
+          $scope.marks["rf"+datum.value.skn] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), icon: {
             type: 'awesomeMarker',
             icon: 'cloud',
             markerColor: 'red'
@@ -120,7 +120,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     });
       angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
           if(datum.value.latitude != undefined && datum.value.name !=undefined){
-            $scope.marks[datum.value.name.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, icon: {
+            $scope.marks["wq"+datum.value.name.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), icon: {
               type: 'awesomeMarker',
               icon: 'tint',
               markerColor: 'green'
