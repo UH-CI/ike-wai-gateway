@@ -71,7 +71,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
       angular.forEach($scope.siteMarkers, function(datum) {
           if(datum.value.loc != undefined && datum.value.name != undefined){
             if(datum.value.loc.type == 'Point'){
-              $scope.marks[datum.value.name.replace("-","")] = {lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false, layer:'ikewai_sites',}
+              $scope.marks[datum.value.name.replace("-","")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
+                getMessageScope: function() { return $scope; },
+                message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"</br>Description: "+datum.value.description+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_sites'}
             }else{
 
                 $scope.layers.overlays[datum.uuid] = {
@@ -100,7 +102,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
               type: 'awesomeMarker',
               icon: 'tint',
               markerColor: 'gray'
-          },  message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'ikewai_wells'}
+          },  
+          getMessageScope: function() { return $scope; },
+          message: "<h5>Well</h5>ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude +"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_wells'}
         }
       });
       angular.forEach($scope.rfMarkers, function(datum) {
@@ -109,7 +113,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
             type: 'awesomeMarker',
             icon: 'cloud',
             markerColor: 'red'
-        }, message: "Rainfall Station ID: " + datum.value.skn + "<br/>" + "Name: " + datum.value.station_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'rainfall_stations'}
+        }, 
+        getMessageScope: function() { return $scope; },
+        message: "<h5>Rainfall Station</h5>ID: " + datum.value.skn + "<br/>" + "Name: " + datum.value.station_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'rainfall_stations'}
       }
     });
       angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
@@ -118,7 +124,9 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
               type: 'awesomeMarker',
               icon: 'tint',
               markerColor: 'green'
-          },message: "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
+          },
+          getMessageScope: function() { return $scope; },
+          message: "<h5>Water Quality Site</h5>Name: " + datum.value.name + "<br/>Provider: " +datum.value.provider+ + "<br/>Measurments: " +datum.value.resultcount+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'water_quality_sites'}
         }
       });
       $scope.markers = $scope.marks
