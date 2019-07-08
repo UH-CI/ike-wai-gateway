@@ -31,7 +31,12 @@
               <td>
                 {{key | capitalize_with_space}}
               </td>
-              <td>
+              <td ng-if="key == 'ikewai_type'">
+
+                {{metadatum.value[key].join(', ')}}
+
+              </td>
+              <td ng-if="key != 'ikewai_type'">
 
                 {{metadatum.value[key]}}
 
