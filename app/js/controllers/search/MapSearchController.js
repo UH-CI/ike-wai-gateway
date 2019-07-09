@@ -957,12 +957,14 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
     $scope.fetchFacetMetadata = function(){
         $scope.facet_wells =[]
         $scope.facet_sites =[]
+        $scope.facet_rf_sites =[]
         $scope.facet_water_quality_sites =[];
         //$scope.facet_variables =[]
         $scope.markers = [];
         site_uuids = []
         well_uuids =[]
         wq_uuids = []
+        rf_uuids = []
         angular.forEach($scope.culled_metadata, function(datum){
             if(datum.name == 'Well'){
               if(well_uuids.indexOf(datum.uuid) < 0){
@@ -988,7 +990,15 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
               /*if(datum.value.latitude != undefined){
                   $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
               }*/
-          }
+          }else if(datum.name == 'RainfallStation'){
+            if(rf_uuids.indexOf(datum.uuid) < 0){
+              rf_uuids.push(datum.uuid)
+              $scope.facet_rf_sites.push(datum)
+            }
+            /*if(datum.value.latitude != undefined){
+                $scope.markers.push({lat: datum.value.latitude, lng: datum.value.longitude, message: datum.value.description, draggable:false})
+            }*/
+        }
           
         })
         $scope.updateMap();
