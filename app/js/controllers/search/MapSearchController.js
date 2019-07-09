@@ -82,7 +82,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
         if (val.name == "RainfallStation" ){//|| val.name == "Well"){
           $scope.rf_list.push(val.uuid)
-          $scope.sites_to_search.push(val.uuid)
+          //$scope.sites_to_search.push(val.uuid)
           $scope.culled_metadata.push(val)
         }
         if (val._links.associationIds.length > 0){
@@ -138,31 +138,33 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       
       console.log($scope.observations_query)
       var all_obs_loc_uuids = $scope.sites_to_search
+      all_obs_loc_uuids = all_obs_loc_uuids.concat($scope.rf_list)
       $scope.obs =[]
       while(all_obs_loc_uuids.length > 20){
-        console.log("META UUID COUNT: " + all_obs_loc_uuids.length)
+        console.log("OBS META UUID COUNT: " + all_obs_loc_uuids.length)
         obs_meta_search_uuids = all_obs_loc_uuids.splice(0,19)
         var observations_query="{'name':'Observation','associationIds':{$in: ['"+obs_meta_search_uuids.join("','")+"']}}"    
         MetaController.listMetadata(observations_query,limit=1000,offset=0)
         .then(function(response){
           console.log("OBS:"+response.result )
           $scope.obs = $scope.obs.concat(response.result);
+          console.log("obs count " + $scope.obs.length )
         })
       }
+      console.log("obs count " + $scope.obs.length )
       var observations_query="{'name':'Observation','associationIds':{$in: ['"+obs_meta_search_uuids.join("','")+"']}}"    
       MetaController.listMetadata(observations_query,limit=1000,offset=0)
       .then(function(response){
         console.log("OBS:"+response.result )
-        $scope.observations = $scope.obs.concat(response.result);
-        
-
+        $scope.filtered_observations = $scope.obs.concat(response.result);
+        $scope.observations = $scope.filtered_observations;
+        $scope.formatObservationsForTable($scope.fitered_observations)
       })
-      $scope.filtered_observations = $scope.observations
-      $scope.formatObservationsForTable($scope.fitered_observations)
+     
       //loop through observations and add counts for metadata
       angular.forEach($scope.filtered_observations, function(obs){
         angular.forEach(obs.associationIds, function(assoc_uuid){
-          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1){
+          if($scope.sites_to_search.indexOf(assoc_uuid) > -1 || $scope.wells_list.indexOf(assoc_uuid) > -1 || $scope.wqsites.indexOf(assoc_uuid) > -1 || $scope.var_uuids.indexOf(assoc_uuid) > -1 || $scope.rf_uuids.indexOf(assoc_uuid) > -1){
             if($scope.metadata_file_hash[assoc_uuid] == undefined){
             $scope.metadata_file_hash[assoc_uuid] = [assoc];
             $scope.facet_count[assoc_uuid] = $scope.facet_count[assoc_uuid] +1;
@@ -184,28 +186,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         })
       })
 
-      /*
-      MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
-      .then(function(response){
-        $scope.timeseries = response.result;
-        console.log("Timeseries:"+$scope.timeseries )
-        $scope.filtered_timeseries = $scope.timeseries;
-        //angular.forEach($scope.timeseries, function(val, key){
-//
-  //      })
-        //$scope.fetchFacetMetadata();
-      })
-      */
-      //MetaController.listMetadata($scope.site_dd_query,limit=1000,offset=0)
-      //.then(function(response){
-       // $scope.site_dds = response.result;
-        //console.log("SiteDD:"+$scope.site_dds)
-        //$scope.filtered_timeseries = $scope.timeseries;
-        //angular.forEach($scope.timeseries, function(val, key){
-//
-  //      })
-        
-     // })
+      
       //fetch All Variables
       MetaController.listMetadata("{'name':'Variable'}",limit=10000,offset=0)
         .then(function(var_resp){
