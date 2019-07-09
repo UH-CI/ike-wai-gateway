@@ -69,6 +69,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.filtered_association_ids =[]
       $scope.meta_uuids =[];
       $scope.wells_list=[]
+      $scope.rf_list = [];
       angular.forEach($scope.filemetadata, function(val, key){
         $scope.meta_uuids.push(val.uuid);
         $scope.metadata_hash[val.uuid] = val; //index all metadata by uuid
@@ -79,6 +80,11 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         }
         if (val.name == "Well" ){//|| val.name == "Well"){
           $scope.wells_list.push(val.uuid)
+        }
+        if (val.name == "RainfallStation" ){//|| val.name == "Well"){
+          $scope.rf_list.push(val.uuid)
+          $scope.sites_to_search.push(val.uuid)
+          $scope.culled_metadata.push(val)
         }
         if (val._links.associationIds.length > 0){
 
@@ -126,20 +132,34 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
       $scope.filtered_wqsites = $scope.wqsites;
       console.log("Sites with associations:"+$scope.sites_to_search.length)
       console.log($scope.sites_to_search)
+      console.log('RAINFALL: '+ $scope.rf_list)
      // $scope.fetchFacetMetadata();
-      $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
-      $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+     // $scope.observations_query="{'name':'Observation','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
+     // $scope.timeseries_query="{'name':'Timeseries','associationIds':{$in: ['"+$scope.sites_to_search.join("','")+"']}}"
       
       console.log($scope.observations_query)
-      MetaController.listMetadata($scope.observations_query,limit=1000,offset=0)
+      var all_obs_loc_uuids = $scope.sites_to_search
+      $scope.obs =[]
+      while(all_obs_loc_uuids.length > 20){
+        console.log("META UUID COUNT: " + all_obs_loc_uuids.length)
+        obs_meta_search_uuids = all_obs_loc_uuids.splice(0,19)
+        var observations_query="{'name':'Observation','associationIds':{$in: ['"+obs_meta_search_uuids.join("','")+"']}}"    
+        MetaController.listMetadata(observations_query,limit=1000,offset=0)
+        .then(function(response){
+          console.log("OBS:"+response.result )
+          $scope.obs = $scope.obs.concat(response.result);
+        })
+      }
+      var observations_query="{'name':'Observation','associationIds':{$in: ['"+obs_meta_search_uuids.join("','")+"']}}"    
+      MetaController.listMetadata(observations_query,limit=1000,offset=0)
       .then(function(response){
-        $scope.observations = response.result;
-        console.log("OBS:"+$scope.observations )
-        $scope.filtered_observations = $scope.observations;
-        //$scope.downloadSearchResults();
+        console.log("OBS:"+response.result )
+        $scope.filtered_observations = $scope.obs.concat(response.result);
         $scope.formatObservationsForTable($scope.filtered_observations)
 
       })
+
+      /*
       MetaController.listMetadata($scope.timeseries_query,limit=1000,offset=0)
       .then(function(response){
         $scope.timeseries = response.result;
@@ -150,6 +170,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
   //      })
         //$scope.fetchFacetMetadata();
       })
+      */
       //MetaController.listMetadata($scope.site_dd_query,limit=1000,offset=0)
       //.then(function(response){
        // $scope.site_dds = response.result;
@@ -498,7 +519,7 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         //if ($scope.selectedMetadata != ''){
 
           //$scope.filequery = "{'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson(drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}";
-          $scope.filequery = "{$and: [{'name':{'$in':['Site','Well','Water_Quality_Site']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
+          $scope.filequery = "{$and: [{'name':{'$in':['Site','Well','Water_Quality_Site','RainfallStation']}}, {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         //else{
         //  $scope.filequery = "{$or:[{'value.published':'True'},{'name':'PublishedFile'}]}";
         //}
@@ -801,10 +822,18 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
         //console.log("culled_metadata length: " + $scope.culled_metadata.length)
         $scope.siteMarkers = $filter('filter')($scope.culled_metadata, {name: "Site"});
         $scope.wellMarkers = $filter('filter')($scope.culled_metadata, {name: "Well"});
+        $scope.rfMarkers = $filter('filter')($scope.culled_metadata, {name: "RainfallStation"});
         $scope.waterQualitySiteMarkers = $scope.filtered_wqsites;//$filter('filter')($scope.culled_metadata, {name: "Water_Quality_Site"});
         //console.log("site: "+$scope.siteMarkers.length +", well: "+$scope.wellMarkers.length +", wqs: "+$scope.waterQualitySiteMarkers.length)
         $scope.marks = {};
         $scope.layers.overlays = {};
+        if ($scope.rfMarkers.length > 0){
+          $scope.layers.overlays['rainfall_stations']= {
+                            name: 'Rainfall Stations',
+                            type: 'group',
+                            visible: true
+                        }
+          }
         if ($scope.siteMarkers && $scope.siteMarkers.length > 0){
           $scope.layers.overlays['ikewai_sites']={
                           name: 'Ike Wai Sites',
@@ -909,6 +938,17 @@ angular.module('AgaveToGo').controller('MapSearchController', function ($scope, 
             //$scope.marks[datum.value.name.replace(/-/g," ")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), message:  "Name: " + datum.value.name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude, draggable:false, layer:'water_quality_sites'}
           }
         });
+        angular.forEach($scope.rfMarkers, function(datum) {
+          if(datum.value.latitude != undefined && datum.value.name !=undefined){
+            $scope.marks["rf"+datum.value.skn] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), icon: {
+              type: 'awesomeMarker',
+              icon: 'cloud',
+              markerColor: 'red'
+          }, 
+          getMessageScope: function() { return $scope; },
+          message: "<h5>Rainfall Station</h5>ID: " + datum.value.skn + "<br/>" + "Name: " + datum.value.station_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'rainfall_stations'}
+        }
+      });
         $scope.markers = $scope.marks
       }
     }

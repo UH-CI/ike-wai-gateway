@@ -270,7 +270,7 @@
                                   </table>
                               </div>
                             </div>
-                            <h3><i class="fa fa-file"></i> Matching Timeseries : {{filtered_timeseries.length}}</h3>
+                           <!-- <h3><i class="fa fa-file"></i> Matching Timeseries : {{filtered_timeseries.length}}</h3>
                             <div class="row">
 
                               <div class="col-md-12">
@@ -316,7 +316,7 @@
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </div>-->
                             <h3><i class="fa fa-file"></i> Matching Timeseries Observations: {{filtered_observations.length}}</h3>
                             <button id="test_button" ng-show="filtered_observations.length > 0" class="btn btn-primary pull-right" ng-click="downloadCSVObservations()" ><i class="fa fa-search"/> Download Observations</button>
                             <div class="row">
@@ -339,10 +339,7 @@
                                                   Site
                                                 </th>
                                                 <th>
-                                                  Variables
-                                                </th>
-                                                <th width="10%" class="hidden-xs">
-                                                  Actions
+                                                  Value
                                                 </th>
                                             </tr>
                                         </thead>
@@ -350,10 +347,14 @@
                                             <tr ng-repeat="observation in filtered_observations | orderBy:sortType:sortReverse">
                                                 <td>
                                                    {{observation.value.datetime}}&nbsp;
+                                                   {{observation.value.start_date}}-{{observation.value.end_date}}&nbsp;
                                                     <!--<a href="#" ng-click="openView(observation.uuid, 'lg')"><i class="fa fa-eye"></i></a>-->
                                                 </td>
                                                 <td>
                                                   {{observation.value['site-id']}}
+                                                  <span ng-if="observation.value.StationName">
+                                                    {{observation.value.StationName}} | {{observation.value.SKN}} | {{observation.value.Network}}
+                                                  </span
                                                 </td>
                                                 <td>
                                                
@@ -364,9 +365,6 @@
                                                       
                                                     </li>
                                                  </ul>
-                                                </td>
-                                                <td>
-                                                  Action
                                                 </td>
                                             </tr>
                                         </tbody>
