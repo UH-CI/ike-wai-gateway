@@ -28,6 +28,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
     $scope.schemaBox = {val1:true,val2:true,val5:true,val4:true};
+    $scope.ikewaiType ="";
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
@@ -190,6 +191,11 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           typearray.push('RainfallStation')
         }
         typequery['name'] = {'$in': typearray}
+        console.log($scope.ikewaiType)
+        if ($scope.ikewaiType != ""){
+          typequery['value.ikewai_type'] = {'$in': [$scope.ikewaiType]}
+        }
+        console.log(typequery)
         if(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0]){
           if($scope.searchField.value == '')
           {
@@ -200,8 +206,14 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
           }
             //  $scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+", {'value.loc': {$geoWithin: {'$geometry':"+angular.toJson(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0].geometry).replace(/"/g,'\'')+"}}}]}";
         }
-        else {          
-          $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'$text':{ '$search':'"+$scope.searchField.value+"'}}]}";
+        else { 
+          if($scope.searchField.value != '')
+          {         
+            $scope.query = "{$and: ["+JSON.stringify(typequery)+",{'$text':{ '$search':'"+$scope.searchField.value+"'}}]}";
+          }
+          else{
+            $scope.query = "{$and: ["+JSON.stringify(typequery)+"]}"
+          }
           //$scope.query = "{$and: ["+JSON.stringify(typequery)+","+JSON.stringify(orquery)+"]}";
           //$scope.query = "{$and: ["+JSON.stringify(typequery)+",{$text: {$search: '"+$scope.searchField.value+"'}},"+JSON.stringify(orquery)+"]}";
           //$scope.query = "{$and: ["+JSON.stringify(typequery)+",{$text: {$search: '"+$scope.searchField.value+"'}}]}";
