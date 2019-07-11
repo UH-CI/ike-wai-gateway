@@ -193,7 +193,7 @@ angular.module('AgaveToGo').controller('LocationMetadataController', function ($
         typequery['name'] = {'$in': typearray}
         console.log($scope.ikewaiType)
         if ($scope.ikewaiType != ""){
-          typequery['value.ikewai_type'] = {'$in': [$scope.ikewaiType]}
+          typequery['value.ikewai_type'] = {'$in': $scope.ikewaiType}
         }
         console.log(typequery)
         if(angular.fromJson($scope.drawnItems.toGeoJSON()).features[0]){
