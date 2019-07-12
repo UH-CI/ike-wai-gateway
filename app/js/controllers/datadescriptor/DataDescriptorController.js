@@ -162,40 +162,73 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.waterQualitySiteMarkers = $filter('filter')(metadata, {
       name: "Water_Quality_Site"
     });
-    
+    $scope.rainfallStationMarkers = $filter('filter')(metadata, {
+      name: "RainfallStation"
+    });
     $scope.marks = {};
-    angular.forEach($scope.siteMarkers, function (datum) {
-      if (datum.value.loc != undefined) {
-        $scope.marks[datum.uuid.replace(/-/g, "")] = {
-          lat: parseFloat(datum.value.latitude),
-          lng: parseFloat(datum.value.longitude),
-          message: "Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
-          draggable: false
+
+    angular.forEach(  $scope.siteMarkers, function(datum) {
+      if(datum.value.loc != undefined && datum.value.name != undefined){
+        if(datum.value.loc.type == 'Point'){
+          $scope.marks["Site"+datum.uuid.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
+            getMessageScope: function() { return $scope; },
+            message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false}
+         }else{
+
+            $scope.layers.overlays[datum.uuid] = {
+                name: datum.value.name.replace(/-/g,""),
+                type: 'geoJSONShape',
+                data: datum.value.loc,
+                visible: true,
+                layerOptions: {
+                    style: {
+                            color: '#00D',
+                            fillColor: 'green',
+                            weight: 2.0,
+                            opacity: 0.6,
+                            fillOpacity: 0.2
+                    },
+                    message: datum.value.description
+                }
+            }
+
         }
-      }
-    });
-    
-    angular.forEach($scope.waterQualitySiteMarkers, function (datum) {
-      if (datum.value.loc != undefined) {
-        $scope.marks[datum.uuid.replace(/-/g, "")] = {
-          lat: parseFloat(datum.value.latitude),
-          lng: parseFloat(datum.value.longitude),
-          message: "Water Quality Site Name: " + datum.value.name + "<br/>" + "Description: " + datum.value.description + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
-          draggable: false
-        }
-      }
-    });
-    
-    angular.forEach($scope.wellMarkers, function (datum) {
-      if (datum.value.latitude != undefined && datum.value.wid != undefined) {
-        $scope.marks[datum.value.wid.replace(/-/g, "")] = {
-          lat: parseFloat(datum.value.latitude),
-          lng: parseFloat(datum.value.longitude),
-          message: "Well ID: " + datum.value.wid + "<br/>" + "Well Name: " + datum.value.well_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude,
-          draggable: false
-        }
-      }
-    });
+    }
+  });
+  angular.forEach($scope.wellMarkers, function(datum) {
+    if(datum.value.latitude != undefined && datum.value.wid !=undefined){
+      $scope.marks["well"+datum.value.wid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude),icon: {
+        type: 'awesomeMarker',
+        icon: 'tint',
+        markerColor: 'gray'
+    },  
+    getMessageScope: function() { return $scope; },
+    message: "<h5>Well</h5>ID: " + datum.value.wid + "<br/>" + "Well Name: " + JSON.stringify(datum.value.well_name) + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude +"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false}
+  }
+  });
+  angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
+      if(datum.value.latitude != undefined && datum.value.name !=undefined){
+        $scope.marks["wq"+datum.uuid.replace(/-/g,"")] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), icon: {
+          type: 'awesomeMarker',
+          icon: 'tint',
+          markerColor: 'green'
+      },
+      getMessageScope: function() { return $scope; },
+      message: "<h5>Water Quality Site</h5>Name: " + datum.value.name + "<br/>Provider: " +datum.value.ProviderName+ "<br/>Measurments: " +datum.value.resultCount+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false}
+    }
+  });
+  angular.forEach($scope.rainfallStationMarkers, function(datum) {
+      if(datum.value.latitude != undefined && datum.value.name !=undefined){
+        $scope.marks["rf"+datum.value.skn] = {lat: parseFloat(datum.value.latitude), lng: parseFloat(datum.value.longitude), icon: {
+          type: 'awesomeMarker',
+          icon: 'cloud',
+          markerColor: 'red'
+      }, 
+      getMessageScope: function() { return $scope; },
+      message: "<h5>Rainfall Station</h5>ID: " + datum.value.skn + "<br/>" + "Name: " + datum.value.station_name + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false}
+    }
+  });
+ 
     $scope.data_descriptor_markers = $scope.marks
   }
 
@@ -1570,7 +1603,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           if(datum.value.loc.type == 'Point'){
             $scope.marks["Site"+datum.uuid.replace(/-/g,"")] = {lat: datum.value.latitude, lng: datum.value.longitude, 
               getMessageScope: function() { return $scope; },
-              message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_sites'}
+              message: "<h5>Ike Wai Site</h5>ID: "+datum.value.id+"<br/>Name: "+datum.value.name+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_sites'}
            }else{
 
               $scope.layers.overlays[datum.uuid] = {
@@ -1601,7 +1634,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           markerColor: 'gray'
       },  
       getMessageScope: function() { return $scope; },
-      message: "<h5>Well</h5>ID: " + datum.value.wid + "<br/>" + "Well Name: " + JSON.stringify(datum.value.well_name) + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude +"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_wells'}
+      message: "<h5>Well</h5>ID: " + datum.value.wid + "<br/>" + "Well Name: " + JSON.stringify(datum.value.well_name) + "<br/>" + "Latitude: " + datum.value.latitude + "<br/>" + "Longitude: " + datum.value.longitude +"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'ikewai_wells'}
     }
     });
     angular.forEach($scope.waterQualitySiteMarkers, function(datum) {
@@ -1612,7 +1645,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
             markerColor: 'green'
         },
         getMessageScope: function() { return $scope; },
-        message: "<h5>Water Quality Site</h5>Name: " + datum.value.name + "<br/>Provider: " +datum.value.ProviderName+ "<br/>Measurments: " +datum.value.resultCount+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openView('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'water_quality_sites'}
+        message: "<h5>Water Quality Site</h5>Name: " + datum.value.name + "<br/>Provider: " +datum.value.ProviderName+ "<br/>Measurments: " +datum.value.resultCount+"<br/>Latitude: " + datum.value.latitude + "<br/>Longitude: " + datum.value.longitude+"<br/><a href='#' ng-click=\"openViewMetadata('"+datum.uuid+"', 'lg')\" class='ng-binding'>View </a>", draggable:false, layer:'water_quality_sites'}
       }
     });
     angular.forEach($scope.rfMarkers, function(datum) {
