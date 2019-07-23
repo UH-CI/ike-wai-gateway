@@ -124,8 +124,8 @@ angular.module('AgaveToGo').controller('AppsResourceRunController', function($sc
         title: 'Maximum job runtime',
         description: 'In HH:MM:SS format. The maximum time you expect this job to run for. After this amount of time your job will be killed by the job scheduler. Shorter run times result in shorter queue wait times.',
         type: 'string',
-        "pattern":"^([0-9][0-9][0-9]:[0-5][0-9]:[0-5][0-9])$",
-        "validationMessage":"Must be in format HH:MM:SS",
+        "pattern":"^([0-9][0-9]-[0-9][0-9]:[0-5][0-9]:[0-5][0-9])$",
+        "validationMessage":"Must be in format DD-HH:MM:SS",
         required: true,
         'x-schema-form': {placeholder: app.defaultMaxRunTime}
       };
