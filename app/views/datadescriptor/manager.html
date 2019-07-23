@@ -259,7 +259,7 @@
                             <!-- CHOOSE LOCATIONS -->
                             <leaflet id="datadescriptorMap" defaults="defaults" width="100%" height="360px" center="hawaii"  markers="data_descriptor_markers" layers="layers" event-broadcast="events"></leaflet>
                             <div class="form-group" >
-                              <button type="button" ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="openLocations('lg' ,['Well','Site','Water_Quality_Site'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
+                              <button type="button" ng-show='(profile.username == data_descriptor_metadatum.owner && data_descriptor_metadatum.value.published!="True") || edit_perm ' class="btn btn-success pull-left form-control" ng-click="openLocations('lg' ,['Well','Site','Water_Quality_Site','RainfallStation'],'Select Location(s)')"><i class="glyphicon glyphicon-plus"></i> Add Additional Locations</button>
                               <h3 ng-show='data_descriptor_metadatum.value.published && !edit_perm'>Locations:</h3>
                             </div>
                             <div>
@@ -788,7 +788,7 @@
 
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
-                              <button type="button" class="btn btn-success pull-left form-control" ng-click="openLocations('lg' ,['Well','Site','Water_Quality_Site'],'Select Location(s)')">Select Location(s)</button>
+                              <button type="button" class="btn btn-success pull-left form-control" ng-click="openLocations('lg' ,['Well','Site','Water_Quality_Site','RainfallStation'],'Select Location(s)')">Select Location(s)</button>
                             </div>
                             <div id="location_buttons">
                               <button type="button" class="btn btn-default btn-sm"  ng-repeat="filemetadatum in locations" ng-click="unAssociateMetadata(filemetadatum.uuid,'#association_notifications')">
