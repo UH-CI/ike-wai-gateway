@@ -90,7 +90,8 @@
                                 </thead>
                             <tbody>
                                 <tr ng-repeat="var in facet_variables | orderBy:varSortType:varSortReverse |filter:filter">
-                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
+                                    <td><input type="checkbox"name="selectedMetadata[]" value="{{var.uuid}}" ng-checked="selectedMetadata.indexOf(var.uuid) > -1" ng-click="toggleSelectedMetadata(var.uuid)"/>
+                                        {{var.value.id}}{{var.value.variable_name}}, {{var.value.unit}}, {{var.value.category}} <span class="badge">{{facet_count[var.uuid]}}</span>
                                         <a href="#" ng-click="openView(var.uuid, 'lg')"><i class="fa fa-eye"></i></a>
                                     </td>
                                 </tr>

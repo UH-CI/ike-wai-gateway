@@ -182,7 +182,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                             angular.forEach(schemas, function(schemaobj){
                               if(approvedSchema.indexOf(schemaobj.schema.title) > -1){
                                  angular.forEach(schemaobj.schema.properties, function(value, key){
-                                   scope.fields.push({name: 'value.'+key, title: key})
+                                   scope.fields.push({name: 'value.'+key, title: schemaobj.schema.title+':'+key})
                                  });
                               }
                            });
