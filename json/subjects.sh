@@ -9,7 +9,7 @@ DIR="/Users/jgeis/Work/agave/foundation-cli/bin"
 source "$DIR/common.sh"
 source "$DIR/metadata-common.sh"
 
-schemaId="3613615198303228391-242ac1110-0001-013"
+schemaId="5560776967454265831-242ac11f-0001-013"
 
 #echo -e "\n auth: $auth"
 

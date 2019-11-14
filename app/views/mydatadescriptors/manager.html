@@ -13,7 +13,7 @@
 </div>
 -->
 <HEAD>
-    <title>`Ike Wai Gateway | Browse Data Descriptors </title>
+    <title>`Ike Wai Gateway | Manage My Data Descriptors </title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127746084-1"></script>
     <script>
@@ -24,7 +24,7 @@
     gtag('config', 'UA-127746084-1');
     </script>
 </HEAD>
-<h3 class="page-title"> Browse Data Descriptors</h3>
+<h3 class="page-title"> Manage My Data Descriptors</h3>
 <div class="modal hide fade" tabindex="-1" role="dialog" id="delModal">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -49,7 +49,9 @@
 
           </div>
         </div>
-        <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer" ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
+        <!--
+        <div ng-controller="MetadataQueryBuilderCtrl" class="text-center top-buffer"
+          ng-keyup="$event.keyCode == 13 ? searchTools(query) : null">
           <div class="btn-group top-buffer">
             <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
@@ -58,26 +60,8 @@
             <button class="btn btn-primary" ng-click="searchAll()">Search All Fields</button>
             <br />
           </div>
-          <!-- <div class="row top-buffer" ng-show="showSearch">
-                      <query-builder group="filter.group" resource="metadata"></query-builder>
-                      <div class="col-md-12 top-buffer">
-
-                        <div class="input-group">
-                          <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
-                          <input type="text" class="form-control" placeholder="Search" ng-model="query">
-                        </div>
-
-                        <div class="btn-group">
-                          <button class="btn btn-success top-buffer" ng-click="searchTools(query)">Search</button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="btn-group top-buffer">
-                      <button class="btn btn-default" ng-click="showSearch = !showSearch">
-                        <i class="fa fa-search"></i> {{showSearch ? 'Hide Tools' : 'Open Advanced Search Tools'}}
-                      </button>
-                    </div>-->
         </div>
+        -->
       </div>
       <div class="portlet-body">
         <div class="row text-center" ng-show="requesting">
@@ -103,7 +87,7 @@
               </div>
               <div ng-show="metadata.length > 0" class="text-left">
                 <div class="pull-left">
-                  Total Search Results: {{totalItems}}
+                  Total number of your Data Descriptors: {{totalItems}}
                   <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreMetadata()'>Fetch More Results</button>
                 </div>
               </div>
@@ -133,7 +117,7 @@
                         </th>
                         <th width="10%">
                           <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
-                            Owner
+                            Push Status
                             <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
                             <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                           </a>
@@ -171,11 +155,14 @@
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')">
                             {{metadatum.value.title}}</a>&nbsp;
-                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>
+                            <!-- show the pushed/published status in next column -->
+                            <!--<span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>-->
                           </a>
                         </td>
                         <td>
-                          <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.owner}}</a>
+                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Pushed to Annotated Repo</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.hydroPushed =="True"'>Pushed to Hydroshare</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.ikewaiPushed =="True"'>Pushed to Ikewai.org</span>
                         </td>
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.value.description}}</a>
@@ -234,8 +221,14 @@
                               <li ng-show='metadatum.value.published == "True"'>
                                 <a ng-click="openPush(metadatum.uuid, 'lg')">
                                   <i class="fa fa-tags"></i>
-                                  Push to Hydroshare
+                                  Stage to Hydroshare
                                 </a>
+                              </li>
+                              <li ng-show='metadatum.value.published == "True"'>
+                                  <a ng-click="openPushIkewai(metadatum.uuid, 'lg')">
+                                    <i class="fa fa-tags"></i>
+                                    Stage to Ikewai.org
+                                  </a>
                               </li>
                               <li ng-show="profile.username === metadatum.owner">
                                 <a mwl-confirm title="Confirm Deletion" message="Are You Sure You Want To Delete This Data Descriptor"
