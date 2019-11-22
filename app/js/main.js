@@ -236,6 +236,7 @@ AgaveToGo.config(function($translateProvider) {
     dates: 'Start/end date(s) of the collection of data in this resource.',
     language: 'A language of the resource.  Recommended best practice is to use a controlled vocabulary such as RFC 4646 [RFC4646].',
     dataState: 'Indicates if this data is raw or processed, or a preliminary or final result.  This will help others know how to approach viewing or using this data.',
+    dataType: 'Indicates the what type of content is found in this resource, for example it may be a pdf, but it contains a map. Select from the list.',
     format: 'The format(s) or file type of this resource. Select from the list.',
     version: 'The incremental version number of the resource. Either integers or dates (YYYYMMDD) may be used.',
     rightsLicense: 'Licenses listed are open licenses that support the digital commons, acknowledge your copyright, allow others to use and build upon your work, and require others to credit authors listed. Recommended here: learn more, then use CC-BY for most work, BSD 2-clause for software, and identify existing licenses for legacy or external resources.',
@@ -2395,6 +2396,39 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('mydatadescriptors-manage', {
+          url: "/mydatadescriptors",
+          templateUrl: "views/mydatadescriptors/manager.html",
+          data: {pageTitle: 'My Data Descriptors Manager'},
+          controller: "MyDataDescriptorsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      serie: true,
+                      name: 'AgaveToGo',
+                      insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                      files: [
+                          '../assets/global/scripts/datatable.js',
+                          '../bower_components/holderjs/holder.js',
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/PermissionsService.js',
+                          'js/services/MetadataService.js',
+                          'js/services/FilesMetadataService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/mydatadescriptors/MyDataDescriptorsController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
+                          '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                          '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
+                          'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
+                          'js/controllers/metadata/resource/ModalMetadataResourceEditController.js'
+                      ]
+                  });
+              }]
+          }
+      })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2691,7 +2725,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         .state('basic-search', {
             url: "/basic-search",
             templateUrl: "views/search/basic-search.html",
-            data: {pageTitle: 'Search Ike'},
+            data: {pageTitle: 'Basic Search of Annotated Data'},
             controller: "BasicSearchController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -2728,7 +2762,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         .state('faceted-search', {
             url: "/faceted-search",
             templateUrl: "views/search/faceted-search.html",
-            data: {pageTitle: 'Search Ike'},
+            data: {pageTitle: 'Faceted Search of Annotated Data'},
             controller: "FacetedSearchController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
@@ -2756,7 +2790,7 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
         .state('map-search', {
             url: "/map-search",
             templateUrl: "views/search/map-search.html",
-            data: {pageTitle: 'Search Ike'},
+            data: {pageTitle: 'Map Search of Annotated Data'},
             controller: "MapSearchController",
             resolve: {
                 deps: ['$ocLazyLoad', function($ocLazyLoad) {
