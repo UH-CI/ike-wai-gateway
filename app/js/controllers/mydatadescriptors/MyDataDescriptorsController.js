@@ -127,7 +127,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
           uuid = $localStorage["schema_DataDescriptor"]
           //console.log(angular.toJson(uuid))
           MetaController.getMetadataSchema(uuid,1,0).then(function(response){
-                    console.log("METADATA SCHEMA: "+ angular.toJson(response))
+            //console.log("METADATA SCHEMA: "+ angular.toJson(response))
     				$scope.metadataschema = response.result;
     				$scope.requesting = false;
     			})
@@ -317,9 +317,11 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
 	    $scope.requesting = false;
 	}
 
-  $scope.openPush = function (dataDescriptorUuid, size) {
+  $scope.openPushHydroshare = function (dataDescriptorUuid, size) {
+    console.log("MyDataDescriptorsController.openPushHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
+    $scope.location = "hydroshare";
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
@@ -338,7 +340,33 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     ga('create', 'UA-127746084-1', 'auto');
     ga('send', 'pageview', {
       page:'/app/views/datadescriptor/manager.html', 
-      title:'`Ike Wai Gateway | Data Descriptor Push' 
+      title:'`Ike Wai Gateway | Push to Hydroshare' 
+    });
+  };
+
+  $scope.openPushIkewai = function (dataDescriptorUuid, size) {
+    $scope.uuid = dataDescriptorUuid;
+    $scope.action = "push";
+    $scope.location = "ikewai";
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+      templateUrl: 'views/datadescriptor/manager.html',
+      controller: 'DataDescriptorController',
+      scope: $scope,
+      size: size,
+      backdrop: 'static',
+      keyboard : false,
+      uuid: dataDescriptorUuid,
+      profile: $scope.profile,
+      resolve: {
+
+      }
+    });
+    ga('create', 'UA-127746084-1', 'auto');
+    ga('send', 'pageview', {
+      page:'/app/views/datadescriptor/manager.html', 
+      title:'`Ike Wai Gateway | Push to Ikewai.org' 
     });
   };
 
