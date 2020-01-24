@@ -870,15 +870,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
   }
 
-//THe save
+  //The save
   $scope.saveDataDescriptor = function (container_id="") {
     //console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
-    /*if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title &&
-      $scope.datadescriptor.license_permission && $scope.datadescriptor.license_rights) {*/
     // check for required fields before continuing with the save process
-    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title) {
+    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.data_state) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -929,7 +927,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       App.alert({
         type: 'danger',
         container: container_id,
-        message: "Title and Author are required fields - Please correct and submit again.",
+        message: "Title, Author, and Data State are required fields - Please correct and submit again.",
         closeInSeconds: 5,
         focus: true }
       );
@@ -944,15 +942,11 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.wizardSecondPage = false;
     $scope.$broadcast('schemaFormValidate');
 
-     /*
-    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.creators != '' &&
-      $scope.datadescriptor.title && $scope.datadescriptor.license_permission &&
-      $scope.datadescriptor.license_rights) {
-````*/
     // check for required fields before continuing with save process
     if ($scope.datadescriptor.creators.length > 0 
         && $scope.datadescriptor.creators != '' 
-        && $scope.datadescriptor.title) {
+        && $scope.datadescriptor.title
+        && $scope.datadescriptor.data_state) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -992,7 +986,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       App.alert({
         type: 'danger',
         container: container_id,
-        message: "Title and Author are required fields - Please correct and submit again.",
+        message: "Title, Author, and Data State are required fields - Please correct and submit again.",
         closeInSeconds: 5,
         focus: true }
       );
