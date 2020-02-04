@@ -363,9 +363,34 @@
                                  });
                                </script>
                             </div>
+                            <!--STATUS: options for file status (raw, processed, preliminary, final) -->
+                            <div class="form-group required"  ng-show="!wizardSecondPage" align="left">
+                              <label class="control-label" for="data_state" data-toggle="tooltip" title='{{"data_state" | translate}}'>Data State:</label>
+                              <button type="button" data-toggle="popover" title="Data State Field" data-content='{{"data_state" | translate}}' class="btn btn-info btn-circle">
+                                  <i class="glyphicon glyphicon-question-sign"></i>
+                                </button>
+                              <br />
+                              <input type="radio" value="Raw" name="data_state" ng-model="datadescriptor.data_state" > Raw &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Processed" name="data_state" ng-model="datadescriptor.data_state" > Processed &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Preliminary" name="data_state" ng-model="datadescriptor.data_state" > Preliminary product/result &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Final" name="data_state" ng-model="datadescriptor.data_state" >  Final product/result &nbsp;&nbsp;&nbsp;
+                              <input type="radio" value="Unknown" name="data_state" ng-model="datadescriptor.data_state" >  Unknown                           
+                            </div><br />
+                            <!--
+                              0 Raw (unedited) data, such as the output from a sensor
+                              1 Data that have passed some objective quality assurance procedure (edited data)
+                              2 Derived product, potentially from multiple sensors, that require some subjective judgment
+                              (e.g., inference of a basin average precipitation from multiple rain gages)
+                              3 Interpreted product, requiring more assumptions and judgments (e.g., rainfall inferred from
+                              radar reflectance)
+                              4 Knowledge product, requiring inferences, potentially from multiple disciplines, and
+                              combining multiple measurements, each with their own assumptions (e.g., proportion of
+                              “new” and “old” water in streamflow inferred from stable isotopes)
+                              -9999 Unknown
+                            -->
                             </div>
-                          </div>
-                          </br>
+                      </div>
+                      </br>
 
                       <!-- CONTRIBUTING AGENCIES -->
                       <div class="form-group"  ng-show="!wizardSecondPage">
@@ -630,32 +655,6 @@
                                 </span>
                               </div>
                             </div>
-
-                             <!--STATUS: options for file status (raw, processed, preliminary, final) -->
-                             <div class="form-group"  ng-show="!wizardSecondPage" align="left">
-                              <label class="control-label" for="data_state" data-toggle="tooltip" title='{{"data_state" | translate}}'>Data State:</label>
-                              <button type="button" data-toggle="popover" title="Data State Field" data-content='{{"data_state" | translate}}' class="btn btn-info btn-circle">
-                                  <i class="glyphicon glyphicon-question-sign"></i>
-                                </button>
-                              <br />
-                              <input type="radio" value="Raw" name="data_state" ng-model="datadescriptor.data_state" > Raw &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Processed" name="data_state" ng-model="datadescriptor.data_state" > Processed &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Preliminary" name="data_state" ng-model="datadescriptor.data_state" > Preliminary product/result &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Final" name="data_state" ng-model="datadescriptor.data_state" >  Final product/result &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Unknown" name="data_state" ng-model="datadescriptor.data_state" >  Unknown                           
-                            </div><br />
-                           <!--
-                              0 Raw (unedited) data, such as the output from a sensor
-                              1 Data that have passed some objective quality assurance procedure (edited data)
-                              2 Derived product, potentially from multiple sensors, that require some subjective judgment
-                              (e.g., inference of a basin average precipitation from multiple rain gages)
-                              3 Interpreted product, requiring more assumptions and judgments (e.g., rainfall inferred from
-                              radar reflectance)
-                              4 Knowledge product, requiring inferences, potentially from multiple disciplines, and
-                              combining multiple measurements, each with their own assumptions (e.g., proportion of
-                              “new” and “old” water in streamflow inferred from stable isotopes)
-                              -9999 Unknown
-                           -->
 
                            <div class="form-group"  ng-show="!wizardSecondPage" align="left">
                             <label class="control-label" for="sensitive" data-toggle="tooltip" title='{{"sensitive" | translate}}'>Can this data be made available to the general public?:</label>
