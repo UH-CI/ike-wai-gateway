@@ -1,0 +1,722 @@
+ab43daa0a3dc91a51748cb627efa4a
+
+//---------------------
+
+Current schemas:
+Variable
+Sample
+Tag
+LoggerFile
+Location
+Site
+Well
+PublishedFile
+Study
+File
+Organization
+Person
+Keywords
+DataDescriptor
+Subject
+
+
+
+// PERSON ----------------------------------------------------------- 
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/person.json
+
+or 
+
+
+
+
+> curl -sk -H "Authorization: Bearer 9f59a59f57e09ffdfce8fcd8b08520a7" -X POST -H "Content-Type: application/json" --data-binary '
+    {
+      "title" : "Person",
+      "description" : "Information related to a person",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "first_name" : {
+          "type" : "string",
+          "title" : "First Name"
+        },
+        "last_name" : {
+          "type" : "string",
+          "title" : "Last Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "organization" : {
+          "type" : "string",
+          "title" : "Organization"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "first_name", "last_name" ]
+    }
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+// OUTPUT
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-06-15T14:20:40.761-05:00",
+  "schema": {
+    "title": "Person",
+    "description": "Information related to a person",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "first_name": {
+        "type": "string",
+        "title": "First Name"
+      },
+      "last_name": {
+        "type": "string",
+        "title": "Last Name"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email"
+      },
+      "organization": {
+        "type": "string",
+        "title": "Organization"
+      },
+      "address": {
+        "type": "string",
+        "title": "Address"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Phone"
+      },
+      "url": {
+        "type": "string",
+        "title": "Web Site"
+      }
+    },
+    "required": [
+      "first_name",
+      "last_name"
+    ]
+  },
+  "uuid": "5170913436418240025-242ac1110-0001-013",
+  "created": "2017-06-15T14:20:40.761-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5170913436418240025-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5170913436418240025-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
+
+# add permission
+./metadata-schema-pems-addupdate -u public -p READ 5170913436418240025-242ac1110-0001-013
+
+# to delete
+./metadata-schema-delete 5170913436418240025-242ac1110-0001-013
+
+# to modify
+metadata-schema-addupdate -v -F - 5170913436418240025-242ac1110-0001-013 <<< '{
+  "title" : "Person",
+  "description" : "Information related to a person",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "first_name" : {
+      "type" : "string",
+      "title" : "First Name"
+    },
+    "last_name" : {
+      "type" : "string",
+      "title" : "Last Name"
+    },
+    "email" : {
+      "type" : "string",
+      "title" : "Email"
+    },
+    "orcid" : {
+      "type" : "string",
+      "title" : "ORCID"
+    },
+    "organization" : {
+      "type" : "string",
+      "title" : "Organization"
+    },
+    "address" : {
+      "type" : "string",
+      "title" : "Address"
+    },
+    "phone" : {
+      "type" : "string",
+      "title" : "Phone"
+    },
+    "url" : {
+      "type" : "string",
+      "title" : "Web Site"
+    }
+  },
+  "required" : [ "first_name", "last_name" ]
+}'
+
+
+
+// ORGANIZATION ----------------------------------------------------------- 
+
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/organization.json
+
+OR
+
+> curl -sk -H "Authorization: Bearer d58597524b4a3b19e639e7c0f070d361" -X POST -H "Content-Type: application/json" --data-binary '
+    {
+      "title" : "Organization",
+      "description" : "Information related to an organization, agency, institution, etc.",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "title" : "Organization Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "name" ]
+    }
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+// output
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-06-09T17:07:27.341-05:00",
+  "schema": {
+    "title": "Organization",
+    "description": "Information related to an organization, agency, institution, etc.",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "name": {
+        "type": "string",
+        "title": "Organization Name"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email"
+      },
+      "address": {
+        "type": "string",
+        "title": "Address"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Phone"
+      },
+      "url": {
+        "type": "string",
+        "title": "Web Site"
+      }
+    },
+    "required": [
+      "name"
+    ]
+  },
+  "uuid": "442902870017184231-242ac1110-0001-013",
+  "created": "2017-06-09T17:07:27.341-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/442902870017184231-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/442902870017184231-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
+
+# add permission
+./metadata-schema-pems-addupdate -u public -p READ 4635683822558122471-242ac1110-0001-013
+
+# delete
+curl -sk -H "Authorization: Bearer d58597524b4a3b19e639e7c0f070d361" -X DELETE https://agaveauth.its.hawaii.edu/meta/v2/schemas/./metadata-schema-pems-addupdate -u public -p READ 4635683822558122471-242ac1110-0001-013
+
+-----------
+
+
+Creating person metadata objects
+
+
+Organization: 4635683822558122471-242ac1110-0001-013
+Person: 5170913436418240025-242ac1110-0001-013
+
+metadata-list -v -Q '{"schemaId":"5170913436418240025-242ac1110-0001-013"}'
+
+
+> metadata-addupdate -v -F - <<< '{
+    "schemaId": "5170913436418240025-242ac1110-0001-013", 
+	"value": {
+	  "properties" : {
+	    "first_name" : "Jennifer",
+	    "last_name" : "Geis"
+	  }
+	},
+	"name": "jgeis"
+}'
+
+> metadata-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/createjgeis.json
+
+// output
+{
+  "uuid": "1067354209822174745-242ac1110-0001-012",
+  "owner": "jgeis",
+  "schemaId": "5170913436418240025-242ac1110-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2017-06-15T15:26:41.776-05:00",
+  "name": "jgeis",
+  "value": {
+    "first_name": "Jennifer",
+    "last_name": "Geis",
+    "email": "jgeis@hawaii.edu",
+    "organization": "University of Hawaii at Manoa, Cyberinfrastructure",
+    "address": "2520 Correa Road, Honolulu, Hawaii 96822",
+    "phone": "808-956-7123"
+  },
+  "created": "2017-06-15T15:26:41.776-05:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1067354209822174745-242ac1110-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/1067354209822174745-242ac1110-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5170913436418240025-242ac1110-0001-013"
+    }
+  }
+}
+
+metadata-delete 1067354209822174745-242ac1110-0001-012
+
+I put all metadata-addupdate calls for our users in the createPeople.txt file.  
+Copied and pasted the whole thing to the command line.
+
+to get all the users for this schema: 
+> metadata-list -v -Q '{"schemaId":"5170913436418240025-242ac1110-0001-013"}'
+
+metadata-list -v -Q '{"name":"Person"}'
+metadata-list -v -Q '{"name":"Person", "value.first_name": "Jennifer"}'
+
+metadata-list -Q '{"name":"Person"}'
+
+metadata-delete 6899993673995588071-242ac1110-0001-012
+metadata-delete 4288817247821369831-242ac1110-0001-012
+metadata-delete 7038222557982429671-242ac1110-0001-012
+metadata-delete 8908337424167604711-242ac1110-0001-012
+
+./metadata-schema-list -v -Q '{"title":"Person"}'
+// nothing
+
+./metadata-schema-list -v -Q '{"uuid":"5170913436418240025-242ac1110-0001-013"}'
+// success
+
+./metadata-schema-list -v -Q '{"schema.title":"Person"}'
+// success
+
+./metadata-schema-list -v -Q '{"schema.title":"DataDescriptor"}'
+// success
+
+metadata-delete 6585958378455568871-242ac1110-0001-012
+metadata-delete 2649663801344528871-242ac1110-0001-012
+metadata-delete 5082780570009136665-242ac1110-0001-012
+metadata-delete 3079523850817901031-242ac1110-0001-012
+metadata-delete 8523931594747604505-242ac1110-0001-012
+metadata-delete 7689626088601546265-242ac1110-0001-012
+metadata-delete 3587643286802460185-242ac1110-0001-012
+metadata-delete 5234379724281811431-242ac1110-0001-012
+7607998279447220711-242ac1110-0001-012
+7536572973314740711-242ac1110-0001-012
+
+// get all datadescriptor objects (limited, otherwise there's too many):
+metadata-list -v -l 5 -Q '{"schemaId":"4635683822558122471-242ac1110-0001-013"}'
+
+metadata-list -v 5697124789250813465-242ac1110-0001-012
+-----------------------------------
+
+Loading to prod:
+
+curl -sk -H "Authorization: Bearer 86c436b7c67607b3d2a77251986d48b" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title" : "Person",
+  "description" : "Information related to a person",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "first_name" : {
+      "type" : "string",
+      "title" : "First Name"
+    },
+    "last_name" : {
+      "type" : "string",
+      "title" : "Last Name"
+    },
+    "email" : {
+      "type" : "string",
+      "title" : "Email"
+    },
+    "orcid" : {
+      "type" : "string",
+      "title" : "ORCID"
+    },
+    "organization" : {
+      "type" : "string",
+      "title" : "Organization"
+    },
+    "address" : {
+      "type" : "string",
+      "title" : "Address"
+    },
+    "phone" : {
+      "type" : "string",
+      "title" : "Phone"
+    },
+    "url" : {
+      "type" : "string",
+      "title" : "Web Site"
+    }
+  },
+  "required" : [ "first_name", "last_name" ]
+}
+' https://ikeauth.its.hawaii.edu/meta/v2/schemas/
+
+////output
+{"status":"success","message":null,"version":"2.2.0-r5daaf3f","result":{"internalUsername":null,"lastUpdated":"2017-06-27T19:45:49.615-05:00","schema":{"title":"Person","description":"Information related to a person","type":"object","ikewai":"TRUE","properties":{"first_name":{"type":"string","title":"First Name"},"last_name":{"type":"string","title":"Last Name"},"email":{"type":"string","title":"Email"},"orcid":{"type":"string","title":"ORCID"},"organization":{"type":"string","title":"Organization"},"address":{"type":"string","title":"Address"},"phone":{"type":"string","title":"Phone"},"url":{"type":"string","title":"Web Site"}},"required":["first_name","last_name"]},"uuid":"2407294948645474791-242ac1110-0001-013","created":"2017-06-27T19:45:49.615-05:00","owner":"jgeis","_links":{"self":{"href":"https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013"},"permissions":{"href":"https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013/pems"},"owner":{"href":"https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"}}}}
+
+uuid: 2407294948645474791-242ac1110-0001-013
+
+--------------
+
+curl -sk -H "Authorization: Bearer 86c436b7c67607b3d2a77251986d48b" -X POST -H "Content-Type: application/json" --data-binary '
+    {
+      "title" : "Organization",
+      "description" : "Information related to an organization, agency, institution, etc.",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "name" : {
+          "type" : "string",
+          "title" : "Organization Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "name" ]
+    }
+' https://ikeauth.its.hawaii.edu/meta/v2/schemas/
+
+/////output
+{"status":"success","message":null,"version":"2.2.0-r5daaf3f","result":{"internalUsername":null,"lastUpdated":"2017-06-27T19:47:13.147-05:00","schema":{"title":"Organization","description":"Information related to an organization, agency, institution, etc.","type":"object","ikewai":"TRUE","properties":{"name":{"type":"string","title":"Organization Name"},"email":{"type":"string","title":"Email"},"address":{"type":"string","title":"Address"},"phone":{"type":"string","title":"Phone"},"url":{"type":"string","title":"Web Site"}},"required":["name"]},"uuid":"5992991345384034791-242ac1110-0001-013","created":"2017-06-27T19:47:13.147-05:00","owner":"jgeis","_links":{"self":{"href":"https://ikeauth.its.hawaii.edu/meta/v2/schemas/5992991345384034791-242ac1110-0001-013"},"permissions":{"href":"https://ikeauth.its.hawaii.edu/meta/v2/schemas/5992991345384034791-242ac1110-0001-013/pems"},"owner":{"href":"https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"}}}}
+
+uuid: 5992991345384034791-242ac1110-0001-013
+
+------
+
+
+> metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createKeywords.json
+{
+  "internalUsername": null,
+  "lastUpdated": "2017-06-28T20:24:40.270-05:00",
+  "schema": {
+    "title": "Keywords",
+    "description": "subject keywords",
+    "type": "string",
+    "ikewai": "TRUE",
+    "enum": [
+      .....
+    ]
+  },
+  "uuid": "5118047267912609305-242ac1110-0001-013",
+  "created": "2017-06-28T20:24:40.270-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5118047267912609305-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/5118047267912609305-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
+
+
+
+--------------------
+
+./metadata-schema-list -v -Q '{"name":"rejected"}'
+
+metadata-addupdate -v -F - 5488083857393848806-242ac1110-0001-012 <<< '{"value": {"title": "Rejected files", "reasons":[]}, "name": "rejected", "associationIds":[]}'
+
+{
+    "uuid": "5488083857393848806-242ac1110-0001-012",
+    "schemaId": null,
+    "internalUsername": null,
+    "associationIds": [
+      "6317486087549948391-242ac113-0001-002",
+      "2542193005284561382-242ac113-0001-002",
+      "2198247619430519271-242ac113-0001-002"
+    ],
+    "lastUpdated": "2017-08-11T17:31:13.396-05:00",
+    "name": "rejected",
+    "value": {},
+    "created": "2017-02-12T18:35:19.715-06:00",
+    "owner": "seanbc",
+    "_links": {
+      "self": {
+        "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5488083857393848806-242ac1110-0001-012"
+      },
+      "permissions": {
+        "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/5488083857393848806-242ac1110-0001-012/pems"
+      },
+      "owner": {
+        "href": "https://agaveauth.its.hawaii.edu/profiles/v2/seanbc"
+      },
+      "associationIds": []
+    }
+  }
+
+
+
+---------------------------
+
+KEYWORDS
+
+./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createKeywords.json
+// failed w/ parsing errors
+
+
+--------
+
+curl -sk -H "Authorization: Bearer 958a8831b265364a228e91a73f29d" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title": "Keywords",
+  "description" : "subject keywords",
+  "type": "string",
+  "ikewai" : "TRUE",
+  "keywords": [
+    { "keyword":"Earth Science",	"uuid": "e9f67a66-e9fc-435c-b720-ae32a2c3d8f5",	"heirarchy":"Earth Science",	"display":"bold"}
+  ]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+-------
+
+{"status":"success",
+  "message":null,
+  "version":"2.2.4-dev-r942a307",
+  "result":{
+    "internalUsername":null,
+    "lastUpdated":"2017-08-17T18:20:45.689-05:00",
+    "schema":{
+      "title":"Keywords",
+      "description":"subject keywords",
+      "type":"string",
+      "ikewai":"TRUE",
+      "keywords":[
+        {
+          "keyword":"Earth Science",
+          "uuid":"e9f67a66-e9fc-435c-b720-ae32a2c3d8f5",
+          "heirarchy":"Earth Science","display":"bold"
+        }
+      ]
+    },
+    "uuid":"5598736296171138585-242ac1110-0001-013",
+    "created":"2017-08-17T18:20:45.689-05:00",
+    "owner":"jgeis",
+    "_links":{
+      "self":{
+        "href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/5598736296171138585-242ac1110-0001-013"
+      },
+      "permissions":{
+        "href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/5598736296171138585-242ac1110-0001-013/pems"
+      },
+      "owner":{
+        "href":"https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+      }
+    }
+  }
+}
+-------
+
+metadata-schema-list -v -Q '{"uuid":"5598736296171138585-242ac1110-0001-013"}'
+
+metadata-schema-delete 5598736296171138585-242ac1110-0001-013
+
+curl -sk -H "Authorization: Bearer 958a8831b265364a228e91a73f29d" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title": "Keywords",
+  "description" : "subject keywords",
+  "type": "string",
+  "ikewai" : "TRUE",
+  "keywords": [
+    { "keyword":"Earth Science",	"uuid": "e9f67a66-e9fc-435c-b720-ae32a2c3d8f5",	"heirarchy":"Earth Science",	"display":"bold"},
+    { "keyword":"Data Processing Services",	"uuid": "431eca76-9d34-4f86-b1d3-a0b40221e905",	"heirarchy":"Earth Science Services > Web Services > Data Processing Services",	"display":"regular"}
+  ]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+----------
+//success 
+metadata-schema-list -v -Q '{"uuid":"7261363908041314791-242ac1110-0001-013"}'
+
+metadata-schema-addupdate -v -F - 7261363908041314791-242ac1110-0001-013 <<<'
+{
+  "title": "Keywords",
+  "description" : "subject keywords",
+  "type": "string",
+  "ikewai" : "TRUE"
+}
+'
+// fails
+
+metadata-schema-delete 7261363908041314791-242ac1110-0001-013
+
+-------
+
+curl -sk -H "Authorization: Bearer f879b8236fcce71a39705befbf127b27" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title": "Subject",
+  "description" : "Searchable words describing the contents of this file",
+  "type": "string",
+  "ikewai" : "TRUE",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "uuid": {
+      "type": "string",
+      "title": "UUID"
+    },
+    "heirarchy": {
+      "type": "string",
+      "title": "Heirarchy"
+    },
+    "display": {
+      "type": "string",
+      "title": "display",
+      "default": "regular"
+    }
+  },
+  "required" : [ "word"]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+------
+
+{"status":"success","message":null,"version":"2.2.4-dev-r942a307","result":{"internalUsername":null,"lastUpdated":"2017-08-21T20:13:43.745-05:00","schema":{"title":"Subject","description":"Searchable words describing the contents of this file","type":"string","ikewai":"TRUE","properties":{"word":{"type":"string","title":"Subject"},"uuid":{"type":"string","title":"UUID"},"heirarchy":{"type":"string","title":"Heirarchy"},"display":{"type":"string","title":"display","default":"regular"}},"required":["word"]},"uuid":"2594202786402341351-242ac1110-0001-013","created":"2017-08-21T20:13:43.745-05:00","owner":"jgeis","_links":{"self":{"href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/2594202786402341351-242ac1110-0001-013"},"permissions":{"href":"https://agaveauth.its.hawaii.edu/meta/v2/schemas/2594202786402341351-242ac1110-0001-013/pems"},"owner":{"href":"https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"}}}}
+
+
+curl -sk -H "Authorization: Bearer 958a8831b265364a228e91a73f29d" -X POST -H "Content-Type: application/json" --data-binary '
+
+
+
+metadata-list -v -Q '{"schemaId":"6969458139449790951-242ac1110-0001-013"}'
+
+
+
+
+# to modify
+metadata-schema-addupdate -v -F - 9036347374401154585-242ac1110-0001-013 <<< '{
+  "title": "Subject",
+  "description" : "Searchable words describing the contents of this file",
+  "type": "object",
+  "ikewai" : "TRUE",
+  "properties": {
+    "word": {
+      "type": "string",
+      "title": "Subject"
+    },
+    "uuid": {
+      "type": "string",
+      "title": "UUID"
+    },
+    "short_heirarchy": {
+      "type": "string",
+      "title": "Heirarchy"
+    },
+    "full_heirarchy": {
+      "type": "string",
+      "title": "Heirarchy"
+    },
+    "display": {
+      "type": "string",
+      "title": "display"
+    }
+  },
+  "required" : [ "word"]
+}'
+
+
+
+metadata-list -Q '{"name":"Subject"}'
+

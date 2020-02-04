@@ -8,7 +8,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.sortReverse = true;
   $scope.has_data_descriptor = false;
   //Don't display metadata of these types
-  $scope.ignoreMetadataType = ['published', 'stagged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
+  //$scope.ignoreMetadataType = ['published', 'stagged', 'staged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
+  $scope.ignoreMetadataType = ['stagged', 'staged', 'PublishedFile', 'rejected', 'File', 'unapproved'];
   //Don't display metadata schema types as options
   $scope.ignoreSchemaType = ['PublishedFile'];
   $scope.approvedSchema = ['DataDescriptor', 'Well', 'Site', 'Water_Quality_Site', 'Person', 'Organization', 'Location', 'Subject', 'Variable', 'Tag', 'File'];
@@ -23,6 +24,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.wizardSecondPage = false;
   // used to show/hide the hawaiian language newspaper translations section on the data descriptor edit view.
   $scope.hawaiian = false;
+  // used to show/hide the hydroshare section on the data descriptor edit view.
+  $scope.hydroshare = false;
 
   //set admin
   $scope.get_editors = function () {
@@ -125,11 +128,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.datadescriptor.newspapers = [];
   $scope.datadescriptor.translators = [];
   $scope.datadescriptor.files = [];
-  //$scope.datadescriptor.subjects = [];
+  $scope.datadescriptor.selected_push_files = [];
+  $scope.datadescriptor.subjects = ["ikewai"];
   $scope.datadescriptor.contributors = [];
   $scope.edit_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'organizations','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators']
+  $scope.push_data_descriptor = false;
+  $scope.data_descriptor_order = ['title','creators', 'organizations','contributors','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators','relations','license_rights','published','hydroDOI','ikewaiURL']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Contributor(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators','Related Resource(s)','License', 'Pushed to Annotated Repo?', 'Hydroshare DOI', 'Ikewai.org url']
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
@@ -144,7 +149,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //refetch the file metadata object to ensure the latest associtionIds are in place
     var deferred = $q.defer();
     //$scope.fetchMetadata("{'uuid':'" + $stateParams.uuid + "'}");
-    $scope.fetchMetadata("{'uuid':'" + $scope.ddUuid + "'}");
+    //$scope.fetchMetadata("{'uuid':'" + $scope.ddUuid + "'}");
+    $scope.fetchMetadataWithLimit("{'uuid':'" + $scope.ddUuid + "'}", 100).then(function (response){
+      // check if the subjects contains "ikewai" and add it if it doesn't.
+      $scope.addIkewaiToSubjects();
+    });
+
     return deferred.promise;
     
   }
@@ -413,8 +423,14 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     });
   }
 
+  $scope.cancelPushDataDescriptor = function () {
+    console.log("JEN DDC: cancelPushDataDescriptor");
+    $scope.push_data_descriptor = false;
+    $scope.action = "edit";  // not yet sure if this should be edit or view
+  }
+
   $scope.cancelEditDataDescriptor = function () {
-    console.log("JEN DDC: cancelEditDataDescriptor");
+    //console.log("JEN DDC: cancelEditDataDescriptor");
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
     //$scope.refreshMetadata();
@@ -423,7 +439,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.cancelEditDataDescriptorWithBroadcast = function () {
-    console.log("JEN DDC: cancelEditDataDescriptorWithBroadcast");
+    //console.log("JEN DDC: cancelEditDataDescriptorWithBroadcast");
     $scope.edit_data_descriptor = false;
     $scope.action = "view";
     //$scope.refreshMetadata();
@@ -432,16 +448,15 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.close = function () {
-    console.log("JEN DDC: close");
+    //console.log("JEN DDC: close");
     $scope.cancelEditDataDescriptor();
     $modalInstance.close();
     $uibModal.close;
     $scope.refresh();
 	};
 
-
   $scope.refresh = function () {
-    console.log("JEN DDC: refresh: action = " + $scope.action);
+    //console.log("JEN DDC: refresh: action = " + $scope.action);
     if ($stateParams.uuid != undefined) {
       $scope.ddUuid = $stateParams.uuid;
     }
@@ -467,9 +482,13 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       //$scope.addClone($stateParams.uuid);
       $scope.addClone($scope.ddUuid);
     }
+    else if ($scope.action === "push") {
+      $scope.push_data_descriptor = true;
+      $scope.action = "view";
+    }
 
     if ($scope.continue) {
-      console.log("Jen DDC continue in refresh");
+      //console.log("Jen DDC continue in refresh");
       $scope.requesting = true;
       $scope.people.length = 0;
       $scope.newspapers.length = 0;
@@ -513,7 +532,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       jQuery('#datetimepicker2').datepicker();
       jQuery('#datetimepicker3').datepicker();
       $scope.refreshMetadata();
-      
+
     }
   };
 
@@ -570,6 +589,23 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.fetchMetadata = function (metadata_query) {
     $scope.fetchMetadataWithLimit(metadata_query, 100);
+  }
+
+  $scope.addIkewaiToSubjects = function() {
+    //$scope.fetchMetadata("{'uuid':'" + $scope.ddUuid + "'}");
+    //fetchMetadataWithLimit: {'uuid':'2588289951554596375-242ac1110-0001-012'}
+    // if subjects does not already include the word 'ikewai' then add it
+    if (typeof $scope.data_descriptor_metadatum !== "undefined") {
+      var subs = $scope.data_descriptor_metadatum.value.subjects;
+      console.log("JG addIkewaiToSubjects: " + subs);
+      if (!subs.includes("ikewai")) {
+        console.log("JG: Adding ikewai to subjects: " + $scope.datadescriptor);
+        $scope.data_descriptor_metadatum.value.subjects.push("ikewai");
+        //$scope.data_descriptor_metadatum.value.subjects.concat(",ikewai");
+        $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+        $scope.updateDataDescriptor();
+      }
+    }
   }
 
   $scope.fetchMetadataWithLimit = function (metadata_query, limit) {
@@ -659,7 +695,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // an old method and don't want a bunch of arbitrary changes to show
   // during a comparison, I just do an assignment on the first line.
   $scope.addClone = function (dataDescriptorUuid, fileUuid) {
-    console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
+    //console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
     metadatumUuid = dataDescriptorUuid;
     if (metadatumUuid) {
       $scope.requesting = true;
@@ -689,7 +725,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
                 }
                 $scope.requesting = false;
                 //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
-                console.log("clone made, new dd: " + $scope.new_metadataUuid);
+                //console.log("clone made, new dd: " + $scope.new_metadataUuid);
                 $scope.uuid = $scope.new_metadataUuid;
                 $scope.ddUuid = $scope.new_metadataUuid;
                 $scope.action = "close-clone";
@@ -1001,6 +1037,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     console.log("JEN DDC: editDataDescriptor");
     $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
     $scope.edit_data_descriptor = true;
+    // Google Analytics
     ga('create', 'UA-127746084-1', 'auto');
     ga('send', 'pageview', {
       page:'/app/views/datadescriptor/manager.html', 
