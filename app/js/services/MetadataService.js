@@ -1,7 +1,11 @@
 angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope', '$localStorage', '$location', '$state', '$timeout', '$q', '$translate', 'PostitsController', 'MetaController', 'MessageService', function($uibModal, $rootScope, $localStorage, $location, $state, $timeout, $q, $translate, PostitsController, MetaController, MessageService){
 
   this.getAdmins = function(){
+<<<<<<< HEAD
     return ['seanbc','jgeis','mduman','acomerfo','gwenj','cshuler'];
+=======
+    return ['seanbc','jgeis','mduman','acomerfo','gwenj','cshuler','kevink'];
+>>>>>>> 05f6429b10c35ab49d4c232cffd8b51ef9d81cc5
   }
 
 
@@ -235,6 +239,7 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
       this.resolveApprovedStatus(metadataUuid);
       MetaController.addMetadataPermission('{"username":"seanbc","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"jgeis","permission":"ALL"}',metadataUuid);
+      MetaController.addMetadataPermission('{"username":"cshuler","permission":"ALL"}',metadataUuid);
       MetaController.addMetadataPermission('{"username":"ike-admin","permission":"ALL"}',metadataUuid);
       $rootScope.$broadcast('permissionsUpdated',{message:"Permissions Updated Successfully."});
     }

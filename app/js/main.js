@@ -3044,6 +3044,24 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+
+        .state('adminhelp', {
+          url: "/adminhelp",
+          templateUrl: "views/help/AdminHelp.html",
+          data: {pageTitle: 'Admin Help'},
+          controller: "GeneralPageController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load([{
+                      name: 'AgaveToGo',
+                      files: [
+                          'js/controllers/GeneralPageController.js'
+                      ]
+                  }]);
+              }]
+          }
+      })
+
         .state('feedback', {
             url: "/feedback",
             templateUrl: "views/help/feedback.html",
