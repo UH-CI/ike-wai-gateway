@@ -1,5 +1,5 @@
-angular.module('AgaveToGo').controller("MetadataTimeseriesCreateController", 
-function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout, 
+angular.module('AgaveToGo').controller("MetadataTimeseriesCreateController",
+function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
      $filter, MetaController, MetadataService, ActionsService, MessageService) {
 
 
@@ -7,7 +7,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
   $scope.column_vars = {};
     $scope.temp_var = {};
   $scope.timeseries_template = {};
-
+ $scope.limit  = 10000
 	$scope.initialize = function() {
 		$scope.refresh();
 	}
@@ -27,7 +27,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 					var formschema = {};
 					formschema["type"]="object";
 					formschema["properties"] = $scope.selectedmetadataschema.schema.properties;
-					
+
 					formschema["required"] = $scope.selectedmetadataschema.schema.required;
 					$scope.schema = formschema;
 					$scope.form = [
@@ -44,7 +44,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
         //alert("SELECT: "+ variable.value.id + "|" +variable.value.variable_name)
         $scope.temp_var= {'column_num': $('#column_num').val(),'variable':variable}
     }
-    
+
     $scope.addColumnDef = function(){
         //check column num
         //check variable
@@ -75,7 +75,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 		$scope.requesting = true;
 		$scope.$broadcast('schemaFormValidate');
 		// Then we check if the form is valid
-    alert(angular.toJson($scope.timeseries_template))
+  //  alert(angular.toJson($scope.timeseries_template))
     if($scope.timeseries_template != {} && $scope.column_vars != {}){
 		//if (form.$valid) {
       MetaController.listMetadataSchema("{'schema.title':'Timeseries_Template'}"
@@ -103,6 +103,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
               App.alert({message: "Successfully Created Timeseries Template",closeInSeconds: 5  });
               $rootScope.$broadcast('metadataUpdated');
               $scope.requesting = false;
+              alert("Timeseries Saved Successfully")
             },
             function(response){
               MessageService.handle(response, $translate.instant('error_metadata_add'));
@@ -116,7 +117,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 			}
 
 	};
-  
+
 
 
     $scope.initialize();
@@ -185,7 +186,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
     console.log("DataDescriptorController.searchAll QUERY: "+$scope.query)
     $scope.offset = 0;
     $scope.fetchModalMetadata();
-  } 
+  }
 
   /*$scope.openEditMetadata = function (metadatumuuid, size) {
     $scope.metadataUuid = metadatumuuid.uuid;
@@ -230,7 +231,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
       });
     $scope.requesting = false;
   };
-  
+
 
   $scope.openCreate = function (schemauuid, size) {
     //console.log("Jen DDC: openCreate");
@@ -270,7 +271,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
     $scope.cancel = function () {
       $modalInstance.close();
     };
-  
+
     $scope.fetchModalMetadata = function () {
       MetaController.listMetadata(
           $scope.query, $scope.limit, $scope.offset
@@ -285,7 +286,6 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
             $scope.requesting = false;
           }
         );
-  
+
     }
   });
-
