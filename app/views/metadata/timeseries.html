@@ -30,10 +30,10 @@
       color:red;
     }
     </style>
-    
+
     <!--<h4><a ng-click="doTheBack()"><i class="glyphicon glyphicon-menu-left"/>Go Back</a></h4>-->
     <div id="timeseries_div">
-    
+
     <div class="row">
         <div class="col-md-12">
             <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -43,10 +43,10 @@
                         <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
                       </div>
                   </div>
-    
+
                   <div class="row">
 
-    
+
                           <!-- FORM-->
                           <div  class="text-center">
                             <!--
@@ -57,7 +57,7 @@
                            -->
                             <div class="col-md-11">
                               <form novalidate class="simple-form" name="TimeseriesTemplateForm">
-    
+
                                 <!-- TITLE -->
                               <div class="panel panel-default"  ng-show="!wizardSecondPage">
                                <div class="panel-heading">Create Spreadsheet Parsing Template</div>
@@ -120,12 +120,12 @@
                                     <br/><br/>
                                       <ul>
                                       <li ng-repeat="column in column_vars" align="left">
-                                        <label class="control-label" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'> Column: {{column.column_num}} | Variable:{{column.variable.value.id}}-{{column.variable.value.name}}</label>
+                                        <label class="control-label" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'> Column: {{column.column_num}} | Variable:{{column.variable.value.id}}-{{column.variable.value.variable_name}} ({{column.variable.value.unit}})</label>
                                         <button type="button"  title="Remove" ng-click="removeColumn(column)" class="btn btn-info btn-sm">
                                                 <i class="glyphicon glyphicon-remove-sign"></i>
                                         </button>
                                       </li>
-                                    </ul>   
+                                    </ul>
                                   </div>
                                  <!-- CHOOSE VARIABLES -->
                                  <div class="form-group">
@@ -140,13 +140,13 @@
                                 </div>
                               </div>
                               </br>
-    
-                         
+
+
                               </form>
                               </div>
                             </div>
                           </div>
-    
+
                         </div>
                       </div>
                   </div>
@@ -158,10 +158,9 @@
         <button class="btn btn-default pull-left" ng-click="close()">Close</button>
         <!-- <button class="btn btn-primary" ng-click="submit()">Submit</button> -->
         <div class="form-group">
-          <button type="button" class="btn btn-primary" type="submit"  
+          <button type="button" class="btn btn-primary" type="submit"
           ng-click="onSubmit()" >Save</button>
         </div>
         <!--<div ng-if="ddUuid != ''"class="form-group"> -->
 
     </div>
-    
