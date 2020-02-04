@@ -5,15 +5,15 @@
         <div class="col-md-12">
             <div class="portlet light portlet-fit portlet-datatable bordered">
                 <div class="portlet-title form-inline">
-                      
+
                             <button class="btn btn-primary" ng-click="searchAll()"><i class="fa fa-search" aria-hidden="true">Search</i></button>
                             <input type="text" sizes='200'class="form-control" placeholder="Search All Fields" ng-model="searchField.value">
-                              
-                 
-                            
+
+
+
                         <br/>
-                        
-                    
+
+
                 </div>
                 <div class="portlet-body">
                   <div class="row text-center" ng-show="requesting">
@@ -21,7 +21,7 @@
                         <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
                       </div>
                   </div>
-    
+
                   <div class="row">
                       <div class="col-md-12">
                         <div ng-show="!requesting">
@@ -33,7 +33,7 @@
                             </div>
                           </div>
                           <div ng-show="metadata.length > 0" >
-                                                      
+
                             <div class="caption">
                                 Total Objects: {{ metadata.length}}
                                 <button ng-if='can_fetch_more' class='btn btn-default' ng-click='fetchMoreModalMetadata()'>Fetch More Results</button>
@@ -55,21 +55,21 @@
                                               <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                                             </a>
                                           </th>
-                                          
+
                                           <th width="15%" class="text-center"> Actions</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                       <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter">
                                           <td>
-                                              <a ng-click="openViewMetadata(metadatum.uuid,'lg')"> {{metadatum.value.well_name}}{{metadatum.value.name}}
+                                              <a ng-click="openViewMetadata(metadatum.uuid,'lg')">{{metadatum.value.id}} {{metadatum.value.well_name}}{{metadatum.value.name}}
                                                {{metadatum.value.wid}} {{metadatum.value.variable_name}} {{metadatum.value.description}}
                                                {{metadatum.value.tags.toString()}} </a>
                                           </td>
-                                          
+
                                           <td class="text-center">
                                               <div class="btn-group pull-left">
-                                                
+
                                                   <a class="btn btn-sm green btn-outline pull-right" ng-click="selectTimeseriesTemplate(metadatum)">
                                                       Select
                                                       <i class="fa fa-plus"></i>
@@ -91,4 +91,3 @@
     <div class="modal-footer">
         <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
   </div>
-    
