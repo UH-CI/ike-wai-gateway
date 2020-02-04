@@ -1,3 +1,4 @@
+app/views/help/tiffs
 auth/scripts/implicit.js
 rotate_keys.sh
 bower_components
