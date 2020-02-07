@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, $http) {
+angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($rootScope, $scope, $state, $stateParams, $translate, $uibModal, $localStorage, $http) {
 //function ($scope, $state, $stateParams, $http) {
 
     /*
@@ -10,8 +10,27 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
             client_secret: '',
             remember: 0
     };
+    */
 
-*/
+    /*
+    Made an app in HS under my name, called IkewaiDevJen.
+    To edit, it's at:
+    https://www.hydroshare.org/resource/518a3a537a6244ee8fdf22ef494aab68/
+    There, the App-launching URL pattern is set to:
+    https://tolocalhost.com/?app=ikewai&res_id=${HS_RES_ID}&usr=${HS_USR_NAME}&src=hs
+    
+    In the application setup at URL:
+    https://www.hydroshare.org/o/applications/122/
+    It gives me the client id and client secret.  There, I set the Redirect Uris field to:
+    https://tolocalhost.com
+    
+    At https://tolocalhost.com, 
+    I set the hostname to:
+    localhost:9000/app/#/hsoauth
+
+    Had to do it through this convoluted method because I need a url with https,
+    which I can't do on localhost.  Will correct all this when we move to prod.
+    */
 
     // clientID & clientSecret from: https://www.hydroshare.org/o/applications/122/
     clientID = "CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p";
@@ -21,6 +40,27 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
     baseHSURL = "https://www.hydroshare.org";
 
     $scope.requesting =false;
+
+
+    // check to see if we need to re-auth or if we are still good.
+    $scope.doHSAuthProcess = function() {
+        // This doesn't work.  Not holding the values through the redirect.  Need
+        // to get this going through the site rather than the weird workaround I'm doing.
+
+        console.log("HydroshareOAuthController.doHSAuthProcess");
+        // authenticate if our access token isn't set, the expiration date isn't set,
+        // or the expiration date (the date we got the token + 30 days) is less than today.
+        if (typeof $scope.accessTokenExpirationDate == 'undefined' || 
+            typeof $scope.hydroshareAccessToken == 'undefined' ||
+            $scope.accessTokenExpirationDate < new Date()) {
+            $scope.getHSAuthToken();
+        }
+        //console.log("" + typeof $scope.accessTokenExpirationDate == 'undefined');
+        //console.log("" + typeof $scope.hydroshareAccessToken == 'undefined');
+        //console.log("" + $scope.accessTokenExpirationDate < new Date());
+    }
+
+
     $scope.getHSAuthToken = function(){
         console.log("HydroshareOAuthController.getHSAuthToken");
         $scope.requesting = true;
@@ -63,8 +103,11 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
         }).then(function successCallback(response) {
             // JG TODO: need to add error checking, check for error result from HS as well
             console.log("success");
+            // token expires in 2592000 seconds = 43,200 min = 720 h, 30 days
             $scope.hydroshareAccessToken = response.data.access_token;
+            var expires_in = response.data.expires_in;
             console.log("hydroshareAccessToken: " + $scope.hydroshareAccessToken);
+            $scope.accessTokenExpirationDate = new Date().setTime(expires_in * 1000);
             $scope.getHydroshareUserInfo();
         }, function errorCallback(response) {
             alert("HydroshareOAuthController.getAccessToken Error. Try Again!");
@@ -92,6 +135,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
             console.log("username: " + $scope.userInfoHS.username);
             // format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
         
+            // likely want to comment this out when testing
             $scope.submitToHydroshare();
         }, function errorCallback(response) {
             alert("HydroshareOAuthController.getUserInfo Error. Try Again!");
