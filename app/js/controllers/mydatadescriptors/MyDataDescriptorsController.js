@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('DataDescriptorsController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('MyDataDescriptorsController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'metadata',
     $scope._RESOURCE_NAME = 'metadatum';
     $scope.showModal = false;
@@ -11,6 +11,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.get_editors();
 
     //Don't display metadata of these types
+    //$scope.ignoreMetadataType = ['published','ikewaiPushed','hydroPushed','stagged','staged','PublishedFile','rejected'];
     $scope.ignoreMetadataType = ['published','stagged','staged','PublishedFile','rejected'];
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
@@ -27,13 +28,14 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.available = true;
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     //$scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
-    $scope.schemaQuery = "{'schema.title':'DataDescriptor'}"
+    //$scope.schemaQuery = "{'schema.title':'DataDescriptor'}"
 
     $scope.schemaBox = {val1:true,val2:true,val5:true};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
     $scope.searchAll = function(){
+      console.log("searchAll: " + $scope.profile);
       $scope.requesting = true;
         var orquery = {}
         var andquery = {}
@@ -41,10 +43,12 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
         var andarray = []
         var innerquery = {}
         var typearray = []
+        
         if ($scope.searchField.value != ''){
             console.log('searching')
             var vquery = {}
             vquery['owner'] = {$regex: $scope.searchField.value, '$options':'i'}
+            //vquery['owner'] = $scope.profile.username;
             queryarray.push(vquery)
               angular.forEach($scope.metadataschema.schema.properties, function(val, key){
                 var valquery = {}
@@ -60,8 +64,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
           typearray.push('DataDescriptor')
         }
         typequery['name'] = {'$in': typearray}
+        var ownerquery = {}
+        ownerquery['owner'] = $scope.profile.username;
         andarray.push(typequery)
         andarray.push(orquery)
+        andarray.push(ownerquery);
         //if($scope.searchField.value){
         //  andarray.push(textquery)
         //}
@@ -112,15 +119,15 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 
     $scope.refresh = function() {
       $scope.requesting = true;
-      console.log("DataDescriptorsController.refresh query: " + $scope.schemaQuery)
+      //console.log("DataDescriptorsController.refresh query: " + $scope.schemaQuery)
+      console.log("DataDescriptorsController.refresh");
+      // get the schema from which we are going to get all the metadata objects with that schema
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
       .then(function(){
           uuid = $localStorage["schema_DataDescriptor"]
           //console.log(angular.toJson(uuid))
-          MetaController.getMetadataSchema(uuid,1,0
-    				
-    			).then(function(response){
-                    console.log("METADATA SCHEMA: "+ angular.toJson(response))
+          MetaController.getMetadataSchema(uuid,1,0).then(function(response){
+            //console.log("METADATA SCHEMA: "+ angular.toJson(response))
     				$scope.metadataschema = response.result;
     				$scope.requesting = false;
     			})
@@ -253,7 +260,9 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 	          body.name = $scope.metadatum.name;
 	          body.value = $scope.metadatum.value;
               body.value.title = body.value.title + "_Clone"
-              body.value.published = "False"
+              body.value.published = "False";
+              body.value.hydroPushed = "False";
+              body.value.ikewaiPushed = "False";
 	          body.schemaId = $scope.metadatum.schemaId;
 	          if($stateParams.fileUuids){
 	            body.associationIds = $stateParams.fileUuids
@@ -308,9 +317,11 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
 	    $scope.requesting = false;
 	}
 
-  $scope.openPush = function (dataDescriptorUuid, size) {
+  $scope.openPushHydroshare = function (dataDescriptorUuid, size) {
+    console.log("MyDataDescriptorsController.openPushHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
+    $scope.location = "hydroshare";
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
@@ -329,7 +340,33 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     ga('create', 'UA-127746084-1', 'auto');
     ga('send', 'pageview', {
       page:'/app/views/datadescriptor/manager.html', 
-      title:'`Ike Wai Gateway | Data Descriptor Push' 
+      title:'`Ike Wai Gateway | Push to Hydroshare' 
+    });
+  };
+
+  $scope.openPushIkewai = function (dataDescriptorUuid, size) {
+    $scope.uuid = dataDescriptorUuid;
+    $scope.action = "push";
+    $scope.location = "ikewai";
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+      templateUrl: 'views/datadescriptor/manager.html',
+      controller: 'DataDescriptorController',
+      scope: $scope,
+      size: size,
+      backdrop: 'static',
+      keyboard : false,
+      uuid: dataDescriptorUuid,
+      profile: $scope.profile,
+      resolve: {
+
+      }
+    });
+    ga('create', 'UA-127746084-1', 'auto');
+    ga('send', 'pageview', {
+      page:'/app/views/datadescriptor/manager.html', 
+      title:'`Ike Wai Gateway | Push to Ikewai.org' 
     });
   };
 

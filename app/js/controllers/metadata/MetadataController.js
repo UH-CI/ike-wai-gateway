@@ -75,6 +75,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         if ($scope.schemaBox.val6){
           typearray.push('Timeseries')
         }
+        if ($scope.schemaBox.val7){
+          typearray.push('Timeseries_Template')
+        }
         // if no schema types are selected, select all
         if (typearray.length == 0) {
           typearray.push('Site');
@@ -83,6 +86,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           typearray.push('Person');
           typearray.push('Water_Quality_Site');
           typearray.push('Timeseries');
+          typearray.push('Timeseries_Template');
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)

@@ -578,6 +578,27 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        // Hydroshare Auth redirect
+        .state('hsoauth', {
+          url: "/hsoauth",
+          templateUrl: "views/data/hsoauth.html",
+          data: {pageTitle: 'HydroshareOAuthController'},
+          controller: "HydroshareOAuthController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      serie: true,
+                      name: 'AgaveToGo',
+                      insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                      files: [
+                        'js/controllers/data/HydroshareOAuthController.js'
+                      ]
+                  });
+              }]
+          }
+        })
+
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2458,6 +2479,8 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/services/ActionsService.js',
                             'js/services/MessageService.js',
                             'js/services/FilesMetadataService.js',
+                            //'js/controllers/data/HydroshareOAuthController.js',
+                            //'js/services/HydroshareService.js',
                             'js/services/MetadataService.js',
                             'js/controllers/MetadataQueryBuilderController.js',
                             '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
@@ -2746,7 +2769,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
                             'js/controllers/filemetadata/resource/ModalFilemetadataResourceDetailsController.js',
                             'js/controllers/datadescriptor/DataDescriptorController.js',
-                            'js/controllers/datadescriptor/DataDescriptorController.js',
                             '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
                             '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
                             'js/controllers/metadata/resource/ModalMetadataResourceCreateController.js',
@@ -2810,7 +2832,6 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                             'js/controllers/search/MapSearchController.js',
                             'js/controllers/metadata/resource/ModalMetadataResourceDetailsController.js',
                             'js/controllers/filemetadata/resource/ModalFilemetadataResourceDetailsController.js',
-                            'js/controllers/datadescriptor/DataDescriptorController.js',
                             'js/controllers/datadescriptor/DataDescriptorController.js',
                             '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
                             '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
