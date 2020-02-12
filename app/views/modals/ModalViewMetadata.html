@@ -39,9 +39,16 @@
                 {{metadatum.value[key].join(', ')}}
 
               </td>
-              <td ng-if="key != 'ikewai_type'">
+              <td ng-if="key != 'ikewai_type' && key != 'columns'">
 
                 {{metadatum.value[key]}}
+
+              </td>
+              <td ng-if="key == 'columns'">
+                <p ng-repeat ="col in metadatum.value[key]">
+                  Column Number:&nbsp;{{col.column_number}} -{{temp_vars[col.variable_id]}}
+                </p>
+
 
               </td>
             </tr>

@@ -52,11 +52,22 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
               MessageService.handle(response, $translate.instant('error_metadata_details'));
               $scope.requesting = false;
             }
-          );
-      } else {
-        MessageService.handle(response, $translate.instant('error_metadata_details'));
-        $scope.requesting = false;
-      }
+            if($scope.metadatum.name =='Timeseries_Template'){
+              $scope.temp_vars = {}
+              angular.forEach($scope.metadatum.value.variables, function(vars) {
+                  $scope.temp_vars[vars.uuid] = vars.value.id +':'+ vars.value.variable_name +'-'+ vars.value.unit
+              });
+            }
+            $scope.requesting = false;
+          },
+          function(response){
+            MessageService.handle(response, $translate.instant('error_metadata_details'));
+            $scope.requesting = false;
+          }
+        );
+    } else {
+      MessageService.handle(response, $translate.instant('error_metadata_details'));
+      $scope.requesting = false;
     }
   };
 
@@ -190,7 +201,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
 					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					type: 'xyz'
 					}*/
-					
+
 			},
 			overlays:{
 
@@ -203,7 +214,7 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
     return drawnItems.getLayers().length;
   }
 
-  
+
    /******** LEAFLET **************/
    $scope.markers = [];
    angular.extend($scope, {
@@ -239,19 +250,19 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
            url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
            type: 'xyz'
            }*/
-           
+
        },
        overlays:{
- 
+
        }
      }
    });
- 
+
    var drawnItems = new L.FeatureGroup();
    $scope.drawnItemsCount = function() {
      return drawnItems.getLayers().length;
    }
- 
+
    angular.extend($scope, {
      map: {
        center: {
