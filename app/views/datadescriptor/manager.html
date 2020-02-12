@@ -113,7 +113,8 @@
             <tbody>
               <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
                 <td ng-if="link.title == 'file'">
-                  <a href="#/data/explorer/{{link.href.split('system')[1]}}"><i class="fa fa-file-o">{{link.href.split('system')[1]}}</i></a>
+                  <!--<a href="#/data/explorer/{{link.href.split('system')[1]}}"><i class="fa fa-file-o">{{link.href.split('system')[1]}}</i></a>-->
+                  {{link.href.split('system')[1]}}
                   <td ng-show="link.href.includes('ikewai-annotated-data')">
                       <button type="button" class="btn btn-success text-center"  ng-click="download([link.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
                     </td>
@@ -126,6 +127,48 @@
     </div>
   </div>
   <!-- warning shows here -->
+</div>
+<div class="row">
+    <div class="col-md-12">
+      <!-- 
+      JG TODO: check push status, if true, add a message at the top telling user this is their last chance,
+      highlight any unfilled fields, and add a section where they choose which files to push.
+      -->
+      <div class="panel panel-default"  ng-show="push_data_descriptor">
+          <div class="panel-heading" align="center"><b>Push to Hydroshare and ikewai.org</b></div>
+          <div class="panel-body">
+            <div class="form-group">
+                <label class="control-label pull-left">
+                  1.) Please make sure everything is completely filled out before submitting to Hydroshare.
+                  Once submitted, the data will be immutable.<br />
+                  2.) Pay particular attention to the fields in the "Hydroshare" section of the form,
+                  and make sure your authors are in the order you want them to appear.<br />
+                  3.) Finally, select the files you want included in your submission and click the "Push" button.
+                  Note that only files that have been pushed to the `Ike wai annotated repository will be available
+                  for selection.  Also, anything pushed to Hydroshare will also be submitted to ikewai.org.
+                </label>
+                <div class="input-group">
+                  <table class="table table-striped table-bordered">
+                    <tbody>
+                      <th>Select the files to be included in the Hydroshare and ikewai.org submission: </th>
+                      <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
+                        <td ng-if="link.title == 'file'" ng-show="link.href.includes('ikewai-annotated-data')"> 
+                          <!-- TODO: this doesn't work, just leave it for now until the push works -->
+                          <input type="checkbox" ng-model="datadescriptor.selected_push_files" ng-true-value="[link.href]">
+                            {{link.href.split('system')[1]}}
+                          </input>
+                        </td> 
+                      </tr>
+
+                    </tbody>
+                  </table>
+                  <button type="button" ng-if="pushLocation == 'ikewai'" class="btn btn-success text-center"  ng-click="pushToIkewai(filemetadatum.uuid)"><i class="fa fa-plus"></i> {{"Push to Ikewai" | translate}}</button>
+                  <button type="button" ng-if="pushLocation == 'hydroshare'" class="btn btn-success text-center"  ng-click="pushToHydroshare(filemetadatum.uuid)"><i class="fa fa-plus"></i> {{"Push to Hydroshare" | translate}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -189,7 +232,7 @@
                 </div>
 
 
-                <!--  DATA DESCRIPTOR -->
+                <!--  DATA DESCRIPTOR DISPLAY/VIEW (NOT EDIT) FORM -->
                   <div class="col-md-12">
                     <div ng-show="!requesting">
                       <div ng-show="has_data_descriptor == true && edit_data_descriptor == false;">
@@ -197,16 +240,19 @@
                             <div ng-if="data_descriptor_metadatum" class="portlet light table-responsive">
                               <table class="table table-striped table-bordered">
                                 <tbody>
-                                  <tr ng-if="key!=='publisher' && key!=='version' && key!='publication_date' && key!='languages'"
+                                  <tr ng-if="key!=='publisher' 
+                                            && key!=='version' 
+                                            && key!='publication_date' 
+                                            && key!='languages' 
+                                            && (data_descriptor_metadatum.value[key].length > 0)"
                                       ng-repeat="(ind, key) in data_descriptor_order">
-
                                     <td width='30%'>
                                       <label class="control-label pull-left" for='{{key}}' data-toggle="tooltip" title='{{key | translate}}'>{{data_descriptor_display[ind]}}</label>
                                       <!--<button type="button" data-toggle="popover" title="" data-content='{{key| translate}}' class="btn btn-info btn-circle pull-left">
                                         <i class="glyphicon glyphicon-question-sign"></i>
                                       </button>-->
                                     </td>
-                                    <td ng-if="key=='creators' || key=='contributors' ">
+                                    <td ng-if="key=='creators' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.first_name}} {{val.last_name}}
                                       <span>
@@ -230,7 +276,12 @@
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
                                         {{val.name}}
                                       <span>
-                                    </td>                               
+                                    </td>      
+                                    <td ng-if="key=='contributors' ">
+                                        <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
+                                          {{val.first_name}} {{val.last_name}}
+                                        <span>
+                                    </td>                         
                                     <!--
                                     <td ng-if="key=='subjects' ">
                                       <span class="btn btn-default" ng-repeat="(key, val) in data_descriptor_metadatum.value[key]" ng-click="openViewMetadata(val.uuid, 'lg')">
@@ -243,7 +294,7 @@
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(', ')}}
                                     </td>
-                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' ">
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' || key==='license_rights' || key==='relations' || key==='published' || key==='hydroPushed' || key==='ikewaiPushed'">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key]}}
@@ -310,7 +361,7 @@
                           </div>
                       </div>
 
-                      <!--DATA DESCRIPTOR FORM-->
+                      <!--DATA DESCRIPTOR EDIT FORM -->
                       <div ng-show="has_data_descriptor == false || edit_data_descriptor == true" class="text-center">
                         <!--
                         <div class="row ">
@@ -411,7 +462,7 @@
                             ng-disabled="disabled"
                             title="Choose contributing people">
                             <ui-select-match placeholder="Select contributing organizations...">{{$item.name}}</ui-select-match>
-                            <ui-select-choices repeat="org in orgs | filter: $select.search">
+                            <ui-select-choices repeat="org in orgs | filter: $select.search | orderBy:'name'">
                               <span ng-bind-html="org.name"></span>
                             </ui-select-choices>
                           </ui-select>
@@ -420,110 +471,77 @@
                       </div>
                       <br />
 
-                          <div class="panel panel-default"  ng-show="!wizardSecondPage">
-                              <div class="panel-heading"><button class="btn btn-block" data-toggle="collapse" data-target="#hawaiian">Fields for Hawaiian Language group only</button></div>
-                              <div id="hawaiian" class="panel-body collapse">
-                               <div class="form-group">
-
-                                  <!-- Newspapers -->
-                                  <div class="form-group required"  ng-show="!wizardSecondPage">
-                                      <label class="control-label pull-left" for="newspaper" data-toggle="tooltip" title='{{"newspaper" | translate}}'>Newspaper(s):</label>
-                                      <button type="button" data-toggle="popover" title="Newspaper Field" data-content='{{"newspaper" | translate}}' class="btn btn-info btn-circle pull-left">
-                                        <i class="glyphicon glyphicon-question-sign"></i>
-                                      </button>
-                                      <br />
-                                      <ui-select
-                                        class="form-control"
-                                        multiple
-                                        remove-selected="false"
-                                        ng-model="datadescriptor.newspapers"
-                                        theme="bootstrap"
-                                        style="width: 100%;text-align: left;"
-                                        sortable="true"
-                                        ng-disabled="disabled"
-                                        title="Choose newspapers">
-                                        <ui-select-match placeholder="Select newspaper(s)...">{{$item.name}}</ui-select-match>
-                                        <ui-select-choices repeat="newspaper in newspapers | filter: $select.search | orderBy:'name'">
-                                          <div><span ng-bind-html="newspaper.name"></span></div>
-                                        </ui-select-choices>
-                                      </ui-select>
-                                      <!-- JEN TODO later-->
-                                      <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateNewspaper('lg')">Create New Newspaper</button>-->
-                                      <script>
-                                        $(document).ready(function(){
-                                            $('[data-toggle="popover"]').popover();
-                                        });
-                                      </script>
-                                    </div>
-
-                                  <!-- Authors -->
-                                  <div class="form-group required"  ng-show="!wizardSecondPage">
-                                      <label class="control-label pull-left" for="articleAuthor" data-toggle="tooltip" title='{{"author" | translate}}'>Author(s):</label>
-                                      <button type="button" data-toggle="popover" title="Author Field" data-content='{{"author" | translate}}' class="btn btn-info btn-circle pull-left">
-                                        <i class="glyphicon glyphicon-question-sign"></i>
-                                      </button>
-                                      <br />
-                                      <ui-select
-                                        class="form-control"
-                                        multiple
-                                        remove-selected="false"
-                                        ng-model="datadescriptor.articleAuthors"
-                                        theme="bootstrap"
-                                        style="width: 100%;text-align: left;"
-                                        sortable="true"
-                                        ng-disabled="disabled"
-                                        title="Choose author(s)">
-                                        <ui-select-match placeholder="Select author(s)...">{{$item.name}}</ui-select-match>
-                                        <ui-select-choices repeat="author in articleAuthors | filter: $select.search | orderBy:'name'">
-                                          <div><span ng-bind-html="author.name"></span><span ng-bind-html="author.pen_name"></span></div>
-                                        </ui-select-choices>
-                                      </ui-select>
-                                      <!-- JEN TODO later-->
-                                      <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateAuthor('lg')">Create New Author</button>-->
-                                      <script>
-                                        $(document).ready(function(){
-                                            $('[data-toggle="popover"]').popover();
-                                        });
-                                      </script>
-                                    </div>
-
-                                  <!-- Translators -->
-                                  <div class="form-group required"  ng-show="!wizardSecondPage">
-                                    <label class="control-label pull-left" for="translator" data-toggle="tooltip" title='{{"translator" | translate}}'>Translator(s):</label>
-                                    <button type="button" data-toggle="popover" title="Author Field" data-content='{{"translator" | translate}}' class="btn btn-info btn-circle pull-left">
-                                      <i class="glyphicon glyphicon-question-sign"></i>
-                                    </button>
-                                    <br />
-                                    <ui-select
-                                      class="form-control"
-                                      multiple
-                                      remove-selected="false"
-                                      ng-model="datadescriptor.translators"
-                                      theme="bootstrap"
-                                      style="width: 100%;text-align: left;"
-                                      sortable="true"
-                                      ng-disabled="disabled"
-                                      title="Choose translators">
-                                      <ui-select-match placeholder="Select translator(s)...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-                                      <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
-                                        <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
-                                      </ui-select-choices>
-                                    </ui-select>
-                                    <!-- JEN TODO later-->
-                                    <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Create New Translator</button>-->
-                                    <script>
-                                      $(document).ready(function(){
-                                          $('[data-toggle="popover"]').popover();
-                                      });
-                                    </script>
-                                  </div>
-                               </div>
+                      <!-- CONTRIBUTING PERSON -->
+                      <!--
+                      <div class="form-group">
+                          <label class="control-label pull-left" for="contributorPerson" data-toggle="tooltip" title='{{"contributorPerson" | translate}}'>Contributor - Person:</label>
+                          <button type="button" data-toggle="popover" title="Contributing Person(s)" data-content='{{"contributorPerson" | translate}}' class="btn btn-info btn-circle pull-left">
+                            <i class="glyphicon glyphicon-question-sign"></i>
+                          </button>
+                          <br />
+                          <ui-select
+                            class="form-control"
+                            multiple
+                            remove-selected="false"
+                            ng-model="datadescriptor.contributors"
+                            theme="bootstrap"
+                            style="width: 100%;text-align: left;"
+                            sortable="true"
+                            ng-disabled="disabled"
+                            title="Choose contributing people">
+                            <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                            <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
+                              <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+                            </ui-select-choices>
+                          </ui-select>
+  
+                          <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
+                        </div>
+                        <br />
+                        <br />
+                        --->
+                      <div class="panel panel-default"  ng-show="!wizardSecondPage">
+                        <div class="panel-heading"><button class="btn btn-block" data-toggle="collapse" data-target="#hydroshare">Fields for Hydroshare</button></div>
+                        <div id="hydroshare" class="panel-body collapse">
+                         <div class="form-group">
+                            <!-- CONTRIBUTING PERSON -->
+                            <div class="form-group">
+                                <label class="control-label pull-left" for="contributorPerson" data-toggle="tooltip" title='{{"contributorPerson" | translate}}'>Contributor - Person:</label>
+                                <button type="button" data-toggle="popover" title="Contributing Person(s)" data-content='{{"contributorPerson" | translate}}' class="btn btn-info btn-circle pull-left">
+                                  <i class="glyphicon glyphicon-question-sign"></i>
+                                </button>
+                                <br />
+                                <ui-select
+                                  class="form-control"
+                                  multiple
+                                  remove-selected="false"
+                                  ng-model="datadescriptor.contributors"
+                                  theme="bootstrap"
+                                  style="width: 100%;text-align: left;"
+                                  sortable="true"
+                                  ng-disabled="disabled"
+                                  title="Choose contributing people">
+                                  <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                                  <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
+                                    <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
+                                  </ui-select-choices>
+                                </ui-select>
+        
+                                <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
                             </div>
-                          </div>   
+                            <br />
+                            <br />
 
+                            <!-- RELATED RESOURCES -->
+                            <div class="form-group">
+                              <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Related Resources:</label>
+                              <button type="button" data-toggle="popover" title="Related Resources" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                              </button>
+                              <input ng-model="datadescriptor.relations" placeholder="Enter filenames linked to this resource" class="form-control" type='textarea' rows="2"/>
+                            </div>
 
                             <!-- RIGHTS - LICENSE -->
-                         <!--   <br />
                             <div class="form-group required">
                               <label class="control-label pull-left" for="rightsLicense" data-toggle="tooltip" title='{{"rightsLicense" | translate}}'>License - Rights:</label>
                               <button type="button" data-toggle="popover" title="License Rights Field" data-content='{{"rightsLicense" | translate}}' class="btn btn-info btn-circle pull-left">
@@ -539,10 +557,10 @@
                                     <div ng-bind-html="license | highlight: $select.search"></div>
                                   </ui-select-choices>
                               </ui-select>
-                            </div> -->
+                            </div>
 
                             <!-- ACCESS RIGHTS -->
-                           <!-- <div class="form-group required">
+                            <!-- <div class="form-group required">
                               <label class="control-label pull-left" for="rightsPermissions" data-toggle="tooltip" title='{{"rightsPermissions" | translate}}'>Access Rights:</label>
                               <button type="button" data-toggle="popover" title="Access Rights Field" data-content='{{"rightsPermissions" | translate}}' class="btn btn-info btn-circle pull-left">
                                 <i class="glyphicon glyphicon-question-sign"></i>
@@ -561,22 +579,128 @@
 
                               <!--
                               <div class="btn-group pull-left" role="group">
-	                              <button id="btn-public" data-toggle="tooltip" data-placement="auto"
-	                                 title='{{"rightsPermissionsPublic" | translate}}' class="btn btn-default"
-                                   on-release="{{setPrivate(false)}}">
-	                                 Public
-	                              </button>
-	                              <button id="btn-private" data-toggle="tooltip" data-placement="auto"
-	                                 title='{{"rightsPermissionsPrivate" | translate}}' type="submit"
-	                                 class="btn btn-default active" on-release="{{setPrivate(true)}}">
-	                                 Private
-	                              </button>
+                                <button id="btn-public" data-toggle="tooltip" data-placement="auto"
+                                    title='{{"rightsPermissionsPublic" | translate}}' class="btn btn-default"
+                                    on-release="{{setPrivate(false)}}">
+                                    Public
+                                </button>
+                                <button id="btn-private" data-toggle="tooltip" data-placement="auto"
+                                    title='{{"rightsPermissionsPrivate" | translate}}' type="submit"
+                                    class="btn btn-default active" on-release="{{setPrivate(true)}}">
+                                    Private
+                                </button>
                                 <input type="text" ng-model="datadescriptor.license_permission"/>
                               </div>
                               -->
-                             <!-- <br />
+                              <!-- <br />
                               <br />
                             </div>-->
+                          </div>
+                        </div>
+                      </div>   
+
+                      <div class="panel panel-default"  ng-show="!wizardSecondPage">
+                          <div class="panel-heading"><button class="btn btn-block" data-toggle="collapse" data-target="#hawaiian">Fields for Hawaiian Language group only</button></div>
+                          <div id="hawaiian" class="panel-body collapse">
+                            <div class="form-group">
+
+                              <!-- Newspapers -->
+                              <div class="form-group required"  ng-show="!wizardSecondPage">
+                                  <label class="control-label pull-left" for="newspaper" data-toggle="tooltip" title='{{"newspaper" | translate}}'>Newspaper(s):</label>
+                                  <button type="button" data-toggle="popover" title="Newspaper Field" data-content='{{"newspaper" | translate}}' class="btn btn-info btn-circle pull-left">
+                                    <i class="glyphicon glyphicon-question-sign"></i>
+                                  </button>
+                                  <br />
+                                  <ui-select
+                                    class="form-control"
+                                    multiple
+                                    remove-selected="false"
+                                    ng-model="datadescriptor.newspapers"
+                                    theme="bootstrap"
+                                    style="width: 100%;text-align: left;"
+                                    sortable="true"
+                                    ng-disabled="disabled"
+                                    title="Choose newspapers">
+                                    <ui-select-match placeholder="Select newspaper(s)...">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="newspaper in newspapers | filter: $select.search | orderBy:'name'">
+                                      <div><span ng-bind-html="newspaper.name"></span></div>
+                                    </ui-select-choices>
+                                  </ui-select>
+                                  <!-- JEN TODO later-->
+                                  <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateNewspaper('lg')">Create New Newspaper</button>-->
+                                  <script>
+                                    $(document).ready(function(){
+                                        $('[data-toggle="popover"]').popover();
+                                    });
+                                  </script>
+                                </div>
+
+                              <!-- Authors -->
+                              <div class="form-group required"  ng-show="!wizardSecondPage">
+                                  <label class="control-label pull-left" for="articleAuthor" data-toggle="tooltip" title='{{"author" | translate}}'>Author(s):</label>
+                                  <button type="button" data-toggle="popover" title="Author Field" data-content='{{"author" | translate}}' class="btn btn-info btn-circle pull-left">
+                                    <i class="glyphicon glyphicon-question-sign"></i>
+                                  </button>
+                                  <br />
+                                  <ui-select
+                                    class="form-control"
+                                    multiple
+                                    remove-selected="false"
+                                    ng-model="datadescriptor.articleAuthors"
+                                    theme="bootstrap"
+                                    style="width: 100%;text-align: left;"
+                                    sortable="true"
+                                    ng-disabled="disabled"
+                                    title="Choose author(s)">
+                                    <ui-select-match placeholder="Select author(s)...">{{$item.name}}</ui-select-match>
+                                    <ui-select-choices repeat="author in articleAuthors | filter: $select.search | orderBy:'name'">
+                                      <div><span ng-bind-html="author.name"></span><span ng-bind-html="author.pen_name"></span></div>
+                                    </ui-select-choices>
+                                  </ui-select>
+                                  <!-- JEN TODO later-->
+                                  <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateAuthor('lg')">Create New Author</button>-->
+                                  <script>
+                                    $(document).ready(function(){
+                                        $('[data-toggle="popover"]').popover();
+                                    });
+                                  </script>
+                                </div>
+
+                              <!-- Translators -->
+                              <div class="form-group required"  ng-show="!wizardSecondPage">
+                                <label class="control-label pull-left" for="translator" data-toggle="tooltip" title='{{"translator" | translate}}'>Translator(s):</label>
+                                <button type="button" data-toggle="popover" title="Author Field" data-content='{{"translator" | translate}}' class="btn btn-info btn-circle pull-left">
+                                  <i class="glyphicon glyphicon-question-sign"></i>
+                                </button>
+                                <br />
+                                <ui-select
+                                  class="form-control"
+                                  multiple
+                                  remove-selected="false"
+                                  ng-model="datadescriptor.translators"
+                                  theme="bootstrap"
+                                  style="width: 100%;text-align: left;"
+                                  sortable="true"
+                                  ng-disabled="disabled"
+                                  title="Choose translators">
+                                  <ui-select-match placeholder="Select translator(s)...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
+                                  <ui-select-choices repeat="person in people | filter: $select.search | orderBy:'last_name'">
+                                    <div><span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name"></span></div>
+                                  </ui-select-choices>
+                                </ui-select>
+                                <!-- JEN TODO later-->
+                                <!--<button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreatePerson('lg')">Create New Translator</button>-->
+                                <script>
+                                  $(document).ready(function(){
+                                      $('[data-toggle="popover"]').popover();
+                                  });
+                                </script>
+                              </div>
+                            </div>
+                        </div>
+                      </div>   
+
+
 
                             <!-- SUBJECT -->
                             <div class="form-group"  ng-show="!wizardSecondPage">
@@ -712,33 +836,6 @@
                               </ui-select>
                             </div>
 
-                            <!-- CONTRIBUTING PERSON -->
-                        <!--    <div class="form-group">
-                              <label class="control-label pull-left" for="contributorPerson" data-toggle="tooltip" title='{{"contributorPerson" | translate}}'>Contributor - Person:</label>
-                              <button type="button" data-toggle="popover" title="Contributing Person Field" data-content='{{"contributorPerson" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <br />
-
-                              <ui-select
-                                class="form-control"
-                                multiple
-                                remove-selected="false"
-                                ng-model="datadescriptor.contributors"
-                                theme="bootstrap"
-                                style="width: 100%;text-align: left;"
-                                sortable="true"
-                                ng-disabled="disabled"
-                                title="Choose contributing people">
-                                <ui-select-match placeholder="Select contributing people...">{{$item.last_name}}, {{$item.first_name}}</ui-select-match>
-                                <ui-select-choices repeat="person in people | filter: $select.search">
-                                  <span ng-bind-html="person.last_name"></span>, <span ng-bind-html="person.first_name">
-                                </ui-select-choices>
-                              </ui-select>
-
-                              <button type="button" class="fa fa-plus pull-right btn btn-default" ng-click="openCreateContribPerson('lg')">Add Contributing People</button>
-                            </div>
-                            <br />-->
                             <!-- LANGUAGE -->
                             <!--
                             <div class="form-group">
@@ -775,15 +872,6 @@
                               </button>
                               <textarea ng-model="datadescriptor.description" placeholder="Enter abstract or text describing this resource" class="form-control" type='textarea' rows="5"/>
                             </div>
-
-                            <!-- RELATED -->
-                           <!-- <div class="form-group">
-                              <label class="control-label pull-left" for="relations" data-toggle="tooltip" title='{{"relations" | translate}}'>Relations:</label>
-                              <button type="button" data-toggle="popover" title="Relations Field" data-content='{{"relations" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                              </button>
-                              <input ng-model="datadescriptor.relations" placeholder="Enter filenames linked to this resource" class="form-control" type='textarea' rows="2"/>
-                            </div> -->
 
                             <!-- CHOOSE LOCATIONS -->
                             <div class="form-group" ng-show="data_descriptor_metadatum">
