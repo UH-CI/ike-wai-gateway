@@ -40,7 +40,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 		);
 	}
 	$scope.selectVariable = function(variable){
-        $("#selected_var").val(variable.value.variable_name)
+        $("#selected_var").val(variable.value.id)
         //alert("SELECT: "+ variable.value.id + "|" +variable.value.variable_name)
         $scope.temp_var= {'column_num': $('#column_num').val(),'variable':variable}
     }

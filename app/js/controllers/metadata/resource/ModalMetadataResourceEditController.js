@@ -25,6 +25,9 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
             if($scope.metadatum.name == 'Well'){
             $scope.metadatum.schemaId = '5711039176026484250-242ac1110-0001-013'
             }
+            if($scope.metadatum.name == 'Variable'){
+            $scope.metadatum.schemaId = '5010457031476047385-242ac1110-0001-013'
+            }
           }
           console.log('schemaId: '+ $scope.metadatum.schemaId)
           MetaController.getMetadataSchema($scope.metadatum.schemaId)
@@ -210,7 +213,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
             }
           });*/
         }//close else
-      
+
         L.geoJson($scope.savedItems.geoJSON, {
                 style: function(feature) {
                     return {
@@ -268,7 +271,7 @@ angular.module('AgaveToGo').controller("ModalMetadataResourceEditController", fu
 					url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 					type: 'xyz'
 					}*/
-					
+
 			},
 			overlays:{
 
