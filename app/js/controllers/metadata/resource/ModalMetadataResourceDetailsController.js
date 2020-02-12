@@ -33,24 +33,18 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
 
   $scope.getModalMetadatum = function(){
     $scope.requesting = true;
-    if(this.$parent != undefined){
-      if (this.$parent.metadataUuid !== undefined && this.$parent.metadataUuid !== '') {
-        var uuid = this.$parent.metadataUuid;
-        MetaController.getMetadata(uuid)
-          .then(
-            function(response){
-              $scope.metadatum = response.result;
-              $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
-              $scope.makeLocationMarkers($scope.metadatum)
-              if ($scope.order[$scope.metadatum.name].length ==0){
-                alert(Object.keys($scope.metadatum.value))
-                $scope.order[$scope.metadatum.name] = Object.keys($scope.metadatum.value)
-              }
-              $scope.requesting = false;
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_details'));
-              $scope.requesting = false;
+
+    if (this.$parent.metadataUuid !== undefined && this.$parent.metadataUuid !== '') {
+      var uuid = this.$parent.metadataUuid;
+      MetaController.getMetadata(uuid)
+        .then(
+          function(response){
+            $scope.metadatum = response.result;
+            $scope.fetchFileMetadata("{$and:[{'name':'File'},{'associationIds':{$in: ['"+$scope.metadatum.uuid+"']}}]}")
+            $scope.makeLocationMarkers($scope.metadatum)
+            if ($scope.order[$scope.metadatum.name].length ==0){
+              alert(Object.keys($scope.metadatum.value))
+              $scope.order[$scope.metadatum.name] = Object.keys($scope.metadatum.value)
             }
             if($scope.metadatum.name =='Timeseries_Template'){
               $scope.temp_vars = {}
