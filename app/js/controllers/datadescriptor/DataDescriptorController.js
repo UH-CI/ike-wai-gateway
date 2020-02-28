@@ -50,10 +50,14 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.subjects = [];
   $scope.locations = [];
   $scope.variables = [];
+
+  $scope.pushedToIkewai = false;
+  $scope.pushedToHydroshare = false;
+  $scope.stagedToIkewai = false;
+  $scope.stagedToHydroshare = false;
+
   //$scope.ddUuid = $stateParams.uuid;
   $scope.ddUuid = $scope.uuid;
-  // values are ikewai.org or Hydroshare
-  $scope.pushLocation = $scope.location;
 
   $scope.formats = [
     ".bmp - bit map",
@@ -133,10 +137,14 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.datadescriptor.selected_push_files = [];
   $scope.datadescriptor.subjects = ["ikewai"];
   $scope.datadescriptor.contributors = [];
+  $scope.datadescriptor.pushedToIkewai = false;
+  $scope.datadescriptor.pushedToHydroshare = false;
+  $scope.datadescriptor.stagedToIkewai = false;
+  $scope.datadescriptor.stagedToHydroshare = false;
   $scope.edit_data_descriptor = false;
   $scope.push_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'organizations','contributors','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators','relations','license_rights','published','hydroDOI','ikewaiURL']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Contributor(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators','Related Resource(s)','License', 'Pushed to Annotated Repo?', 'Hydroshare DOI', 'Ikewai.org url']
+  $scope.data_descriptor_order = ['title','creators', 'organizations','contributors','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators','relations','license_rights','published','pushedToIkewai','pushedToHydroshare','stagedToIkewai','stagedToHydroshare','hydroshareDOI']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Contributor(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators','Related Resource(s)','License', 'Pushed to Annotated Repo?', 'Pushed to Ikewai.org', 'Pushed to Hydroshare', 'Staged to Ikewai.org', 'Staged to Hydroshare', 'Hydroshare DOI']
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
@@ -423,81 +431,120 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // END of methods to export a data descriptor to a text file
   //
 
-  $scope.pushToIkewai = function(dataDescriptorUuid) {
-    console.log("DataDescriptorController.pushToIkewai");
-    // TODO: not actually pushing the files.  Need to send the metadata as a post via email,
-    // and the urls to the files will be contained in the email.  Make sure we only include the
-    // selected files from the form.
-    // also, this will need to go through a staging process, for now, just posting directly 
-    // to see if I can get it going.
+//   $scope.pushToIkewai = function(dataDescriptorUuid) {
+//     console.log("DataDescriptorController.pushToIkewai");
+//     // TODO: not actually pushing the files.  Need to send the metadata as a post via email,
+//     // and the urls to the files will be contained in the email.  Make sure we only include the
+//     // selected files from the form.
+//     // also, this will need to go through a staging process, for now, just posting directly 
+//     // to see if I can get it going.
 
-/*
-    Jetpack post by email shortcodes
+// /*
+//     Jetpack post by email shortcodes
     
-    https://jetpack.com/support/post-by-email/
-    https://code.tutsplus.com/tutorials/a-walkthrough-for-jetpacks-post-by-email-feature--wp-31120
+//     https://jetpack.com/support/post-by-email/
+//     https://code.tutsplus.com/tutorials/a-walkthrough-for-jetpacks-post-by-email-feature--wp-31120
 
-    [category x,y,z]
-    [excerpt]some excerpt[/excerpt]
-    [tags x,y,z]
-    [delay +1 hour]
-    [comments on | off]
-    [status publish | pending | draft | private]
-    [slug some-url-name]
-    [title Your post title]
-    [end] – everything after this shortcode is ignored (e.g. signatures). If you use this, make sure it’s on its own line with a blank line above it.
-    [slideshow] – replaces the auto-gallery with a slideshow
-    [nogallery] – disables the auto-gallery and displays all images inline
-    [more] – see more tag
-    [nextpage] – see pagination
-    [publicize off|yahoo|twitter|facebook] – change Publicize options (see below)
-    [geotag off]
+//     [category x,y,z]
+//     [excerpt]some excerpt[/excerpt]
+//     [tags x,y,z]
+//     [delay +1 hour]
+//     [comments on | off]
+//     [status publish | pending | draft | private]
+//     [slug some-url-name]
+//     [title Your post title]
+//     [end] – everything after this shortcode is ignored (e.g. signatures). If you use this, make sure it’s on its own line with a blank line above it.
+//     [slideshow] – replaces the auto-gallery with a slideshow
+//     [nogallery] – disables the auto-gallery and displays all images inline
+//     [more] – see more tag
+//     [nextpage] – see pagination
+//     [publicize off|yahoo|twitter|facebook] – change Publicize options (see below)
+//     [geotag off]
 
-    "https://ikeauth.its.hawaii.edu:8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File /mydata-jgeis//jgeis/accelerating-gateway-development.pdf"&message="User: jgeis@hawaii.edu your staged file /mydata-jgeis//jgeis/accelerating-gateway-development.pdf was flagged for review.
-Please log into the Ike Wai Gateway and address the following: 
-Please revise""
-*/
-    // TODO: need to make a permanent link to the files in the annotated repo and send those as part of this.
+//     "https://ikeauth.its.hawaii.edu:8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File /mydata-jgeis//jgeis/accelerating-gateway-development.pdf"&message="User: jgeis@hawaii.edu your staged file /mydata-jgeis//jgeis/accelerating-gateway-development.pdf was flagged for review.
+// Please log into the Ike Wai Gateway and address the following: 
+// Please revise""
+// */
+//     // TODO: need to make a permanent link to the files in the annotated repo and send those as part of this.
 
-    var msgTitle = $scope.data_descriptor_metadatum.value["title"];
-    var msgGuts = "[status draft][geotag off]" + "[title " + msgTitle + "]" + $scope.dataDescriptorToString() + "[end]";
-    console.log("message contents: " + msgGuts);
+//     var msgTitle = $scope.data_descriptor_metadatum.value["title"];
+//     var msgGuts = "[status draft][geotag off]" + "[title " + msgTitle + "]" + $scope.dataDescriptorToString() + "[end]";
+//     console.log("message contents: " + msgGuts);
 
-    // showing as a wall of text, tried <br /> as the line break, no luck.  Those showed, but had no effect.
-    // \n gets stripped out upon sending.
+//     // showing as a wall of text, tried <br /> as the line break, no luck.  Those showed, but had no effect.
+//     // \n gets stripped out upon sending.
 
-    var post_data = {};
-    var url = 
-      $localStorage.tenant.baseUrl.slice(0, -1)
-      + ':8080/email'
-      //+ '?to=babe968rizu@post.wordpress.com'
-      + '?to=jgeis26@gmail.com'
-      + '&from=jgeis26@gmail.com'
-      + '&subject=' + msgTitle
-      + '&message=' + msgGuts;
-    var options = {
-      headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token, 'Content-Type': 'text/plain; charset=UTF-8', 'Content-Transfer-Encoding':'quoted-printable'}
+//     var post_data = {};
+//     var url = 
+//       $localStorage.tenant.baseUrl.slice(0, -1)
+//       + ':8080/email'
+//       //+ '?to=babe968rizu@post.wordpress.com'
+//       + '?to=jgeis26@gmail.com'
+//       + '&from=jgeis26@gmail.com'
+//       + '&subject=' + msgTitle
+//       + '&message=' + msgGuts;
+//     var options = {
+//       headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token, 'Content-Type': 'text/plain; charset=UTF-8', 'Content-Transfer-Encoding':'quoted-printable'}
+//     }
+//     // TODO: include adding flag to the data descriptor showing it is posted to ikewai.org
+
+//     $http.post(url,post_data, options)
+//       .success(function (data, status, headers, config) {
+//         console.log({message:angular.toJson(data)})
+//        })
+//       .error(function (data, status, header, config) {
+//           console.log({error_message:angular.toJson(data)});
+//       });
+//     //console.log($scope.datadescriptor.selected_push_files);
+//     $scope.close();
+//   }
+
+
+  $scope.stageToIkewai = function () {
+    console.log("DataDescriptorController.stageToIkewai");
+    // Not actually pushing to ikewai.org, instead, just putting a flag on the file and data descriptor.
+
+    if (typeof $scope.data_descriptor_metadatum !== "undefined") {
+      /*
+      // unstage
+      if ($scope.data_descriptor_metadatum.value.stagedToIkewai) {
+        $scope.datadescriptor.stagedToIkewai = false;
+        $scope.data_descriptor_metadatum.value.stagedToIkewai = false;
+      }
+      else {
+        $scope.datadescriptor.stagedToIkewai = true;
+        $scope.data_descriptor_metadatum.value.stagedToIkewai = true;
+      }
+      */
+      // don't do this if it's already staged
+      if (!$scope.data_descriptor_metadatum.value.stagedToIkewai) {
+        var stagedStatus = $scope.data_descriptor_metadatum.value.stagedToIkewai;
+        console.log("JG stageToIkewai: " + stagedStatus);
+
+        //$scope.datadescriptor.stagedToIkewai = true;
+        $scope.data_descriptor_metadatum.value.stagedToIkewai = true;
+        $scope.data_descriptor_metadatum.value.rejectedFromIkewai = false;
+
+        console.log("JG: Setting stagedToIkewai: " + $scope.datadescriptor);
+        //$scope.data_descriptor_metadatum.value.subjects.concat(",ikewai");
+        $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+        $scope.updateDataDescriptor();
+      }
     }
-
-    // TODO: include adding flag to the data descriptor showing it is posted to ikewai.org
-
-    $http.post(url,post_data, options)
-      .success(function (data, status, headers, config) {
-        console.log({message:angular.toJson(data)})
-       })
-      .error(function (data, status, header, config) {
-          console.log({error_message:angular.toJson(data)});
-      });
     //console.log($scope.datadescriptor.selected_push_files);
     $scope.close();
   }
 
-  $scope.pushToHydroshare = function(dataDescriptorUuid) {
+  $scope.stageToHydroshare = function () {
     // Go to HydroshareOAuthController for where this is really happening.  
+
     // Need to edit this so it can start the process rather than the current
     // manual version described there.
 
-    console.log("DataDescriptorController.pushToHydroshare: works, but has guts commented out right now.");
+    console.log("DataDescriptorController.stageToHydroshare: works, but has guts commented out right now.");
+
+    //console.log("Access Token: " + $rootScope.hydroshareAccessToken);
+
     // TODO: not actually pushing the files.  Need to send the metadata as a post via email,
     // and the urls to the files will be contained in the email.  Make sure we only include the
     // selected files from the form.
@@ -505,15 +552,42 @@ Please revise""
     // to see if I can get it going.
 
     console.log($scope.datadescriptor.selected_push_files);
-    
+
+    //$rootScope.$emit("AuthenticateToHydroshare", {});
     //$scope.getHSAuthToken();
-    
+
     // JG TODO: need to set this up so it only gets called once per session
     //HydroshareOAuthController.getHSAuthToken();
     //$scope.getHydroshareUserInfo();
 
-    console.log("DataDescriptorController.pushToHydroshare: " + $scope.accessToken());
-    console.log("DataDescriptorController.pushToHydroshare: " + HydroshareService.userInfoHS);
+    if (typeof $scope.data_descriptor_metadatum !== "undefined") {
+      var stagedStatus = $scope.data_descriptor_metadatum.value.stagedToHydroshare;
+      console.log("JG stageToHydroshare: " + stagedStatus);
+      /*
+      // unstage
+      if ($scope.data_descriptor_metadatum.value.stagedToHydroshare) {
+        $scope.datadescriptor.stagedToHydroshare = false;
+        $scope.data_descriptor_metadatum.value.stagedToHydroshare = false;
+      }
+      // stage
+      else {
+        $scope.datadescriptor.stagedToHydroshare = true;
+        $scope.data_descriptor_metadatum.value.stagedToHydroshare = true;
+      }
+      */
+      // don't do this if already staged
+      if (!$scope.data_descriptor_metadatum.value.stagedToHydroshare) {
+        //$scope.datadescriptor.stagedToHydroshare = true;
+        $scope.data_descriptor_metadatum.value.stagedToHydroshare = true;
+        $scope.data_descriptor_metadatum.value.rejectedFromHydroshare = false;
+        console.log("JG: Setting stageToHydroshare: " + $scope.datadescriptor);
+        $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+        $scope.updateDataDescriptor();
+      }
+    }
+
+    //console.log("DataDescriptorController.stageToHydroshare: " + $scope.accessToken());
+    //console.log("DataDescriptorController.stageToHydroshare: " + HydroshareService.userInfoHS);
     $scope.close();
   }
 
@@ -670,10 +744,9 @@ Please revise""
     }
   };
 
-
   $scope.getFiles = function () {
     // JEN: TODO: this likely shouldn't be people, what should it be?
-    $scope.people.length = 0;
+    //$scope.people.length = 0;
     //$scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $stateParams.uuid + "'}]}");
     $scope.fetchMetadata("{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + $scope.ddUuid + "'}]}");
   };

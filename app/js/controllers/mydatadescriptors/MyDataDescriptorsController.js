@@ -34,6 +34,72 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
+    // ikewai or hydroshare. Used to show correct buttons.
+    $scope.pushLocation = "";
+
+    $scope.unstageFromIkewai = function(dataDescriptor) {
+      console.log("MyDataDescriptorsController.unstageFromIkewai: " + dataDescriptor);
+      $scope.requesting = true; 
+      if (typeof dataDescriptor !== "undefined") {
+        if (dataDescriptor.value.stagedToIkewai) {
+          dataDescriptor.stagedToIkewai = false;
+          dataDescriptor.value.stagedToIkewai = false;
+          console.log("JG: Setting unstageFromIkewai: " + dataDescriptor);
+          $scope.updateDataDescriptor(dataDescriptor);
+        }
+      }
+      $scope.requesting = false;
+    }
+  
+    $scope.unstageFromHydroshare = function(dataDescriptor) {
+      console.log("MyDataDescriptorsController.unstageFromHydroshare: " + dataDescriptor.uuid);
+      $scope.requesting = true;
+      if (typeof dataDescriptor !== "undefined") {
+        if (dataDescriptor.value.stagedToHydroshare) {
+          dataDescriptor.stagedToHydroshare = false;
+          dataDescriptor.value.stagedToHydroshare = false;
+          console.log("JG: Setting unstageFromHydroshare: " + dataDescriptor);
+          //$scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+          $scope.updateDataDescriptor(dataDescriptor);
+        }
+      }
+      $scope.requesting = false;
+    }
+
+
+    $scope.updateDataDescriptor = function (dataDescriptor) {
+      console.log("JEN MyDataDescriptorsController: updateDataDescriptor: " + dataDescriptor.uuid);
+      $scope.requesting = true;
+
+      //MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+      //  .then(function (response) {
+      var body = {};
+      body.name = dataDescriptor.name;
+      body.value = dataDescriptor.value;
+      body.schemaId = dataDescriptor.schemaId;
+      body.associationIds = dataDescriptor.associationIds;
+
+      MetaController.updateMetadata(body, dataDescriptor.uuid)
+        .then(
+          function (response) {
+            //$scope.metadataUuid = response.result.uuid;
+            App.alert({
+              message: "Success",
+              closeInSeconds: 5
+            });
+          },
+          function (response) {
+            MessageService.handle(response, $translate.instant('error_metadata_add'));
+            $scope.requesting = false;
+          }
+        );
+            
+      //});
+      $scope.requesting = false;
+      console.log("JEN MyDataDescriptorsController: updateDataDescriptor done");
+    }
+
+
     $scope.searchAll = function(){
       console.log("searchAll: " + $scope.profile);
       $scope.requesting = true;
@@ -321,7 +387,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     console.log("MyDataDescriptorsController.openPushHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
-    $scope.location = "hydroshare";
+    $scope.pushLocation = "hydroshare";
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
@@ -347,7 +413,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   $scope.openPushIkewai = function (dataDescriptorUuid, size) {
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
-    $scope.location = "ikewai";
+    $scope.pushLocation = "ikewai";
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       //templateUrl: 'views/modals/ModalViewDataDescriptor.html',

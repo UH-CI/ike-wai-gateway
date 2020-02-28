@@ -171,7 +171,11 @@
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')">
                             {{metadatum.value.title}}</a>&nbsp;
-                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Pushed to Annotated Repo</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.stagedToHydroshare'>Staged to Hydroshare</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.stagedToIkewai'>Staged to Ikewai.org</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.pushedToHydroshare'>Pushed to Hydroshare</span>
+                          <span class="badge badge-success" ng-show='metadatum.value.pushedToIkewai'>Pushed to Ikewai.org</span>
                           </a>
                         </td>
                         <td>
