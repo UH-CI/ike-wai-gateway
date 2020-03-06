@@ -12,6 +12,7 @@ function($scope, $state, $stateParams,$translate, $window, $uibModal, $rootScope
 		$scope.refresh();
 	}
   $scope.metadataUuid = null;
+  $scope.selectedSchemaUuid = '5010457031476047385-242ac1110-0001-013'
 	$scope.changeSchema = function(schemauuid) {
 		selectedSchemaUuid = schemauuid;
 		$scope.refresh();
