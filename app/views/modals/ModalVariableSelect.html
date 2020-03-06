@@ -1,7 +1,7 @@
 <div id="associate_modal" class="modal-header">
     <h4 class="page-title">{{modalTitle}}</h4>
 </div>
-    <div ng-if="column_vars.length != 0">
+    <div ng-if="column_vars.length != 0" class="pre-scrollable" style={height:50px;}>
     Assigned Columns:
       <ul>
         <li ng-repeat="column in column_vars">
@@ -12,39 +12,12 @@
         </li>
       </ul>
     </div>
-        <form novalidate class="simple-form" name="VariableSelectForm">
-            <div class="form-group required">
-                <table class="table">
-                    <tr>
-                        <td>
-                                <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'>Column Number (columns starting at 1 for leftmost column):</label>
-                                <button type="button"  data-toggle="popover" title="Site Column " data-content='{{"site_column" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                                </button>
-                                <span ng-show="missing_values_error" class="warning" autofocus>Number of the Variable Column (columns starting at 1 for leftmost column) is a required field.</span>
-                                <input class="form-control" type="number" id="column_num" size="5"/>
 
-                        </td>
-                        <td>&nbsp;</td>
-                        <td>
-                                <label class="control-label pull-left" for="title" data-toggle="tooltip" title='{{"site_column" | translate}}'>Selected Variable (Select Below):</label>
-                                <button type="button"  data-toggle="popover" title="Site Column " data-content='{{"site_column" | translate}}' class="btn btn-info btn-circle pull-left">
-                                <i class="glyphicon glyphicon-question-sign"></i>
-                                </button>
-                                <span ng-show="missing_values_error" class="warning" autofocus>Number of the Variable Column (columns starting at 1 for leftmost column) is a required field.</span>
-                                <input class="form-control" type="text" id="selected_var" disabled="true"/>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
-        </form>
 
 </div>
-<div class="btn-group pull-right">
+<!--<div class="btn-group pull-right">
     <a href='#' ng-click="openCreate(selectedSchema.uuid,'lg')" role="button" class="button"> <i class="fa fa-tag"></i> Create New Variable&nbsp;</a>
-</div>
+</div>-->
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -112,10 +85,10 @@
                                       </td>
 
                                       <td class="text-center">
-                                          <div class="btn-group pull-left">
-
-                                              <a class="btn btn-sm green btn-outline pull-right" ng-click="selectVariable(metadatum)">
-                                                  Select
+                                          <div class="form-group pull-left">
+                                            <input class="form-control btn-sm" type="number" id="{{metadatum.uuid}}" size="2" width="15px"/></label>
+                                              <a class="btn btn-sm green btn-outline pull-left" ng-click="selectVariable(metadatum)">
+                                                  Select & Save
                                                   <i class="fa fa-plus"></i>
                                               </a>
                                           </div>
@@ -134,5 +107,4 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-default pull-left" ng-click="cancel()">Close</button>
-    <button class="btn btn-primary" ng-click="addColumnDef()">Save and Add Column Definition</button>
 </div>
