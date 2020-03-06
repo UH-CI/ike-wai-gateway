@@ -117,7 +117,8 @@
                           </a>
                           <ul class="dropdown-menu">
                             <li ng-repeat="metadataschemata in metadataschema " ng-show="approvedSchema.indexOf(metadataschemata.schema.title) > -1">
-                              <a href='#' ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
+                              <a href='#' ng-if="metadataschemata.schema.title != 'Timeseries_Template'" ng-click="openCreate(metadataschemata.uuid)" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
+                              <a href='#/timeseries' ng-if="metadataschemata.schema.title == 'Timeseries_Template'" role="button"> <i class="fa fa-tag"></i>{{metadataschemata.schema.title}}</a>
                             </li>
                           </ul>
                       </div>
@@ -188,7 +189,8 @@
                                                   <!-- <a href='#' ng-click="openView(metadatum.uuid)" role="button"> <i class="fa fa-eye"></i>View </a>
                                                   &nbsp; -->
 
-                                                  <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  <a href='#' ng-show="(profile.username == associationId.owner || edit_perm)  && metadatum.name != 'Timeseries_Template'" ng-click="openEdit(metadatum.uuid, 'lg')" role="button"> <i class="fa fa-pencil"></i>Edit</a>
+                                                  <a href='#/timeseries/{{metadatum.uuid}}' ng-show="(profile.username == associationId.owner || edit_perm)  && metadatum.name == 'Timeseries_Template'"  role="button"> <i class="fa fa-pencil"></i>Edit Timeseries_Template</a>
                                                   <a href='#' ng-show="profile.username == associationId.owner || edit_perm" ng-click="deleteMetadata(metadatum)" role="button"> <i class="fa fa-trash"></i>Delete</a>
                                           </div>
                                       </td>
