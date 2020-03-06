@@ -106,18 +106,15 @@ function($scope, $state, $stateParams,$translate, $window, $uibModal, $rootScope
               $scope.column_vars[column.column_number] = {'column_num': column.column_number,'variable':variables[column.variable_id]}
             })
             console.log($scope.column_vars)
-            $scope.requesting = true;
+            $scope.requesting = false;
           },
           function(response){
             console.log("ERRRO")
             alert("Error Could Not Fetch Timeseries with UUID: "+ $stateParams.uuid )
             MessageService.handle(response, "Error Could Not Fetch Timeseries with UUID: "+ $stateParams.uuid );
-            $scope.requesting = true;
+            $scope.requesting = false;
           }
       )
-    }
-    else{
-		    $scope.requesting = true;
     }
     MetaController.listMetadataSchema(
       $scope.schemaQuery
