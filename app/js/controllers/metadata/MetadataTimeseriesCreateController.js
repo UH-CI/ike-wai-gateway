@@ -1,5 +1,5 @@
 angular.module('AgaveToGo').controller("MetadataTimeseriesCreateController",
-function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
+function($scope, $state, $stateParams,$translate, $window, $uibModal, $rootScope, $timeout,
      $filter, MetaController, MetadataService, ActionsService, MessageService) {
 
 
@@ -11,7 +11,7 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 	$scope.initialize = function() {
 		$scope.refresh();
 	}
-
+  $scope.metadataUuid = null;
 	$scope.changeSchema = function(schemauuid) {
 		selectedSchemaUuid = schemauuid;
 		$scope.refresh();
@@ -42,32 +42,89 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
 	$scope.selectVariable = function(variable){
         $("#selected_var").val(variable.value.id)
         //alert("SELECT: "+ variable.value.id + "|" +variable.value.variable_name)
-        $scope.temp_var= {'column_num': $('#column_num').val(),'variable':variable}
+        if($('#'+variable.uuid).val() != null){
+          if($('#'+variable.uuid).val() > 0){
+            if ($scope.column_vars[$('#'+variable.uuid).val()] == null){
+              $scope.temp_var= {'column_num': $('#'+variable.uuid).val(),'variable':variable}
+              $scope.addColumnDef(variable.uuid)
+            }
+            else{
+              App.alert({type: 'danger',message: "Column number already assigned - delete current column assignment first.",closeInSeconds: 5  });
+            }
+          }
+          else {
+            App.alert({type: 'danger',message: "Column number cannot be less than 1.",closeInSeconds: 5  });
+            //$rootScope.$broadcast('metadataUpdated');
+          }
+        }
+        else{
+          App.alert({type: 'danger',message: "Colunn number cannot be empty",closeInSeconds: 5  });
+          //$rootScope.$broadcast('metadataUpdated');
+        }
+
     }
 
-    $scope.addColumnDef = function(){
+    $scope.addColumnDef = function(id){
         //check column num
         //check variable
         //add to column
         $scope.column_vars[$scope.temp_var['column_num']] = $scope.temp_var
         $scope.temp_var = {};
-        $("#selected_var").val('');
-        $("#column_num").val('')
+        //$("#selected_var").val('');
+        //$("#column_num").val('')
+        $scope.onSubmit();
     }
 
     $scope.removeColumn = function(column){
         delete $scope.column_vars[column.column_num]
     }
+
 	$scope.refresh = function() {
-		$scope.requesting = true;
-
-		MetaController.listMetadataSchema(
-			$scope.schemaQuery
-		).then(function(response){
+    console.log("INREFERSH")
+    if ($stateParams.uuid != undefined) {
+      console.log("IN UUID")
+      MetaController.getMetadata($stateParams.uuid)
+      .then(function(response){
+            console.log('got it')
+            metadata = response['result']
+            $scope.metadataUuid = metadata.uuid
+            $scope.timeseries_template.name = metadata.value.name
+            $("#name").val(metadata.value.name);
+            $scope.timeseries_template.description = metadata.value.description
+            $("#description").val(metadata.value.description);
+            $scope.timeseries_template.type = metadata.value.type
+            $("#type").val(metadata.value.type);
+            $scope.timeseries_template.datetime_column = metadata.value.datetime_column
+            $("#datetime_column").val(metadata.value.datetime_column);
+            $scope.timeseries_template.site_column = metadata.value.site_column
+            $("#site_column").val(metadata.value.site_column);
+            variables={}
+            angular.forEach(metadata.value.variables, function (v) {
+              variables[v.uuid] = v
+            })
+            angular.forEach(metadata.value.columns, function (column) {
+              $scope.column_vars[column.column_number] = {'column_num': column.column_number,'variable':variables[column.variable_id]}
+            })
+            console.log($scope.column_vars)
+            $scope.requesting = true;
+          },
+          function(response){
+            console.log("ERRRO")
+            alert("Error Could Not Fetch Timeseries with UUID: "+ $stateParams.uuid )
+            MessageService.handle(response, "Error Could Not Fetch Timeseries with UUID: "+ $stateParams.uuid );
+            $scope.requesting = true;
+          }
+      )
+    }
+    else{
+		    $scope.requesting = true;
+    }
+    MetaController.listMetadataSchema(
+      $scope.schemaQuery
+    ).then(function(response){
       $scope.metadataschema = 	response.result;
-			$scope.requesting = false;
-		})
-
+      $scope.requesting = false;
+    })
 	};
 
 
@@ -93,23 +150,41 @@ function($scope, $state, $translate, $window, $uibModal, $rootScope, $timeout,
         })
         body.schemaId = resp.result[0].uuid;
         console.log(body)
-        MetaController.addMetadata(body)
-          .then(
-            function(response){
-              $scope.metadataUuid = response.result.uuid;
-              //add the default permissions for the system in addition to the owners
-              MetadataService.addDefaultPermissions($scope.metadataUuid);
-              var metaName = response.result.name;
-              App.alert({message: "Successfully Created Timeseries Template",closeInSeconds: 5  });
-              $rootScope.$broadcast('metadataUpdated');
-              $scope.requesting = false;
-              alert("Timeseries Saved Successfully")
-            },
-            function(response){
-              MessageService.handle(response, $translate.instant('error_metadata_add'));
-              $scope.requesting = false;
-            }
-          );
+        if($scope.metadataUuid == null){
+          MetaController.addMetadata(body)
+            .then(
+              function(response){
+                $scope.metadataUuid = response.result.uuid;
+                //add the default permissions for the system in addition to the owners
+                MetadataService.addDefaultPermissions($scope.metadataUuid);
+                var metaName = response.result.name;
+                App.alert({message: "Successfully Created Timeseries Template",closeInSeconds: 5  });
+                $rootScope.$broadcast('metadataUpdated');
+                $scope.requesting = false;
+              },
+              function(response){
+                MessageService.handle(response, $translate.instant('error_metadata_add'));
+                $scope.requesting = false;
+              }
+            );
+          }
+          else{
+            body.uuid = $scope.metadataUuid
+            MetaController.updateMetadata(body, $scope.metadataUuid)
+              .then(
+                function(response){
+                  MetadataService.addDefaultPermissions($scope.metadataUuid);
+                  var metaName = response.result.name;
+                  App.alert({message: "Successfully Updated Timeseries Template",closeInSeconds: 5  });
+                  $rootScope.$broadcast('metadataUpdated');
+                  $scope.requesting = false;
+                },
+                function(response){
+                  MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  $scope.requesting = false;
+                }
+              );
+          }
         })
 			}
 			else{
