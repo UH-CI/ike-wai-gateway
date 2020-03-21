@@ -1,4 +1,4 @@
-angular.module('AgaveToGo').controller('StagedDataDescriptorsController', function ($scope, $http, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
+angular.module('AgaveToGo').controller('StagedDataDescriptorsController', function ($scope, $http, $filter, $state, $stateParams, $translate, $uibModal, $q, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
     $scope._COLLECTION_NAME = 'metadata',
     $scope._RESOURCE_NAME = 'metadatum';
     $scope.showModal = false;
@@ -32,6 +32,81 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
+    $scope.locations = {};
+    $scope.files = {};
+    
+    $scope.getFiles = function (dataDescriptor) {
+      $scope.files[dataDescriptor.uuid] = [];
+      console.log("StagedDataDescriptorsController.getFiles: " + dataDescriptor.uuid);
+      var query = "{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + dataDescriptor.uuid + "'}]}";
+      console.log("getAssociations query: " + query);
+      var limit = 100;
+      var deferred = $q.defer();
+      deferred.resolve(MetaController.listMetadata(query, limit, 0).then(
+        function (response) {
+          console.log("getFiles:" + dataDescriptor.uuid + ": " + response);
+          $scope.filemetadata = response.result;
+          angular.forEach($scope.filemetadata, function (associatedData) {
+            console.log("fetchMetadata:" + associatedData);
+            if (associatedData.name === 'File') {
+              console.log('File: ' + associatedData.value);
+              $scope.files[dataDescriptor.uuid].push(associatedData);
+            }
+          });
+          $scope.requesting = false;
+        },
+        function (response) {
+          MessageService.handle(response, $translate.instant('error_filemetadata_list'));
+          $scope.requesting = false;
+        }
+      ));
+      return deferred.promise;
+    };
+
+    $scope.getAssociations = function (dataDescriptor) {
+      $scope.locations[dataDescriptor.uuid] = [];
+      console.log("StagedDataDescriptorsController.getAssociations: " + dataDescriptor.uuid);
+      if (dataDescriptor._links.associationIds){
+        var query = "{'uuid':{'$in':['"+ dataDescriptor.associationIds.join("','") + "']}}";
+        console.log("getAssociations query: " + query);
+        var limit = 100;
+        var deferred = $q.defer();
+        deferred.resolve(MetaController.listMetadata(query, limit, 0).then(
+          function (response) {
+            console.log("getAssociations:" + dataDescriptor.uuid + ": " + response);
+            $scope.filemetadata = response.result;
+    
+            //$scope.makeLocationMarkers($scope.filemetadata);
+            angular.forEach($scope.filemetadata, function (associatedData) {
+              console.log("fetchMetadata:" + associatedData);
+              if (associatedData.name === 'Well' || 
+                  associatedData.name === 'Site' || 
+                  associatedData.name === 'Water_Quality_Site' || 
+                  associatedData.name === 'RainfallStation') {
+                console.log('Location: ' + associatedData);
+                $scope.locations[dataDescriptor.uuid].push(associatedData);
+              }
+              if (associatedData.name === 'File') {
+                console.log('File: ' + associatedData.value);
+              }
+              else if (value.name === 'Variable') {
+                console.log('Variable: ' + associatedData.value);
+              }
+            });
+            $scope.requesting = false;
+          },
+          function (response) {
+            MessageService.handle(response, $translate.instant('error_filemetadata_list'));
+            $scope.requesting = false;
+          }
+        ));
+        return deferred.promise;
+      }
+    };
+  
+
+    // This gets us all DataDescriptors that are marked as stagedToIkewai or stagedToHydroshare
+    // doesn't get location information
     $scope.searchAll = function(){
       $scope.requesting = true;
         var orquery = {}
@@ -79,7 +154,13 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             $scope.totalItems = response.result.length;
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
+            angular.forEach($scope[$scope._COLLECTION_NAME], function (value, key) {
+              $scope.getAssociations(value);
+              $scope.getFiles(value);
+            });
+
             $scope.requesting = false;
+            //$scope.makeLocationMarkers(response.result);
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_metadata_list'));
@@ -127,109 +208,283 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       $scope.updateDataDescriptor(dataDescriptor);
     }
 
-    $scope.getAuthors = function (dataDescriptor) {
-      /* 
-      ex: "creators":[{"first_name":"Kiana",
-      "last_name":"Frank",
-      "organization":"University of Hawaiʻi at Manoa",
-      "phone":"(808) 956-0403",
-      "email":"klfrank@hawaii.edu",
-      "uuid":"5977219466484968985-242ac1110-0001-012"},
-
-      {"first_name":"Diamond",
-      "last_name":"Tachera",
-      "organization":"University of Hawaiʻi at Manoa",
-      "email":"diamondt@hawaii.edu",
-      "uuid":"4865671556713222631-242ac1110-0001-012"}]
-      */
-      var arr = [];
+    $scope.getCreators = function (dataDescriptor) {
+      console.log("StagedDataDescriptorsController.getCreators");
+      // need to produce something like this for each creator:
+      // {"creator":{"name":"Sean Cleveland", "email":"seanbc@hawaii.edu","description":"/user/1337/"}}
+      var result = '';
       // our "creator" is HS's "author"
-      var authors = dataDescriptor.value.creators;
-      var spacer = ", ";
-      angular.forEach(authors, function (author) {
-        if (author != undefined) {
+      var creators = dataDescriptor.value.creators;
+      var spacer = " ";
+      angular.forEach(creators, function (creator) {
+        var creatorString = '';
+        if (creator != undefined) {
           // if either first or last is not set, don't use a comma
-          if (author.first_name == undefined || author.last_name == undefined) {
+          if (creator.first_name == undefined || creator.last_name == undefined) {
             spacer = "";
-            if (author.first_name == undefined) {
-              author.first_name = "";
+            if (creator.first_name == undefined) {
+              creator.first_name = "";
             }
-            if (author.last_name == undefined) {
-              author.last_name = "";
+            if (creator.last_name == undefined) {
+              creator.last_name = "";
             }
           }
-          arr.push(`"` + author.last_name + spacer + author.first_name + `"`);      
+          var emailString = "";
+          if (creator.email != undefined) {
+            emailString = `",email": "${creator.email}"`;
+          }
+
+          // make sure there's at least a first name or a last name
+          if (creator.first_name != "" && creator.last_name != "") {
+            creatorString += `{"name":"` + creator.first_name + spacer + creator.last_name + emailString + `}`;
+            //arr.push(`{"name":"${creator.last_name}${spacer}${creator.first_name}"${emailString}}`);
+          } 
+          if (creatorString.length > 0) {
+            result = `,{"creator":` + creatorString + `}`;
+          }
         }
       });
-      console.log("author array: " + arr);
-      var authorString = "";
-      if (arr.length > 0) {
-        authorString = `"authors": [${arr}],`;
-      }
-      return authorString;
-      //return arr;
+      return result;
     }
 
-    $scope.getFromDate = function(dataDescriptor) {
-      //console.log("StagedDataDescriptorsController.getFromDate");
-      var dString = "";
-      var d = dataDescriptor.value.start_datetime;
-      //console.log("from_date: " + d);
+    $scope.getContributors = function (dataDescriptor) {
+      console.log("StagedDataDescriptorsController.getContributors");
+      // need to produce something like this for each contributor:
+      // {"contributor": {"name": "Diamond Tachera", "email": "diamondt@hawaii.edu","organization": "University of Hawaii"}},
+      var result = '';
+      // our "contributor" is HS's "author"
+      var contributors = dataDescriptor.value.contributors;
+      var spacer = " ";
+      angular.forEach(contributors, function (contributor) {
+        var contributorString = '';
+        if (contributor != undefined) {
+          // if either first or last is not set, don't use a comma
+          if (contributor.first_name == undefined || contributor.last_name == undefined) {
+            spacer = "";
+            if (contributor.first_name == undefined) {
+              contributor.first_name = "";
+            }
+            if (contributor.last_name == undefined) {
+              contributor.last_name = "";
+            }
+          }
+          var emailString = "";
+          if (contributor.email != undefined) {
+            emailString = `,"email": "${contributor.email}"`;
+          }
+          var orgString = "";
+          if (contributor.organization != undefined) {
+            orgString = `,"organization": "${contributor.organization}"`;
+          }
+
+          // make sure there's at least a first name or a last name
+          if (contributor.first_name != "" && contributor.last_name != "") {
+            contributorString += `{"name":"` + contributor.first_name + spacer + contributor.last_name + emailString + orgString + `"}`;
+            //arr.push(`{"name":"${contributor.first_name}${spacer}${contributor.last_name}"${emailString}${orgString}`);
+          } 
+          if (contributorString.length > 0) {
+            result = `,{"contributor":` + contributorString + `}`;
+          }
+        }
+      });
+      return result;
+    }
+
+   /*
+   * Returns something like: 
+   * {"coverage": {
+   *   "type":"box", 
+   *   "value": {
+   *     "units": 
+   *     "Decimal degrees",
+   *     "east": "-76.30288",
+   *     "northlimit": "39.896164",
+   *     "eastlimit": "-76.291824",
+   *     "southlimit": "39.882217",
+   *     "westlimit": "-76.31393"
+   *   }
+   *  }
+   * },
+   * OR (can't have both box and point at same time)
+   * {"coverage":{"type":"point", "value": {"east": "56.45678", "north": "12.6789", "units": "decimal deg"}}}
+   * 
+   * Where to get point info in metadata object:
+   * "value" : {
+      "ikewai_type" : [ ],
+      "name" : "Manana Trailhead_Rain_Collector",
+      "id" : "Manana Trailhead",
+      "latitude" : 21.4300833,
+      "longitude" : -157.9380333,
+      "loc" : {
+        "type" : "Point",
+        "coordinates" : [ -157.9380333, 21.4300833 ]
+      }
+    },
+    longitude = east, latitude = north
+   */
+  $scope.getLocations = function(dataDescriptor) {
+    console.log("StagedDataDescriptorsController.getLocations");
+  
+    var ddLocations = $scope.locations[dataDescriptor.uuid];
+    var result = '';
+    angular.forEach(ddLocations, function(datum) {
+      console.log("Datum: " + datum);
+      if (datum.name == "Site") {
+        if (datum.value.loc != undefined && datum.value.name != undefined) {
+          if (datum.value.loc.type == 'Point') {
+            if (datum.value.latitude != undefined && datum.value.longitude != undefined) {
+              // ex1: {"coverage":{"type":"point", "value": {"east": "56.45678", "north": "12.6789", "units": "decimal deg", "name": "12232"}}}
+              // ex2: {"coverage":{"type":"point", "value":{"units": "Decimal degrees","east": "-84.0465","north": "49.6791","name": "12232","projection": "WGS 84 EPSG:4326"}}}
+              result += ',{"coverage":{"type":"point", "value": {"east": "' + datum.value.longitude + 
+              '", "north": "' + datum.value.latitude + 
+              '", "units": "Decimal Degrees", "name": "' + datum.value.name + '"}}}';
+            }
+          }
+          else {
+            // polygons aren't handled by HS right now, only boxes and points
+          }
+        }
+      }
+      else if (datum.name == "Well") {
+        if (datum.value.latitude != undefined && datum.value.longitude != undefined) {
+          result += ',{"coverage":{"type":"point", "value": {"east": "' + datum.value.longitude + 
+          '", "north": "' + datum.value.latitude + 
+          '", "units": "Decimal Degrees", "name": "' + datum.value.well_name + '"}}}';
+        }
+      }
+      else if (datum.name == "Water_Quality_Site") {
+        if (datum.value.latitude != undefined && datum.value.longitude != undefined) {
+          result += ',{"coverage":{"type":"point", "value": {"east": "' + datum.value.longitude + 
+          '", "north": "' + datum.value.latitude + 
+          '", "units": "Decimal Degrees", "name": "' + datum.value.name + '"}}}';
+        }
+      }
+      else if (datum.name == "RainfallStation") {
+        if(datum.value.latitude != undefined && datum.value.name != undefined) {
+          result += ',{"coverage":{"type":"point", "value": {"east": "' + datum.value.longitude + 
+          '", "north": "' + datum.value.latitude + 
+          '", "units": "Decimal Degrees", "name": "' + datum.value.station_name + '"}}}';
+        }
+      }
+    });
+    return result;
+  }
+
+
+   /*
+   * Returns something like: {"coverage":{"type":"period", "value":{"start":"01/01/2000", "end":"12/12/2010"}}}
+   */
+   $scope.getDates = function(dataDescriptor) {
+      console.log("StagedDataDescriptorsController.getDates");
+      var result = "";
+      var spacer = ","
+      var start = dataDescriptor.value.start_datetime;
+      var end = dataDescriptor.value.end_datetime;
+
+      // if both are not defined, we're done
+      if (start == undefined && end == undefined) {
+        return "";
+      }
+      // if one is not defined, set spacer to empty string as we don't want the comma anymore
+      else if (!start || !end) {
+        spacer = "";
+      }
+      // if not defined or not a value, set it to an empty string, else surround the value with needed text
+      if (!start) {
+        start = "";
+      }
+      else {
+        start = `"start": "` + start + `"`;
+      }
+      // if not defined or not a value, set it to an empty string, else surround the value with needed text
+      if (!end) {
+        end = "";
+      }
+      else {
+        end = `"end": "` + end + `"`;
+      }
+      if (start || end) {
+        result = `,{"coverage":{"type":"period", "value":{` + start + spacer + end + '}}}';
+      }
+      //console.log("Date string: " + result);
+      return result;
+    }
+
+    /*
+      // should produce something like this, but all on one line
+      "metadata": '[{
+        "fundingagency":{"agency_name":"National Science Foundation","award_title":"‘Ike Wai: Securing Hawaii’s Water Future Award","award_number":"OIA-1557349","agency_url":"http://www.nsf.gov"}},
+        {"contributor": {"name": "Diamond Tachera", "email": "diamondt@hawaii.edu","organization": "University of Hawaii"}},
+        {"coverage":{"type":"box", "value":{"units": "Decimal degrees","east": "-76.30288","northlimit": "39.896164","eastlimit": "-76.291824","southlimit": "39.882217","westlimit": "-76.31393"}}},
+        {"coverage":{"type":"period", "value":{"start":"01/01/2000", "end":"12/12/2010"}}},
+        {"creator":{"name":"Jennifer Geis", "description":"/user/1501/","order":"2"}},
+        {"creator":{"name":"Sean Cleveland", "description":"/user/1337/","order":"1"}
+      }]',
+    */
+    $scope.getMetadata = function(dataDescriptor) {
+      console.log("StagedDataDescriptorsController.getMetadata");
+      var result = "";
+      // funding agency will not change so can be hardcoded
+      var d = 
+        '{"fundingagency":{"agency_name":"National Science Foundation","award_title":"‘Ike Wai: Securing Hawaii’s Water Future Award","award_number":"OIA-1557349","agency_url":"http://www.nsf.gov"}}';
+      d += $scope.getCreators(dataDescriptor);
+      d += $scope.getContributors(dataDescriptor);
+      d += $scope.getLocations(dataDescriptor);
+      d += $scope.getDates(dataDescriptor);
+      //console.log("metadata: " + d);
       if (d) {
-        dString = `"from_date": "` + d + `",`;
+        // strip off newlines as it makes Hydroshare choke.
+        result = `,"metadata": '[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`
       }
-      //console.log("Start Date: " + dString);
-      return dString;
+      //console.log("String: " + s);
+      return result;
     }
-
-    $scope.getToDate = function(dataDescriptor) {
-      //console.log("StagedDataDescriptorsController.getToDate");
-      var dString = "";
-      var d = dataDescriptor.value.end_datetime;
-      //console.log("to_date: " + d);
-      if (d) {
-        dString = `"to_date": "` + d + `",`;
-      }
-      //console.log("To Date: " + dString);
-      return dString;
-    }
-
+    
     $scope.getAbstract = function(dataDescriptor) {
       //console.log("StagedDataDescriptorsController.getAbstract");
-      var s = "";
+      var result = "";
       var d = dataDescriptor.value.description;
       //console.log("abstract: " + d);
       if (d) {
         // strip off newlines as it make Hydroshare choke.
-        s = `"abstract": "${d.replace(/(\r\n|\n|\r)/gm, "")}",`
+        result = `,"abstract": "${d.replace(/(\r\n|\n|\r)/gm, "")}"`
       }
       //console.log("String: " + s);
-      return s;
+      return result;
     }
 
     $scope.getKeywords = function(dataDescriptor) {
       /* format: "keywords": ["keyword1","keyword2"], */
       //console.log("StagedDataDescriptorsController.getKeywords");
-      var s = "";
+      var result = "";
       var d = dataDescriptor.value.subjects;
       //console.log("subjects: " + JSON.stringify(d));
       if (d) {
-        s = `"keywords": ${JSON.stringify(d)},`
+        result = `,"keywords": ${JSON.stringify(d)}`
       }
       //console.log("String: " + s);
-      return s;
+      return result;
     }
 
+    // called when user goes to publish a DataDescriptor to Hydroshare
+    // need to still get the location info for that DD
     $scope.publishStagedDDToHydroshare = function (dataDescriptor) {
       console.log("StagedDataDescriptorsController.publishStagedDDToHydroshare: " + dataDescriptor.uuid);
       console.log("dataDescriptor: " + JSON.stringify(dataDescriptor));
       
+      //var deferred = $q.defer();
+      //$scope.fetchMetadata("{'uuid':'" + dataDescriptor.uuid + "'}", 100).then(function (response){
+
+
+      // I made a group 'ikewai': https://www.hydroshare.org/group/153
+
       // Send the data off to Hydroshare.
       //var userInfoURL = `https://www.hydroshare.org/hsapi/userInfo/?access_token=${$scope.accessToken}&format=json`;
       baseHSURL = "https://www.hydroshare.org";
 
       // g6QWYGsTM1RdNG3110oS8Li41gtXgW
-      var hsURL = `${baseHSURL}/hsapi/resource/?access_token=g6QWYGsTM1RdNG3110oS8Li41gtXgW`;
+      var hsURL = `${baseHSURL}/hsapi/resource/?access_token=n8y9G8YOoYx96TxvPnQZfBhAsW9Z7r`;
+      //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=g6QWYGsTM1RdNG3110oS8Li41gtXgW`;
       //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$rootScope.hydroshareAccessToken}`;
       console.log("hsURL: " + hsURL);
 
@@ -241,8 +496,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
       // Meanwhile, our backend "creators" field is the match for HS's "authors" API field.
       // we use the term 'authors' on our interface as well, just not in the JSON.
-
-      // "authors":"${dataDescriptor.creators.first_name} ${dataDescriptor.creators.last_name} ",
 
       // trying to figure out how to get all our user info into HS for authorship.
       // curl -X GET "https://www.hydroshare.org/hsapi/user/" -H "accept: application/json" -H "X-CSRFToken: CkpfWN0dmDKsZ3wYUlhjdIT7hyu0FCGh4XxUQlyvI537JCi1Yx9wzcmclKHJSdGz"
@@ -257,62 +510,16 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         }
       */
 
-      // "authors": ["${$scope.getAuthorArray(dataDescriptor)}"],
-      // "to_date": "2019-10-10",
-      // "abstract": "some abstract description",
-      //  "keywords": [
-      //    "keyword1",
-      //    "keyword2"
-      //  ],
-
-      // "creator": "ikewai",
-      // ${$scope.getAuthors(dataDescriptor)}
-      // ${$scope.getFromDate(dataDescriptor)}
-      // ${$scope.getToDate(dataDescriptor)}
-      // "availability": [ "public" ],
-
-      /* 
-      // THIS WORKS
-      var hsData = `{
-        "title": "some random title",
-        "authors": ["Geis, Jennifer","Cleveland, Sean"],
-        "creator": "ikewai",
-        "to_date": "2019-10-10",
-        "from_date": "2019-10-10",
-        "abstract": "some abstract description",
-        "keywords": [
-          "keyword1",
-          "keyword2"
-        ],
-        "availability": [ "public" ],
-        "resource_type": "CompositeResource"
-      }`;
-      */
-
-      /*
-      // This works, the issue was the newline in the abstract
-      var hsData = `{
-        "title": "Diamond Tachera sampling rain water at UHH CC in August 2018",
-        "creator": "ikewai",
-        "authors": ["Geis, Jennifer","Cleveland, Sean"],
-        "from_date": "2019-08-12",
-        "abstract": "Diamond Tachera, Graduate Research Assistant, Dept. of Earth Sciences, SOEST, sampling rain water at the UH Hawaii Community College Pālamanui Campus in August 2018. Photo taken by Dr. Kiana Frank, Assistant Professor, PBRC",
-        "keywords": ["sampling","rainwater","UHH","Hilo","Pālamanui","soest","pbrc","photo","ikewai"],
-        "availability": [ "public" ],
-        "resource_type": "CompositeResource"
-      }`;
-      */
       
+
+      // need to figure out how to get Hawaiian language stuff in there and variables and comments
       var hsData = `{
-          "title": "${dataDescriptor.value.title}",
-          "creator": "ikewai",
-          ${$scope.getAuthors(dataDescriptor)}
-          ${$scope.getFromDate(dataDescriptor)}
-          ${$scope.getToDate(dataDescriptor)}
-          ${$scope.getAbstract(dataDescriptor)}
-          ${$scope.getKeywords(dataDescriptor)}
-          "availability": [ "public" ],
-          "resource_type": "CompositeResource"
+        "title": "${dataDescriptor.value.title}"
+        ${$scope.getMetadata(dataDescriptor)}
+        ${$scope.getAbstract(dataDescriptor)}
+        ${$scope.getKeywords(dataDescriptor)}
+        ,"availability":"public"
+        ,"resource_type": "CompositeResource"
       }`;
 
       console.log("request: " + hsData);
@@ -327,6 +534,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // "can_edit": (user in set(page.edit_users.all())) \
       //             or (len(set(page.edit_groups.all()).intersection(set(user.groups.all()))) > 0)
       
+      // do the actual post to Hydroshare
+      /*
       console.log("hsURL: " + hsURL);
       $http({
           method: 'POST',
@@ -336,31 +545,34 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           // JG TODO: need to add error checking, check for error result from HS as well
           console.log("success");
           $scope.responseData = response.data;
+          var resourceId = $scope.responseData.resource_id;
           //console.log("userInfo: " + $scope.userInfo);
-          console.log("resource_id: " + $scope.responseData.resource_id);
+          console.log("resource_id: " + resourceId);
 
-          // TODO: add the resource_id to the data descriptor!
-
+          // put the hydroshare resourceId on the dataDescriptor
+          dataDescriptor.value.hydroshareResourceId = resourceId;
           // userInfo format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
       }, function errorCallback(response) {
           alert("HydroshareOAuthController.submitToHydroshare Error. Try Again!");
       });
-
-      
+      */
+      // temporarily commented out for testing
+      /*
       //console.log("staged? " + dd.value.stagedToHydroshare);
       // mark the dd as being "pushedToHydroshare" and no longer staged.
       dataDescriptor.value.stagedToHydroshare = false;
       dataDescriptor.value.pushedToHydroshare = true;
       $scope.updateDataDescriptor(dataDescriptor);
-      
+      */ 
+
+      //});
+      //return deferred.promise;
     }
 
     $scope.updateDataDescriptor = function (dataDescriptor) {
       console.log("JEN StagedDescriptorController: updateDataDescriptor");
       $scope.requesting = true;
 
-      //MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-      //  .then(function (response) {
       var body = {};
       body.name = dataDescriptor.name;
       body.value = dataDescriptor.value;
@@ -381,7 +593,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           }
         );
 
-      //});
       $scope.requesting = false;
       console.log("JEN StagedDescriptorController: updateDataDescriptor done");
     }
@@ -419,7 +630,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           MetaController.getMetadataSchema(uuid,1,0
     				
     			).then(function(response){
-            console.log("METADATA SCHEMA: "+ angular.toJson(response))
+            //console.log("METADATA SCHEMA: "+ angular.toJson(response))
     				$scope.metadataschema = response.result;
     				$scope.requesting = false;
     			})
