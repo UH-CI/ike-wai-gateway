@@ -39,13 +39,14 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       $scope.files[dataDescriptor.uuid] = [];
       console.log("StagedDataDescriptorsController.getFiles: " + dataDescriptor.uuid);
       var query = "{$and:[{'name':{'$in':['PublishedFile','File']}},{'associationIds':'" + dataDescriptor.uuid + "'}]}";
-      console.log("getAssociations query: " + query);
+      console.log("getFiles query: " + query);
       var limit = 100;
       var deferred = $q.defer();
       deferred.resolve(MetaController.listMetadata(query, limit, 0).then(
         function (response) {
           console.log("getFiles:" + dataDescriptor.uuid + ": " + response);
           $scope.filemetadata = response.result;
+
           angular.forEach($scope.filemetadata, function (associatedData) {
             console.log("fetchMetadata:" + associatedData);
             if (associatedData.name === 'File') {
@@ -63,6 +64,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       return deferred.promise;
     };
 
+    // get all location data which is location in the data descriptor associations
     $scope.getAssociations = function (dataDescriptor) {
       $scope.locations[dataDescriptor.uuid] = [];
       console.log("StagedDataDescriptorsController.getAssociations: " + dataDescriptor.uuid);
@@ -75,8 +77,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           function (response) {
             console.log("getAssociations:" + dataDescriptor.uuid + ": " + response);
             $scope.filemetadata = response.result;
-    
-            //$scope.makeLocationMarkers($scope.filemetadata);
+
             angular.forEach($scope.filemetadata, function (associatedData) {
               console.log("fetchMetadata:" + associatedData);
               if (associatedData.name === 'Well' || 
@@ -86,12 +87,14 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
                 console.log('Location: ' + associatedData);
                 $scope.locations[dataDescriptor.uuid].push(associatedData);
               }
+              /*
               if (associatedData.name === 'File') {
                 console.log('File: ' + associatedData.value);
               }
               else if (value.name === 'Variable') {
                 console.log('Variable: ' + associatedData.value);
               }
+              */
             });
             $scope.requesting = false;
           },
@@ -105,8 +108,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     };
   
 
-    // This gets us all DataDescriptors that are marked as stagedToIkewai or stagedToHydroshare
-    // doesn't get location information
+    // get all DataDescriptors that are marked as stagedToIkewai or stagedToHydroshare
     $scope.searchAll = function(){
       $scope.requesting = true;
         var orquery = {}
@@ -155,12 +157,13 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
             $scope[$scope._COLLECTION_NAME] = response.result;
             angular.forEach($scope[$scope._COLLECTION_NAME], function (value, key) {
+              // get all location and file info now, could get later, but then
+              // there are delays waiting for the info, getting it here works better.
               $scope.getAssociations(value);
               $scope.getFiles(value);
             });
 
             $scope.requesting = false;
-            //$scope.makeLocationMarkers(response.result);
           },
           function(response){
             MessageService.handle(response, $translate.instant('error_metadata_list'));
@@ -169,75 +172,56 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       );
     }
 
-    /*
-    $scope.publishStagedDDToIkewai = function (ddUID) {
-      var dd = "";
-      $scope[$scope._COLLECTION_NAME].forEach(function (metadata) {
-        if (metadata.uuid === ddUID) {
-          //console.log("match: " + metadata.uuid);
-          dd = metadata;
-        }
-      });
-      //console.log("staged? " + dd.value.stagedToHydroshare);
-      dd.value.stagedToIkewai = false;
-      dd.value.pushedToIkewai = true;
-      $scope.updateDataDescriptor(dd);
-    }
-
-    $scope.publishStagedDDToHydroshare = function (ddUID) {
-
-    // TODO: Send the data off to Hydroshare.
-      var dd = "";
-      $scope[$scope._COLLECTION_NAME].forEach(function (metadata) {
-        if (metadata.uuid === ddUID) {
-          //console.log("match: " + metadata.uuid);
-          dd = metadata;
-        }
-      });
-      //console.log("staged? " + dd.value.stagedToHydroshare);
-      dd.value.stagedToHydroshare = false;
-      dd.value.pushedToHydroshare = true;
-      $scope.updateDataDescriptor(dd);
-    }
+    // trying to figure out how to get all our user info into HS for authorship, currently only handling name and emails
+    // curl -X GET "https://www.hydroshare.org/hsapi/user/" -H "accept: application/json" -H "X-CSRFToken: CkpfWN0dmDKsZ3wYUlhjdIT7hyu0FCGh4XxUQlyvI537JCi1Yx9wzcmclKHJSdGz"
+    /* {
+        "username": "jgeis@hawaii.edu",
+        "email": "jgeis@hawaii.edu",
+        "first_name": "Jennifer",
+        "id": 1501,
+        "last_name": "Geis",
+        "title": "Software Engineer",
+        "organization": "University of Hawaii"
+      }
     */
-
-    $scope.publishStagedDDToIkewai = function (dataDescriptor) {
-      //console.log("staged? " + dd.value.stagedToHydroshare);
-      dataDescriptor.value.stagedToIkewai = false;
-      dataDescriptor.value.pushedToIkewai = true;
-      $scope.updateDataDescriptor(dataDescriptor);
-    }
-
     $scope.getCreators = function (dataDescriptor) {
       console.log("StagedDataDescriptorsController.getCreators");
       // need to produce something like this for each creator:
       // {"creator":{"name":"Sean Cleveland", "email":"seanbc@hawaii.edu","description":"/user/1337/"}}
       var result = '';
-      // our "creator" is HS's "author"
       var creators = dataDescriptor.value.creators;
       var spacer = " ";
       angular.forEach(creators, function (creator) {
         var creatorString = '';
-        if (creator != undefined) {
-          // if either first or last is not set, don't use a comma
+        if (creator) {
+          // if either first or last is not set, don't need a space
           if (creator.first_name == undefined || creator.last_name == undefined) {
             spacer = "";
-            if (creator.first_name == undefined) {
-              creator.first_name = "";
-            }
-            if (creator.last_name == undefined) {
-              creator.last_name = "";
-            }
           }
+          var firstName = creator.first_name;
+          var lastName = creator.last_name;
+          if (!creator.first_name) {
+            firstName = "";
+          }
+          if (!creator.last_name) {
+            lastName = "";
+          }
+
+          // TODO: verify HS will take a single value for the name
+          var nameString = `"name":"` + firstName + spacer + lastName + `"`;
+
           var emailString = "";
           if (creator.email != undefined) {
-            emailString = `",email": "${creator.email}"`;
+            emailString = `,"email": "${creator.email}"`;
+          }
+          var orgString = "";
+          if (creator.organization != undefined) {
+            orgString = `,"organization": "${creator.organization}"`;
           }
 
           // make sure there's at least a first name or a last name
           if (creator.first_name != "" && creator.last_name != "") {
-            creatorString += `{"name":"` + creator.first_name + spacer + creator.last_name + emailString + `}`;
-            //arr.push(`{"name":"${creator.last_name}${spacer}${creator.first_name}"${emailString}}`);
+            creatorString += `{` + nameString + emailString + orgString + `}`;
           } 
           if (creatorString.length > 0) {
             result = `,{"creator":` + creatorString + `}`;
@@ -257,17 +241,24 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       var spacer = " ";
       angular.forEach(contributors, function (contributor) {
         var contributorString = '';
-        if (contributor != undefined) {
-          // if either first or last is not set, don't use a comma
+        if (contributor) {
+
+          // if either first or last is not set, don't need a space
           if (contributor.first_name == undefined || contributor.last_name == undefined) {
             spacer = "";
-            if (contributor.first_name == undefined) {
-              contributor.first_name = "";
-            }
-            if (contributor.last_name == undefined) {
-              contributor.last_name = "";
-            }
           }
+          var firstName = contributor.first_name;
+          var lastName = contributor.last_name;
+          if (!contributor.first_name) {
+            firstName = "";
+          }
+          if (!contributor.last_name) {
+            lastName = "";
+          }
+
+          // TODO: verify HS will take a single value for the name
+          var nameString = `"name":"` + firstName + spacer + lastName + `"`;
+
           var emailString = "";
           if (contributor.email != undefined) {
             emailString = `,"email": "${contributor.email}"`;
@@ -279,7 +270,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
           // make sure there's at least a first name or a last name
           if (contributor.first_name != "" && contributor.last_name != "") {
-            contributorString += `{"name":"` + contributor.first_name + spacer + contributor.last_name + emailString + orgString + `"}`;
+            contributorString += `{` + nameString + emailString + orgString + `"}`;
             //arr.push(`{"name":"${contributor.first_name}${spacer}${contributor.last_name}"${emailString}${orgString}`);
           } 
           if (contributorString.length > 0) {
@@ -327,6 +318,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
   
     var ddLocations = $scope.locations[dataDescriptor.uuid];
     var result = '';
+    /*
     angular.forEach(ddLocations, function(datum) {
       console.log("Datum: " + datum);
       if (datum.name == "Site") {
@@ -367,9 +359,9 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         }
       }
     });
+    */
     return result;
   }
-
 
    /*
    * Returns something like: {"coverage":{"type":"period", "value":{"start":"01/01/2000", "end":"12/12/2010"}}}
@@ -385,27 +377,71 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       if (start == undefined && end == undefined) {
         return "";
       }
-      // if one is not defined, set spacer to empty string as we don't want the comma anymore
+      // HS does not allow only of start or end to be defined, so if only have one, make them match.
       else if (!start || !end) {
-        spacer = "";
+        // if not defined or not a value, set it to equal the one that is defined
+        if (!start && end) {
+          start = end;
+        }
+        else if (start && !end) {
+          end = start;
+        }
       }
-      // if not defined or not a value, set it to an empty string, else surround the value with needed text
-      if (!start) {
-        start = "";
-      }
-      else {
-        start = `"start": "` + start + `"`;
-      }
-      // if not defined or not a value, set it to an empty string, else surround the value with needed text
-      if (!end) {
-        end = "";
-      }
-      else {
-        end = `"end": "` + end + `"`;
-      }
+      start = `"start": "` + start + `"`;
+      end = `"end": "` + end + `"`;
       if (start || end) {
         result = `,{"coverage":{"type":"period", "value":{` + start + spacer + end + '}}}';
       }
+      //console.log("Date string: " + result);
+      return result;
+    }
+
+    /*
+    * Returns something like: {"rights": {"statement":"Our own statement","url":"http://ikewai.org/licenses/by/4.0/"}}
+    */
+    $scope.getRightsStatement = function(dataDescriptor) {
+      console.log("StagedDataDescriptorsController.getRightsStatement");
+      var result = "";
+      var spacer = ","
+      var rights = dataDescriptor.value.license_rights;
+
+      // these are the defaults, used if author didn't select anything.
+      var rightsString = "This resource is shared under the Creative Commons Attribution CC BY."
+      var urlString = "http://creativecommons.org/licenses/by/4.0/";
+      if (rights) {
+        // this is not needed as this is the default as shown directly above
+        //if (rights === "Creative Commons Attribution CC BY") {
+        //  rightsString = "This resource is shared under the Creative Commons Attribution CC BY."
+        //  urlString = "http://creativecommons.org/licenses/by/4.0/";
+        //}
+        if (rights === "Creative Commons Attribution-ShareAlike CC BY-SA") {
+          rightsString = "This resource is shared under the Creative Commons Attribution-ShareAlike CC BY-SA."
+          urlString = "http://creativecommons.org/licenses/by-sa/4.0/";
+        }
+        else if (rights === "Creative Commons Attribution-NoDerivs CC BY-ND") {
+          rightsString = "This resource is shared under the Creative Commons Attribution-NoDerivs CC BY-ND."
+          urlString = "http://creativecommons.org/licenses/by-nd/4.0/";
+        }
+        else if (rights === "Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA") {
+          rightsString = "This resource is shared under the Creative Commons Attribution-NoCommercial-ShareAlike CC BY-NC-SA."
+          urlString = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
+        }
+        else if (rights === "Creative Commons Attribution-NoCommercial CC BY-NC") {
+          rightsString = "This resource is shared under the Creative Commons Attribution-NoCommercial CC BY-NC."
+          urlString = "http://creativecommons.org/licenses/by-nc/4.0/";
+        }
+        else if (rights === "Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND") {
+          rightsString = "This resource is shared under the Creative Commons Attribution-NoCommercial-NoDerivs CC BY-NC-ND."
+          urlString = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
+        }
+        else if (rights === "Other") {
+          rightsString = "Other"
+          urlString = "Make inquiry to author";
+        }
+      }
+      //rightsString = `"statement": "` + rightsString + `"`;
+      //urlString = `"url": "` + urlString + `"`;
+      result = `,{"rights":{"statement":"` + rightsString + `","url":"` + urlString + `"}}`;
       //console.log("Date string: " + result);
       return result;
     }
@@ -431,13 +467,19 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       d += $scope.getContributors(dataDescriptor);
       d += $scope.getLocations(dataDescriptor);
       d += $scope.getDates(dataDescriptor);
+      d += $scope.getRightsStatement(dataDescriptor);
       //console.log("metadata: " + d);
       if (d) {
         // strip off newlines as it makes Hydroshare choke.
-        result = `,"metadata": '[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`
+        //result = [d];
+        //result = "\'[" + d.replace(/(\r\n|\n|\r)/gm, "") + "]\'";
+        result = `,"metadata":'[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`;
+        //result = ',"metadata": "[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']"';
+        //result = ',"metadata": \'[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']\'';
       }
       //console.log("String: " + s);
       return result;
+      //return ',"metadata":\'[{"creator":{"name":"Diamond Tachera","email": "diamondt@hawaii.edu","organization": "University of Hawaiʻi at Manoa"}}]\'';
     }
     
     $scope.getAbstract = function(dataDescriptor) {
@@ -448,6 +490,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       if (d) {
         // strip off newlines as it make Hydroshare choke.
         result = `,"abstract": "${d.replace(/(\r\n|\n|\r)/gm, "")}"`
+        //result = d.replace(/(\r\n|\n|\r)/gm, "");
       }
       //console.log("String: " + s);
       return result;
@@ -461,9 +504,48 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       //console.log("subjects: " + JSON.stringify(d));
       if (d) {
         result = `,"keywords": ${JSON.stringify(d)}`
+        //result = JSON.stringify(d);
+        //result = d;
       }
       //console.log("String: " + s);
       return result;
+    }
+
+    $scope.addReadmeMDFile = function (dataDescriptor, resourceId, baseHSURL, accessToken) {
+      console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
+      /*  
+      "articleAuthors" : [ ],
+      "newspapers" : [ ],
+      "translators" : [ ],
+      data_state" : "Final",
+      variables
+      file links
+      */
+     hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
+      //print("url: " + url)
+ 
+      file = {
+        "file": ("readme.md",
+          "To save space on Hydroshare, all `Ike Wai project files are stored at the "
+          + "University of Hawai'i and linked here.  Please use the following link(s) "
+          + "to see the files for this resource."
+          + "\n* [example1 link](http://example.com/)"
+          + "\n* [example2 link](http://example2.com/)",
+          "text/plain"
+      )};
+      
+      console.log("hsURL: " + hsURL);
+      $http({
+          method: 'POST',
+          url: hsURL,
+          files: file
+      }).then(function successCallback(response) {
+          // JG TODO: need to add error checking, check for error result from HS as well
+          console.log("success: " + response);
+          //$scope.responseData = response.data;
+      }, function errorCallback(response) {
+          console.log("HydroshareOAuthController.addReadmeMDFile Error. Try Again!");
+      });
     }
 
     // called when user goes to publish a DataDescriptor to Hydroshare
@@ -471,20 +553,15 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     $scope.publishStagedDDToHydroshare = function (dataDescriptor) {
       console.log("StagedDataDescriptorsController.publishStagedDDToHydroshare: " + dataDescriptor.uuid);
       console.log("dataDescriptor: " + JSON.stringify(dataDescriptor));
-      
-      //var deferred = $q.defer();
-      //$scope.fetchMetadata("{'uuid':'" + dataDescriptor.uuid + "'}", 100).then(function (response){
-
 
       // I made a group 'ikewai': https://www.hydroshare.org/group/153
 
       // Send the data off to Hydroshare.
       //var userInfoURL = `https://www.hydroshare.org/hsapi/userInfo/?access_token=${$scope.accessToken}&format=json`;
       baseHSURL = "https://www.hydroshare.org";
+      accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
 
-      // g6QWYGsTM1RdNG3110oS8Li41gtXgW
-      var hsURL = `${baseHSURL}/hsapi/resource/?access_token=n8y9G8YOoYx96TxvPnQZfBhAsW9Z7r`;
-      //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=g6QWYGsTM1RdNG3110oS8Li41gtXgW`;
+      var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${accessToken}`;
       //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$rootScope.hydroshareAccessToken}`;
       console.log("hsURL: " + hsURL);
 
@@ -494,52 +571,64 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // reference here.  While technically, there can be multiple owners, for our case, we
       // will be the only one.
 
-      // Meanwhile, our backend "creators" field is the match for HS's "authors" API field.
-      // we use the term 'authors' on our interface as well, just not in the JSON.
 
-      // trying to figure out how to get all our user info into HS for authorship.
-      // curl -X GET "https://www.hydroshare.org/hsapi/user/" -H "accept: application/json" -H "X-CSRFToken: CkpfWN0dmDKsZ3wYUlhjdIT7hyu0FCGh4XxUQlyvI537JCi1Yx9wzcmclKHJSdGz"
-      /* {
-          "username": "jgeis@hawaii.edu",
-          "email": "jgeis@hawaii.edu",
-          "first_name": "Jennifer",
-          "id": 1501,
-          "last_name": "Geis",
-          "title": "Software Engineer",
-          "organization": "University of Hawaii"
-        }
-      */
+      // put Hawaiian language stuff and comments in the readme.md file
+      // if all variables are key-value pairs, put those in extra metadata, otherwise put in readme.md file
 
+
+      // THIS WORKS! sketchy though to use "eval," but JSON.parse fails
+      // due to the HS required single quotes around the metadata array.
       
-
-      // need to figure out how to get Hawaiian language stuff in there and variables and comments
-      var hsData = `{
+      var hsData = `({
         "title": "${dataDescriptor.value.title}"
         ${$scope.getMetadata(dataDescriptor)}
         ${$scope.getAbstract(dataDescriptor)}
         ${$scope.getKeywords(dataDescriptor)}
+        ,"view_groups":"ikewai"
         ,"availability":"public"
         ,"resource_type": "CompositeResource"
-      }`;
-
+      })`;
       console.log("request: " + hsData);
-
-      // file=@/PATH/TO/A/FILE
-      // metadata = '[{"coverage":{"type":"period", "value":{"start":"01/01/2000", "end":"12/12/2010"}}}, {"creator":{"name":"John Smith"}}, {"creator":{"name":"Lisa Miller"}}]'
-      // extra_metadata = '{"key-1": "value-1", "key-2": "value-2"}'
-      // "edit_groups": set(page.edit_groups.all()),
-      // "view_groups": set(page.view_groups.all()),
-      // "edit_users": set(page.edit_users.all()),
-      // "view_users": set(page.view_users.all()),
-      // "can_edit": (user in set(page.edit_users.all())) \
-      //             or (len(set(page.edit_groups.all()).intersection(set(user.groups.all()))) > 0)
+      // convert the string to a JSON object
+      hsData = eval(hsData);
       
+
+/*
+      var hsData = {};
+      hsData['title'] = dataDescriptor.value.title;
+      hsData['metadata'] = $scope.getMetadata(dataDescriptor);
+      hsData['abstract'] = $scope.getAbstract(dataDescriptor);
+      hsData['keywords'] = $scope.getKeywords(dataDescriptor);
+      hsData['view_groups'] = "ikewai";
+      hsData['availability'] = "public";
+      hsData['resource_type'] = "CompositeResource";
+      //console.log(hsData['metadata']);
+      //hsData = JSON.parse(JSON.stringify(hsData));
+      //hsData = JSON.stringify(hsData);
+      console.log(JSON.stringify(hsData));
+      */
+/*
+var hsData={}
+hsData['title'] = "diam..."
+hsData['metadata']='[{'dlksjdflksjdf']'
+JSON.stringify(hsData)*/
+
+      headers = {
+        'accept': "application/json",
+        'content-type': "application/json",
+      }
+
+      // strip out all the newlines as it makes HS choke
+      //hsData = hsData.replace(/(\r\n|\n|\r)/gm, "");
+      //hsData = JSON.parse(hsData);
+
+      // temporarily commented out for testing
       // do the actual post to Hydroshare
-      /*
       console.log("hsURL: " + hsURL);
       $http({
           method: 'POST',
           url: hsURL,
+          headers: headers,
           data: hsData
       }).then(function successCallback(response) {
           // JG TODO: need to add error checking, check for error result from HS as well
@@ -551,22 +640,32 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
           // put the hydroshare resourceId on the dataDescriptor
           dataDescriptor.value.hydroshareResourceId = resourceId;
-          // userInfo format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
+
+          // never managed to get the file to upload as part of creation, 
+          // so doing it as a separate action
+          //$scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
+
       }, function errorCallback(response) {
-          alert("HydroshareOAuthController.submitToHydroshare Error. Try Again!");
+          console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
       });
-      */
+      
+      //console.log("staged? " + dd.value.stagedToHydroshare);
+
       // temporarily commented out for testing
       /*
-      //console.log("staged? " + dd.value.stagedToHydroshare);
       // mark the dd as being "pushedToHydroshare" and no longer staged.
       dataDescriptor.value.stagedToHydroshare = false;
       dataDescriptor.value.pushedToHydroshare = true;
       $scope.updateDataDescriptor(dataDescriptor);
       */ 
 
-      //});
-      //return deferred.promise;
+    }
+
+    $scope.publishStagedDDToIkewai = function (dataDescriptor) {
+      //console.log("staged? " + dd.value.stagedToHydroshare);
+      dataDescriptor.value.stagedToIkewai = false;
+      dataDescriptor.value.pushedToIkewai = true;
+      $scope.updateDataDescriptor(dataDescriptor);
     }
 
     $scope.updateDataDescriptor = function (dataDescriptor) {
