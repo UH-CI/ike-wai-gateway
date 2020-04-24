@@ -439,10 +439,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           urlString = "Make inquiry to author";
         }
       }
-      //rightsString = `"statement": "` + rightsString + `"`;
-      //urlString = `"url": "` + urlString + `"`;
       result = `,{"rights":{"statement":"` + rightsString + `","url":"` + urlString + `"}}`;
-      //console.log("Date string: " + result);
       return result;
     }
 
@@ -468,18 +465,15 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       d += $scope.getLocations(dataDescriptor);
       d += $scope.getDates(dataDescriptor);
       d += $scope.getRightsStatement(dataDescriptor);
-      //console.log("metadata: " + d);
       if (d) {
         // strip off newlines as it makes Hydroshare choke.
-        //result = [d];
-        //result = "\'[" + d.replace(/(\r\n|\n|\r)/gm, "") + "]\'";
-        result = `,"metadata":'[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`;
+        result = '[' + d + ']';
+        //result = `,"metadata":'[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`;
         //result = ',"metadata": "[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']"';
         //result = ',"metadata": \'[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']\'';
       }
       //console.log("String: " + s);
       return result;
-      //return ',"metadata":\'[{"creator":{"name":"Diamond Tachera","email": "diamondt@hawaii.edu","organization": "University of Hawaiʻi at Manoa"}}]\'';
     }
     
     $scope.getAbstract = function(dataDescriptor) {
@@ -489,8 +483,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       //console.log("abstract: " + d);
       if (d) {
         // strip off newlines as it make Hydroshare choke.
-        result = `,"abstract": "${d.replace(/(\r\n|\n|\r)/gm, "")}"`
-        //result = d.replace(/(\r\n|\n|\r)/gm, "");
+        result = d.replace(/(\r\n|\n|\r)/gm, "");
       }
       //console.log("String: " + s);
       return result;
@@ -503,9 +496,9 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       var d = dataDescriptor.value.subjects;
       //console.log("subjects: " + JSON.stringify(d));
       if (d) {
-        result = `,"keywords": ${JSON.stringify(d)}`
+        //result = `,"keywords": ${JSON.stringify(d)}`
         //result = JSON.stringify(d);
-        //result = d;
+        result = d;
       }
       //console.log("String: " + s);
       return result;
@@ -521,31 +514,41 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       variables
       file links
       */
-     hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
+      hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
- 
-      file = {
-        "file": ("readme.md",
-          "To save space on Hydroshare, all `Ike Wai project files are stored at the "
-          + "University of Hawai'i and linked here.  Please use the following link(s) "
-          + "to see the files for this resource."
-          + "\n* [example1 link](http://example.com/)"
-          + "\n* [example2 link](http://example2.com/)",
-          "text/plain"
-      )};
-      
-      console.log("hsURL: " + hsURL);
-      $http({
-          method: 'POST',
-          url: hsURL,
-          files: file
-      }).then(function successCallback(response) {
-          // JG TODO: need to add error checking, check for error result from HS as well
-          console.log("success: " + response);
-          //$scope.responseData = response.data;
-      }, function errorCallback(response) {
-          console.log("HydroshareOAuthController.addReadmeMDFile Error. Try Again!");
-      });
+
+      /*
+      // the spacing on this works, this is just an example, remove once everything else works.
+      var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
+      + "University of Hawaii and linked here.  Please use the following link(s) "
+      + "to see the files for this resource."
+      + "\r\n \r\n"
+      + "- [example1 link](http://example.com/)"
+      + "\r\n \r\n"
+      + "- [example2 link](http://example2.com/)";
+      */
+
+     var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
+     + "University of Hawaii and linked here.  Please use the following link(s) "
+     + "to see the files for this resource."
+     + "\r\n \r\n"
+     + "- [example1 link](http://example.com/)"
+     + "\r\n \r\n"
+     + "- [example2 link](http://example2.com/)";
+
+      console.log("fileContents: " + fileContents);
+
+      var fileName = "readme.md";
+      var f = new File([fileContents], fileName, {type: "text/plain"});
+      var formData = new FormData();
+      //var blob = new Blob(['Lorem ipsum'], { type: 'plain/text' });
+      formData.append('file', f, fileName);
+      var request = new XMLHttpRequest();
+      request.open('POST', hsURL);
+      response = request.send(formData);
+      //console.log("response: " + response.responseText); 
+  
+
     }
 
     // called when user goes to publish a DataDescriptor to Hydroshare
@@ -571,47 +574,30 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // reference here.  While technically, there can be multiple owners, for our case, we
       // will be the only one.
 
-
       // put Hawaiian language stuff and comments in the readme.md file
       // if all variables are key-value pairs, put those in extra metadata, otherwise put in readme.md file
 
-
-      // THIS WORKS! sketchy though to use "eval," but JSON.parse fails
-      // due to the HS required single quotes around the metadata array.
-      
-      var hsData = `({
-        "title": "${dataDescriptor.value.title}"
-        ${$scope.getMetadata(dataDescriptor)}
-        ${$scope.getAbstract(dataDescriptor)}
-        ${$scope.getKeywords(dataDescriptor)}
-        ,"view_groups":"ikewai"
-        ,"availability":"public"
-        ,"resource_type": "CompositeResource"
-      })`;
-      console.log("request: " + hsData);
-      // convert the string to a JSON object
-      hsData = eval(hsData);
-      
-
-/*
       var hsData = {};
       hsData['title'] = dataDescriptor.value.title;
       hsData['metadata'] = $scope.getMetadata(dataDescriptor);
-      hsData['abstract'] = $scope.getAbstract(dataDescriptor);
-      hsData['keywords'] = $scope.getKeywords(dataDescriptor);
+      // abstract
+      var abstract = $scope.getAbstract(dataDescriptor);
+      if (abstract) {
+        hsData['abstract'] = abstract;
+      }
+      // keywords
+      var keywords = $scope.getKeywords(dataDescriptor);
+      if (keywords) {
+        hsData['keywords'] = keywords;
+      }
       hsData['view_groups'] = "ikewai";
       hsData['availability'] = "public";
       hsData['resource_type'] = "CompositeResource";
-      //console.log(hsData['metadata']);
-      //hsData = JSON.parse(JSON.stringify(hsData));
-      //hsData = JSON.stringify(hsData);
-      console.log(JSON.stringify(hsData));
-      */
-/*
-var hsData={}
-hsData['title'] = "diam..."
-hsData['metadata']='[{'dlksjdflksjdf']'
-JSON.stringify(hsData)*/
+      
+      // doesn't work, had to do separately
+      //hsData['files'] = {"file": ("readme.md","Test text of file","text/plain")};
+
+      //console.log(JSON.stringify(hsData));
 
       headers = {
         'accept': "application/json",
@@ -625,6 +611,7 @@ JSON.stringify(hsData)*/
       // temporarily commented out for testing
       // do the actual post to Hydroshare
       console.log("hsURL: " + hsURL);
+      
       $http({
           method: 'POST',
           url: hsURL,
@@ -643,11 +630,16 @@ JSON.stringify(hsData)*/
 
           // never managed to get the file to upload as part of creation, 
           // so doing it as a separate action
-          //$scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
+          $scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
 
       }, function errorCallback(response) {
           console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
       });
+      
+
+     // just for testing so I don't keep making new resources while testing file addition.
+     //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
+     
       
       //console.log("staged? " + dd.value.stagedToHydroshare);
 
