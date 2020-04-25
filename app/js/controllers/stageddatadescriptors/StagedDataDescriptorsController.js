@@ -270,7 +270,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
           // make sure there's at least a first name or a last name
           if (contributor.first_name != "" && contributor.last_name != "") {
-            contributorString += `{` + nameString + emailString + orgString + `"}`;
+            contributorString += `{` + nameString + emailString + orgString + `}`;
             //arr.push(`{"name":"${contributor.first_name}${spacer}${contributor.last_name}"${emailString}${orgString}`);
           } 
           if (contributorString.length > 0) {
@@ -278,6 +278,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           }
         }
       });
+      //console.log("Contributor string: " + result);
       return result;
     }
 
@@ -528,27 +529,52 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       + "- [example2 link](http://example2.com/)";
       */
 
-     var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
-     + "University of Hawaii and linked here.  Please use the following link(s) "
-     + "to see the files for this resource."
-     + "\r\n \r\n"
-     + "- [example1 link](http://example.com/)"
-     + "\r\n \r\n"
-     + "- [example2 link](http://example2.com/)";
+      var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
+      + "University of Hawaii and linked here.  Please use the following link(s) "
+      + "to see the files for this resource.";
+
+      angular.forEach(dataDescriptor._links.associationIds, function (link) {
+        if (link.title == 'file' && link.href.includes('ikewai-annotated-data')) {
+          fileContents += "\r\n \r\n - [" + link.href + "](" + link.href + ")";
+        }
+      });
+      fileContents += "\r\n \r\n";
+
+      if (dataDescriptor.value.newspapers || dataDescriptor.value.articleAuthors || dataDescriptor.value.translators) {
+        hwnString = "Hawaiian Newspaper Article Translation information:";
+        if (dataDescriptor.value.newspapers) {
+          hwnString += "\r\n \r\n Newspaper(s): ";
+          angular.forEach(dataDescriptor.value.newspapers, function (item) {
+            hwnString += "  \r\n - " + item.name; 
+          });
+        };
+        if (dataDescriptor.value.articleAuthors) {
+          hwnString += "  \r\n  \r\n Article Author(s): ";
+          angular.forEach(dataDescriptor.value.articleAuthors, function (item) {
+            var penName = item.pen_name
+            if (!penName) {penName = "N/A"}
+            hwnString += "  \r\n - name: " + item.name + ", pen name: " + penName; 
+          });
+        }
+        if (dataDescriptor.value.translators) {
+          hwnString +=  "  \r\n  \r\n Translators: ";
+          angular.forEach(dataDescriptor.value.translators, function (item) {
+            hwnString += "  \r\n - first name: " + item.first_name + ", last name: " + item.last_name + ", email: " + item.email + ", organization: " + item.organization; 
+          });
+        }
+        fileContents += hwnString;
+      }
 
       console.log("fileContents: " + fileContents);
 
       var fileName = "readme.md";
       var f = new File([fileContents], fileName, {type: "text/plain"});
       var formData = new FormData();
-      //var blob = new Blob(['Lorem ipsum'], { type: 'plain/text' });
       formData.append('file', f, fileName);
       var request = new XMLHttpRequest();
       request.open('POST', hsURL);
       response = request.send(formData);
       //console.log("response: " + response.responseText); 
-  
-
     }
 
     // called when user goes to publish a DataDescriptor to Hydroshare
@@ -597,7 +623,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // doesn't work, had to do separately
       //hsData['files'] = {"file": ("readme.md","Test text of file","text/plain")};
 
-      //console.log(JSON.stringify(hsData));
+      console.log(JSON.stringify(hsData));
 
       headers = {
         'accept': "application/json",
