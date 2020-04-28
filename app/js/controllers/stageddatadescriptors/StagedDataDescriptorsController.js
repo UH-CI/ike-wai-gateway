@@ -34,6 +34,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
     $scope.locations = {};
     $scope.files = {};
+    $scope.variables = {};
     
     $scope.getFiles = function (dataDescriptor) {
       $scope.files[dataDescriptor.uuid] = [];
@@ -67,6 +68,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     // get all location data which is location in the data descriptor associations
     $scope.getAssociations = function (dataDescriptor) {
       $scope.locations[dataDescriptor.uuid] = [];
+      $scope.variables[dataDescriptor.uuid] = [];
       console.log("StagedDataDescriptorsController.getAssociations: " + dataDescriptor.uuid);
       if (dataDescriptor._links.associationIds){
         var query = "{'uuid':{'$in':['"+ dataDescriptor.associationIds.join("','") + "']}}";
@@ -91,10 +93,11 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
               if (associatedData.name === 'File') {
                 console.log('File: ' + associatedData.value);
               }
-              else if (value.name === 'Variable') {
-                console.log('Variable: ' + associatedData.value);
-              }
               */
+              else if (associatedData.name === 'Variable') {
+                console.log('Variable: ' + associatedData.value);
+                $scope.variables[dataDescriptor.uuid].push(associatedData);
+              }
             });
             $scope.requesting = false;
           },
@@ -518,21 +521,11 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
 
-      /*
-      // the spacing on this works, this is just an example, remove once everything else works.
-      var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
-      + "University of Hawaii and linked here.  Please use the following link(s) "
-      + "to see the files for this resource."
-      + "\r\n \r\n"
-      + "- [example1 link](http://example.com/)"
-      + "\r\n \r\n"
-      + "- [example2 link](http://example2.com/)";
-      */
-
       var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
       + "University of Hawaii and linked here.  Please use the following link(s) "
       + "to see the files for this resource.";
 
+      // links to files
       angular.forEach(dataDescriptor._links.associationIds, function (link) {
         if (link.title == 'file' && link.href.includes('ikewai-annotated-data')) {
           fileContents += "\r\n \r\n - [" + link.href + "](" + link.href + ")";
@@ -540,8 +533,14 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       });
       fileContents += "\r\n \r\n";
 
+      // data state:
+      if (dataDescriptor.value.data_state) {
+        fileContents += "#### Data state: " + dataDescriptor.value.data_state + "\r\n \r\n";
+      }
+
+      // Hawaiian language news article translations
       if (dataDescriptor.value.newspapers || dataDescriptor.value.articleAuthors || dataDescriptor.value.translators) {
-        hwnString = "Hawaiian Newspaper Article Translation information:";
+        hwnString = "#### Hawaiian Newspaper Article Translation information:";
         if (dataDescriptor.value.newspapers) {
           hwnString += "\r\n \r\n Newspaper(s): ";
           angular.forEach(dataDescriptor.value.newspapers, function (item) {
@@ -562,11 +561,25 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             hwnString += "  \r\n - first name: " + item.first_name + ", last name: " + item.last_name + ", email: " + item.email + ", organization: " + item.organization; 
           });
         }
-        fileContents += hwnString;
+        fileContents += hwnString + "\r\n \r\n";
+      }
+
+      // Variables:
+      if ($scope.variables[dataDescriptor.uuid].length > 0) {
+        fileContents += "#### Variables";
+        angular.forEach($scope.variables[dataDescriptor.uuid], function (variable) {
+          //console.log("variable: " + variable);
+          fileContents += "\r\n \r\n - " + variable.value.variable_name;
+          var keys = Object.keys(variable.value);
+          angular.forEach(keys, function (key) {
+            if (key != "variable_name") {
+              fileContents += "\r\n \r\n    " + variable.value[key];
+            }
+          });
+        });
       }
 
       console.log("fileContents: " + fileContents);
-
       var fileName = "readme.md";
       var f = new File([fileContents], fileName, {type: "text/plain"});
       var formData = new FormData();
@@ -637,7 +650,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // temporarily commented out for testing
       // do the actual post to Hydroshare
       console.log("hsURL: " + hsURL);
-      
+
       $http({
           method: 'POST',
           url: hsURL,
@@ -661,8 +674,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       }, function errorCallback(response) {
           console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
       });
-      
 
+      
      // just for testing so I don't keep making new resources while testing file addition.
      //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
      
