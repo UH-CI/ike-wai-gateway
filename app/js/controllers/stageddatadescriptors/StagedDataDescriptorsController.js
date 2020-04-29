@@ -36,6 +36,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     $scope.files = {};
     $scope.variables = {};
     
+    /*
     $scope.getFiles = function (dataDescriptor) {
       $scope.files[dataDescriptor.uuid] = [];
       console.log("StagedDataDescriptorsController.getFiles: " + dataDescriptor.uuid);
@@ -64,6 +65,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       ));
       return deferred.promise;
     };
+    */
 
     // get all location data which is location in the data descriptor associations
     $scope.getAssociations = function (dataDescriptor) {
@@ -163,7 +165,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
               // get all location and file info now, could get later, but then
               // there are delays waiting for the info, getting it here works better.
               $scope.getAssociations(value);
-              $scope.getFiles(value);
+              //$scope.getFiles(value);
             });
 
             $scope.requesting = false;
@@ -508,6 +510,28 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       return result;
     }
 
+    $scope.makeFilesPublic = function(dataDescriptor) {
+      //FilesController.updateFileItemPermissionToPublicRead(path);
+      var newurls = [];
+      angular.forEach(dataDescriptor._links.associationIds, function (link) {
+        var systemId = 'ikewai-annotated-data//';
+        if (link.title === 'file' && link.href.includes(systemId)) {
+          var path = link.href.split(systemId)[1];
+          // note:  this works, but I need to get the new public url and add it to the file and/or data descriptor
+          FilesController.updateFileItemPermissionToPublicRead(path);
+          // generate a url in this format:
+          // https://ikeauth.its.hawaii.edu/files/v2/download/public/system/ikewai-annotated-data/new_data/DiamondWaterSampling.jpg
+          // for notes on how the url gets generated, see: 
+          // https://tacc-cloud.readthedocs.io/projects/agave/en/latest/agave/guides/files/files-publishing.html
+          var urlStart = link.href.split("media/system")[0];
+          var newurl = urlStart + "download/public/system/ikewai-annotated-data/" + path; 
+          newurls.push(newurl);
+          //console.log("path: " + newurl);
+        }
+      });
+      return newurls;
+    }
+
     $scope.addReadmeMDFile = function (dataDescriptor, resourceId, baseHSURL, accessToken) {
       console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
       /*  
@@ -521,21 +545,22 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
 
-      var fileContents = "To save space on Hydroshare, all `Ike Wai project files are stored at the "
+      var fileContents = "#### `Ike Wai:" 
+      + "\r\n \r\n"
+      + "To save space on Hydroshare, all `Ike Wai project files are stored at the "
       + "University of Hawaii and linked here.  Please use the following link(s) "
       + "to see the files for this resource.";
 
-      // links to files
-      angular.forEach(dataDescriptor._links.associationIds, function (link) {
-        if (link.title == 'file' && link.href.includes('ikewai-annotated-data')) {
-          fileContents += "\r\n \r\n - [" + link.href + "](" + link.href + ")";
-        }
+      // get the public links to the files:
+      var publicUrls = $scope.makeFilesPublic(dataDescriptor);
+      angular.forEach(publicUrls, function (link) {
+          fileContents += "\r\n \r\n - [" + link + "](" + link + ")";
       });
       fileContents += "\r\n \r\n";
 
       // data state:
       if (dataDescriptor.value.data_state) {
-        fileContents += "#### Data state: " + dataDescriptor.value.data_state + "\r\n \r\n";
+        fileContents += "#### Data state: \r\n" + dataDescriptor.value.data_state + "\r\n \r\n";
       }
 
       // Hawaiian language news article translations
@@ -578,16 +603,23 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           });
         });
       }
-
       console.log("fileContents: " + fileContents);
+    
+      // submit the file to Hydroshare
       var fileName = "readme.md";
       var f = new File([fileContents], fileName, {type: "text/plain"});
       var formData = new FormData();
       formData.append('file', f, fileName);
       var request = new XMLHttpRequest();
+      request.onload = function(e) {
+        console.log(request.responseText);
+      };
+      request.onerror= function(e) {
+        console.log("error: " + e);
+      };
       request.open('POST', hsURL);
       response = request.send(formData);
-      //console.log("response: " + response.responseText); 
+      //console.log("response: " + response.responseText);
     }
 
     // called when user goes to publish a DataDescriptor to Hydroshare
@@ -650,7 +682,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // temporarily commented out for testing
       // do the actual post to Hydroshare
       console.log("hsURL: " + hsURL);
-
+      
       $http({
           method: 'POST',
           url: hsURL,
@@ -667,6 +699,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           // put the hydroshare resourceId on the dataDescriptor
           dataDescriptor.value.hydroshareResourceId = resourceId;
 
+          $scope.makeFilesPublic(dataDescriptor);
+
           // never managed to get the file to upload as part of creation, 
           // so doing it as a separate action
           $scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
@@ -675,9 +709,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
       });
 
-      
-     // just for testing so I don't keep making new resources while testing file addition.
-     //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
+      // just for testing so I don't keep making new resources while testing file addition.
+      //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
      
       
       //console.log("staged? " + dd.value.stagedToHydroshare);
@@ -693,6 +726,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     }
 
     $scope.publishStagedDDToIkewai = function (dataDescriptor) {
+      $scope.makeFilesPublic(dataDescriptor);
       //console.log("staged? " + dd.value.stagedToHydroshare);
       dataDescriptor.value.stagedToIkewai = false;
       dataDescriptor.value.pushedToIkewai = true;
