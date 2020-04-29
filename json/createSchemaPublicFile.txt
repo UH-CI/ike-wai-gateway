@@ -1,0 +1,80 @@
+To create:
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaPublicFile.json
+
+OR
+
+
+curl -sk -H "Authorization: Bearer bfc4505c6a9508047b1d8ab59773130" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title" : "PublicFile",
+  "description" : "Created when a file is made public.  Unites the file, data descriptor, and the file's public url",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "file_uuid" : {
+      "type" : "string",
+      "title" : "File UUID"
+    },
+    "data_descriptor_uuid" : {
+      "type" : "string",
+      "title" : "Data Descriptor UUID"
+    },
+    "public_url" : {
+      "type" : "string",
+      "title" : "Public URL"
+    }
+  },
+  "required" : [ "file_uuid",  "data_descriptor_uuid", "public_url"]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+
+
+// dev output
+Not run on dev yet
+
+// prod output
+{
+  "internalUsername": null,
+  "lastUpdated": "2020-04-28T19:39:50.160-05:00",
+  "schema": {
+    "title": "PublicFile",
+    "description": "Created when a file is made public.  Unites the file, data descriptor, and the file's public url",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "file_uuid": {
+        "type": "string",
+        "title": "File UUID"
+      },
+      "data_descriptor_uuid": {
+        "type": "string",
+        "title": "Data Descriptor UUID"
+      },
+      "public_url": {
+        "type": "string",
+        "title": "Public URL"
+      }
+    },
+    "required": [
+      "file_uuid",
+      "data_descriptor_uuid",
+      "public_url"
+    ]
+  },
+  "uuid": "1218806231897927190-242ac1110-0001-013",
+  "created": "2020-04-28T19:39:50.160-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1218806231897927190-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1218806231897927190-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}

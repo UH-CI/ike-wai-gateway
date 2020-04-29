@@ -1,0 +1,21 @@
+{
+  "title" : "PublicFile",
+  "description" : "Created when a file is made public.  Unites the file, data descriptor, and the file's public url",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "file_uuid" : {
+      "type" : "string",
+      "title" : "File UUID"
+    },
+    "data_descriptor_uuid" : {
+      "type" : "string",
+      "title" : "Data Descriptor UUID"
+    },
+    "public_url" : {
+      "type" : "string",
+      "title" : "Public URL"
+    }
+  },
+  "required" : [ "file_uuid",  "data_descriptor_uuid", "public_url"]
+}
