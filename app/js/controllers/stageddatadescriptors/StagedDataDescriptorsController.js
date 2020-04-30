@@ -229,10 +229,11 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             creatorString += `{` + nameString + emailString + orgString + `}`;
           } 
           if (creatorString.length > 0) {
-            result = `,{"creator":` + creatorString + `}`;
+            result += `,{"creator":` + creatorString + `}`;
           }
         }
       });
+      //console.log("Creators: " + result);
       return result;
     }
 
@@ -279,7 +280,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             //arr.push(`{"name":"${contributor.first_name}${spacer}${contributor.last_name}"${emailString}${orgString}`);
           } 
           if (contributorString.length > 0) {
-            result = `,{"contributor":` + contributorString + `}`;
+            result += `,{"contributor":` + contributorString + `}`;
           }
         }
       });
@@ -474,9 +475,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       if (d) {
         // strip off newlines as it makes Hydroshare choke.
         result = '[' + d + ']';
-        //result = `,"metadata":'[${d.replace(/(\r\n|\n|\r)/gm, "")}]'`;
-        //result = ',"metadata": "[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']"';
-        //result = ',"metadata": \'[' + d.replace(/(\r\n|\n|\r)/gm, "") + ']\'';
       }
       //console.log("String: " + s);
       return result;
@@ -502,8 +500,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       var d = dataDescriptor.value.subjects;
       //console.log("subjects: " + JSON.stringify(d));
       if (d) {
-        //result = `,"keywords": ${JSON.stringify(d)}`
-        //result = JSON.stringify(d);
         result = d;
       }
       //console.log("String: " + s);
@@ -512,29 +508,79 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
 
     $scope.makeFilesPublic = function(dataDescriptor) {
       //FilesController.updateFileItemPermissionToPublicRead(path);
-      var newurls = [];
-      angular.forEach(dataDescriptor._links.associationIds, function (link) {
+      var newUrls = [];
+      angular.forEach(dataDescriptor._links.associationIds, function (file) {
         var systemId = 'ikewai-annotated-data//';
-        if (link.title === 'file' && link.href.includes(systemId)) {
-          var path = link.href.split(systemId)[1];
+        if (file.title === 'file' && file.href.includes(systemId)) {
+          var path = file.href.split(systemId)[1];
           // note:  this works, but I need to get the new public url and add it to the file and/or data descriptor
           FilesController.updateFileItemPermissionToPublicRead(path);
           // generate a url in this format:
           // https://ikeauth.its.hawaii.edu/files/v2/download/public/system/ikewai-annotated-data/new_data/DiamondWaterSampling.jpg
           // for notes on how the url gets generated, see: 
           // https://tacc-cloud.readthedocs.io/projects/agave/en/latest/agave/guides/files/files-publishing.html
-          var urlStart = link.href.split("media/system")[0];
-          var newurl = urlStart + "download/public/system/ikewai-annotated-data/" + path; 
-          newurls.push(newurl);
+          var urlStart = file.href.split("media/system")[0];
+          var newUrl = urlStart + "download/public/system/ikewai-annotated-data/" + path; 
+          newUrls.push(newUrl);
+          $scope.makePublicFileMetadataObject(dataDescriptor, file, newUrl);
           //console.log("path: " + newurl);
         }
       });
-      return newurls;
+      return newUrls;
     }
 
-    $scope.addReadmeMDFile = function (dataDescriptor, resourceId, baseHSURL, accessToken) {
-      console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
-      /*  
+    $scope.makePublicFileMetadataObject = function(dataDescriptor, file, newUrl) {
+      console.log("makePublicFileMetadataObject: " + dataDescriptor.uuid + ", " + file.rel + ", " + newUrl);
+      $scope.requesting = true;
+      MetadataService.fetchSystemMetadataSchemaUuid('PublicFile')
+        .then(function (response) {
+          // make sure the object doesn't already exist
+          var schemaId = response;
+          var query = `{'name':'PublicFile','value.data_descriptor_uuid':'${dataDescriptor.uuid}','value.file_uuid':'${file.rel}'}`;
+          console.log("query: " + query);
+          MetaController.listMetadata(query).then(function (response) {
+            if (response.result.length > 0) {
+              // do nothing, an object already exists, move on
+              console.log("Public File metadata object already exists for this dd/file combination: " + dataDescriptor.uuid + ", " + file.rel);
+            }
+            else {
+              // make a new object
+              console.log("Making a new PublicFile object");
+
+              var publicFile = {};
+              publicFile.data_descriptor_uuid = dataDescriptor.uuid;
+              publicFile.file_public_url = newUrl;
+              publicFile.file_uuid = file.rel;
+              publicFile.file_private_url = file.href;
+              
+              var body = {};
+              body.schemaId = schemaId;
+              body.name = "PublicFile";
+              body.value = publicFile;
+
+              MetaController.addMetadata(body).then(function (response) {
+                console.log("Success in creating the public files metadata object")
+                metadataUuid = response.result.uuid;
+                //add the default permissions for the system in addition to the owners
+                MetadataService.addDefaultPermissions(metadataUuid);
+                MetadataService.resolveApprovedStatus(metadataUuid);//if not public make it so
+              },
+              function (response) {
+                // really can't think of anything to do here
+                console.log("Got an error: " + response);
+              });
+            }
+         },
+          function (response) {
+            // really can't think of anything to do here
+            console.log("Got an error: " + response);
+          });
+        $scope.requesting = false;
+      });
+    }
+
+    /*
+      Generate a file to attach to the new HS resource: containing the following info:  
       "articleAuthors" : [ ],
       "newspapers" : [ ],
       "translators" : [ ],
@@ -542,6 +588,9 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       variables
       file links
       */
+    $scope.addReadmeMDFile = function (dataDescriptor, resourceId, baseHSURL, accessToken) {
+      console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
+
       hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
 
@@ -716,21 +765,26 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       //console.log("staged? " + dd.value.stagedToHydroshare);
 
       // temporarily commented out for testing
-      /*
+      // TODO!!! Uncomment before release!
+      
       // mark the dd as being "pushedToHydroshare" and no longer staged.
       dataDescriptor.value.stagedToHydroshare = false;
       dataDescriptor.value.pushedToHydroshare = true;
       $scope.updateDataDescriptor(dataDescriptor);
-      */ 
+      
 
     }
 
     $scope.publishStagedDDToIkewai = function (dataDescriptor) {
+      // TODO!!! Uncomment before release!
+      
       $scope.makeFilesPublic(dataDescriptor);
       //console.log("staged? " + dd.value.stagedToHydroshare);
+      // mark the dd as being "pushedToIkewai" and no longer staged.
       dataDescriptor.value.stagedToIkewai = false;
       dataDescriptor.value.pushedToIkewai = true;
       $scope.updateDataDescriptor(dataDescriptor);
+      
     }
 
     $scope.updateDataDescriptor = function (dataDescriptor) {

@@ -152,6 +152,8 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.data_descriptor
   $scope.class = [];
+  $scope.emailActionStageToIW = "stageToIW";
+  $scope.emailActionStageToHS = "stageToHS";
 
   $scope.refreshMetadata = function () {
     //console.log("JEN DDC: refreshMetadata: stateparam uuid:'" + $stateParams.uuid);
@@ -499,6 +501,28 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 //     $scope.close();
 //   }
 
+  // actions must be stagedToIW or stagedToHS, stagedToHS is the default, so if anything other
+  // than stagedToIW is received, it will act as stagedToHS.
+  $scope.notifyAdmins = function (action) {
+    var emailSubject = "Staged to Hydroshare";
+    var emailBody = "A resource has been staged to Hydroshare";
+    if (action === $scope.emailActionStageToIW) {
+      emailSubject = "Staged to Ikewai.org";
+      emailBody = "A resource has been staged to Ikewai.org";
+    }
+    var post_data = {};
+    var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject=' + emailSubject + '&message=' + emailBody;
+    var options = {
+          headers:{ 'Authorization':  'Bearer ' + $localStorage.token.access_token}
+    }
+    $http.post(url, post_data, options)
+      .success(function (data, status, headers, config) {
+        console.log({message:angular.toJson(data)})
+      })
+      .error(function (data, status, header, config) {
+        console.log({error_message:angular.toJson(data)});
+    });
+  }
 
   $scope.stageToIkewai = function () {
     console.log("DataDescriptorController.stageToIkewai");
@@ -519,16 +543,15 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       // don't do this if it's already staged
       if (!$scope.data_descriptor_metadatum.value.stagedToIkewai) {
         var stagedStatus = $scope.data_descriptor_metadatum.value.stagedToIkewai;
-        console.log("JG stageToIkewai: " + stagedStatus);
-
+        //console.log("JG stageToIkewai: " + stagedStatus);
         //$scope.datadescriptor.stagedToIkewai = true;
         $scope.data_descriptor_metadatum.value.stagedToIkewai = true;
         $scope.data_descriptor_metadatum.value.rejectedFromIkewai = false;
-
-        console.log("JG: Setting stagedToIkewai: " + $scope.datadescriptor);
+        //console.log("JG: Setting stagedToIkewai: " + $scope.datadescriptor);
         //$scope.data_descriptor_metadatum.value.subjects.concat(",ikewai");
         $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
         $scope.updateDataDescriptor();
+        $scope.notifyAdmins($scope.emailActionStageToIW);
       }
     }
     //console.log($scope.datadescriptor.selected_push_files);
@@ -541,15 +564,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     // Need to edit this so it can start the process rather than the current
     // manual version described there.
 
-    console.log("DataDescriptorController.stageToHydroshare: works, but has guts commented out right now.");
+    //console.log("DataDescriptorController.stageToHydroshare: works, but has guts commented out right now.");
 
     //console.log("Access Token: " + $rootScope.hydroshareAccessToken);
-
-    // TODO: not actually pushing the files.  Need to send the metadata as a post via email,
-    // and the urls to the files will be contained in the email.  Make sure we only include the
-    // selected files from the form.
-    // also, this will need to go through a staging process, for now, just posting directly 
-    // to see if I can get it going.
 
     console.log($scope.datadescriptor.selected_push_files);
 
@@ -580,9 +597,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         //$scope.datadescriptor.stagedToHydroshare = true;
         $scope.data_descriptor_metadatum.value.stagedToHydroshare = true;
         $scope.data_descriptor_metadatum.value.rejectedFromHydroshare = false;
-        console.log("JG: Setting stageToHydroshare: " + $scope.datadescriptor);
+        //console.log("JG: Setting stageToHydroshare: " + $scope.datadescriptor);
         $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
         $scope.updateDataDescriptor();
+        $scope.notifyAdmins($scope.emailActionStageToHS);
       }
     }
 
