@@ -4,18 +4,22 @@
   "type" : "object",
   "ikewai" : "TRUE",
   "properties" : {
-    "file_uuid" : {
-      "type" : "string",
-      "title" : "File UUID"
-    },
     "data_descriptor_uuid" : {
       "type" : "string",
       "title" : "Data Descriptor UUID"
     },
-    "public_url" : {
+    "file_uuid" : {
+      "type" : "string",
+      "title" : "File UUID"
+    },
+    "file_public_url" : {
       "type" : "string",
       "title" : "Public URL"
+    },
+    "file_private_url" : {
+      "type" : "string",
+      "title" : "Private URL"
     }
   },
-  "required" : [ "file_uuid",  "data_descriptor_uuid", "public_url"]
+  "required" : [ "data_descriptor_uuid", "file_uuid", "file_public_url", "file_private_url"]
 }
