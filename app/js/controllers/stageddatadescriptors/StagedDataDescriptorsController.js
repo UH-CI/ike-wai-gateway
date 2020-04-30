@@ -682,100 +682,112 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // Send the data off to Hydroshare.
       //var userInfoURL = `https://www.hydroshare.org/hsapi/userInfo/?access_token=${$scope.accessToken}&format=json`;
       baseHSURL = "https://www.hydroshare.org";
-      accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
+      //accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
 
-      var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${accessToken}`;
-      //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$rootScope.hydroshareAccessToken}`;
-      console.log("hsURL: " + hsURL);
+      // Get access token from data descriptor
+      accessTokenUUID = "295018900705120746-242ac1110-0001-012";
+      $scope.requesting = true;
+      query = `{'uuid':'${accessTokenUUID}'}`;
+      MetaController.listMetadata(query).then(function (response) {
+        accessToken = response.result[0].value.access_token;
+        var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${accessToken}`;
+        //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$rootScope.hydroshareAccessToken}`;
+        console.log("hsURL: " + hsURL);
 
-      // "creator" in Hydroshare's API is called "owner" on their interface.  
-      // This is the user against whose quota the resource is counted in managing storage,
-      // so for us, creator is 'ikewai.'  Need to make a creator object there and store the
-      // reference here.  While technically, there can be multiple owners, for our case, we
-      // will be the only one.
+        // "creator" in Hydroshare's API is called "owner" on their interface.  
+        // This is the user against whose quota the resource is counted in managing storage,
+        // so for us, creator is 'ikewai.'  Need to make a creator object there and store the
+        // reference here.  While technically, there can be multiple owners, for our case, we
+        // will be the only one.
 
-      // put Hawaiian language stuff and comments in the readme.md file
-      // if all variables are key-value pairs, put those in extra metadata, otherwise put in readme.md file
+        // put Hawaiian language stuff and comments in the readme.md file
+        // if all variables are key-value pairs, put those in extra metadata, otherwise put in readme.md file
 
-      var hsData = {};
-      hsData['title'] = dataDescriptor.value.title;
-      hsData['metadata'] = $scope.getMetadata(dataDescriptor);
-      // abstract
-      var abstract = $scope.getAbstract(dataDescriptor);
-      if (abstract) {
-        hsData['abstract'] = abstract;
-      }
-      // keywords
-      var keywords = $scope.getKeywords(dataDescriptor);
-      if (keywords) {
-        hsData['keywords'] = keywords;
-      }
-      hsData['view_groups'] = "ikewai";
-      hsData['availability'] = "public";
-      hsData['resource_type'] = "CompositeResource";
-      
-      // doesn't work, had to do separately
-      //hsData['files'] = {"file": ("readme.md","Test text of file","text/plain")};
+        var hsData = {};
+        hsData['title'] = dataDescriptor.value.title;
+        hsData['metadata'] = $scope.getMetadata(dataDescriptor);
+        // abstract
+        var abstract = $scope.getAbstract(dataDescriptor);
+        if (abstract) {
+          hsData['abstract'] = abstract;
+        }
+        // keywords
+        var keywords = $scope.getKeywords(dataDescriptor);
+        if (keywords) {
+          hsData['keywords'] = keywords;
+        }
+        hsData['view_groups'] = "ikewai";
+        hsData['availability'] = "public";
+        hsData['resource_type'] = "CompositeResource";
+        
+        // doesn't work, had to do separately
+        //hsData['files'] = {"file": ("readme.md","Test text of file","text/plain")};
 
-      console.log(JSON.stringify(hsData));
+        console.log(JSON.stringify(hsData));
 
-      headers = {
-        'accept': "application/json",
-        'content-type': "application/json",
-      }
+        headers = {
+          'accept': "application/json",
+          'content-type': "application/json",
+        }
 
-      // strip out all the newlines as it makes HS choke
-      //hsData = hsData.replace(/(\r\n|\n|\r)/gm, "");
-      //hsData = JSON.parse(hsData);
+        // strip out all the newlines as it makes HS choke
+        //hsData = hsData.replace(/(\r\n|\n|\r)/gm, "");
+        //hsData = JSON.parse(hsData);
 
-      // temporarily commented out for testing
-      // do the actual post to Hydroshare
-      console.log("hsURL: " + hsURL);
-      
-      $http({
-          method: 'POST',
-          url: hsURL,
-          headers: headers,
-          data: hsData
-      }).then(function successCallback(response) {
-          // JG TODO: need to add error checking, check for error result from HS as well
-          console.log("success");
-          $scope.responseData = response.data;
-          var resourceId = $scope.responseData.resource_id;
-          //console.log("userInfo: " + $scope.userInfo);
-          console.log("resource_id: " + resourceId);
+        // temporarily commented out for testing
+        // do the actual post to Hydroshare
+        console.log("hsURL: " + hsURL);
+        
+        $http({
+            method: 'POST',
+            url: hsURL,
+            headers: headers,
+            data: hsData
+        }).then(function successCallback(response) {
+            // JG TODO: need to add error checking, check for error result from HS as well
+            console.log("success");
+            $scope.responseData = response.data;
+            var resourceId = $scope.responseData.resource_id;
+            //console.log("userInfo: " + $scope.userInfo);
+            console.log("resource_id: " + resourceId);
 
-          // put the hydroshare resourceId on the dataDescriptor
-          dataDescriptor.value.hydroshareResourceId = resourceId;
+            // put the hydroshare resourceId on the dataDescriptor
+            dataDescriptor.value.hydroshareResourceId = resourceId;
 
-          $scope.makeFilesPublic(dataDescriptor);
+            // never managed to get the file to upload as part of creation, 
+            // so doing it as a separate action
+            $scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
 
-          // never managed to get the file to upload as part of creation, 
-          // so doing it as a separate action
-          $scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
+        }, function errorCallback(response) {
+            console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
+        });
 
-      }, function errorCallback(response) {
-          console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
+        // just for testing so I don't keep making new resources while testing file addition.
+        //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
+        
+        //console.log("staged? " + dd.value.stagedToHydroshare);
+
+        // temporarily commented out for testing
+        // TODO!!! Uncomment before release!
+        
+        // mark the dd as being "pushedToHydroshare" and no longer staged.
+        dataDescriptor.value.stagedToHydroshare = false;
+        dataDescriptor.value.pushedToHydroshare = true;
+        $scope.updateDataDescriptor(dataDescriptor);
+        
+      },
+      function (response) {
+        App.alert({
+          message: "Hydroshare Access Token could not be retreived.  Please notify system administrator",
+          closeInSeconds: 5
+        });
+        console.log("Hydroshare access token failure: " + response.message);
       });
-
-      // just for testing so I don't keep making new resources while testing file addition.
-      //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
-     
-      
-      //console.log("staged? " + dd.value.stagedToHydroshare);
-
-      // temporarily commented out for testing
-      // TODO!!! Uncomment before release!
-      
-      // mark the dd as being "pushedToHydroshare" and no longer staged.
-      dataDescriptor.value.stagedToHydroshare = false;
-      dataDescriptor.value.pushedToHydroshare = true;
-      $scope.updateDataDescriptor(dataDescriptor);
-      
-
+      $scope.requesting = false;
     }
 
     $scope.publishStagedDDToIkewai = function (dataDescriptor) {
+      // temporarily commented out for testing
       // TODO!!! Uncomment before release!
       
       $scope.makeFilesPublic(dataDescriptor);
