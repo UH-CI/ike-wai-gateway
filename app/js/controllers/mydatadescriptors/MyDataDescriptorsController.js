@@ -1,6 +1,6 @@
 angular.module('AgaveToGo').controller('MyDataDescriptorsController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, MetaController, FilesController, ActionsService, MessageService, MetadataService) {
-  $scope._COLLECTION_NAME = 'metadata',
-    $scope._RESOURCE_NAME = 'metadatum';
+  $scope._COLLECTION_NAME = 'metadata';
+  $scope._RESOURCE_NAME = 'metadatum';
   $scope.showModal = false;
 
   $scope.profile = $localStorage.activeProfile;
@@ -66,7 +66,6 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     $scope.requesting = false;
   }
 
-
   $scope.updateDataDescriptor = function (dataDescriptor) {
     console.log("JEN MyDataDescriptorsController: updateDataDescriptor: " + dataDescriptor.uuid);
     $scope.requesting = true;
@@ -93,8 +92,6 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
           $scope.requesting = false;
         }
       );
-
-    //});
     $scope.requesting = false;
     console.log("JEN MyDataDescriptorsController: updateDataDescriptor done");
   }
@@ -152,12 +149,60 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
         $scope.pagesTotal = Math.ceil(response.result.length / $scope.limit);
         $scope[$scope._COLLECTION_NAME] = response.result;
         $scope.requesting = false;
+        $scope.getPushedToAnnotatedRepoStatus();
       },
       function (response) {
         MessageService.handle(response, $translate.instant('error_metadata_list'));
         $scope.requesting = false;
       }
     );
+  }
+
+  // A loophole was discovered where a user could push a file to the annotated repo,
+  // which marks the associated data descriptor as "published" but then associate the
+  // data descriptor with another file which hasn't been pushed to the repo.  The data
+  // descriptor was getting shown as ready to push to Hydroshare/Ikewai even though not
+  // all of the files are in the annotated repo.  So, we are going to start ignoring the
+  // pushed status of the data descriptor and rely on the files pushed status.  Hence this method.
+  $scope.getPushedToAnnotatedRepoStatus = function() {
+    // for each data descriptor, need:
+    //    count of all non-ikewai-annotated-repo system files
+    //    count of all ikewai-annotated-repo system file.  
+    //    if the numbers don't match, override that dataDescriptor's published value.
+    var dataDescriptors = $scope[$scope._COLLECTION_NAME];
+    angular.forEach(dataDescriptors, function (dataDescriptor) {
+      // At first I wrote this to only evaluate if the datadescriptor.value.published property equaled true,
+      // but then what happens if the user makes another change to the dd and save it?  Now this value gets saved.
+      // so, I got rid of that evaluation and now set this based on if there are any annotated files at all,
+      // and if the number of annotated files matches the number of non-annotated associated files.
+      //if (dataDescriptor.value.published === 'True') {
+        console.log("Entry: " + dataDescriptor);
+        var myDataCount = 0;
+        var annotatedCount = 0;
+        angular.forEach(dataDescriptor._links.associationIds, function (item) {
+          // rel: "2755951868659691030-242ac113-0001-002"
+          // href: "https://ikeauth.its.hawaii.edu/files/v2/media/system/mydata-jgeis//jgeis/KiraAndSugarGlider.jpg"
+          // title: "file"
+
+          // rel: "5743004110090137110-242ac113-0001-002"
+          // href: "https://ikeauth.its.hawaii.edu/files/v2/media/system/ikewai-annotated-data//new_data/KiraAndSugarGlider.jpg"
+          // title: "file"
+          if (item.title === 'file') {
+            // found there was a file item with a null href, so had to add this value check.
+            if (item.href) {
+              if (item.href.includes("media/system/mydata")) { myDataCount += 1;}
+              else if (item.href.includes("media/system/ikewai-annotated-data")) { annotatedCount += 1;}
+            }
+          }
+        });
+        if (annotatedCount > 0 && (myDataCount === annotatedCount)) {
+          dataDescriptor.value.published = 'True';
+        }
+        else {
+          dataDescriptor.value.published = 'False';
+        }
+      //}
+    });
   }
 
   $scope.fetchMoreMetadata = function () {
