@@ -151,6 +151,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
 
   $scope.data_descriptor
+  $scope.public_file_urls = [];
   $scope.class = [];
   $scope.emailActionStageToIW = "stageToIW";
   $scope.emailActionStageToHS = "stageToHS";
@@ -715,6 +716,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       //$scope.getSubjects();
       $scope.getOrgs();
       $scope.getFiles();
+      $scope.getPublicFileUrls();
 
       MetaController.listMetadataSchema(
         $scope.schemaQuery
@@ -736,6 +738,17 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
      }
    }
    */
+
+  $scope.getPublicFileUrls = function() {
+    $scope.public_file_urls = [];
+    var query = "{'name':'PublicFile','value.data_descriptor_uuid':'" + $scope.ddUuid + "'}";
+    console.log("query: " + query);
+    MetaController.listMetadata(query, 100, 0).then(function (response){
+      angular.forEach(response.result, function(result) {
+        $scope.public_file_urls.push(result.value.file_public_url);
+      });
+    });
+  }
 
   $scope.getPeople = function () {
     $scope.people.length = 0;
