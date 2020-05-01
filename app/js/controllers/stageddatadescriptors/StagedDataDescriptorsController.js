@@ -935,13 +935,14 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         metadataType = 'stagedToIkewai'
         $scope.rejectedDD.value.rejectedFromIkewai = true;
         $scope.rejectedDD.value.stagedToIkewai = false;
+        $scope.rejectedDD.value.rejectedReasonIkewai = reason;
       }
       else if ($scope.rejectType === 'hydroshare') {
         metadataType = 'stagedToHydroshare';
         $scope.rejectedDD.value.rejectedFromHydroshare = true;
         $scope.rejectedDD.value.stagedToHydroshare = false;
+        $scope.rejectedDD.value.rejectedReasonHydroshare = reason;
       }
-      $scope.rejectedDD.value.rejectedReason = reason;
       console.log("metadataType: " + metadataType);
       console.log("reason: " + reason);
       $scope.updateDataDescriptor($scope.rejectedDD);
