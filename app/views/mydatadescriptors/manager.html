@@ -160,13 +160,13 @@
                           </a>
                         </td>
                         <td>
-                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Pushed to Annotated Repo</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.stagedToHydroshare'>Staged to Hydroshare</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.stagedToIkewai'>Staged to Ikewai.org</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.pushedToHydroshare'>Pushed to Hydroshare</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.pushedToIkewai'>Pushed to Ikewai.org</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.rejectedFromIkewai'>Rejected from Ikewai.org</span>
-                          <span class="badge badge-success" ng-show='metadatum.value.rejectedFromHydroshare'>Rejected from Hydroshare</span>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Pushed to Annotated Repository</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.stagedToHydroshare'>Staged to Hydroshare</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.stagedToIkewai'>Staged to Ikewai.org</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.pushedToHydroshare'>Pushed to Hydroshare</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.pushedToIkewai'>Pushed to Ikewai.org</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.rejectedFromIkewai'>Rejected from Ikewai.org</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.rejectedFromHydroshare'>Rejected from Hydroshare</span></div>
                         </td>
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.value.description}}</a>
@@ -223,13 +223,13 @@
                               </li>
                               <!-- TODO: for now, only allow on files currently in annotated repo.  Merge all later. -->
                               <li ng-show='metadatum.value.published == "True" && !metadatum.value.stagedToHydroshare && !metadatum.value.pushedToHydroshare'>
-                                <a ng-click="openPushHydroshare(metadatum.uuid, 'lg')">
+                                <a ng-click="openStageHydroshare(metadatum.uuid, 'lg')">
                                   <i class="fa fa-tags"></i>
                                   Stage to Hydroshare
                                 </a>
                               </li>
                               <li ng-show='metadatum.value.published == "True" && !metadatum.value.stagedToIkewai && !metadatum.value.pushedToIkewai'>
-                                  <a ng-click="openPushIkewai(metadatum.uuid, 'lg')">
+                                  <a ng-click="openStageIkewai(metadatum.uuid, 'lg')">
                                     <i class="fa fa-tags"></i>
                                     Stage to Ikewai.org
                                   </a>

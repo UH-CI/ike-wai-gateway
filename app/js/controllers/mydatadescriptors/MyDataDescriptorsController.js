@@ -428,8 +428,8 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     $scope.requesting = false;
   }
 
-  $scope.openPushHydroshare = function (dataDescriptorUuid, size) {
-    console.log("MyDataDescriptorsController.openPushHydroshare");
+  $scope.openStageHydroshare = function (dataDescriptorUuid, size) {
+    console.log("MyDataDescriptorsController.openStageHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
     $scope.pushLocation = "hydroshare";
@@ -455,7 +455,8 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     });
   };
 
-  $scope.openPushIkewai = function (dataDescriptorUuid, size) {
+  $scope.openStageIkewai = function (dataDescriptorUuid, size) {
+    console.log("MyDataDescriptorsController.openStageIkewai");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
     $scope.pushLocation = "ikewai";

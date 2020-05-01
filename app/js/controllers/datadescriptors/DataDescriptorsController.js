@@ -33,6 +33,9 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
   $scope.wellbox = true;
   $scope.searchField = { value: '' }
 
+  // ikewai or hydroshare. Used to show correct buttons.
+  $scope.pushLocation = "";
+
   $scope.searchAll = function () {
     $scope.requesting = true;
     var orquery = {}
@@ -88,7 +91,7 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     );
   }
 
-    // A loophole was discovered where a user could push a file to the annotated repo,
+  // A loophole was discovered where a user could push a file to the annotated repo,
   // which marks the associated data descriptor as "published" but then associate the
   // data descriptor with another file which hasn't been pushed to the repo.  The data
   // descriptor was getting shown as ready to push to Hydroshare/Ikewai even though not
@@ -356,9 +359,70 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     $scope.requesting = false;
   }
 
-  $scope.openPush = function (dataDescriptorUuid, size) {
+  $scope.updateDataDescriptor = function (dataDescriptor) {
+    console.log("DataDescriptorsController: updateDataDescriptor: " + dataDescriptor.uuid);
+    $scope.requesting = true;
+
+    //MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+    //  .then(function (response) {
+    var body = {};
+    body.name = dataDescriptor.name;
+    body.value = dataDescriptor.value;
+    body.schemaId = dataDescriptor.schemaId;
+    body.associationIds = dataDescriptor.associationIds;
+
+    MetaController.updateMetadata(body, dataDescriptor.uuid)
+      .then(
+        function (response) {
+          //$scope.metadataUuid = response.result.uuid;
+          App.alert({
+            message: "Success",
+            closeInSeconds: 5
+          });
+        },
+        function (response) {
+          MessageService.handle(response, $translate.instant('error_metadata_add'));
+          $scope.requesting = false;
+        }
+      );
+    $scope.requesting = false;
+    console.log("DataDescriptorsController: updateDataDescriptor done");
+  }
+
+  $scope.unstageFromIkewai = function (dataDescriptor) {
+    console.log("DataDescriptorsController.unstageFromIkewai: " + dataDescriptor);
+    $scope.requesting = true;
+    if (typeof dataDescriptor !== "undefined") {
+      if (dataDescriptor.value.stagedToIkewai) {
+        dataDescriptor.stagedToIkewai = false;
+        dataDescriptor.value.stagedToIkewai = false;
+        console.log("JG: Setting unstageFromIkewai: " + dataDescriptor);
+        $scope.updateDataDescriptor(dataDescriptor);
+      }
+    }
+    $scope.requesting = false;
+  }
+
+  $scope.unstageFromHydroshare = function (dataDescriptor) {
+    console.log("DataDescriptorsController.unstageFromHydroshare: " + dataDescriptor.uuid);
+    $scope.requesting = true;
+    if (typeof dataDescriptor !== "undefined") {
+      if (dataDescriptor.value.stagedToHydroshare) {
+        dataDescriptor.stagedToHydroshare = false;
+        dataDescriptor.value.stagedToHydroshare = false;
+        console.log("JG: Setting unstageFromHydroshare: " + dataDescriptor);
+        //$scope.datadescriptor = $scope.data_descriptor_metadatum.value;
+        $scope.updateDataDescriptor(dataDescriptor);
+      }
+    }
+    $scope.requesting = false;
+  }
+
+  $scope.openStageHydroshare = function (dataDescriptorUuid, size) {
+    console.log("DataDescriptorsController.openStageHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
+    $scope.pushLocation = "hydroshare";
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
@@ -377,7 +441,33 @@ angular.module('AgaveToGo').controller('DataDescriptorsController', function ($s
     ga('create', 'UA-127746084-1', 'auto');
     ga('send', 'pageview', {
       page: '/app/views/datadescriptor/manager.html',
-      title: '`Ike Wai Gateway | Data Descriptor Push'
+      title: '`Ike Wai Gateway | Push to Hydroshare'
+    });
+  };
+
+  $scope.openStageIkewai = function (dataDescriptorUuid, size) {
+    $scope.uuid = dataDescriptorUuid;
+    $scope.action = "push";
+    $scope.pushLocation = "ikewai";
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      //templateUrl: 'views/modals/ModalViewDataDescriptor.html',
+      templateUrl: 'views/datadescriptor/manager.html',
+      controller: 'DataDescriptorController',
+      scope: $scope,
+      size: size,
+      backdrop: 'static',
+      keyboard: false,
+      uuid: dataDescriptorUuid,
+      profile: $scope.profile,
+      resolve: {
+
+      }
+    });
+    ga('create', 'UA-127746084-1', 'auto');
+    ga('send', 'pageview', {
+      page: '/app/views/datadescriptor/manager.html',
+      title: '`Ike Wai Gateway | Push to Ikewai.org'
     });
   };
 
