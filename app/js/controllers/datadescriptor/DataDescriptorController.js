@@ -560,14 +560,6 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   }
 
   $scope.stageToHydroshare = function () {
-    // Go to HydroshareOAuthController for where this is really happening.  
-
-    // Need to edit this so it can start the process rather than the current
-    // manual version described there.
-
-    //console.log("DataDescriptorController.stageToHydroshare: works, but has guts commented out right now.");
-
-    //console.log("Access Token: " + $rootScope.hydroshareAccessToken);
 
     console.log($scope.datadescriptor.selected_push_files);
 
@@ -579,20 +571,16 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     //$scope.getHydroshareUserInfo();
 
     if (typeof $scope.data_descriptor_metadatum !== "undefined") {
-      var stagedStatus = $scope.data_descriptor_metadatum.value.stagedToHydroshare;
-      console.log("JG stageToHydroshare: " + stagedStatus);
-      /*
-      // unstage
-      if ($scope.data_descriptor_metadatum.value.stagedToHydroshare) {
-        $scope.datadescriptor.stagedToHydroshare = false;
-        $scope.data_descriptor_metadatum.value.stagedToHydroshare = false;
+      
+      // if not already staged to ikewai.org, include that as it's a requirement
+      // for staging to HS.
+      if (!$scope.data_descriptor_metadatum.value.stagedToIkewai) {
+        $scope.stageToIkewai();
       }
-      // stage
-      else {
-        $scope.datadescriptor.stagedToHydroshare = true;
-        $scope.data_descriptor_metadatum.value.stagedToHydroshare = true;
-      }
-      */
+
+      //var stagedStatus = $scope.data_descriptor_metadatum.value.stagedToHydroshare;
+      //console.log("JG stageToHydroshare: " + stagedStatus);
+
       // don't do this if already staged
       if (!$scope.data_descriptor_metadatum.value.stagedToHydroshare) {
         //$scope.datadescriptor.stagedToHydroshare = true;
