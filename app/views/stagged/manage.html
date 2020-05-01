@@ -27,7 +27,7 @@
                   {{associationId.rel}}
                 </td>
                 <td>
-                  <button type="button" class="btn btn-success text-center"  ng-click="publishStagedFile(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)], associationId.href )"><i class="fa fa-download"></i> {{"Publish" | translate}}</button>
+                  <button type="button" class="btn btn-success text-center"  ng-click="publishStaggedFile(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)], associationId.href )"><i class="fa fa-download"></i> {{"Publish" | translate}}</button>
                   <button type="button" class="btn btn-success text-center"  ng-click="openRejectReasonModal(metadatum.associationIds[metadatum._links['associationIds'].indexOf(associationId)], 'lg')"><i class="fa fa-trash"></i> Reject File</button>
                 </td>
               </tr>
