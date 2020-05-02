@@ -530,25 +530,42 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     }
 
     $scope.makePublicFileMetadataObject = function(dataDescriptor, file, newUrl) {
-      console.log("makePublicFileMetadataObject: " + dataDescriptor.uuid + ", " + file.rel + ", " + newUrl);
+      //console.log("makePublicFileMetadataObject: " + dataDescriptor.uuid + ", " + file.rel + ", " + newUrl);
       $scope.requesting = true;
       MetadataService.fetchSystemMetadataSchemaUuid('PublicFile')
         .then(function (response) {
-          // make sure the object doesn't already exist
+          // check if the object for this file already exists
           var schemaId = response;
-          var query = `{'name':'PublicFile','value.data_descriptor_uuid':'${dataDescriptor.uuid}','value.file_uuid':'${file.rel}'}`;
-          console.log("query: " + query);
+          var query = `{'name':'PublicFile','value.file_uuid':'${file.rel}'}`;
+          //console.log("query: " + query);
           MetaController.listMetadata(query).then(function (response) {
+
+            // an object exists
             if (response.result.length > 0) {
-              // do nothing, an object already exists, move on
-              console.log("Public File metadata object already exists for this dd/file combination: " + dataDescriptor.uuid + ", " + file.rel);
+              //console.log("Found an existing PublicFile object");
+              var obj = response.result[0];
+              // check to see if this data descriptor is listed for the given file
+              if (!obj.value.data_descriptor_uuids.includes(dataDescriptor.uuid)) {
+                obj.value.data_descriptor_uuids.push(dataDescriptor.uuid);
+                //console.log("check: " + obj);
+                MetaController.updateMetadata(obj, obj.uuid).then(function (response) {
+                  //console.log("Success in creating the public files metadata object")
+                },
+                function (response) {
+                  // really can't think of anything to do here
+                  console.log("Got an error: " + response);
+                });
+              }
+              //else {console.log("This DD is already associated with this file");}
             }
+            // make a new metadata object for this file
             else {
-              // make a new object
-              console.log("Making a new PublicFile object");
+              //console.log("Making a new PublicFile object");
 
               var publicFile = {};
-              publicFile.data_descriptor_uuid = dataDescriptor.uuid;
+              publicFile.data_descriptor_uuids = [];
+              //publicFile.data_descriptor_uuid = dataDescriptor.uuid;
+              publicFile.data_descriptor_uuids.push(dataDescriptor.uuid);
               publicFile.file_public_url = newUrl;
               publicFile.file_uuid = file.rel;
               publicFile.file_private_url = file.href;
@@ -559,7 +576,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
               body.value = publicFile;
 
               MetaController.addMetadata(body).then(function (response) {
-                console.log("Success in creating the public files metadata object")
+                //console.log("Success in creating the public files metadata object")
                 metadataUuid = response.result.uuid;
                 //add the default permissions for the system in addition to the owners
                 MetadataService.addDefaultPermissions(metadataUuid);

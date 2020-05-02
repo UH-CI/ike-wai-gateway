@@ -729,8 +729,9 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.getPublicFileUrls = function() {
     $scope.public_file_urls = [];
-    var query = "{'name':'PublicFile','value.data_descriptor_uuid':'" + $scope.ddUuid + "'}";
-    console.log("query: " + query);
+    //ex: '{"name":"PublicFile","value.data_descriptor_uuids":{"$in":["4354237640849494506-242ac1110-0001-012"]}}'
+    var query = `{"name":"PublicFile","value.data_descriptor_uuids":{"$in":["${$scope.ddUuid}"]}}`;
+    //console.log("query: " + query);
     MetaController.listMetadata(query, 100, 0).then(function (response){
       angular.forEach(response.result, function(result) {
         $scope.public_file_urls.push(result.value.file_public_url);
