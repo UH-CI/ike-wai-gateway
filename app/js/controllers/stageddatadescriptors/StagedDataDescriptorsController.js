@@ -325,9 +325,56 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
   
     var ddLocations = $scope.locations[dataDescriptor.uuid];
     var result = '';
-    /*
-    angular.forEach(ddLocations, function(datum) {
-      console.log("Datum: " + datum);
+
+    // example data of a group of points.
+    // Latitude: 21.426389, Longitude	-157.751389
+    // Latitude	21.39333333, Longitude	-157.7933333
+    // Latitude	21.41638889, Longitude	-157.8083333
+    // Latitude	21.4175, Longitude	-157.8136111
+    // expected result: // {"coverage":{"type":"box", "value": {"northlimit": "21.426389", "southlimit": "21.39333333", "eastlimit": "-157.751389", "westlimit": "-157.8136111", "units": "Decimal Degrees"}}}
+
+    // if there are multiple locations, HS only accepts one, so need to make a bounding box for all locations.
+    if (ddLocations.length > 0) {
+      var isFirstIteration = true;
+      var westlimit = "";
+      var eastlimit = "";
+      var northlimit = "";
+      var southlimit = "";
+      angular.forEach(ddLocations, function(datum) {
+        console.log("Datum: " + datum);
+        if  (datum.value.latitude != undefined && datum.value.longitude != undefined) {
+          // first iteration
+          var lat = datum.value.latitude;
+          var lon = datum.value.longitude;
+          if (isFirstIteration) {
+            isFirstIteration = false;
+            westlimit = lon;
+            eastlimit = lon;
+            northlimit = lat;
+            southlimit = lat;
+          }
+          else {
+            if (lon < westlimit) {
+              westlimit = lon;
+            }
+            if (lon > eastlimit) {
+              eastlimit = lon;
+            }
+            if (lat < southlimit) {
+              southlimit = lat;
+            }
+            if (lat > northlimit) {
+              northlimit = lat;
+            }
+          }
+        }
+      });
+      // {"coverage":{"type":"box", "value": {"northlimit": "21.426389", "southlimit": "21.39333333", "eastlimit": "-157.751389", "westlimit": "-157.8136111", "units": "Decimal Degrees"}}}
+      result += `,{"coverage":{"type":"box", "value": {"northlimit": "${northlimit}", "southlimit": "${southlimit}", "eastlimit": "${eastlimit}", "westlimit": "${westlimit}", "units": "Decimal Degrees"}}}`
+    }
+    // there's only one location:
+    else {
+      var datum = ddLocations[0];
       if (datum.name == "Site") {
         if (datum.value.loc != undefined && datum.value.name != undefined) {
           if (datum.value.loc.type == 'Point') {
@@ -365,8 +412,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           '", "units": "Decimal Degrees", "name": "' + datum.value.station_name + '"}}}';
         }
       }
-    });
-    */
+    };
+    //console.log("locations: " + result);
     return result;
   }
 
@@ -701,14 +748,15 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       baseHSURL = "https://www.hydroshare.org";
       //accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
 
-      // Get access token from data descriptor
-      accessTokenUUID = "295018900705120746-242ac1110-0001-012";
       $scope.requesting = true;
-      query = `{'uuid':'${accessTokenUUID}'}`;
+      // Get access token from data descriptor
+      // could do a search for name = HydroshareAccessToken, or uuid
+      //accessTokenUUID = "295018900705120746-242ac1110-0001-012";
+      //query = `{'uuid':'${accessTokenUUID}'}`;
+      query = "{'name':'HydroshareAccessToken'}";
       MetaController.listMetadata(query).then(function (response) {
         accessToken = response.result[0].value.access_token;
         var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${accessToken}`;
-        //var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$rootScope.hydroshareAccessToken}`;
         console.log("hsURL: " + hsURL);
 
         // "creator" in Hydroshare's API is called "owner" on their interface.  
