@@ -138,6 +138,16 @@
             </tbody>  
           </table>
         </div>
+
+        <div ng-show='data_descriptor_metadatum.value.hydroshareResourceId'>
+          <br />
+          <b>Hydroshare Resource URL: </b><a href="https://www.hydroshare.org/resource/{{data_descriptor_metadatum.value.hydroshareResourceId}}">https://www.hydroshare.org/resource/{{data_descriptor_metadatum.value.hydroshareResourceId}}</a>
+        </div>
+        <div ng-show='data_descriptor_metadatum.value.doi'>
+          <br />
+          <b>Hydroshare DOI URL: </b><a href="https://doi.org/10.4211/hs.{{data_descriptor_metadatum.value.hydroshareResourceId}}">https://doi.org/10.4211/hs.{{data_descriptor_metadatum.value.hydroshareResourceId}}</a>
+        </div>
+
       </div>
     </div>
   </div>
