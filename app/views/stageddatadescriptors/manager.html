@@ -219,6 +219,12 @@
                                   Reject from Ikewai
                                 </a>
                               </li>
+                              <li ng-show='metadatum.value.published == "True" && metadatum.value.hydroshareResourceId && !metadatam.value.doi'>
+                                <a ng-click="getDOI(metadatum)">
+                                  <i class="fa fa-tags"></i>
+                                  Get Hydroshare DOI
+                                </a>
+                              </li>
                             </ul>
                           </div>
                         </td>
