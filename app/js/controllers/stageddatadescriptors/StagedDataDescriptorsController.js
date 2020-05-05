@@ -334,6 +334,8 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     // expected result: // {"coverage":{"type":"box", "value": {"northlimit": "21.426389", "southlimit": "21.39333333", "eastlimit": "-157.751389", "westlimit": "-157.8136111", "units": "Decimal Degrees"}}}
 
     // if there are multiple locations, HS only accepts one, so need to make a bounding box for all locations.
+    // note that this does not currently handle crossing the 180th meridian
+    // https://gis.stackexchange.com/questions/39153/given-a-set-of-coordinates-how-can-i-calculate-the-minimum-bounds
     if (ddLocations.length > 0) {
       var isFirstIteration = true;
       var westlimit = "";
@@ -653,7 +655,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       file links
       */
     $scope.addReadmeMDFile = function (dataDescriptor, resourceId, baseHSURL, accessToken) {
-      console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
+      //console.log("StagedDataDescriptorsController.addReadmeMDFile: " + dataDescriptor.uuid);
 
       hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
@@ -716,7 +718,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           });
         });
       }
-      console.log("fileContents: " + fileContents);
+      //console.log("fileContents: " + fileContents);
     
       // submit the file to Hydroshare
       var fileName = "readme.md";
@@ -740,6 +742,17 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     $scope.publishStagedDDToHydroshare = function (dataDescriptor) {
       console.log("StagedDataDescriptorsController.publishStagedDDToHydroshare: " + dataDescriptor.uuid);
       console.log("dataDescriptor: " + JSON.stringify(dataDescriptor));
+
+      // files must be pushed to Ikewai before pushing to Hydroshare.
+      // not a logic requirement, more an internal politics thing.
+      // nothing breaks if this isn't here.
+      if (!dataDescriptor.value.stagedToIkewai) {
+        // could call publishStagedDDToIkewai but that would result in an extra metadata update
+        // best to just set these and let them get updated with the rest.  That way if something
+        // goes wrong w/ HS, we don't have an inconsistent state.
+        dataDescriptor.value.stagedToIkewai = false;
+        dataDescriptor.value.pushedToIkewai = true;
+      }
 
       // I made a group 'ikewai': https://www.hydroshare.org/group/153
 
@@ -823,6 +836,13 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             // so doing it as a separate action
             $scope.addReadmeMDFile(dataDescriptor, resourceId, baseHSURL, accessToken);
 
+            // temporarily commented out for testing
+            // TODO!!! Uncomment before release!
+            // mark the dd as being "pushedToHydroshare" and no longer staged.
+            dataDescriptor.value.stagedToHydroshare = false;
+            dataDescriptor.value.pushedToHydroshare = true;
+            $scope.updateDataDescriptor(dataDescriptor);
+
         }, function errorCallback(response) {
             console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
         });
@@ -831,15 +851,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         //$scope.addReadmeMDFile(dataDescriptor, 'efb597b44ff146f3af17e8dae7ca4dd0', baseHSURL, accessToken);
         
         //console.log("staged? " + dd.value.stagedToHydroshare);
-
-        // temporarily commented out for testing
-        // TODO!!! Uncomment before release!
-        
-        // mark the dd as being "pushedToHydroshare" and no longer staged.
-        dataDescriptor.value.stagedToHydroshare = false;
-        dataDescriptor.value.pushedToHydroshare = true;
-        $scope.updateDataDescriptor(dataDescriptor);
-        
       },
       function (response) {
         App.alert({
@@ -848,6 +859,53 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         });
         console.log("Hydroshare access token failure: " + response.message);
       });
+      $scope.requesting = false;
+    }
+
+    $scope.getDOI = function (dataDescriptor) {
+      if (dataDescriptor.value.hydroshareResourceId) {
+        baseHSURL = "https://www.hydroshare.org";
+        //accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
+  
+        $scope.requesting = true;
+        // Get access token from data descriptor
+        // could do a search for name = HydroshareAccessToken, or uuid
+        //accessTokenUUID = "295018900705120746-242ac1110-0001-012";
+        //query = `{'uuid':'${accessTokenUUID}'}`;
+        query = "{'name':'HydroshareAccessToken'}";
+        MetaController.listMetadata(query).then(function (response) {
+          var resourceId = dataDescriptor.value.hydroshareResourceId;
+          accessToken = response.result[0].value.access_token;
+          var hsURL = `${baseHSURL}/hsapi/resource/${resourceId}/sysmeta/?access_token=${accessToken}`;
+          //console.log("hsURL: " + hsURL);
+
+          headers = {
+            'accept': "application/json",
+            'content-type': "application/json",
+          }
+          $http({
+            method: 'GET',
+            url: hsURL,
+            headers: headers
+          }).then(function successCallback(response) {
+              var doi = response.data.doi;
+              if (doi) {
+                //console.log("doi: " + doi);
+                dataDescriptor.value.doi = doi;
+                $scope.updateDataDescriptor(dataDescriptor);
+              }
+          }, function errorCallback(response) {
+              console.log("HydroshareOAuthController.getDOI Error:" + response.data.detail);
+          });
+        },
+        function (response) {
+          App.alert({
+            message: "Hydroshare Access Token could not be retreived.  Please notify system administrator",
+            closeInSeconds: 5
+          });
+          console.log("Hydroshare access token failure: " + response.message);
+        });
+      }
       $scope.requesting = false;
     }
 
@@ -860,8 +918,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // mark the dd as being "pushedToIkewai" and no longer staged.
       dataDescriptor.value.stagedToIkewai = false;
       dataDescriptor.value.pushedToIkewai = true;
-      $scope.updateDataDescriptor(dataDescriptor);
-      
+      $scope.updateDataDescriptor(dataDescriptor); 
     }
 
     $scope.updateDataDescriptor = function (dataDescriptor) {
