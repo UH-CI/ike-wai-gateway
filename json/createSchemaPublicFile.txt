@@ -31,7 +31,7 @@ curl -sk -H "Authorization: Bearer 7ed90c6381dca7d4f3fd28ddd55db50" -X POST -H "
       "title" : "Private URL"
     }
   },
-  "required" : [ "file_uuid", "file_public_url", "file_private_url"]
+  "required" : [ "file_public_url", "file_private_url"]
 }
 ' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
 

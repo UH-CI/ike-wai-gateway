@@ -138,4 +138,98 @@ To retrieve the above record:
 or 
 ./metadata-list -V 295018900705120746-242ac1110-0001-012
 
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "295018900705120746-242ac1110-0001-012",
+    "owner" : "jgeis",
+    "schemaId" : "1208363620199034390-242ac1110-0001-013",
+    "internalUsername" : null,
+    "associationIds" : [ ],
+    "lastUpdated" : "2020-04-29T21:55:14.690-05:00",
+    "name" : "HydroshareAccessToken",
+    "value" : {
+      "access_token" : "dj4Cl68jY5NN349kHbLmPa4S87a3Ft",
+      "expiration_date" : "2020-05-29T16:16:39-05:00"
+    },
+    "created" : "2020-04-29T21:55:14.690-05:00",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/data/295018900705120746-242ac1110-0001-012"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/data/295018900705120746-242ac1110-0001-012/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+      },
+      "associationIds" : [ ],
+      "SCHEMA" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1208363620199034390-242ac1110-0001-013"
+      }
+    }
+  } ]
+}
+
+
 We have to decide if we want to keep this one as a permanent record and just keep updating it or create new ones.
+
+To update access token:
+
+
+metadata-addupdate -v -F - <<< '{
+  "schemaId": "1208363620199034390-242ac1110-0001-013", 
+  "name": "HydroshareAccessToken",
+	"value": {
+	    "access_token":"E7CXTgeMiWarBSb04PlruBgF24Ga1g",
+	    "expiration_date":"2020-06-03T14:02:08-10:00"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	]
+}' 295018900705120746-242ac1110-0001-012
+
+
+Output:
+{
+  "uuid": "295018900705120746-242ac1110-0001-012",
+  "schemaId": "1208363620199034390-242ac1110-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2020-05-04T19:12:24.446-05:00",
+  "name": "HydroshareAccessToken",
+  "value": {
+    "access_token": "E7CXTgeMiWarBSb04PlruBgF24Ga1g",
+    "expiration_date": "2020-06-03T14:02:08-10:00"
+  },
+  "created": "2020-04-29T21:55:14.690-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/295018900705120746-242ac1110-0001-012"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/data/295018900705120746-242ac1110-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "schema": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1208363620199034390-242ac1110-0001-013"
+    }
+  }
+}
