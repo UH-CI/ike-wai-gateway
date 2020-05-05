@@ -1,13 +1,8 @@
 angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($rootScope, $scope, $state, $stateParams, $translate, $uibModal, $localStorage, $http) {
 
-// ACCESS TOKEN: CgbXs1ROY6uAKaA4zJe6Ax5iocwQEu
-// issued on 2/25/2020 @ 12:35PM
+// ACCESS TOKEN: kYYKIe7zDM6DMjjyVBHBP5Z9YOT0qY
+// issued on 3/13/2020 @ 10:52AM
 
-// ACCESS TOKEN: Jkt5cNJ9NDtrvxpxl92t5zqBEx4kns
-// issued on 2/25/2020 @ 12:44PM
-
-// ACCESS TOKEN: gXaz8O0LPTGqvdrMdVOlcOoUGxxJV5
-// issued on 2/26/2020 @ 11:53AM
 
 // Hydroshare Access Token: g6QWYGsTM1RdNG3110oS8Li41gtXgW
 // HydroshareOAuthController.js:97 Hydroshare Access Token expiration Date: 2020-03-27T22:32:16.236Z
@@ -29,6 +24,30 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     https://github.com/hydroshare/hydroshare/wiki/Accessing-HydroShare-REST-API-using-CURL
     https://docs.google.com/document/d/1UbZjr-f0Kvq27-jdPzFMjEcBcgWxn-M0UDi7cZ4GFe8/edit
 
+    // for ikewai account:
+    // created a web app connector: Ikewai Web App Connector
+    https://www.hydroshare.org/resource/6be34cb8d1674d56935b1e0c53f2ead9/
+    
+    To edit:
+    - https://www.hydroshare.org/o/applications/129/
+
+    Go to application setup:
+    https://www.hydroshare.org/o/applications/
+
+    It gives me the client id and client secret.  There, I set the Redirect Uris field to:
+    Client type:
+      Confidential
+    Authorization Grant Type:
+      Authorization Code
+    Redirect URI: 
+      https://tolocalhost.com
+      Note: this will eventually be changed to http://ikewai.its.hawaii.edu/, but it has to be this for development 
+      as localhost can't be used as it must be an https address.
+
+    Then go to https://tolocalhost.com, and set the hostname to:
+      localhost:9000/app/#/hsoauth
+
+-----------------------------
     Made three apps in HS under my name, called IkewaiJenDev and IkewaiJenDev2 and IkewaiJenDev3.  Was trying different things.
     https://www.hydroshare.org/o/applications/122
     or
@@ -54,7 +73,11 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     Had to do it through this convoluted method because I need a url with https,
     which I can't do on localhost.  Will correct all this when we move to prod.
 
+---------------------------------
+
     To make all this actually run and do something, use this URL:
+    //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
     //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p&redirect_uri=https%3A%2F%2Ftolocalhost.com
     
     //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=L06JBbQ2labJh0uCDAqVi2bg4pcHNvJqSdnQbnmf&redirect_uri=https%3A%2F%2Ftolocalhost.com
@@ -62,10 +85,14 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=1d1iBa0gnDOAfQzLLuGWrsUoY8n7oKBT4brPAmTG&redirect_uri=https%3A%2F%2Ftolocalhost.com
     */
 
+    // this is the ikewai account
+    // clientID & clientSecret from: https://www.hydroshare.org/o/applications/129/
+    clientID = "tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t";
+    clientSecret = "XgSOOzYnaKM7j0moFu3CgT0x5s1lkay8bTgeeuKMGihgM4Nf6bWcJY6pw9Wpo1EKo86QJdDtfPN1vzmwwmAt0HVI3s3CIr9QIyp95U2tjxGnL2Aai0x8FsZguE1UEetT";
 
     // // clientID & clientSecret from: https://www.hydroshare.org/o/applications/122
-    clientID = "CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p";
-    clientSecret = "S2bhzLwSKk4qfHJTROmNevtcwkNByBvLnNgGoAj7yJEVqOW5rfFY8FHoAvGn1z4ryseNz1u8eE2sEGNbpLgVQpsd2ITBGVcviQEA2wwIIMii4En6uib539K76rOVIqsg";
+    //clientID = "CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p";
+    //clientSecret = "S2bhzLwSKk4qfHJTROmNevtcwkNByBvLnNgGoAj7yJEVqOW5rfFY8FHoAvGn1z4ryseNz1u8eE2sEGNbpLgVQpsd2ITBGVcviQEA2wwIIMii4En6uib539K76rOVIqsg";
     // https://www.hydroshare.org/o/authorize/?response_type=code&client_id=CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p&redirect_uri=https%3A%2F%2Ftolocalhost.com
 
 
@@ -87,15 +114,19 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
 
     $scope.requesting = false;
 
+    //$rootScope.$on("AuthenticateToHydroshare", function(){
+    //    $scope.doHSAuthProcess();
+    //});
+
     // check to see if we need to re-auth or if we are still good.
     $scope.doHSAuthProcess = function() {
         // This doesn't work.  Not holding the values through the redirect.  Need
         // to get this going through the site rather than the weird workaround I'm doing.
 
         console.log("HydroshareOAuthController.doHSAuthProcess");
-        console.log("Hydroshare Access Token: " + $localStorage.hydroshareAccessToken);
-        console.log("Hydroshare Access Token expiration Date: " + $localStorage.hydroshareExpirationDate);
-        console.log("Hydroshare User Info: " + $localStorage.hydroshareUserInfo.username);
+        //console.log("Hydroshare Access Token: " + $localStorage.hydroshareAccessToken);
+        //console.log("Hydroshare Access Token expiration Date: " + $localStorage.hydroshareExpirationDate);
+        //console.log("Hydroshare User Info: " + $localStorage.hydroshareUserInfo.username);
 
         //var hsDate = new Date($localStorage.hydroshareExpirationDate);
         //console.log("hsDate:   " + hsDate);
@@ -229,7 +260,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     }
 
     // proof of concept, will move once working
-    $scope.submitToHydroshare = function() {
+    $scope.submitToHydroshare = function(ddUID) {
         console.log("HydroshareOAuthController.submitToHydroshare");
         //var hsURL = `https://www.hydroshare.org/hsapi/resource/?access_token=${$scope.hydroshareAccessToken}`;
         var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$scope.hydroshareAccessToken}`;
@@ -279,6 +310,6 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     }
 
 
-    //$scope.getStep1HSAuthToken();
-    $scope.doHSAuthProcess();
+    $scope.getStep1HSAuthToken();
+    //$scope.doHSAuthProcess();
 });
