@@ -52,7 +52,8 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
 
     // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
     //redirectURL = "https%3A%2F%2Ftolocalhost.com";
-    redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
+    //redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
+    redirectURL = "https://ikewai-dev.its.hawaii.edu/app/";
     redirectURLEncoded = encodeURIComponent(redirectURL);
 
     $scope.requesting = false;
@@ -111,7 +112,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
             + '&client_id=' + encodeURIComponent(clientID)
             + '&client_secret=' + encodeURIComponent(clientSecret)
             + '&code=' + encodeURIComponent(code)
-            + '&redirect_uri=' + redirectURLEncoded,
+            + '&redirect_uri=' + redirectURLEncoded
         }
 
         $http(req).then(function (response) {
