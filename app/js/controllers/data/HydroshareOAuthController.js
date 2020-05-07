@@ -37,7 +37,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
    
 
-    https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F%23%2Fhsoauth
+    https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F%#%2Fhsoauth
 
     */
 
@@ -53,8 +53,10 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
     //redirectURL = "https%3A%2F%2Ftolocalhost.com";
     //redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
-    redirectURL = "https://ikewai-dev.its.hawaii.edu/app/";
-    redirectURLEncoded = encodeURIComponent(redirectURL);
+    
+    // can't use encodeURIComponent as it changes the hash mark
+    redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
+    redirectURLEncoded = "https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F%#%2Fhsoauth";
 
     $scope.requesting = false;
     
