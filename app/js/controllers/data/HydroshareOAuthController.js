@@ -23,8 +23,9 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
       Authorization Code
     Redirect URI: 
       https://tolocalhost.com
-      Note: this will eventually be changed to http://ikewai.its.hawaii.edu/, but it has to be this for development 
+      Note: this will eventually be changed to http://ikewai.its.hawaii.edu/app/, but it has to be this for development 
       as localhost can't be used as it must be an https address.
+      When testing on ikewai-dev, set this to: https://ikewai-dev.its.hawaii.edu/app/
 
     Then go to https://tolocalhost.com, and set the hostname to:
       localhost:9000/app/#/hsoauth
@@ -35,6 +36,9 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     
     https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
    
+
+    https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F%23%2Fhsoauth
+
     */
 
     // this is the ikewai account
@@ -44,8 +48,11 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     clientSecret = "XgSOOzYnaKM7j0moFu3CgT0x5s1lkay8bTgeeuKMGihgM4Nf6bWcJY6pw9Wpo1EKo86QJdDtfPN1vzmwwmAt0HVI3s3CIr9QIyp95U2tjxGnL2Aai0x8FsZguE1UEetT";
 
     // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
-    redirectURL = "https%3A%2F%2Ftolocalhost.com";
     baseHSURL = "https://www.hydroshare.org";
+
+    // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
+    //redirectURL = "https%3A%2F%2Ftolocalhost.com";
+    redirectURL = "https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F%23%2Fhsoauth";
 
     $scope.requesting = false;
     
@@ -67,6 +74,8 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
             console.log("success");
             // JG TODO: need to add error checking, check for error result from HS as well
             var code = location.toString().split("code=")[1];
+            console.log("code: " + code);
+            code = code.split("#")[0];
             console.log("Authcode: " + code);
             $scope.getStep2HSAccessToken(code);
         }, function errorCallback(response) {
@@ -75,7 +84,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     }
 
     $scope.getStep2HSAccessToken = function(code) {
-        console.log("HydroshareOAuthController.getStep2HSAccessToken");
+        console.log("HydroshareOAuthController.getStep2HSAccessToken: " + code);
         // go back to HS w/ code to get the token
         //var tokenURL = `https://www.hydroshare.org/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectURL}`;
         //var tokenURL = `${baseHSURL}/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectURL}`;
