@@ -26,6 +26,8 @@ angular.module('AgaveToGo').service('MetadataService',['$uibModal', '$rootScope'
     this.fetchSystemMetadataUuid = function(type){
       var promises = [];
       if ($localStorage[type] == null){
+          searchTerm = "{'name':'" + type + "'}";
+          //console.log("MetadataService.fetchSystemMetadataUuid searchTerm: " + searchTerm);
           promises.push(MetaController.listMetadata("{'name':'"+type+"'}",limit=1,offset=0)
           .then(function(response){
             $localStorage[type] = response.result[0].uuid;
