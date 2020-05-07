@@ -1,5 +1,11 @@
-angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($scope, $state, $stateParams, $translate, $uibModal, $rootScope, $localStorage, $http) {
-//function ($scope, $state, $stateParams, $http) {
+angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($rootScope, $scope, $state, $stateParams, $translate, $uibModal, $localStorage, $http) {
+
+// ACCESS TOKEN: kYYKIe7zDM6DMjjyVBHBP5Z9YOT0qY
+// issued on 3/13/2020 @ 10:52AM
+
+
+// Hydroshare Access Token: g6QWYGsTM1RdNG3110oS8Li41gtXgW
+// HydroshareOAuthController.js:97 Hydroshare Access Token expiration Date: 2020-03-27T22:32:16.236Z
 
     /*
     $scope.alerts=[]
@@ -10,23 +16,151 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
             client_secret: '',
             remember: 0
     };
+    */
 
-*/
+    /*
+    Followed the instructions at these resources:
+    https://github.com/hydroshare/hydroshare/wiki/HydroShare-REST-API#oauth-20-support
+    https://github.com/hydroshare/hydroshare/wiki/Accessing-HydroShare-REST-API-using-CURL
+    https://docs.google.com/document/d/1UbZjr-f0Kvq27-jdPzFMjEcBcgWxn-M0UDi7cZ4GFe8/edit
 
-    // clientID & clientSecret from: https://www.hydroshare.org/o/applications/122/
-    clientID = "CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p";
-    clientSecret = "S2bhzLwSKk4qfHJTROmNevtcwkNByBvLnNgGoAj7yJEVqOW5rfFY8FHoAvGn1z4ryseNz1u8eE2sEGNbpLgVQpsd2ITBGVcviQEA2wwIIMii4En6uib539K76rOVIqsg";
+    // for ikewai account:
+    // created a web app connector: Ikewai Web App Connector
+    https://www.hydroshare.org/resource/6be34cb8d1674d56935b1e0c53f2ead9/
+    
+    To edit:
+    - https://www.hydroshare.org/o/applications/129/
+
+    Go to application setup:
+    https://www.hydroshare.org/o/applications/
+
+    It gives me the client id and client secret.  There, I set the Redirect Uris field to:
+    Client type:
+      Confidential
+    Authorization Grant Type:
+      Authorization Code
+    Redirect URI: 
+      https://tolocalhost.com
+      Note: this will eventually be changed to http://ikewai.its.hawaii.edu/, but it has to be this for development 
+      as localhost can't be used as it must be an https address.
+
+    Then go to https://tolocalhost.com, and set the hostname to:
+      localhost:9000/app/#/hsoauth
+
+-----------------------------
+    Made three apps in HS under my name, called IkewaiJenDev and IkewaiJenDev2 and IkewaiJenDev3.  Was trying different things.
+    https://www.hydroshare.org/o/applications/122
+    or
+    https://www.hydroshare.org/o/applications/125
+    or 
+    https://www.hydroshare.org/o/applications/126
+
+    //To edit, it's at:
+    //https://www.hydroshare.org/resource/518a3a537a6244ee8fdf22ef494aab68/
+    //There, the App-launching URL pattern is set to:
+    //https://tolocalhost.com/?app=ikewai&res_id=${HS_RES_ID}&usr=${HS_USR_NAME}&src=hs
+    
+    In the application setup at URL:
+    https://www.hydroshare.org/o/applications/
+
+    It gives me the client id and client secret.  There, I set the Redirect Uris field to:
+    https://tolocalhost.com
+    
+    At https://tolocalhost.com, 
+    I set the hostname to:
+    localhost:9000/app/#/hsoauth
+
+    Had to do it through this convoluted method because I need a url with https,
+    which I can't do on localhost.  Will correct all this when we move to prod.
+
+---------------------------------
+
+    To make all this actually run and do something, use this URL:
+    //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
+    //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p&redirect_uri=https%3A%2F%2Ftolocalhost.com
+    
+    //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=L06JBbQ2labJh0uCDAqVi2bg4pcHNvJqSdnQbnmf&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
+    //https://www.hydroshare.org/o/authorize/?response_type=code&client_id=1d1iBa0gnDOAfQzLLuGWrsUoY8n7oKBT4brPAmTG&redirect_uri=https%3A%2F%2Ftolocalhost.com
+    */
+
+    // this is the ikewai account
+    // clientID & clientSecret from: https://www.hydroshare.org/o/applications/129/
+    clientID = "tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t";
+    clientSecret = "XgSOOzYnaKM7j0moFu3CgT0x5s1lkay8bTgeeuKMGihgM4Nf6bWcJY6pw9Wpo1EKo86QJdDtfPN1vzmwwmAt0HVI3s3CIr9QIyp95U2tjxGnL2Aai0x8FsZguE1UEetT";
+
+    // // clientID & clientSecret from: https://www.hydroshare.org/o/applications/122
+    //clientID = "CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p";
+    //clientSecret = "S2bhzLwSKk4qfHJTROmNevtcwkNByBvLnNgGoAj7yJEVqOW5rfFY8FHoAvGn1z4ryseNz1u8eE2sEGNbpLgVQpsd2ITBGVcviQEA2wwIIMii4En6uib539K76rOVIqsg";
+    // https://www.hydroshare.org/o/authorize/?response_type=code&client_id=CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
+
+    // //clientID & clientSecret from: https://www.hydroshare.org/o/applications/125
+    //clientID = "L06JBbQ2labJh0uCDAqVi2bg4pcHNvJqSdnQbnmf";
+    //clientSecret = "CDyTDVhSv9rJeJGIf2eyLSZW1vA6BWqVpyXIFHHLY6TS3zgOSeO0cAkQVM7Po1Y6mExxV8thGGFfQozYihh8hC0Mhl3EceCahOsxo118udfTMlpNsm54qtuQg81j7Ogl";
+    // https://www.hydroshare.org/o/authorize/?response_type=code&client_id=L06JBbQ2labJh0uCDAqVi2bg4pcHNvJqSdnQbnmf&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
+
+    // clientID & clientSecret from: https://www.hydroshare.org/o/applications/126
+    //clientID = "1d1iBa0gnDOAfQzLLuGWrsUoY8n7oKBT4brPAmTG";
+    //clientSecret = "1ZyV9VFMoWpankJx4Prq82cOHqA5VGFr98K8HadmbmrAaNZPuvNf0fepRzkL7FDn27SYkznWb2SvPhCFQACycKtOmoEL9f9NyUB0MTfTDRlNiYA3NeitcZaGLim1p4VG";
+    // https://www.hydroshare.org/o/authorize/?response_type=code&client_id=1d1iBa0gnDOAfQzLLuGWrsUoY8n7oKBT4brPAmTG&redirect_uri=https%3A%2F%2Ftolocalhost.com
+
+
     // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
     redirectURL = "https%3A%2F%2Ftolocalhost.com";
     baseHSURL = "https://www.hydroshare.org";
 
-    $scope.requesting =false;
-    $scope.getHSAuthToken = function(){
-        console.log("HydroshareOAuthController.getHSAuthToken");
+    $scope.requesting = false;
+
+    //$rootScope.$on("AuthenticateToHydroshare", function(){
+    //    $scope.doHSAuthProcess();
+    //});
+
+    // check to see if we need to re-auth or if we are still good.
+    $scope.doHSAuthProcess = function() {
+        // This doesn't work.  Not holding the values through the redirect.  Need
+        // to get this going through the site rather than the weird workaround I'm doing.
+
+        console.log("HydroshareOAuthController.doHSAuthProcess");
+        //console.log("Hydroshare Access Token: " + $localStorage.hydroshareAccessToken);
+        //console.log("Hydroshare Access Token expiration Date: " + $localStorage.hydroshareExpirationDate);
+        //console.log("Hydroshare User Info: " + $localStorage.hydroshareUserInfo.username);
+
+        //var hsDate = new Date($localStorage.hydroshareExpirationDate);
+        //console.log("hsDate:   " + hsDate);
+        //var testDate = new Date();
+        //testDate.setDate(testDate.getDate() + 30);
+        //console.log("testDate: " + testDate);
+        //console.log("date comparison: " + (hsDate < testDate));
+
+        // authenticate if our access token isn't set, the expiration date isn't set,
+        // or the expiration date (the date we got the token + 30 days) is less than today.
+        if (typeof $localStorage.hydroshareExpirationDate == 'undefined' || 
+            !$localStorage.hydroshareExpirationDate ||
+            typeof $localStorage.hydroshareAccessToken == 'undefined' ||
+            !$localStorage.hydroshareAccessToken ||
+            ($localStorage.hydroshareExpirationDate < new Date())) {
+                console.log("Would call getStep1HSAuthToken");
+                $scope.getStep1HSAuthToken();
+        }
+        //console.log("" + typeof $scope.accessTokenExpirationDate == 'undefined');
+        //console.log("" + typeof $scope.hydroshareAccessToken == 'undefined');
+        //console.log("" + $scope.accessTokenExpirationDate < new Date());
+    }
+    
+
+    $scope.getStep1HSAuthToken = function(){
+        console.log("HydroshareOAuthController.getStep1HSAuthToken");
+        
         $scope.requesting = true;
         var post_data = {};
         // keep this commented out line as it's handy for copying/pasting into browser for testing
         //var authUrl = 'https://www.hydroshare.org/o/authorize/?response_type=code&client_id=CcHMaDUQgC6gKEDAneliAUs96vNRcTt7VNA5fn6p&redirect_uri=https%3A%2F%2Ftolocalhost.com';
+        //var authUrl = 'https://www.hydroshare.org/o/authorize/?response_type=code&client_id=L06JBbQ2labJh0uCDAqVi2bg4pcHNvJqSdnQbnmf&redirect_uri=https%3A%2F%2Ftolocalhost.com';
+        //var authUrl = 'https://www.hydroshare.org/o/authorize/?response_type=code&client_id=1d1iBa0gnDOAfQzLLuGWrsUoY8n7oKBT4brPAmTG&redirect_uri=https%3A%2F%2Ftolocalhost.com';
+
         var authUrl = `${baseHSURL}/o/authorize/?response_type=code&client_id=${clientID}&redirect_uri=${redirectURL}`;
         console.log("authUrl: " + authUrl);
 
@@ -37,38 +171,64 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
             console.log("success");
             // JG TODO: need to add error checking, check for error result from HS as well
             var code = location.toString().split("code=")[1];
-            console.log("code: " + code);
-            $scope.getAccessToken(code);
-          }, function errorCallback(response) {
-            alert("HydroshareOAuthController.getHSAuthToken Error. Try Again!");
+            console.log("Authcode: " + code);
+            $scope.getStep2HSAccessToken(code);
+        }, function errorCallback(response) {
+            alert("HydroshareOAuthController.getStep1HSAuthToken Error. Try Again!");
         });
     }
 
-    $scope.getAccessToken = function(code) {
-        console.log("HydroshareOAuthController.getAccessToken");
+    $scope.getStep2HSAccessToken = function(code) {
+        console.log("HydroshareOAuthController.getStep2HSAccessToken");
         // go back to HS w/ code to get the token
         //var tokenURL = `https://www.hydroshare.org/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectURL}`;
-        var tokenURL = `${baseHSURL}/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectURL}`;
+        //var tokenURL = `${baseHSURL}/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=${redirectURL}`;
+        //var tokenURL = `${baseHSURL}/o/token/?grant_type=authorization_code&code=${code}&client_id=${clientID}&client_secret=${clientSecret}&redirect_uri=https://tolocalhost.com`;
 
-        console.log("tokenURL: " + tokenURL);
         // From HS docs:
         // The call, if successful, returns the following parameters in JSON format: 
         // access_token, token_type, expires_in (num seconds to expiration), refresh_token, scope. 
         // You might want to store HS user id and access token in a cookie session so that 
         // you don't need to ask user to approve OAuth again and again when the web app is 
         // invoked by the same user for multiple times.
-        $http({
+
+        var tokenURL = `${baseHSURL}/o/token/`;
+
+        // this was getting {"error":"unsupported_grant_type"} until I encoded all the data arguments.
+        var req = {
             method: 'POST',
-            url: tokenURL
-        }).then(function successCallback(response) {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8','Accept': '*/*'
+            },
+            url: tokenURL,
+            data: 'grant_type=authorization_code' 
+            + '&client_id=' + encodeURIComponent(clientID)
+            + '&client_secret=' + encodeURIComponent(clientSecret)
+            + '&code=' + encodeURIComponent(code)
+            + '&redirect_uri=' + encodeURIComponent('https://tolocalhost.com'),
+        }
+
+        $http(req).then(function (response) {
             // JG TODO: need to add error checking, check for error result from HS as well
             console.log("success");
-            $scope.hydroshareAccessToken = response.data.access_token;
-            console.log("hydroshareAccessToken: " + $scope.hydroshareAccessToken);
+
+            $localStorage.hydroshareAccessToken = response.data.access_token;
+            console.log("hydroshareAccessToken: " + $localStorage.hydroshareAccessToken);
+
+            // token expires in 2592000 seconds = 43,200 min = 720 h, 30 days
+            var m = response.data.expires_in / 60;
+            var h = m / 60;
+            var days = h /24;
+            var date = new Date();
+            date.setDate(date.getDate() + days);
+            $localStorage.hydroshareExpirationDate = date;
+            console.log("hydroshare expiration date: " + date);
+            
             $scope.getHydroshareUserInfo();
-        }, function errorCallback(response) {
-            alert("HydroshareOAuthController.getAccessToken Error. Try Again!");
-        });
+        },
+        function (response) {
+            console.log(angular.toJson(response));
+        })
     }
 
     $scope.getHydroshareAccessToken = function() {
@@ -78,7 +238,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
     $scope.getHydroshareUserInfo = function() {
         console.log("HydroshareOAuthController.getUserInfo");
         //var userInfoURL = `https://www.hydroshare.org/hsapi/userInfo/?access_token=${$scope.accessToken}&format=json`;
-        var userInfoURL = `${baseHSURL}/hsapi/userInfo/?access_token=${$scope.hydroshareAccessToken}&format=json`;
+        var userInfoURL = `${baseHSURL}/hsapi/userInfo/?access_token=${$localStorage.hydroshareAccessToken}&format=json`;
 
         console.log("userInfoURL: " + userInfoURL);
         $http({
@@ -87,22 +247,26 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
         }).then(function successCallback(response) {
             // JG TODO: need to add error checking, check for error result from HS as well
             console.log("success");
-            $scope.userInfoHS = response.data;
+            $localStorage.hydroshareUserInfo = response.data;
             //console.log("userInfo: " + $scope.userInfo);
-            console.log("username: " + $scope.userInfoHS.username);
+            console.log("username: " + $localStorage.hydroshareUserInfo.username);
             // format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
         
-            $scope.submitToHydroshare();
+            // likely want to comment this out when testing
+            //$scope.submitToHydroshare();
         }, function errorCallback(response) {
             alert("HydroshareOAuthController.getUserInfo Error. Try Again!");
         });
     }
 
     // proof of concept, will move once working
-    $scope.submitToHydroshare = function() {
+    $scope.submitToHydroshare = function(ddUID) {
         console.log("HydroshareOAuthController.submitToHydroshare");
-        //var userInfoURL = `https://www.hydroshare.org/hsapi/userInfo/?access_token=${$scope.accessToken}&format=json`;
+        //var hsURL = `https://www.hydroshare.org/hsapi/resource/?access_token=${$scope.hydroshareAccessToken}`;
         var hsURL = `${baseHSURL}/hsapi/resource/?access_token=${$scope.hydroshareAccessToken}`;
+
+        // TODO: hard code a DD UID and use that for testing
+
         var hsData = `{
             "title": "Some Title",
             "author": "Jennifer Geis",
@@ -127,22 +291,25 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($s
         // "can_edit": (user in set(page.edit_users.all())) \
         //             or (len(set(page.edit_groups.all()).intersection(set(user.groups.all()))) > 0)
         console.log("hsURL: " + hsURL);
-        $http({
-            method: 'POST',
-            url: hsURL,
-            data: hsData
-        }).then(function successCallback(response) {
-            // JG TODO: need to add error checking, check for error result from HS as well
-            console.log("success");
-            $scope.responseData = response.data;
-            //console.log("userInfo: " + $scope.userInfo);
-            console.log("resource_id: " + $scope.responseData.resource_id);
-            // format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
-        }, function errorCallback(response) {
-            alert("HydroshareOAuthController.submitToHydroshare Error. Try Again!");
-        });
+        
+        // // temporarily commented out so I can test w/o actually submitting to HS
+        // $http({
+        //     method: 'POST',
+        //     url: hsURL,
+        //     data: hsData
+        // }).then(function successCallback(response) {
+        //     // JG TODO: need to add error checking, check for error result from HS as well
+        //     console.log("success");
+        //     $scope.responseData = response.data;
+        //     //console.log("userInfo: " + $scope.userInfo);
+        //     console.log("resource_id: " + $scope.responseData.resource_id);
+        //     // format:  {"username":"jgeis@hawaii.edu","first_name":"Jennifer","last_name":"Geis","title":"Software Engineer","id":1501,"organization":"University of Hawaii","email":"jgeis@hawaii.edu"}
+        // }, function errorCallback(response) {
+        //     alert("HydroshareOAuthController.submitToHydroshare Error. Try Again!");
+        // });
     }
 
 
-    $scope.getHSAuthToken();
+    $scope.getStep1HSAuthToken();
+    //$scope.doHSAuthProcess();
 });

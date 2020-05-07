@@ -108,21 +108,46 @@
         <h4 class align="center" ng-if="!wizardSecondPage && !has_data_descriptor">Step 1 of 2</h4>
         <h4 class align="center" ng-if="wizardSecondPage">Step 2 of 2</h4>
         <div>
-          Associated Files:
+          <br />
+          <b>Associated Files:</b>
           <table>
             <tbody>
               <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
                 <td ng-if="link.title == 'file'">
                   <!--<a href="#/data/explorer/{{link.href.split('system')[1]}}"><i class="fa fa-file-o">{{link.href.split('system')[1]}}</i></a>-->
-                  {{link.href.split('system')[1]}}
+                  {{link.href.split('system')[1]}}  
                   <td ng-show="link.href.includes('ikewai-annotated-data')">
                       <button type="button" class="btn btn-success text-center"  ng-click="download([link.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
                     </td>
                 </td>
               </tr>
-          </table>
+            </tbody>  
           </table>
         </div>
+        
+        <div ng-show='public_file_urls.length > 0'>
+          <br />
+          <b>Public File Links:</b>
+          <table>
+            <tbody>
+              <tr ng-repeat="url in public_file_urls">
+                <td>
+                  <a href="{{url}}">{{url}}</a>
+                </td>
+              </tr>
+            </tbody>  
+          </table>
+        </div>
+
+        <div ng-show='data_descriptor_metadatum.value.hydroshareResourceId'>
+          <br />
+          <b>Hydroshare Resource URL: </b><a href="https://www.hydroshare.org/resource/{{data_descriptor_metadatum.value.hydroshareResourceId}}">https://www.hydroshare.org/resource/{{data_descriptor_metadatum.value.hydroshareResourceId}}</a>
+        </div>
+        <div ng-show='data_descriptor_metadatum.value.doi'>
+          <br />
+          <b>Hydroshare DOI URL: </b><a href="https://doi.org/10.4211/hs.{{data_descriptor_metadatum.value.hydroshareResourceId}}">https://doi.org/10.4211/hs.{{data_descriptor_metadatum.value.hydroshareResourceId}}</a>
+        </div>
+
       </div>
     </div>
   </div>
@@ -138,32 +163,36 @@
           <div class="panel-heading" align="center"><b>Push to Hydroshare and ikewai.org</b></div>
           <div class="panel-body">
             <div class="form-group">
+              
                 <label class="control-label pull-left">
                   1.) Please make sure everything is completely filled out before submitting to Hydroshare.
                   Once submitted, the data will be immutable.<br />
-                  2.) Pay particular attention to the fields in the "Hydroshare" section of the form,
-                  and make sure your authors are in the order you want them to appear.<br />
-                  3.) Finally, select the files you want included in your submission and click the "Push" button.
+                  2.) Pay particular attention to the fields in the "Hydroshare" section of the form 
+                  (visible in edit mode, consists of license rights, contributors, and related resources).<br />
+                  3.) Make sure your authors are in the order you want them to appear.<br />
+                  3.) Note that anything pushed to Hydroshare will also be automatically pushed to ikewai.org.
+                  <!--3.) Finally, select the files you want included in your submission and click the "Push" button.
                   Note that only files that have been pushed to the `Ike wai annotated repository will be available
-                  for selection.  Also, anything pushed to Hydroshare will also be submitted to ikewai.org.
+                  for selection.  Also, anything pushed to Hydroshare will also be submitted to ikewai.org.-->
                 </label>
                 <div class="input-group">
+                  <!-- TODO: this doesn't work, just leave it for now and add as a future feature -->
+                  <!--
                   <table class="table table-striped table-bordered">
                     <tbody>
                       <th>Select the files to be included in the Hydroshare and ikewai.org submission: </th>
                       <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
                         <td ng-if="link.title == 'file'" ng-show="link.href.includes('ikewai-annotated-data')"> 
-                          <!-- TODO: this doesn't work, just leave it for now until the push works -->
                           <input type="checkbox" ng-model="datadescriptor.selected_push_files" ng-true-value="[link.href]">
                             {{link.href.split('system')[1]}}
                           </input>
                         </td> 
                       </tr>
-
                     </tbody>
                   </table>
-                  <button type="button" ng-if="pushLocation == 'ikewai'" class="btn btn-success text-center"  ng-click="pushToIkewai(filemetadatum.uuid)"><i class="fa fa-plus"></i> {{"Push to Ikewai" | translate}}</button>
-                  <button type="button" ng-if="pushLocation == 'hydroshare'" class="btn btn-success text-center"  ng-click="pushToHydroshare(filemetadatum.uuid)"><i class="fa fa-plus"></i> {{"Push to Hydroshare" | translate}}</button>
+                   -->
+                  <button type="button" ng-if="pushLocation == 'ikewai'" class="btn btn-success text-center"  ng-click="stageToIkewai()"><i class="fa fa-plus"></i> {{"Stage to Ikewai" | translate}}</button>
+                  <button type="button" ng-if="pushLocation == 'hydroshare'" class="btn btn-success text-center"  ng-click="stageToHydroshare()"><i class="fa fa-plus"></i> {{"Stage to Hydroshare" | translate}}</button>
               </div>
             </div>
           </div>
@@ -294,7 +323,7 @@
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(', ')}}
                                     </td>
-                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' || key==='license_rights' || key==='relations' || key==='published' || key==='hydroPushed' || key==='ikewaiPushed'">
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' || key==='license_rights' || key==='relations' || key==='published' || key==='pushedToIkewai' || key==='pushedToHydroshare' || key==='stagedToIkewai' || key==='stagedToHydroshare'">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key]}}
