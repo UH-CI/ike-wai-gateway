@@ -156,7 +156,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
-  $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
+  $scope.datadescriptor.license_rights = "Creative Commons Attribution-ShareAlike CC BY-SA";
 
   $scope.data_descriptor
   $scope.public_file_urls = [];
