@@ -105,3 +105,147 @@ curl -sk -H "Authorization: Bearer 9f59a59f57e09ffdfce8fcd8b08520a7" -X POST -H 
     }
   }
 }
+
+
+----------------
+
+Apparently this was revised:
+
+./metadata-schema-list -V 2407294948645474791-242ac1110-0001-013
+Calling curl -sk -H "Authorization: Bearer 6743bf8ab65644a19c6f1cf32c2943d" 'https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013?pretty=true'
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : {
+    "internalUsername" : null,
+    "lastUpdated" : "2017-06-27T19:45:49.615-05:00",
+    "schema" : {
+      "title" : "Person",
+      "description" : "Information related to a person",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "first_name" : {
+          "type" : "string",
+          "title" : "First Name"
+        },
+        "last_name" : {
+          "type" : "string",
+          "title" : "Last Name"
+        },
+        "email" : {
+          "type" : "string",
+          "title" : "Email"
+        },
+        "orcid" : {
+          "type" : "string",
+          "title" : "ORCID"
+        },
+        "organization" : {
+          "type" : "string",
+          "title" : "Organization"
+        },
+        "address" : {
+          "type" : "string",
+          "title" : "Address"
+        },
+        "phone" : {
+          "type" : "string",
+          "title" : "Phone"
+        },
+        "url" : {
+          "type" : "string",
+          "title" : "Web Site"
+        }
+      },
+      "required" : [ "first_name", "last_name" ]
+    },
+    "uuid" : "2407294948645474791-242ac1110-0001-013",
+    "created" : "2017-06-27T19:45:49.615-05:00",
+    "owner" : "jgeis",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+      }
+    }
+  }
+}
+
+
+// update:
+./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaPerson.json 2407294948645474791-242ac1110-0001-013
+
+// output:
+{
+  "uuid": "2407294948645474791-242ac1110-0001-013",
+  "internalUsername": null,
+  "lastUpdated": "2020-05-18T20:27:58.105-05:00",
+  "schema": {
+    "title": "Person",
+    "description": "Information related to a person",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "first_name": {
+        "type": "string",
+        "title": "First Name"
+      },
+      "last_name": {
+        "type": "string",
+        "title": "Last Name"
+      },
+      "email": {
+        "type": "string",
+        "title": "Email"
+      },
+      "orcid": {
+        "type": "string",
+        "title": "ORCID"
+      },
+      "organization": {
+        "type": "string",
+        "title": "Organization"
+      },
+      "address": {
+        "type": "string",
+        "title": "Address"
+      },
+      "phone": {
+        "type": "string",
+        "title": "Phone"
+      },
+      "url": {
+        "type": "string",
+        "title": "Web Site"
+      },
+      "hydroshare_id": {
+        "type": "string",
+        "title": "Hydroshare User ID"
+      }
+    },
+    "required": [
+      "first_name",
+      "last_name"
+    ]
+  },
+  "created": "2017-06-27T19:45:49.615-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2407294948645474791-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}

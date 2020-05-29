@@ -37,7 +37,9 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
     https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
    
     // note, if I encode the hash mark, this fails.
-https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F#%2Fhsoauth
+    https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F#%2Fhsoauth
+    https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F
+
     */
 
     // this is the ikewai account
@@ -46,16 +48,15 @@ https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96a
     clientID = "tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t";
     clientSecret = "XgSOOzYnaKM7j0moFu3CgT0x5s1lkay8bTgeeuKMGihgM4Nf6bWcJY6pw9Wpo1EKo86QJdDtfPN1vzmwwmAt0HVI3s3CIr9QIyp95U2tjxGnL2Aai0x8FsZguE1UEetT";
 
-    // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
     baseHSURL = "https://www.hydroshare.org";
 
     // the 'tolocalhost.com' url is used for dev environment (localhost).  Will need to be changed for prod.
-    //redirectURL = "https%3A%2F%2Ftolocalhost.com";
-    //redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
+    redirectURL = "https://tolocalhost.com";
+    redirectURLEncoded = "https%3A%2F%2Ftolocalhost.com";
 
     // can't use encodeURIComponent as it changes the hash mark
-    redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
-    redirectURLEncoded = "https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F#%2Fhsoauth";
+    //redirectURL = "https://ikewai-dev.its.hawaii.edu/app/#/hsoauth";
+    //redirectURLEncoded = "https%3A%2F%2Fikewai-dev.its.hawaii.edu%2Fapp%2F#%2Fhsoauth";
 
     $scope.requesting = false;
     
@@ -64,10 +65,8 @@ https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96a
         
         $scope.requesting = true;
         var post_data = {};
-        // keep this commented out line as it's handy for copying/pasting into browser for testing
-        //var authUrl = 'https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com';
 
-        var authUrl = `${baseHSURL}/o/authorize/?response_type=code&client_id=${clientID}&redirect_uri=${redirectURL}`;
+        var authUrl = `${baseHSURL}/o/authorize/?response_type=code&client_id=${clientID}&redirect_uri=${redirectURLEncoded}`;
         console.log("authUrl: " + authUrl);
 
         $http({

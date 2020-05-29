@@ -318,12 +318,12 @@
                                       <span>
                                     </td>
                                     -->
-                                    <td ng-if="key=='subjects' || key=='formats' || key=='data_types' ">
+                                    <td ng-if="key=='subjects' || key=='formats' || key=='data_types' || key=='data_states'">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key].join(', ')}}
                                     </td>
-                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='data_state'|| key=='sensitive' || key==='publication_date' || key==='license_rights' || key==='relations' || key==='published' || key==='pushedToIkewai' || key==='pushedToHydroshare' || key==='stagedToIkewai' || key==='stagedToHydroshare'">
+                                    <td ng-if="key=='title' || key=='start_datetime' || key=='end_datetime' || key=='description' || key=='sensitive' || key==='publication_date' || key==='license_rights' || key==='relations' || key==='published' || key==='pushedToIkewai' || key==='pushedToHydroshare' || key==='stagedToIkewai' || key==='stagedToHydroshare'">
                                     <!--<td ng-if="key=='subjects' || key=='formats' || key=='languages' ">-->
                                     <!--<td ng-if="key=='formats' || key=='languages' ">-->
                                       {{data_descriptor_metadatum.value[key]}}
@@ -445,16 +445,28 @@
                             </div>
                             <!--STATUS: options for file status (raw, processed, preliminary, final) -->
                             <div class="form-group required"  ng-show="!wizardSecondPage" align="left">
-                              <label class="control-label" for="data_state" data-toggle="tooltip" title='{{"data_state" | translate}}'>Data State:</label>
+
+
+                              <label class="control-label" for="data_state" data-toggle="tooltip" title='{{"data_state" | translate}}'>Data State(s):</label>
                               <button type="button" data-toggle="popover" title="Data State Field" data-content='{{"data_state" | translate}}' class="btn btn-info btn-circle">
                                   <i class="glyphicon glyphicon-question-sign"></i>
                                 </button>
                               <br />
-                              <input type="radio" value="Raw" name="data_state" ng-model="datadescriptor.data_state" > Raw &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Processed" name="data_state" ng-model="datadescriptor.data_state" > Processed &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Preliminary" name="data_state" ng-model="datadescriptor.data_state" > Preliminary product/result &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Final" name="data_state" ng-model="datadescriptor.data_state" >  Final product/result &nbsp;&nbsp;&nbsp;
-                              <input type="radio" value="Unknown" name="data_state" ng-model="datadescriptor.data_state" >  Unknown                           
+                              <ui-select class="form-control"
+                                multiple tagging tagging-label=""
+                                remove-selected="false"
+                                ng-model="datadescriptor.data_states"
+                                theme="bootstrap"
+                                style="width: 100%;text-align: left;"
+                                sortable="true"
+                                ng-disabled="disabled"
+                                title="Choose data states">
+                                <ui-select-match placeholder="Select file data state(s)...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="data_state in data_states | filter: $select.search">
+                                  <span ng-bind-html="data_state"></span>
+                                </ui-select-choices>
+                              </ui-select>
+                            
                             </div><br />
                             <!--
                               0 Raw (unedited) data, such as the output from a sensor

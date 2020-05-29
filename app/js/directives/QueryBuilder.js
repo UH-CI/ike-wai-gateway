@@ -223,7 +223,7 @@ AgaveToGo.directive('queryBuilder', ['MetaController','$compile', function (Meta
                           {name:'value.creators.first_name', title:'Author First Name'},
                           {name:'value.creators.last_name', title:'Author Last Name'},
                           {name:'value.creators.email', title:'Author Email'},
-                          {name:'value.creators.organization', title:'Author Orginazation'},
+                          {name:'value.creators.organization', title:'Author Organization'},
                           {name: 'value.description', title:'Summary'},
                           {name:'value.subjects', title:'Subjects/Keywords/Search Terms'},
                           {name:'value.formats', title:'Formats'},

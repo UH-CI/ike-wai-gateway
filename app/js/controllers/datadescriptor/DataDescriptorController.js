@@ -98,6 +98,14 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     ".zip - zip compression (select internal file formats also)"
   ];
 
+  $scope.data_states = [
+    "Raw",
+    "Processed",
+    "Preliminary",
+    "Final",
+    "Unknown"
+  ];
+
   $scope.data_types = [
     "Figure - figures, images",
     "Map",
@@ -143,12 +151,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   $scope.datadescriptor.stagedToHydroshare = false;
   $scope.edit_data_descriptor = false;
   $scope.push_data_descriptor = false;
-  $scope.data_descriptor_order = ['title','creators', 'organizations','contributors','subjects', 'start_datetime', 'end_datetime', 'data_state', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators','relations','license_rights','published','pushedToIkewai','pushedToHydroshare','stagedToIkewai','stagedToHydroshare','hydroshareDOI']
-  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Contributor(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators','Related Resource(s)','License', 'Pushed to Annotated Repo?', 'Pushed to Ikewai.org', 'Pushed to Hydroshare', 'Staged to Ikewai.org', 'Staged to Hydroshare', 'Hydroshare DOI']
+  $scope.data_descriptor_order = ['title','creators', 'organizations','contributors','subjects', 'start_datetime', 'end_datetime', 'data_states', 'sensitive', 'data_types', 'formats',  'description', 'newspapers', 'articleAuthors', 'translators','relations','license_rights','published','pushedToIkewai','pushedToHydroshare','stagedToIkewai','stagedToHydroshare','hydroshareDOI']
+  $scope.data_descriptor_display = ['Title','Author(s)', 'Organization(s)','Contributor(s)', 'Subjects/Keywords/Search Terms', 'Data Collection Start Date', 'Data Collection End Date', 'Data State(s)', 'Sensitivity', 'Data Type(s)', 'Format(s)',  'Summary', 'Newspaper Article Source','Newspaper Article Authors','Newspaper Article Translators','Related Resource(s)','License', 'Pushed to Annotated Repo?', 'Pushed to Ikewai.org', 'Pushed to Hydroshare', 'Staged to Ikewai.org', 'Staged to Hydroshare', 'Hydroshare DOI']
 
   $scope.datadescriptor.license_permission = "public";
   $scope.datadescriptor.title = "";
-  $scope.datadescriptor.license_rights = "Creative Commons Attribution CC BY";
+  $scope.datadescriptor.license_rights = "Creative Commons Attribution-ShareAlike CC BY-SA";
 
   $scope.data_descriptor
   $scope.public_file_urls = [];
@@ -393,7 +401,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["subjects"], "Subjects: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["start_datetime"], "Start Data/Time: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["end_datetime"], "End Data/Time: ", newline, indent);
-    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["data_state"], "Data State: ", newline, indent);
+    exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["data_states"], "Data States: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["sensitive"], "Sensitivity: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["data_types"], "Data Types: ", newline, indent);
     exportContent += $scope.exportBasicData($scope.data_descriptor_metadatum.value["formats"], "Formats: ", newline, indent);

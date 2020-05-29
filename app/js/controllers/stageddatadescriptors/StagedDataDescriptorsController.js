@@ -336,7 +336,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     // if there are multiple locations, HS only accepts one, so need to make a bounding box for all locations.
     // note that this does not currently handle crossing the 180th meridian
     // https://gis.stackexchange.com/questions/39153/given-a-set-of-coordinates-how-can-i-calculate-the-minimum-bounds
-    if (ddLocations.length > 0) {
+    if (ddLocations.length > 1) {
       var isFirstIteration = true;
       var westlimit = "";
       var eastlimit = "";
@@ -388,8 +388,29 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
               '", "units": "Decimal Degrees", "name": "' + datum.value.name + '"}}}';
             }
           }
-          else {
-            // polygons aren't handled by HS right now, only boxes and points
+          else if (datum.value.loc.type == "Polygon") {
+            //"polygon" : "[[[-156.28784185275435,19.508020154916768],[-156.28784185275435,19.926877111209265],[-155.90881353244185,19.926877111209265],[-155.90881353244185,19.508020154916768],[-156.28784185275435,19.508020154916768]]]",
+            //"name" : "Kiholo Bay to south of Kailua-Kona",
+            //"id" : "Big Island Kiholo Bay to south of Kailua-Kona",
+            //"type" : "Ocean",
+            //"county" : "Hawai'i County",
+            //"state" : "Hawaii",
+            //"description" : "Area studied by Eric Attias' Controlled Source Electromagnetic Survey",
+
+            if (datum.value.polygon != null) {
+              // for some reason, there's an array of size one in the main array, get the inner array.
+              var innerArr = JSON.parse(datum.value.polygon)[0];
+              // polygons aren't handled by HS right now, only boxes and points
+              // but when we create a box, it's generated as a polygon where the first and last points are the same
+              // so check for five points where the first and last points match, if that's the case, we're good.
+              if (innerArr != null && innerArr.length == 5 && (JSON.stringify(innerArr[0]) == JSON.stringify(innerArr[4]))) {
+                var westlimit = innerArr[0][0];
+                var eastlimit = innerArr[3][0];
+                var northlimit = innerArr[1][1];
+                var southlimit = innerArr[0][1];
+                result += `,{"coverage":{"type":"box", "value": {"northlimit": "${northlimit}", "southlimit": "${southlimit}", "eastlimit": "${eastlimit}", "westlimit": "${westlimit}", "units": "Decimal Degrees"}}}`
+              }
+            } 
           }
         }
       }
@@ -660,10 +681,12 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       hsURL = baseHSURL + "/hsapi/resource/" + resourceId + "/files/?access_token=" + accessToken + "&DEBUG=true";
       //print("url: " + url)
 
-      var fileContents = "#### `Ike Wai:" 
+      var fileContents = "#### ‘Ike Wai:" 
       + "\r\n \r\n"
-      + "To save space on Hydroshare, all `Ike Wai project files are stored at the "
-      + "University of Hawaii and linked here.  Please use the following link(s) "
+      + "In 2016, University of Hawai‘i launched the Hawai‘i EPSCoR ‘Ike Wai project supported by the National Science Foundation (Award # OIA-1557349) The five-year project uses integrated research, education, and community engagement efforts aimed to ensure Hawai‘i’s future water security and promote resource management within the state that is sustainable, responsible, and data-driven."
+      + "\r\n \r\n"
+      + "To save space on Hydroshare, all ‘Ike Wai project files are stored at the "
+      + "University of Hawai‘i and linked here.  Please use the following link(s) "
       + "to see the files for this resource.";
 
       // get the public links to the files:
@@ -674,34 +697,42 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       fileContents += "\r\n \r\n";
 
       // data state:
-      if (dataDescriptor.value.data_state) {
+      if (dataDescriptor.value.data_state != null 
+        && dataDescriptor.value.data_state.length > 0 
+        && dataDescriptor.value.data_state != "Unknown") {
         fileContents += "#### Data state: \r\n" + dataDescriptor.value.data_state + "\r\n \r\n";
       }
 
+      var newspapers = dataDescriptor.value.newspapers;
+      var authors = dataDescriptor.value.articleAuthors;
+      var translators = dataDescriptor.value.translators;
+
       // Hawaiian language news article translations
-      if (dataDescriptor.value.newspapers || dataDescriptor.value.articleAuthors || dataDescriptor.value.translators) {
-        hwnString = "#### Hawaiian Newspaper Article Translation information:";
-        if (dataDescriptor.value.newspapers) {
-          hwnString += "\r\n \r\n Newspaper(s): ";
-          angular.forEach(dataDescriptor.value.newspapers, function (item) {
-            hwnString += "  \r\n - " + item.name; 
-          });
-        };
-        if (dataDescriptor.value.articleAuthors) {
-          hwnString += "  \r\n  \r\n Article Author(s): ";
-          angular.forEach(dataDescriptor.value.articleAuthors, function (item) {
-            var penName = item.pen_name
-            if (!penName) {penName = "N/A"}
-            hwnString += "  \r\n - name: " + item.name + ", pen name: " + penName; 
-          });
+      if (newspapers != null || authors != null || translators != null) {
+        if (newspapers.length > 0 || authors.length > 0 || translators.length > 0) {
+          hwnString = "#### Hawaiian Newspaper Article Translation information:";
+          if (newspapers) {
+            hwnString += "\r\n \r\n Newspaper(s): ";
+            angular.forEach(newspapers, function (item) {
+              hwnString += "  \r\n - " + item.name; 
+            });
+          };
+          if (authors) {
+            hwnString += "  \r\n  \r\n Article Author(s): ";
+            angular.forEach(authors, function (item) {
+              var penName = item.pen_name
+              if (!penName) {penName = "N/A"}
+              hwnString += "  \r\n - name: " + item.name + ", pen name: " + penName; 
+            });
+          }
+          if (translators) {
+            hwnString +=  "  \r\n  \r\n Translators: ";
+            angular.forEach(translators, function (item) {
+              hwnString += "  \r\n - first name: " + item.first_name + ", last name: " + item.last_name + ", email: " + item.email + ", organization: " + item.organization; 
+            });
+          }
+          fileContents += hwnString + "\r\n \r\n";
         }
-        if (dataDescriptor.value.translators) {
-          hwnString +=  "  \r\n  \r\n Translators: ";
-          angular.forEach(dataDescriptor.value.translators, function (item) {
-            hwnString += "  \r\n - first name: " + item.first_name + ", last name: " + item.last_name + ", email: " + item.email + ", organization: " + item.organization; 
-          });
-        }
-        fileContents += hwnString + "\r\n \r\n";
       }
 
       // Variables:
@@ -839,9 +870,11 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             // temporarily commented out for testing
             // TODO!!! Uncomment before release!
             // mark the dd as being "pushedToHydroshare" and no longer staged.
+            /*
             dataDescriptor.value.stagedToHydroshare = false;
             dataDescriptor.value.pushedToHydroshare = true;
             $scope.updateDataDescriptor(dataDescriptor);
+            */
 
         }, function errorCallback(response) {
             console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
