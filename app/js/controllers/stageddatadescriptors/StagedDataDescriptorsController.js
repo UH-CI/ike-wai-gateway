@@ -223,7 +223,16 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           if (creator.organization != undefined) {
             orgString = `,"organization": "${creator.organization}"`;
           }
-
+/*
+          var hsUserString = "";
+          if (creator.hydroshare_id != undefined) {
+            hsUserString = `,"description":"/user/${creator.hydroshare_id}/"`;
+          }
+          // make sure there's at least a first name or a last name
+          if (creator.first_name != "" && creator.last_name != "") {
+            creatorString += `{` + nameString + emailString + orgString + hsUserString + `}`;
+          } 
+*/
           // make sure there's at least a first name or a last name
           if (creator.first_name != "" && creator.last_name != "") {
             creatorString += `{` + nameString + emailString + orgString + `}`;
@@ -870,11 +879,9 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             // temporarily commented out for testing
             // TODO!!! Uncomment before release!
             // mark the dd as being "pushedToHydroshare" and no longer staged.
-            /*
             dataDescriptor.value.stagedToHydroshare = false;
             dataDescriptor.value.pushedToHydroshare = true;
             $scope.updateDataDescriptor(dataDescriptor);
-            */
 
         }, function errorCallback(response) {
             console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
