@@ -1,0 +1,18 @@
+{
+  "title" : "HydroshareAccessToken",
+  "description" : "Stores a Hydroshare access token, typically good for 30 days",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "access_token" : {
+      "type" : "string",
+      "title" : "Hydroshare Access Token"
+    },
+    "expiration_date" : {
+      "format" : "date-time",
+      "type" : "string",
+      "title" : "Expiration Date"
+    }
+  },
+  "required" : [ "access_token", "expiration_date"]
+}

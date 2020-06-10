@@ -1,0 +1,148 @@
+To create (did an update, see below):
+
+> ./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaPublicFile.json
+
+OR
+
+curl -sk -H "Authorization: Bearer 7ed90c6381dca7d4f3fd28ddd55db50" -X POST -H "Content-Type: application/json" --data-binary '
+{
+  "title" : "PublicFile",
+  "description" : "Created when a file is made public.  Unites the file, data descriptor(s) (if available), and the file's public url",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "data_descriptor_uuids" : {
+      "type" : "array",
+      "items" : {
+        "title" : "Data Descriptor UUID",
+        "type" : "string"
+      }
+    },
+    "file_uuid" : {
+      "type" : "string",
+      "title" : "File UUID"
+    },
+    "file_public_url" : {
+      "type" : "string",
+      "title" : "Public URL"
+    },
+    "file_private_url" : {
+      "type" : "string",
+      "title" : "Private URL"
+    }
+  },
+  "required" : [ "file_public_url", "file_private_url"]
+}
+' https://agaveauth.its.hawaii.edu/meta/v2/schemas/
+
+
+# to retrieve:
+./metadata-schema-list -V -Q '{"schema.title":"PublicFile"}'
+
+// dev output
+Not run on dev yet
+
+// prod output
+{
+  "internalUsername": null,
+  "lastUpdated": "2020-04-28T20:18:47.785-05:00",
+  "schema": {
+    "title": "PublicFile",
+    "description": "Created when a file is made public.  Unites the file, data descriptor, and the file's public url",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "data_descriptor_uuid": {
+        "type": "string",
+        "title": "Data Descriptor UUID"
+      },
+      "file_uuid": {
+        "type": "string",
+        "title": "File UUID"
+      },
+      "file_public_url": {
+        "type": "string",
+        "title": "Public URL"
+      },
+      "file_private_url": {
+        "type": "string",
+        "title": "Private URL"
+      }
+    },
+    "required": [
+      "data_descriptor_uuid",
+      "file_uuid",
+      "file_public_url",
+      "file_private_url"
+    ]
+  },
+  "uuid": "6947616753328787946-242ac1110-0001-013",
+  "created": "2020-04-28T20:18:47.785-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6947616753328787946-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6947616753328787946-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
+
+
+// update:
+./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaPublicFile.json 6947616753328787946-242ac1110-0001-013
+
+{
+  "uuid": "6947616753328787946-242ac1110-0001-013",
+  "internalUsername": null,
+  "lastUpdated": "2020-05-01T14:01:27.685-05:00",
+  "schema": {
+    "title": "PublicFile",
+    "description": "Created when a file is made public.  Unites the file, data descriptor(s) (if available), and the file's public url",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "data_descriptor_uuids": {
+        "type": "array",
+        "items": {
+          "title": "Data Descriptor UUID",
+          "type": "string"
+        }
+      },
+      "file_uuid": {
+        "type": "string",
+        "title": "File UUID"
+      },
+      "file_public_url": {
+        "type": "string",
+        "title": "Public URL"
+      },
+      "file_private_url": {
+        "type": "string",
+        "title": "Private URL"
+      }
+    },
+    "required": [
+      "file_uuid",
+      "file_public_url",
+      "file_private_url"
+    ]
+  },
+  "created": "2020-04-28T20:18:47.785-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6947616753328787946-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6947616753328787946-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
