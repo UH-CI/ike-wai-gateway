@@ -157,6 +157,9 @@
                               <div  ng-show='metadatum.value.stagedToHydroshare'>
                                 <span class="badge badge-success">Staged to Hydroshare</span>
                               </div>
+                              <div  ng-show='metadatum.value.pushedToHydroshare && !metadatum.value.hasDOI'>
+                                <span class="badge badge-success">Pushed to Hydroshare, Needs DOI</span>
+                              </div>
                             </div>
                         </td>
                         <td>
@@ -219,7 +222,7 @@
                                   Reject from Ikewai
                                 </a>
                               </li>
-                              <li ng-show='metadatum.value.published == "True" && metadatum.value.hydroshareResourceId && !metadatam.value.doi'>
+                              <li ng-show='metadatum.value.pushedToHydroshare && metadatum.value.hydroshareResourceId && !metadatum.value.hasDOI'>
                                 <a ng-click="getDOI(metadatum)">
                                   <i class="fa fa-tags"></i>
                                   Get Hydroshare DOI

@@ -144,7 +144,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         andarray.push(typequery)
 
         // limit results to DDs that are stagedToIkewai or stagedToHydroshare
-        var stagedVals = {'$or':[{'value.stagedToIkewai':true},{'value.stagedToHydroshare':true}]};
+        var stagedVals = {'$or':[{'value.stagedToIkewai':true},{'value.stagedToHydroshare':true},{'$and':[{'value.pushedToHydroshare':true},{'value.hasDOI':false}]}]};
         andarray.push(stagedVals);
         andarray.push(orquery)
 
@@ -223,7 +223,16 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
           if (creator.organization != undefined) {
             orgString = `,"organization": "${creator.organization}"`;
           }
-
+/*
+          var hsUserString = "";
+          if (creator.hydroshare_id != undefined) {
+            hsUserString = `,"description":"/user/${creator.hydroshare_id}/"`;
+          }
+          // make sure there's at least a first name or a last name
+          if (creator.first_name != "" && creator.last_name != "") {
+            creatorString += `{` + nameString + emailString + orgString + hsUserString + `}`;
+          } 
+*/
           // make sure there's at least a first name or a last name
           if (creator.first_name != "" && creator.last_name != "") {
             creatorString += `{` + nameString + emailString + orgString + `}`;
@@ -375,7 +384,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       result += `,{"coverage":{"type":"box", "value": {"northlimit": "${northlimit}", "southlimit": "${southlimit}", "eastlimit": "${eastlimit}", "westlimit": "${westlimit}", "units": "Decimal Degrees"}}}`
     }
     // there's only one location:
-    else {
+    else if (ddLocations.length === 1) {
       var datum = ddLocations[0];
       if (datum.name == "Site") {
         if (datum.value.loc != undefined && datum.value.name != undefined) {
@@ -858,7 +867,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             $scope.responseData = response.data;
             var resourceId = $scope.responseData.resource_id;
             //console.log("userInfo: " + $scope.userInfo);
-            console.log("resource_id: " + resourceId);
+            console.log("value.hydroshareResourceId: " + resourceId);
 
             // put the hydroshare resourceId on the dataDescriptor
             dataDescriptor.value.hydroshareResourceId = resourceId;
@@ -870,11 +879,10 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             // temporarily commented out for testing
             // TODO!!! Uncomment before release!
             // mark the dd as being "pushedToHydroshare" and no longer staged.
-            /*
             dataDescriptor.value.stagedToHydroshare = false;
             dataDescriptor.value.pushedToHydroshare = true;
+            dataDescriptor.value.hasDOI = false;
             $scope.updateDataDescriptor(dataDescriptor);
-            */
 
         }, function errorCallback(response) {
             console.log("HydroshareOAuthController.submitToHydroshare Error:" + response.data.detail);
@@ -898,7 +906,6 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
     $scope.getDOI = function (dataDescriptor) {
       if (dataDescriptor.value.hydroshareResourceId) {
         baseHSURL = "https://www.hydroshare.org";
-        //accessToken = "e8MihA91acn7tcBmCJTckipjcDQDvn";
   
         $scope.requesting = true;
         // Get access token from data descriptor
@@ -925,6 +932,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
               if (doi) {
                 //console.log("doi: " + doi);
                 dataDescriptor.value.doi = doi;
+                dataDescriptor.value.hasDOI = true;
                 $scope.updateDataDescriptor(dataDescriptor);
               }
           }, function errorCallback(response) {
@@ -933,7 +941,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         },
         function (response) {
           App.alert({
-            message: "Hydroshare Access Token could not be retreived.  Please notify system administrator",
+            message: "Hydroshare Access Token could not be retrieved.  Please notify system administrator",
             closeInSeconds: 5
           });
           console.log("Hydroshare access token failure: " + response.message);
