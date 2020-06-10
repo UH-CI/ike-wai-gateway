@@ -2445,6 +2445,37 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
             }
         })
 
+        .state('stageddatadescriptors', {
+          url: "/stageddatadescriptors",
+          templateUrl: "views/stageddatadescriptors/manager.html",
+          data: {pageTitle: 'Staged Data Descriptors Manager'},
+          controller: "StagedDataDescriptorsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      serie: true,
+                      name: 'AgaveToGo',
+                      insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                      files: [
+                          '../assets/global/scripts/datatable.js',
+                          '../bower_components/holderjs/holder.js',
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/PermissionsService.js',
+                          'js/services/MetadataService.js',
+                          'js/services/FilesMetadataService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/stageddatadescriptors/StagedDataDescriptorsController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
+                          '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                          '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
+                          'js/controllers/stageddatadescriptors/ModalRejectDataDescriptorStagingRequestController.js'
+                      ]
+                  });
+              }]
+          }
+      })
+
         .state('mydatadescriptors-manage', {
           url: "/mydatadescriptors",
           templateUrl: "views/mydatadescriptors/manager.html",

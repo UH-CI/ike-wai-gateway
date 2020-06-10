@@ -379,41 +379,51 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
 
     this.createPublishedFileMetadata = function(newfile_uuid, newpath, oldfile_uuid, associations){
       var promises = [];
-      MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
-        .then(function(published_schema_uuid){
-          body = {};
-          split_filepath = newpath.split("/");
-          body.name = "PublishedFile";
-          body.associationIds = associations;
-          body.associationIds.push(newfile_uuid);
-          body.value= {"file-uuid":newfile_uuid,"oldfile-uuid":oldfile_uuid,"filename":split_filepath[split_filepath.length -1],"path":newpath};
-          body.schemaId = published_schema_uuid;
-          body.published="True";
-          promises.push(MetaController.addMetadata(body)
-            .then(
-              function(response){
-                console.log('PublishedFile: '+response.result.uuid)
-                metadataUuid = response.result.uuid;
-                App.alert({message: $translate.instant('success_metadata_add') + metadataUuid ,closeInSeconds: 5});
-                //add the default permissions for the system in addition to the owners
-                MetadataService.addDefaultPermissions(metadataUuid);
-                MetadataService.resolveApprovedStatus(metadataUuid);//if not public make it so
-              },
-              function(response){
-                MessageService.handle(response, $translate.instant('error_metadata_add'));
-              }
-            ));
-          });
-        var deferred = $q.defer();
-
-        return $q.all(promises).then(
-          function(data) {
-
-          },
-          function(data) {
-            deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
-
-        });
+      var split_filepath = newpath.split("/");
+      var query = `{"name":"PublishedFile","value.file-uuid":"${newfile_uuid}","value.oldfile-uuid":"${oldfile_uuid}","value.filename":"${split_filepath[split_filepath.length -1]}","value.path":"${newpath}"}`;
+      console.log("query: " + query);
+      MetaController.listMetadata(query).then(function (response) {
+          if (response.result.length > 0) {
+            console.log('PublishedFile record already exists');
+          }
+          else {
+            MetadataService.fetchSystemMetadataSchemaUuid('PublishedFile')
+            .then(function(published_schema_uuid){
+              body = {};
+              //split_filepath = newpath.split("/");
+              body.name = "PublishedFile";
+              body.associationIds = associations;
+              body.associationIds.push(newfile_uuid);
+              body.value= {"file-uuid":newfile_uuid,"oldfile-uuid":oldfile_uuid,"filename":split_filepath[split_filepath.length -1],"path":newpath};
+              body.schemaId = published_schema_uuid;
+              body.published="True";
+              promises.push(MetaController.addMetadata(body)
+                .then(
+                  function(response){
+                    console.log('PublishedFile: '+response.result.uuid)
+                    metadataUuid = response.result.uuid;
+                    App.alert({message: $translate.instant('success_metadata_add') + metadataUuid ,closeInSeconds: 5});
+                    //add the default permissions for the system in addition to the owners
+                    MetadataService.addDefaultPermissions(metadataUuid);
+                    MetadataService.resolveApprovedStatus(metadataUuid);//if not public make it so
+                  },
+                  function(response){
+                    MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  }
+                ));
+              });
+            var deferred = $q.defer();
+          }
+      },
+      function (response) {
+          console.log('Something went wrong.  PublishedFile object not created');
+      });
+      return $q.all(promises).then(
+        function(data) {
+        },
+        function(data) {
+          deferredHandler(data, deferred, $translate.instant('error_fetching_system_schema_uuid'));
+      });
     }
 
     this.publishStaggedFile = function(fileUuid, filepath)
@@ -458,15 +468,12 @@ angular.module('AgaveToGo').service('FilesMetadataService',['$uibModal', '$rootS
                     }
                   )
                 );
-
-              promises.push(
-                MetadataService.fetchSystemMetadataUuid('stagged')
-                  .then(function(stagged_uuid){
-                    self.removeAssociation(stagged_uuid, fileUuid,true);
-
-                  }
-                )
-              );
+                promises.push(
+                  MetadataService.fetchSystemMetadataUuid('stagged')
+                    .then(function(stagged_uuid){
+                      self.removeAssociation(stagged_uuid, fileUuid,true);
+                    })
+                );
             })
           }
         )
