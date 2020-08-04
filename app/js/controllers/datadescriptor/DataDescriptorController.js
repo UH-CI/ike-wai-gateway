@@ -593,6 +593,12 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
       if (!$scope.data_descriptor_metadatum.value.stagedToHydroshare) {
         //$scope.datadescriptor.stagedToHydroshare = true;
         $scope.data_descriptor_metadatum.value.stagedToHydroshare = true;
+        
+        //var date = new Date();
+        //var dateString = date.toISOString();
+        //$scope.data_descriptor_metadatum.value.stagedToHydroshareDate = dateString;
+        $scope.data_descriptor_metadatum.value.stagedToHydroshareDate = new Date().toISOString();
+
         $scope.data_descriptor_metadatum.value.rejectedFromHydroshare = false;
         //console.log("JG: Setting stageToHydroshare: " + $scope.datadescriptor);
         $scope.datadescriptor = $scope.data_descriptor_metadatum.value;
@@ -1114,7 +1120,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
     // check for required fields before continuing with the save process
-    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.data_state) {
+    if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.data_states.length > 0) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -1184,7 +1190,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     if ($scope.datadescriptor.creators.length > 0 
         && $scope.datadescriptor.creators != '' 
         && $scope.datadescriptor.title
-        && $scope.datadescriptor.data_state) {
+        && $scope.datadescriptor.data_states.length > 0) {
       // Then we check if the form is valid
       //	if (form.$valid) {
       MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
