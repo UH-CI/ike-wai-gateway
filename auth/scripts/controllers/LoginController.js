@@ -45,7 +45,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
         var pushedToIkewaiQuery = '{"name":"DataDescriptor","value.pushedToIkewaiDate":{"$gt":"' + formattedDate + '"}}';
         var pushedToAnnotatedRepoQuery = '{"name":"PublishedFile","created":{ "$gt":"' + formattedDate + '"}}'
         var recentlyUpdatedAnnotateRepoItemsQuery = '{"name":"DataDescriptor","value.published":"True","lastUpdated":"' + formattedDate + '"}}';
-        var usageStatsQuery = '{"name":"DataStats"}'
+        var usageStatsQuery = '{"name":"UsageStats"}'
 
         $scope.doQuery(baseUrl, doiQuery, "Recent DOIs obtained");
         $scope.doQuery(baseUrl, pushedToHydroshareQuery, "Recent pushes to Hydroshare");
@@ -105,8 +105,8 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 item = response.data.result[0];
                 $scope.outputString += "<br />";
                 $scope.outputString += "<b>" + headerLabel + "</b>: <br />";
-                $scope.outputString += "   Number of files: " + item.value.numFiles + "<br />";
-                $scope.outputString += "   Storage space used: " + item.value.storage + "<br />";
+                $scope.outputString += "   Number of files: " + item.value.allFilesCount + "<br />";
+                $scope.outputString += "   Storage space used: " + item.value.allStorage + "<br />";
             }
         })
     }
