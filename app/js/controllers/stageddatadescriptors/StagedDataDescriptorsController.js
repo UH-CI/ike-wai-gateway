@@ -881,6 +881,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
             // mark the dd as being "pushedToHydroshare" and no longer staged.
             dataDescriptor.value.stagedToHydroshare = false;
             dataDescriptor.value.pushedToHydroshare = true;
+            dataDescriptor.value.pushedToHydroshareDate = new Date().toISOString();
             dataDescriptor.value.hasDOI = false;
             $scope.updateDataDescriptor(dataDescriptor);
 
@@ -933,6 +934,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
                 //console.log("doi: " + doi);
                 dataDescriptor.value.doi = doi;
                 dataDescriptor.value.hasDOI = true;
+                dataDescriptor.value.gotDOIDate = new Date().toISOString();
                 $scope.updateDataDescriptor(dataDescriptor);
               }
           }, function errorCallback(response) {
@@ -959,6 +961,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // mark the dd as being "pushedToIkewai" and no longer staged.
       dataDescriptor.value.stagedToIkewai = false;
       dataDescriptor.value.pushedToIkewai = true;
+      dataDescriptor.value.pushedToIkewaiDate = new Date().toISOString();
       $scope.updateDataDescriptor(dataDescriptor); 
     }
 

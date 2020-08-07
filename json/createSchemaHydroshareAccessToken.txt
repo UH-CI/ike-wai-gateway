@@ -31,8 +31,103 @@ curl -sk -H "Authorization: Bearer 7ed90c6381dca7d4f3fd28ddd55db50" -X POST -H "
 ./metadata-schema-list -V -Q '{"schema.title":"HydroshareAccessToken"}'
 
 // dev output
-Not run on dev yet
+./metadata-schema-addupdate -v -F ~/Work/EclipseNeon/uh-togo-app/json/createSchemaHydroshareAccessToken.json
+{
+  "internalUsername": null,
+  "lastUpdated": "2020-06-16T14:13:17.654-05:00",
+  "schema": {
+    "title": "HydroshareAccessToken",
+    "description": "Stores a Hydroshare access token, typically good for 30 days",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "access_token": {
+        "type": "string",
+        "title": "Hydroshare Access Token"
+      },
+      "expiration_date": {
+        "format": "date-time",
+        "type": "string",
+        "title": "Expiration Date"
+      }
+    },
+    "required": [
+      "access_token",
+      "expiration_date"
+    ]
+  },
+  "uuid": "8018718994150527466-242ac1110-0001-013",
+  "created": "2020-06-16T14:13:17.654-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/8018718994150527466-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/8018718994150527466-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
 
+# manually inputting an access token:
+metadata-addupdate -v -F - <<< '{
+  "schemaId": "8018718994150527466-242ac1110-0001-013", 
+  "name": "HydroshareAccessToken",
+	"value": {
+	    "access_token":"dj4Cl68jY5NN349kHbLmPa4S87a3Ft",
+	    "expiration_date":"2020-05-29T16:16:39-05:00"
+	},
+	"permissions": [ 
+	  {
+	    "username": "Public",
+	    "permission": "read"
+	  },
+	  {
+	    "username": "jgeis",
+	    "permission": "all"
+	  },
+	  {
+	    "username": "seanbc",
+	    "permission": "all"
+	  }
+	]
+}'
+
+// output
+{
+  "uuid": "4550274236533370390-242ac1110-0001-012",
+  "owner": "jgeis",
+  "schemaId": "8018718994150527466-242ac1110-0001-013",
+  "internalUsername": null,
+  "associationIds": [],
+  "lastUpdated": "2020-06-22T16:45:56.491-05:00",
+  "name": "HydroshareAccessToken",
+  "value": {
+    "access_token": "dj4Cl68jY5NN349kHbLmPa4S87a3Ft",
+    "expiration_date": "2020-05-29T16:16:39-05:00"
+  },
+  "created": "2020-06-22T16:45:56.491-05:00",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4550274236533370390-242ac1110-0001-012"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/data/4550274236533370390-242ac1110-0001-012/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    },
+    "associationIds": [],
+    "SCHEMA": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/8018718994150527466-242ac1110-0001-013"
+    }
+  }
+}
+
+---------------------------------
 // prod output
 {
   "internalUsername": null,
