@@ -38,13 +38,13 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   $scope.pushLocation = "";
 
   $scope.unstageFromIkewai = function (dataDescriptor) {
-    console.log("MyDataDescriptorsController.unstageFromIkewai: " + dataDescriptor);
+    //console.log("MyDataDescriptorsController.unstageFromIkewai: " + dataDescriptor);
     $scope.requesting = true;
     if (typeof dataDescriptor !== "undefined") {
       if (dataDescriptor.value.stagedToIkewai) {
         dataDescriptor.stagedToIkewai = false;
         dataDescriptor.value.stagedToIkewai = false;
-        console.log("JG: Setting unstageFromIkewai: " + dataDescriptor);
+        //console.log("JG: Setting unstageFromIkewai: " + dataDescriptor);
         $scope.updateDataDescriptor(dataDescriptor);
       }
     }
@@ -52,13 +52,13 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   }
 
   $scope.unstageFromHydroshare = function (dataDescriptor) {
-    console.log("MyDataDescriptorsController.unstageFromHydroshare: " + dataDescriptor.uuid);
+    //console.log("MyDataDescriptorsController.unstageFromHydroshare: " + dataDescriptor.uuid);
     $scope.requesting = true;
     if (typeof dataDescriptor !== "undefined") {
       if (dataDescriptor.value.stagedToHydroshare) {
         dataDescriptor.stagedToHydroshare = false;
         dataDescriptor.value.stagedToHydroshare = false;
-        console.log("JG: Setting unstageFromHydroshare: " + dataDescriptor);
+        //console.log("JG: Setting unstageFromHydroshare: " + dataDescriptor);
         //$scope.datadescriptor = $scope.data_descriptor_metadatum.value;
         $scope.updateDataDescriptor(dataDescriptor);
       }
@@ -67,7 +67,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   }
 
   $scope.updateDataDescriptor = function (dataDescriptor) {
-    console.log("JEN MyDataDescriptorsController: updateDataDescriptor: " + dataDescriptor.uuid);
+    //console.log("JEN MyDataDescriptorsController: updateDataDescriptor: " + dataDescriptor.uuid);
     $scope.requesting = true;
 
     //MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
@@ -93,12 +93,12 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
         }
       );
     $scope.requesting = false;
-    console.log("JEN MyDataDescriptorsController: updateDataDescriptor done");
+    //console.log("JEN MyDataDescriptorsController: updateDataDescriptor done");
   }
 
 
   $scope.searchAll = function () {
-    console.log("searchAll: " + $scope.profile);
+    //console.log("searchAll: " + $scope.profile);
     $scope.requesting = true;
     var orquery = {}
     var andquery = {}
@@ -108,7 +108,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
     var typearray = []
 
     if ($scope.searchField.value != '') {
-      console.log('searching')
+      //console.log('searching')
       var vquery = {}
       vquery['owner'] = { $regex: $scope.searchField.value, '$options': 'i' }
       //vquery['owner'] = $scope.profile.username;
@@ -176,7 +176,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
       // so, I got rid of that evaluation and now set this based on if there are any annotated files at all,
       // and if the number of annotated files matches the number of non-annotated associated files.
       //if (dataDescriptor.value.published === 'True') {
-        console.log("Entry: " + dataDescriptor);
+        //console.log("Entry: " + dataDescriptor);
         var myDataCount = 0;
         var annotatedCount = 0;
         angular.forEach(dataDescriptor._links.associationIds, function (item) {
@@ -231,7 +231,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   $scope.refresh = function () {
     $scope.requesting = true;
     //console.log("DataDescriptorsController.refresh query: " + $scope.schemaQuery)
-    console.log("DataDescriptorsController.refresh");
+    //console.log("DataDescriptorsController.refresh");
     // get the schema from which we are going to get all the metadata objects with that schema
     MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
       .then(function () {
@@ -360,7 +360,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   // an old method and don't want a bunch of arbitrary changes to show 
   // during a comparison, I just do an assignment on the first line.
   $scope.addClone = function (dataDescriptorUuid) {
-    console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
+    //console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
     metadatumUuid = dataDescriptorUuid;
     if (metadatumUuid) {
       $scope.requesting = true;
@@ -381,7 +381,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
           body.associationIds = [];
           //copy metadata associations
           angular.forEach($scope.metadatum._links.associationIds, function (associationId, key) {
-            console.log(associationId.title)
+            //console.log(associationId.title)
             if (associationId.title == 'metadata') {
               body.associationIds.push(associationId.rel)
             }
@@ -400,7 +400,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
 
                 $scope.requesting = false;
                 //$scope.openEditMetadata($scope.new_metadataUuid,'lg')
-                console.log("clone made, new dd: " + $scope.new_metadataUuid);
+                //console.log("clone made, new dd: " + $scope.new_metadataUuid);
 
                 $scope.openEdit($scope.new_metadataUuid, 'lg')
                 //$state.go('datadescriptor', {
@@ -429,7 +429,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   }
 
   $scope.openStageHydroshare = function (dataDescriptorUuid, size) {
-    console.log("MyDataDescriptorsController.openStageHydroshare");
+    //console.log("MyDataDescriptorsController.openStageHydroshare");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
     $scope.pushLocation = "hydroshare";
@@ -456,7 +456,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   };
 
   $scope.openStageIkewai = function (dataDescriptorUuid, size) {
-    console.log("MyDataDescriptorsController.openStageIkewai");
+    //console.log("MyDataDescriptorsController.openStageIkewai");
     $scope.uuid = dataDescriptorUuid;
     $scope.action = "push";
     $scope.pushLocation = "ikewai";
@@ -508,7 +508,7 @@ angular.module('AgaveToGo').controller('MyDataDescriptorsController', function (
   };
 
   $scope.addOldAssociations = function () {
-    console.log("Starting")
+    //console.log("Starting")
     var assocs = []
     angular.forEach($scope.metadata, function (value, key) {
       MetadataService.removeAssociation(value.uuid, value.uuid)

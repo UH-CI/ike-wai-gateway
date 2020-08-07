@@ -1,7 +1,8 @@
-angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, TenantsController, Commons, Alerts) {
+angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, MetaController, TenantsController, Commons, Alerts) {
 
     settings.layout.tenantPage = true;
     settings.layout.loginPage = false;
+    accessToken = "97796d6192dee73dd67ab6557f49586";
     $scope.useImplicit = true;
     $scope.randomState = function() {
         return (Math.ceil(Math.random() * 9));
@@ -20,6 +21,98 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     } else {
         $state.go('tenants');
     }*/
+
+    $scope.newDOIs = "";
+    $scope.outputString = "Welcome to the `Ikewai project's water science gateway."
+        + "  Currently, usage of the Gateway is limited to researchers involved in the `Ikewai project.<br /><br />" 
+        + "  <center>All `Ikewai project data will be made publically available at <br/><b><a href='http://ikewai.org'>ikewai.org</a></b></center><br/>";
+    $scope.getRecentChangesForDisplay = function() {
+        $scope.requesting = true;
+        var data = {};
+
+        var pastDate = new Date();
+        // originally was adjusting for the zero based month/day, but realized that actually worked
+        // for us as we wanted to go back about a month.
+        //var formattedDate = pastDate.getFullYear() + "-" + pastDate.getMonth() + "-" + pastDate.getDay();
+        var formattedDate = pastDate.getFullYear() 
+        + "-" + ('0' + pastDate.getMonth()).slice(-2)
+        + "-" + ('0' + pastDate.getDate()).slice(-2);
+
+        //console.log("Date: " + formattedDate);
+        var baseUrl = 'https://ikeauth.its.hawaii.edu/search/v2/data?q=';
+        var doiQuery = '{"name":"DataDescriptor","value.gotDOIDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToHydroshareQuery = '{"name":"DataDescriptor","value.pushedToHydroshareDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToIkewaiQuery = '{"name":"DataDescriptor","value.pushedToIkewaiDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToAnnotatedRepoQuery = '{"name":"PublishedFile","created":{ "$gt":"' + formattedDate + '"}}'
+        var recentlyUpdatedAnnotateRepoItemsQuery = '{"name":"DataDescriptor","value.published":"True","lastUpdated":"' + formattedDate + '"}}';
+        var usageStatsQuery = '{"name":"UsageStats"}'
+
+        $scope.doQuery(baseUrl, doiQuery, "Recent DOIs obtained");
+        $scope.doQuery(baseUrl, pushedToHydroshareQuery, "Recent pushes to Hydroshare");
+        $scope.doQuery(baseUrl, pushedToIkewaiQuery, "Recent pushes to Ikewai.org");
+        $scope.doQuery(baseUrl, pushedToAnnotatedRepoQuery, "Recent pushes to annotated repository");
+        $scope.doQuery(baseUrl, recentlyUpdatedAnnotateRepoItemsQuery, "Recently updated file metadata in annotate repository");
+        $scope.getUsageStats(baseUrl, usageStatsQuery, "Gateway data storage statistics");
+    }
+
+    $scope.doQuery = function(baseUrl, queryString, headerLabel) {
+        //console.log("queryUrl: " + queryString);
+        var queryUrl = baseUrl + encodeURIComponent(queryString);
+        //console.log("encodedQueryUrl: " + queryUrl);
+        // access token used here was provided by Sean, it's a long lived, search only token.
+        var req = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8','Accept': '*/*',
+                'Authorization': 'Bearer ' + accessToken
+            },
+            url: queryUrl
+        }
+        $http(req).then(function (response) {
+            $scope.requesting = false;
+            angular.forEach(response.data.result, function (item, key) {
+                if (item) {
+                    if (key === 0) {
+                        $scope.outputString += "<br />";
+                        $scope.outputString += "<b>" + headerLabel + "</b>: <br />";
+                    }
+                    if (item.value.title) {
+                        $scope.outputString += "   " + item.value.title + "<br />";
+                    }
+                    else if (item.value.filename) {
+                        $scope.outputString += "   " + item.value.filename + "<br />";
+                    }
+                }
+            });
+        })
+    }
+
+    $scope.getUsageStats = function(baseUrl, queryString, headerLabel) {
+        var queryUrl = baseUrl + encodeURIComponent(queryString);
+        //console.log("queryUrl: " + queryUrl);
+        // access token used here was provided by Sean, it's a long lived, search only token.
+        var req = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8','Accept': '*/*',
+                'Authorization': 'Bearer ' + accessToken
+            },
+            url: queryUrl
+        }
+        $http(req).then(function (response) {
+            $scope.requesting = false;
+            if (response.data.result.length > 0) {
+                item = response.data.result[0];
+                $scope.outputString += "<br />";
+                $scope.outputString += "<b>" + headerLabel + "</b>: <br />";
+                $scope.outputString += "   Number of files: " + item.value.allFilesCount + "<br />";
+                $scope.outputString += "   Storage space used: " + item.value.allStorage + "<br />";
+            }
+        })
+    }
+
+
+    $scope.getRecentChangesForDisplay();
 
     $scope.getTenantByCode = function (tenantId) {
         var namedTenant = false;

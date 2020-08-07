@@ -139,6 +139,7 @@ AgaveAuth.config(['$stateProvider', '$urlRouterProvider', function($stateProvide
                         files: [
                             //'../auth/css/tenants.css',
                             '../auth/scripts/controllers/LoginController.js',
+                            '../bower_components/agave-angularjs-sdk/Agave/Controllers/MetaController.js',
                         ]
                     });
                 }]
