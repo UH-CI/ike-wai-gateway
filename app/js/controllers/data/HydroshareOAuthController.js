@@ -32,7 +32,7 @@ angular.module('AgaveToGo').controller('HydroshareOAuthController', function ($r
 
 ---------------------------------
 
-    To make all this actually run and do something, use this URL:
+    To make all this actually run and do something, make sure you are logged in to the Gateway and then use this URL:
     
     https://www.hydroshare.org/o/authorize/?response_type=code&client_id=tEtcSxDF96anO7HkSSQnNgQQxyqIXx55JOnfXz4t&redirect_uri=https%3A%2F%2Ftolocalhost.com
    

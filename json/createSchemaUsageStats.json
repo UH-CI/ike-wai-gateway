@@ -1,0 +1,24 @@
+{
+  "title" : "UsageStats",
+  "description" : "Gateway usage info: number of files, storage used, etc.",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "allFilesCount" : {
+      "type" : "string",
+      "title" : "Number of files in the Gateway"
+    },
+    "allStorage" : {
+      "type" : "string",
+      "title" : "Gateway storage used"
+    },
+    "annotatedFilesCount" : {
+      "type" : "string",
+      "title" : "Number of annotated files in the Gateway"
+    },
+    "annotatedStorage" : {
+      "type" : "string",
+      "title" : "Gateway annotated repository storage used"
+    }
+  }
+}

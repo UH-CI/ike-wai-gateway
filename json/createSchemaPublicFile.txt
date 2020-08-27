@@ -40,7 +40,55 @@ curl -sk -H "Authorization: Bearer 7ed90c6381dca7d4f3fd28ddd55db50" -X POST -H "
 ./metadata-schema-list -V -Q '{"schema.title":"PublicFile"}'
 
 // dev output
-Not run on dev yet
+{
+  "internalUsername": null,
+  "lastUpdated": "2020-06-16T14:14:32.134-05:00",
+  "schema": {
+    "title": "PublicFile",
+    "description": "Created when a file is made public.  Unites the file, data descriptor(s) (if available), and the file's public url",
+    "type": "object",
+    "ikewai": "TRUE",
+    "properties": {
+      "data_descriptor_uuids": {
+        "type": "array",
+        "items": {
+          "title": "Data Descriptor UUID",
+          "type": "string"
+        }
+      },
+      "file_uuid": {
+        "type": "string",
+        "title": "File UUID"
+      },
+      "file_public_url": {
+        "type": "string",
+        "title": "Public URL"
+      },
+      "file_private_url": {
+        "type": "string",
+        "title": "Private URL"
+      }
+    },
+    "required": [
+      "file_public_url",
+      "file_private_url"
+    ]
+  },
+  "uuid": "7229133437498224150-242ac1110-0001-013",
+  "created": "2020-06-16T14:14:32.134-05:00",
+  "owner": "jgeis",
+  "_links": {
+    "self": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/7229133437498224150-242ac1110-0001-013"
+    },
+    "permissions": {
+      "href": "https://agaveauth.its.hawaii.edu/meta/v2/schemas/7229133437498224150-242ac1110-0001-013/pems"
+    },
+    "owner": {
+      "href": "https://agaveauth.its.hawaii.edu/profiles/v2/jgeis"
+    }
+  }
+}
 
 // prod output
 {
