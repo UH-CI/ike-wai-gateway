@@ -1,0 +1,18 @@
+{
+  "title" : "Notices",
+  "description" : "Schema for public notices to be displayed on login page or main page",
+  "type" : "object",
+  "ikewai" : "TRUE",
+  "properties" : {
+    "notice" : {
+      "type" : "string",
+      "title" : "Notice"
+    },
+    "expiration_date" : {
+      "format" : "date-time",
+      "type" : "string",
+      "title" : "Expiration Date"
+    }
+  },
+  "required" : [ "notice", "expiration_date"]
+}

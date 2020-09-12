@@ -786,12 +786,13 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // files must be pushed to Ikewai before pushing to Hydroshare.
       // not a logic requirement, more an internal politics thing.
       // nothing breaks if this isn't here.
-      if (!dataDescriptor.value.stagedToIkewai) {
+      if (!dataDescriptor.value.pushedToIkewai) {
         // could call publishStagedDDToIkewai but that would result in an extra metadata update
         // best to just set these and let them get updated with the rest.  That way if something
         // goes wrong w/ HS, we don't have an inconsistent state.
         dataDescriptor.value.stagedToIkewai = false;
         dataDescriptor.value.pushedToIkewai = true;
+        dataDescriptor.value.pushedToIkewaiDate = new Date().toISOString();
       }
 
       // I made a group 'ikewai': https://www.hydroshare.org/group/153
