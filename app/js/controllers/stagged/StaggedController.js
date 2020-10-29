@@ -75,7 +75,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
             $http.post(url,post_data, options)
               .success(function (data, status, headers, config) {
                 console.log({message:angular.toJson(data)})
-                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
+                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File '+href.split('system')[1]+'"&message="Project: ike-wai \n User: '+user_email+' has a staged file '+href.split('system')[1]+' that was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n'+reason+'"';
                 $http.post(url2,post_data, options)
                   .success(function (data, status, headers, config) {
                   })
@@ -128,7 +128,7 @@ angular.module('AgaveToGo').controller('StaggedController', function($scope, $st
             $http.post(url,post_data, options)
               .success(function (data, status, headers, config) {
                 console.log({message:angular.toJson(data)})
-                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Staged File '+href.split('system')[1]+' Approved!"&message="User: '+user_email+' your staged file '+href.split('system')[1]+' was approved and is now available to other Ike Wai users!"';
+                var url2 = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject="Staged File '+href.split('system')[1]+' Approved!"&message="Project: ike-wai, User: '+user_email+' staged file '+href.split('system')[1]+' was approved and is now available to other Ike Wai users!"';
                 $http.post(url2,post_data, options)
                   .success(function (data, status, headers, config) {
                   })
