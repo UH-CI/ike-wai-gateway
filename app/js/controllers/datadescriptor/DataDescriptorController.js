@@ -514,10 +514,10 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // than stagedToIW is received, it will act as stagedToHS.
   $scope.notifyAdmins = function (action) {
     var emailSubject = "Staged to Hydroshare";
-    var emailBody = "A resource has been staged to Hydroshare";
+    var emailBody = "Project: ike-wai \n A resource has been staged to Hydroshare";
     if (action === $scope.emailActionStageToIW) {
       emailSubject = "Staged to Ikewai.org";
-      emailBody = "A resource has been staged to Ikewai.org";
+      emailBody = "Project: ike-wai \n A resource has been staged to Ikewai.org";
     }
     var post_data = {};
     var url = $localStorage.tenant.baseUrl.slice(0, -1)+':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject=' + emailSubject + '&message=' + emailBody;

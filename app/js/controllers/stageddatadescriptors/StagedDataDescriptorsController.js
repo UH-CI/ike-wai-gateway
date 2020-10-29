@@ -786,12 +786,13 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // files must be pushed to Ikewai before pushing to Hydroshare.
       // not a logic requirement, more an internal politics thing.
       // nothing breaks if this isn't here.
-      if (!dataDescriptor.value.stagedToIkewai) {
+      if (!dataDescriptor.value.pushedToIkewai) {
         // could call publishStagedDDToIkewai but that would result in an extra metadata update
         // best to just set these and let them get updated with the rest.  That way if something
         // goes wrong w/ HS, we don't have an inconsistent state.
         dataDescriptor.value.stagedToIkewai = false;
         dataDescriptor.value.pushedToIkewai = true;
+        dataDescriptor.value.pushedToIkewaiDate = new Date().toISOString();
       }
 
       // I made a group 'ikewai': https://www.hydroshare.org/group/153
@@ -1113,7 +1114,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       console.log("reason: " + reason);
       $scope.updateDataDescriptor($scope.rejectedDD);
       
-      /*
+      // email user that their file was rejected, then email the list to let other admins know the file was rejected
       var user_email = current_stagged.value.emails[$scope.rejectedUuid]
       var post_data = {}//to:"seanbc@hawaii.edu",from:"noReply-ikewai@hawaii.edu",subject:"Staged Updated",message:"User: "+ email+" has updated stagged files."};
       var url = $localStorage.tenant.baseUrl.slice(0, -1) + ':8080/email?to=' + user_email + '&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File ' + href.split('system')[1] + '"&message="User: ' + user_email + ' your staged file ' + href.split('system')[1] + ' was flagged for review. \nPlease log into the Ike Wai Gateway and address the following: \n' + reason + '"';
@@ -1123,7 +1124,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       $http.post(url, post_data, options)
         .success(function (data, status, headers, config) {
           console.log({ message: angular.toJson(data) })
-          var url2 = $localStorage.tenant.baseUrl.slice(0, -1) + ':8080/email?to=uhitsci@gmail.com&from=noReply-ikewai@hawaii.edu&subject="Revise Staged File ' + href.split('system')[1] + '"&message="User: ' + user_email + ' your staged file ' + href.split('system')[1] + ' was flagged for review.\nPlease log into the Ike Wai Gateway and address the following: \n' + reason + '"';
+          var url2 = $localStorage.tenant.baseUrl.slice(0, -1) + ':8080/email?to=ikewai-help@lists.hawaii.edu&from=noReply-ikewai@hawaii.edu&subject="Staged File Needs Revision' + href.split('system')[1] + '"&message="Project: ike-wai \n Staged file for user: ' + user_email + href.split('system')[1] + ' was flagged for review. Reason: \n' + reason + '"';
           $http.post(url2, post_data, options)
             .success(function (data, status, headers, config) {
             })
@@ -1136,8 +1137,7 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
         });
       $timeout(function () { $scope.getMetadatum() }, 400);
       $scope.getMetadatum();
-      //$scope.requesting = false;
-      */
+      $scope.requesting = false;
     }); //end of '$scope.$on'
 
 });
