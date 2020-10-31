@@ -2301,6 +2301,23 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
       })
 
+      .state('adminhelp', {
+        url: "/adminhelp",
+        templateUrl: "views/help/adminhelp.html",
+        data: {pageTitle: 'Help'},
+        controller: "GeneralPageController",
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([{
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/controllers/GeneralPageController.js'
+                    ]
+                }]);
+            }]
+        }
+    })
+
       .state('timeseries-uuid', {
         url: "/timeseries/:uuid",
         templateUrl: "views/metadata/timeseries.html",
