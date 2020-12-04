@@ -1,0 +1,248 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "540303726288114151-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2019-07-08T17:37:25.755-05:00",
+    "schema" : {
+      "title" : "Well",
+      "description" : "Describe a well site associated with an object",
+      "type" : "object",
+      "ikewai" : true,
+      "properties" : {
+        "wid" : {
+          "title" : "Well ID Number",
+          "type" : "string"
+        },
+        "island" : {
+          "title" : "Island",
+          "type" : "string",
+          "enum" : [ "Niihau", "Oahu", "Lanai", "Kahoolawe", "Kauai", "Molokai", "Maui", "Hawaii" ]
+        },
+        "well_name" : {
+          "title" : "Well Name",
+          "type" : "string"
+        },
+        "old_name" : {
+          "title" : "Old Name",
+          "type" : "string"
+        },
+        "yr_drilled" : {
+          "title" : "Year Drilled",
+          "type" : "number"
+        },
+        "ikewai_type" : {
+          "type" : "array",
+          "title" : "Ike Wai Site Type",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Age Dating", "SGD", "GeoChemistry", "GeoPhysics", "Rain Gauge", "Microbial", "Streaming Sensor" ]
+          }
+        },
+        "driller" : {
+          "title" : "Driller",
+          "type" : "string"
+        },
+        "quad_map" : {
+          "title" : "Quad Map",
+          "type" : "number"
+        },
+        "long83dd" : {
+          "title" : "Longitude (83DD)",
+          "type" : "string"
+        },
+        "lat83dd" : {
+          "title" : "Latitude (83DD)",
+          "type" : "string"
+        },
+        "longitude" : {
+          "title" : "Longitude (WGS84)",
+          "type" : "number"
+        },
+        "latitude" : {
+          "title" : "Latitude (WGS84)",
+          "type" : "number"
+        },
+        "gps" : {
+          "title" : "GPS (True/False)",
+          "type" : "boolean"
+        },
+        "utm" : {
+          "title" : "UTM (True/False)",
+          "type" : "boolean"
+        },
+        "owner_user" : {
+          "title" : "Well Owner/User",
+          "type" : "string"
+        },
+        "land_owner" : {
+          "title" : "Land Owner",
+          "type" : "string"
+        },
+        "pump_installer" : {
+          "title" : "Pump Installer",
+          "type" : "string"
+        },
+        "old_number" : {
+          "title" : "Old Number",
+          "type" : "string"
+        },
+        "well" : {
+          "title" : "Well Type",
+          "type" : "string"
+        },
+        "casing_dia" : {
+          "title" : "Casing Diameter (inches)",
+          "type" : "number"
+        },
+        "ground_el" : {
+          "title" : "Ground Surface Elevations (feet)",
+          "type" : "number"
+        },
+        "well_depth" : {
+          "title" : "Total Depth of Well From Ground Surface (feet) ",
+          "type" : "number"
+        },
+        "solid_case" : {
+          "title" : "Depth of Solid Case (feet)",
+          "type" : "number"
+        },
+        "perf_case" : {
+          "title" : "Depth of Perforated Case (feet)",
+          "type" : "number"
+        },
+        "use" : {
+          "title" : "Major Use of Well",
+          "type" : "string"
+        },
+        "use_year" : {
+          "title" : "Use Year",
+          "type" : "number"
+        },
+        "init_head" : {
+          "title" : "Initial Water Level (feet)",
+          "type" : "number"
+        },
+        "INIT_HEAD2" : {
+          "title" : "Initial Head 2",
+          "type" : "string"
+        },
+        "INIT_HEAD3" : {
+          "title" : "Initial Head 3",
+          "type" : "string"
+        },
+        "salinity" : {
+          "title" : "Salinity",
+          "type" : "string"
+        },
+        "init_cl" : {
+          "title" : "Initial Chloride Content (MG/L)",
+          "type" : "number"
+        },
+        "test_date" : {
+          "title" : "Date Tested",
+          "type" : "string"
+        },
+        "test_gpm" : {
+          "title" : "Pumping Rate (Gallons per minute)",
+          "type" : "number"
+        },
+        "test_ddown" : {
+          "title" : "Drawdown of Water Level (feet at stated rate)",
+          "type" : "string"
+        },
+        "test_chlor" : {
+          "title" : "Chloride Content of Water (MG/L during test)",
+          "type" : "string"
+        },
+        "test_temp" : {
+          "title" : "Water Temperature",
+          "type" : "number"
+        },
+        "test_unit" : {
+          "title" : "Farenheit of Celsius (F or C)",
+          "type" : "string"
+        },
+        "temp_f" : {
+          "title" : "Water Temperature in Farenheit",
+          "type" : "string"
+        },
+        "temp_c" : {
+          "title" : "Water Temperature in Celsius",
+          "type" : "string"
+        },
+        "pump_gpm" : {
+          "title" : "Pump Capacity (gallons per minute)",
+          "type" : "number"
+        },
+        "draft_mgy" : {
+          "title" : "Average annual draft from well in million gallons per year DO NOT USE",
+          "type" : "number"
+        },
+        "head_feet" : {
+          "title" : "Water Level Elevation (feet)",
+          "type" : "number"
+        },
+        "pump_yr" : {
+          "title" : "Year Pump was Installed",
+          "type" : "number"
+        },
+        "draft_yr" : {
+          "title" : "Draft Year",
+          "type" : "string"
+        },
+        "bot_hole" : {
+          "title" : "Bottom hole Elevation",
+          "type" : "number"
+        },
+        "bot_solid" : {
+          "title" : "Bottom of solid casing Elevation",
+          "type" : "number"
+        },
+        "bot_perf" : {
+          "title" : "Bottom of perforated casing Elevation",
+          "type" : "string"
+        },
+        "SPEC_CAPAC" : {
+          "title" : "",
+          "type" : "string"
+        },
+        "pump_mgd" : {
+          "title" : "Pump capacity in million gallons per day",
+          "type" : "number"
+        },
+        "draft_mgd" : {
+          "title" : "Average annual draft from well in million gallons per day DO NOT USE",
+          "type" : "number"
+        },
+        "pump_depth" : {
+          "title" : "Pump intake depth",
+          "type" : "string"
+        },
+        "surveyor" : {
+          "title" : "Surveyor",
+          "type" : "string"
+        },
+        "t" : {
+          "title" : "Transmissivity (square ft./day) ",
+          "type" : "number"
+        }
+      }
+    },
+    "created" : "2017-06-28T14:36:06.677-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/540303726288114151-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/540303726288114151-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}

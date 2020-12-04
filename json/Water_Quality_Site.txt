@@ -1,0 +1,88 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "internalUsername" : null,
+    "lastUpdated" : "2019-04-18T17:34:27.186-05:00",
+    "schema" : {
+      "title" : "Water_Quality_Site",
+      "description" : "Describe a water quality site",
+      "type" : "object",
+      "ikewai" : true,
+      "geospatial" : true,
+      "properties" : {
+        "name" : {
+          "title" : "Site Name",
+          "type" : "string"
+        },
+        "latitude" : {
+          "title" : "Latitude",
+          "type" : "number"
+        },
+        "longitude" : {
+          "title" : "Longitude",
+          "type" : "number"
+        },
+        "MonitoringLocationName" : {
+          "title" : "MonitoringLocationName",
+          "type" : "string"
+        },
+        "siteUrl" : {
+          "title" : "siteUrl",
+          "type" : "string"
+        },
+        "MonitoringLocationTypeName" : {
+          "title" : "MonitoringLocationTypeName",
+          "type" : "string"
+        },
+        "ProviderName" : {
+          "title" : "ProviderName",
+          "type" : "string"
+        },
+        "activityCount" : {
+          "title" : "activityCount",
+          "type" : "string"
+        },
+        "HUCEightDigitCode" : {
+          "title" : "HUCEightDigitCode",
+          "type" : "string"
+        },
+        "ResolvedMonitoringLocationTypeName" : {
+          "title" : "ResolvedMonitoringLocationTypeName",
+          "type" : "string"
+        },
+        "OrganizationFormalName" : {
+          "title" : "OrganizationFormalName",
+          "type" : "string"
+        },
+        "OrganizationIdentifier" : {
+          "title" : "OrganizationIdentifier",
+          "type" : "string"
+        },
+        "resultCount" : {
+          "title" : "resultCount",
+          "type" : "string"
+        },
+        "MonitoringLocationIdentifier" : {
+          "title" : "MonitoringLocationIdentifier",
+          "type" : "string"
+        }
+      }
+    },
+    "uuid" : "2286471952441414121-242ac1111-0001-013",
+    "created" : "2019-04-18T17:34:27.186-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2286471952441414121-242ac1111-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2286471952441414121-242ac1111-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}
