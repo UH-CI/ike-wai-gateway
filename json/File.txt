@@ -1,0 +1,44 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "8458254947603443225-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2018-06-19T08:59:12.913-05:00",
+    "schema" : {
+      "internalUsername" : "ike",
+      "title" : "File",
+      "description" : "IkeWai File",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "file-uuid" : {
+          "type" : "string",
+          "title" : "File UUID"
+        },
+        "filename" : {
+          "type" : "string",
+          "title" : "File Name"
+        },
+        "path" : {
+          "type" : "string",
+          "title" : "File Path"
+        }
+      }
+    },
+    "created" : "2017-06-28T20:16:13.006-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/8458254947603443225-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/8458254947603443225-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}

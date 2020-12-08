@@ -1190,6 +1190,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     if ($scope.datadescriptor.creators.length > 0 
         && $scope.datadescriptor.creators != '' 
         && $scope.datadescriptor.title
+        && $scope.datadescriptor.data_states
         && $scope.datadescriptor.data_states.length > 0) {
       // Then we check if the form is valid
       //	if (form.$valid) {
