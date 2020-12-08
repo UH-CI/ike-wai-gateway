@@ -1,0 +1,81 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "internalUsername" : null,
+    "lastUpdated" : "2019-07-09T11:00:21.896-05:00",
+    "schema" : {
+      "title" : "Timeseries_Template",
+      "description" : "Describe a logger file",
+      "ikewai" : true,
+      "properties" : {
+        "name" : {
+          "title" : "Series Name",
+          "type" : "string"
+        },
+        "type" : {
+          "title" : "File Type",
+          "type" : "string"
+        },
+        "extension" : {
+          "title" : "File Extension",
+          "type" : "string"
+        },
+        "description" : {
+          "title" : "Description of File ",
+          "type" : "string"
+        },
+        "start_date" : {
+          "title" : "Start Date (YYYY-MM-DD)",
+          "type" : "string"
+        },
+        "end_data" : {
+          "title" : "End Date (YYYY-MM-DD)",
+          "type" : "string"
+        },
+        "datetime_column" : {
+          "title" : "Column that has the Date/Time (ISO-8601 format)",
+          "type" : "integer"
+        },
+        "site_column" : {
+          "title" : "Column that has the Site IDs",
+          "type" : "integer"
+        },
+        "columns" : {
+          "title" : "Data Column Descriptions",
+          "type" : "array",
+          "items" : {
+            "title" : "Column Description",
+            "type" : "object",
+            "properties" : {
+              "column_number" : {
+                "title" : "Column Number (1-n)",
+                "type" : "number"
+              },
+              "variable_id" : {
+                "title" : "Variable UUID",
+                "type" : "string"
+              }
+            },
+            "minItems" : 1
+          }
+        }
+      }
+    },
+    "uuid" : "6347673038961372695-242ac1110-0001-013",
+    "created" : "2019-07-09T11:00:21.896-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6347673038961372695-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6347673038961372695-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}

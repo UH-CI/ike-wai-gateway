@@ -220,6 +220,7 @@ AgaveToGo.config(function($translateProvider) {
     success_metadata_update_assocation: 'Success: updated Metadata associations',
     success_metadata_add_assocation: 'Success: added Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
+    success_metadata_schemas_update: 'Success: updated Metadata Schema',
     success_metadata_add: 'Success: new Metadata created',
     success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
@@ -2301,6 +2302,23 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
       })
 
+      .state('adminhelp', {
+        url: "/adminhelp",
+        templateUrl: "views/help/adminhelp.html",
+        data: {pageTitle: 'Help'},
+        controller: "GeneralPageController",
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([{
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/controllers/GeneralPageController.js'
+                    ]
+                }]);
+            }]
+        }
+    })
+
       .state('timeseries-uuid', {
         url: "/timeseries/:uuid",
         templateUrl: "views/metadata/timeseries.html",
@@ -2401,6 +2419,29 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
               }]
           }
         })
+
+
+        .state('metadataschemas-edit', {
+          url: "/metadataschemas/edit/:uuid",
+          templateUrl: "views/metadataschemas/resource/edit.html",
+          controller: "MetadataSchemasResourceEditController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    serie: true,
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/MetadataService.js',
+                        'js/controllers/metadataschemas/resource/MetadataSchemasResourceEditController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+      })
 
         /**********************************************************************/
         /**********************************************************************/

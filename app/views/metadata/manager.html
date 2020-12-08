@@ -13,7 +13,7 @@
 </div>
 -->
 <HEAD>
-    <title>`Ike Wai Gateway | Manage  Metadata</title>
+    <title>`Ike Wai Gateway | Manage Metadata</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127746084-1"></script>
     <script>
@@ -24,7 +24,7 @@
     gtag('config', 'UA-127746084-1');
     </script>
 </HEAD>
-<h3 class="page-title"> Manage  Metadata</h3>
+<h3 class="page-title"> Manage Metadata</h3>
 <div class="row">
     <div class="col-md-12">
         <div class="portlet light portlet-fit portlet-datatable bordered">
@@ -60,6 +60,7 @@
                                 <input type="checkbox" ng-model="schemaBox.val5" />Search Water Quality Sites&nbsp;
                                 <input type="checkbox" ng-model="schemaBox.val6" />Search Timeseries&nbsp;
                                 <input type="checkbox" ng-model="schemaBox.val7" />Search Timeseries-template&nbsp;
+                                <input type="checkbox" ng-model="schemaBox.val8" />Search DataDescriptors&nbsp;
                             </span>
                         </div>
 
@@ -158,7 +159,7 @@
                                   <tr ng-repeat="metadatum in metadata | orderBy:sortType:sortReverse | filter:filter"ng-show="ignoreMetadataType.indexOf(metadatum.name) < 0">
                                       <td>
                                           <a href='#' ng-click="openView(metadatum.uuid, 'lg')"> {{metadatum.value.well_name}}
-                                           {{metadatum.value.name}} {{metadatum.value.variable_name}} {{metadatum.value.sample_medium}} {{metadatum.value.unit}} {{metadatum.value.first_name}} {{metadatum.value.last_name}}</a>
+                                           {{metadatum.value.name}} {{metadatum.value.title}} {{metadatum.value.variable_name}} {{metadatum.value.sample_medium}} {{metadatum.value.unit}} {{metadatum.value.first_name}} {{metadatum.value.last_name}}</a>
                                       </td>
 
                                       <!--

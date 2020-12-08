@@ -747,13 +747,16 @@ angular.module('AgaveToGo').controller('StagedDataDescriptorsController', functi
       // Variables:
       if ($scope.variables[dataDescriptor.uuid].length > 0) {
         fileContents += "#### Variables";
+        keyName = "";
         angular.forEach($scope.variables[dataDescriptor.uuid], function (variable) {
           //console.log("variable: " + variable);
           fileContents += "\r\n \r\n - " + variable.value.variable_name;
           var keys = Object.keys(variable.value);
           angular.forEach(keys, function (key) {
             if (key != "variable_name") {
-              fileContents += "\r\n \r\n    " + variable.value[key];
+              keyName = key.replace('_', ' ');
+              keyName = keyName.replace("samplem", "sample medium");
+              fileContents += "\r\n \r\n    " + keyName + ': '+ variable.value[key];
             }
           });
         });
