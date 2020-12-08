@@ -1,0 +1,79 @@
+<h3 class="page-title"> Edit Metadata Schema Object</h3>
+<h4> Metadata Schema Title: {{metadataschema.title}}</h4>
+<h4> Metadata Schema Description: {{metadataschema.description}}</h4>
+<div class="row text-center" ng-show="requesting">
+    <div class="col-md-12">
+      <div class="loading-message"><div class="block-spinner-bar"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>
+    </div>
+</div>
+
+<div ng-show="!requesting">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="portlet light bordered" id="form_wizard_1">
+        <div class="portlet-title">
+          <div class="caption">
+            <i class=" icon-layers font-red"></i>
+            <span class="caption-subject font-red bold uppercase">Metadata Schema Edit - {{metadataschema.title}}</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <textarea ng-model="schemaString" class="form-control" type='textarea' rows="25"></textarea>
+          <button type="button" class="btn btn-primary" type="submit" ng-click="onSubmit(schemaString)" >Save</button>
+        </div>
+
+        <!--
+        <div class="row">
+              <div class="portlet light bordered" id="form_wizard_1">
+                  <div class="portlet-body form">
+                      <div class="row">
+                              <textarea ui-codemirror ui-codemirror-opts="editorConfig" ng-model="metadataschema | json" this.style.height = 'this.scrollHeight + "px"'></textarea>
+                      </div>
+                  </div>
+              </div>
+        </div>
+        -->
+        <!--
+        <div class="portlet-body form">
+          <div class="row">
+              <form
+                      name="myForm"
+                      class="form-wizard"
+                      sf-schema="metadataschema"
+                      sf-form="form"
+                      sf-model="model"
+                      sf-options="{ formDefaults: { ngModelOptions: { updateOn: 'blur' } }}"
+                      ng-submit="onSubmit(updateMetadataSchemaForm)"
+                      no-validate>
+              </form>
+              <ng-include src="'/app/tpl/directives/wizard-buttons.html'"></ng-include>
+          </div>
+      </div>
+    -->
+<!--
+  <div class="portlet-body form">
+          <form name="updateMetadataSchemaForm"
+           sf-schema="metadataschema"
+           sf-form="form"
+           sf-model="model"
+           ng-submit="onSubmit(updateMetadataSchemaForm)"></form></div>
+    </form>
+</div>
+-->
+<!--
+      <div>
+        angular.forEach($scope.metadataschema.properties, function(value, key) {
+          //console.log("Key: " + key + ", value: " + value);
+          console.log($scope.metadataschema.properties[key]);
+          $scope.model[key] = $scope.metadataschema.properties[key];
+        });
+      </div>
+-->
+    </div>
+  </div>
+
+
+</div>

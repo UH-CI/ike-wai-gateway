@@ -1,0 +1,78 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "2206831229666127385-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2019-07-08T15:49:25.744-05:00",
+    "schema" : {
+      "title" : "Site",
+      "description" : "Describe a site associated with an object",
+      "type" : "object",
+      "ikewai" : true,
+      "geospatial" : true,
+      "properties" : {
+        "name" : {
+          "title" : "Site Name",
+          "type" : "string"
+        },
+        "id" : {
+          "title" : "Site identifier - should be unique",
+          "type" : "string"
+        },
+        "ikewai_type" : {
+          "type" : "array",
+          "title" : "Ike Wai Site Type",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "Age Dating", "SGD", "GeoChemistry", "GeoPhysics", "Rain Gauge", "Microbial", "Streaming Sensor" ]
+          }
+        },
+        "type" : {
+          "title" : "Site type",
+          "type" : "string",
+          "enum" : [ "Aggregate groundwater use", "Aggregate surface-water-use", "Aggregate water-use establishment", "Animal waste lagoon", "Atmosphere", "Canal", "Cave", "Cistern", "Coastal", "Collector or Ranney type well", "Combined sewer", "Ditch", "Diversion", "Estuary", "Excavation", "Extensometer well", "Facility", "Field, Pasture, Orchard, or Nursery", "Glacier", "Golf course", "Groundwater drain", "Hydroelectric plant", "Hyporheic-zone well", "Interconnected wells", "Laboratory or sample-preparation area", "Lake, Reservoir, Impoundment", "Land", "Landfill", "Multiple wells", "Ocean", "Outcrop", "Outfall", "Pavement", "Playa", "Septic system", "Shore", "Sinkhole", "Soil hole", "Spatial Average", "Spring", "Storm sewer", "Stream", "Subsurface", "Test hole not completed as a well", "Thermoelectric plant", "Tidal stream", "Tunnel, shaft, or mine", "Unknown", "Unsaturated zone", "Volcanic vent", "Waste injection well", "Wastewater land application", "Wastewater sewer", "Wastewater-treatment plant", "Water-distribution system", "Water-supply treatment plant", "Water-use establishment", "Well", "Wetland" ]
+        },
+        "latitude" : {
+          "title" : "Latitude",
+          "type" : "number"
+        },
+        "longitude" : {
+          "title" : "Longitude",
+          "type" : "number"
+        },
+        "polygon" : {
+          "title" : "Polygon",
+          "type" : "string"
+        },
+        "description" : {
+          "title" : "Description",
+          "type" : "string"
+        },
+        "county" : {
+          "title" : "County",
+          "type" : "string"
+        },
+        "state" : {
+          "title" : "State",
+          "type" : "string"
+        }
+      },
+      "required" : [ "name", "latitude", "longitude" ]
+    },
+    "created" : "2017-06-28T23:31:54.970-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2206831229666127385-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/2206831229666127385-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}
