@@ -1,4 +1,4 @@
-angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, MetaController, TenantsController, Commons, Alerts) {
+angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, $window, AccessToken, MetaController, TenantsController, Commons, Alerts) {
 
     settings.layout.tenantPage = true;
     settings.layout.loginPage = false;
@@ -31,7 +31,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     TYPE_NOTICES = "N";
     $scope.newDOIs = "";
     $scope.outputString = "Welcome to the `Ikewai project's water science gateway."
-        + "  Currently, usage of the Gateway is limited to researchers involved in the `Ikewai project.<br /><br />" 
+        + "  Currently, usage of the Gateway is limited to researchers involved in the `Ikewai project.<br /><br />"
         + "  <center>All `Ikewai project data will be made publically available at <br/><b><a href='http://ikewai.org'>ikewai.org</a></b></center><br/>";
     $scope.getRecentChangesForDisplay = function() {
         $scope.requesting = true;
@@ -39,11 +39,11 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
 
         var pastDate = new Date();
         var todaysDate = new Date();
-        
+
         // originally was adjusting for the zero based month/day, but realized that actually worked
         // for us as we wanted to go back about a month.
         //var formattedDate = pastDate.getFullYear() + "-" + pastDate.getMonth() + "-" + pastDate.getDay();
-        var formattedDate = pastDate.getFullYear() 
+        var formattedDate = pastDate.getFullYear()
         + "-" + ('0' + pastDate.getMonth()).slice(-2)
         + "-" + ('0' + pastDate.getDate()).slice(-2);
 
@@ -156,7 +156,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
         var post_data = {};
         var url = 'https://ikewai.its.hawaii.edu:8888/login';
         var options = {
-            withCredentials: true, 
+            withCredentials: true,
             headers:{ 'Authorization':  'Basic ' + btoa($scope.username + ":" + $scope.password)}
           }
         $http.post(url,post_data, options)
@@ -187,7 +187,8 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                                     			}
                                     		}
                                     	};
-                    $location.path("/success");
+                    $localStorage.activeProfile = {"first_name":"","last_name":"","full_name":"","email":$scope.username+"@hawaii.edu","phone":"","mobile_phone":"","status":"","create_time":"","uid":0,"username": $scope.username}
+                    $window.location.href = '/app';
                 }
                 else{
                     $scope.login_error=true;
@@ -197,7 +198,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 $scope.requesting=false;
                 Alerts.danger({message:angular.toJson(data)});
             });
-            
+
     }
 
 
