@@ -138,6 +138,13 @@
                             <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
                           </a>
                         </th>
+                        <th width="10%">
+                          <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
+                            Push Status
+                            <span ng-show="sortType == 'uuid' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'uuid' && sortReverse" class="fa fa-caret-up"></span>
+                          </a>
+                        </th>
                         <th width="20%">
                           <a href="#" ng-click="sortType = 'uuid'; sortReverse = !sortReverse">
                             Summary
@@ -171,8 +178,22 @@
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')">
                             {{metadatum.value.title}}</a>&nbsp;
-                          <span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>
+                            <!-- show the pushed/published status in next column -->
+                            <!--<span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Published</span>-->
                           </a>
+                        </td>
+                        <td>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.published =="True"'>Pushed to Annotated Repository</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.stagedToHydroshare'>Staged to Hydroshare</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.stagedToIkewai'>Staged to Ikewai.org</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.pushedToHydroshare'>Pushed to Hydroshare</span></div>
+                          <div><span class="badge badge-success" ng-show='metadatum.value.pushedToIkewai'>Pushed to Ikewai.org</span></div>
+                          <div><span class="badge badge-warning control-label pull-left" ng-show='metadatum.value.rejectedFromHydroshare' data-toggle="tooltip" title='{{metadatum.value.rejectedReasonHydroshare}}'>Please revise (Hydroshare)</span></div>
+                          <div><span class="badge badge-warning control-label pull-left" ng-show='metadatum.value.rejectedFromIkewai' data-toggle="tooltip" title='{{metadatum.value.rejectedReasonIkewai}}'>Please revise (Ikewai.org)</span></div>
+                          <!--
+                          <div><span class="badge badge-warning" ng-show='metadatum.value.rejectedFromIkewai'>Please revise (Ikewai.org)</span></div>
+                          <div><span class="badge badge-warning" ng-show='metadatum.value.rejectedFromHydroshare'>Please revise (Hydroshare)</span></div>
+                          -->
                         </td>
                         <td>
                           <a href='#' ng-click="openViewDataDescriptor(metadatum.uuid, 'lg')"> {{metadatum.owner}}</a>
@@ -231,10 +252,29 @@
                                 </a>
                               </li>
                               <!-- TODO: for now, only allow on files currently in annotated repo.  Merge all later. -->
-                              <li ng-show='metadatum.value.published == "True"'>
-                                <a ng-click="openPush(metadatum.uuid, 'lg')">
+                              <li ng-show='metadatum.value.published == "True" && !metadatum.value.stagedToHydroshare && !metadatum.value.pushedToHydroshare'>
+                                <a ng-click="openStageHydroshare(metadatum.uuid, 'lg')">
                                   <i class="fa fa-tags"></i>
-                                  Push to Hydroshare
+                                  Stage to Hydroshare
+                                </a>
+                              </li>
+                              <li ng-show='metadatum.value.published == "True" && !metadatum.value.stagedToIkewai && !metadatum.value.pushedToIkewai'>
+                                  <a ng-click="openStageIkewai(metadatum.uuid, 'lg')">
+                                    <i class="fa fa-tags"></i>
+                                    Stage to Ikewai.org
+                                  </a>
+                              </li>
+                              <!-- TODO: for now, only allow on files currently in annotated repo.  Merge all later. -->
+                              <li ng-show='metadatum.value.published == "True" && metadatum.value.stagedToHydroshare'>
+                                <a ng-click="unstageFromHydroshare(metadatum)">
+                                  <i class="fa fa-tags"></i>
+                                  Unstage from Hydroshare
+                                </a>
+                              </li>
+                              <li ng-show='metadatum.value.published == "True" && metadatum.value.stagedToIkewai'>
+                                <a ng-click="unstageFromIkewai(metadatum)">
+                                  <i class="fa fa-tags"></i>
+                                  Unstage from Ikewai.org
                                 </a>
                               </li>
                               <li ng-show="profile.username === metadatum.owner">

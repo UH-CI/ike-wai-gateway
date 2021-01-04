@@ -1,0 +1,40 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "3623762454059553256-242ac1111-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2020-11-16T20:01:01.743-06:00",
+    "schema" : {
+      "title" : "WaterQualitySite",
+      "description" : "Describe a water quality site",
+      "type" : "object",
+      "ikewai" : true,
+      "geospatial" : true,
+      "properties" : {
+        "latitude" : {
+          "title" : "Latitude",
+          "type" : "number"
+        },
+        "longitude" : {
+          "title" : "Longitude",
+          "type" : "number"
+        }
+      }
+    },
+    "created" : "2018-08-15T10:16:34.379-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/3623762454059553256-242ac1111-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/3623762454059553256-242ac1111-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}

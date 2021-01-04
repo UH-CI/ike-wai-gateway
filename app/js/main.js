@@ -220,6 +220,7 @@ AgaveToGo.config(function($translateProvider) {
     success_metadata_update_assocation: 'Success: updated Metadata associations',
     success_metadata_add_assocation: 'Success: added Metadata associations ',
     success_metadata_update: 'Success: updated Metadata',
+    success_metadata_schemas_update: 'Success: updated Metadata Schema',
     success_metadata_add: 'Success: new Metadata created',
     success_metadata_assocation_removed: 'Your file has been unassociated from the selected Metadata',
 
@@ -2301,6 +2302,23 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
       })
 
+      .state('adminhelp', {
+        url: "/adminhelp",
+        templateUrl: "views/help/adminhelp.html",
+        data: {pageTitle: 'Help'},
+        controller: "GeneralPageController",
+        resolve: {
+            deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([{
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/controllers/GeneralPageController.js'
+                    ]
+                }]);
+            }]
+        }
+    })
+
       .state('timeseries-uuid', {
         url: "/timeseries/:uuid",
         templateUrl: "views/metadata/timeseries.html",
@@ -2402,6 +2420,29 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
           }
         })
 
+
+        .state('metadataschemas-edit', {
+          url: "/metadataschemas/edit/:uuid",
+          templateUrl: "views/metadataschemas/resource/edit.html",
+          controller: "MetadataSchemasResourceEditController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                return $ocLazyLoad.load([
+                  {
+                    serie: true,
+                    name: 'AgaveToGo',
+                    files: [
+                        'js/services/ActionsService.js',
+                        'js/services/MessageService.js',
+                        'js/services/MetadataService.js',
+                        'js/controllers/metadataschemas/resource/MetadataSchemasResourceEditController.js'
+                    ]
+                  }
+                ]);
+              }]
+          }
+      })
+
         /**********************************************************************/
         /**********************************************************************/
         /***                                                                ***/
@@ -2444,6 +2485,37 @@ AgaveToGo.config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryPro
                 }]
             }
         })
+
+        .state('stageddatadescriptors', {
+          url: "/stageddatadescriptors",
+          templateUrl: "views/stageddatadescriptors/manager.html",
+          data: {pageTitle: 'Staged Data Descriptors Manager'},
+          controller: "StagedDataDescriptorsController",
+          resolve: {
+              deps: ['$ocLazyLoad', function($ocLazyLoad) {
+                  return $ocLazyLoad.load({
+                      serie: true,
+                      name: 'AgaveToGo',
+                      insertBefore: '#ng_load_plugins_before', // load the above css files before '#ng_load_plugins_before'
+                      files: [
+                          '../assets/global/scripts/datatable.js',
+                          '../bower_components/holderjs/holder.js',
+                          'js/services/ActionsService.js',
+                          'js/services/MessageService.js',
+                          'js/services/PermissionsService.js',
+                          'js/services/MetadataService.js',
+                          'js/services/FilesMetadataService.js',
+                          'js/controllers/MetadataQueryBuilderController.js',
+                          'js/controllers/stageddatadescriptors/StagedDataDescriptorsController.js',
+                          'js/controllers/datadescriptor/DataDescriptorController.js',
+                          '../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js',
+                          '../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css',
+                          'js/controllers/stageddatadescriptors/ModalRejectDataDescriptorStagingRequestController.js'
+                      ]
+                  });
+              }]
+          }
+      })
 
         .state('mydatadescriptors-manage', {
           url: "/mydatadescriptors",

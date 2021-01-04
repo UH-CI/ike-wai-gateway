@@ -1,0 +1,41 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "internalUsername" : null,
+    "lastUpdated" : "2020-04-29T21:18:52.203-05:00",
+    "schema" : {
+      "title" : "HydroshareAccessToken",
+      "description" : "Stores a Hydroshare access token, typically good for 30 days",
+      "type" : "object",
+      "ikewai" : "TRUE",
+      "properties" : {
+        "access_token" : {
+          "type" : "string",
+          "title" : "Hydroshare Access Token"
+        },
+        "expiration_date" : {
+          "format" : "date-time",
+          "type" : "string",
+          "title" : "Expiration Date"
+        }
+      },
+      "required" : [ "access_token", "expiration_date" ]
+    },
+    "uuid" : "1208363620199034390-242ac1110-0001-013",
+    "created" : "2020-04-29T21:18:52.203-05:00",
+    "owner" : "jgeis",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1208363620199034390-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/1208363620199034390-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/jgeis"
+      }
+    }
+  } ]
+}

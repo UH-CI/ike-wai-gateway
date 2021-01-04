@@ -46,6 +46,9 @@
 
 <body class="page-on-load" ng-class="{'login': settings.layout.loginPage, 'lock-page': settings.layout.tenantPage}"
     style="background-image:url(/auth/img/pond.jpg); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; background-position: center; ">
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v8.0" nonce="IeHl32qr"></script>
+
     <!--background="/auth/img/EPSCoRStateConference2018.jpg">-->
     <!-- <div ng-spinner-bar class="page-spinner-bar">
             <div class="bounce1"></div>
@@ -53,12 +56,16 @@
             <div class="bounce3"></div>
         </div> -->
     <!-- BEGIN ACTUAL CONTENT -->
-    <div class="page-lock">
-        <div class="page-logo">
+    <div>
+        <div>
             <a class="brand" ui-sref="tenants()">
-                <img src="/assets/layouts/layout/img/ike-logo.png" alt="logo" /> </a></br>
+                <img src="/assets/layouts/layout/img/ike-logo.png" alt="logo" /> 
+            </a>
+            <a class="twitter-follow-button" data-show-screen-name="false" data-show-count="false" href="https://twitter.com/HawaiiEPSCoR">Follow @HawaiiEPSCoR</a>
+            <!--<a class="fb-like" href="https://www.facebook.com/HawaiiEPSCoR" data-layout="button" data-action="like" data-size="small" data-share="false">Like</a>-->
+            <div class="fb-like" data-href="https://www.facebook.com/HawaiiEPSCoR" data-width="" data-layout="button" data-action="like" data-size="small" data-share="false"></div>
+            </br>
         </div>
-
         <div ui-view class="page-body fade-in-up"></div>
     </div>
     <!-- END ACTUAL CONTENT -->

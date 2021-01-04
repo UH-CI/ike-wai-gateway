@@ -1,7 +1,8 @@
-angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, AccessToken, TenantsController, Commons, Alerts) {
+angular.module('AgaveAuth').controller('LoginController', function ($injector, $timeout, $http, $location, $rootScope, $scope, $state, $stateParams, settings, $localStorage, $window, AccessToken, MetaController, TenantsController, Commons, Alerts) {
 
     settings.layout.tenantPage = true;
     settings.layout.loginPage = false;
+    accessToken = "97796d6192dee73dd67ab6557f49586";
     $scope.useImplicit = true;
     $scope.randomState = function() {
         return (Math.ceil(Math.random() * 9));
@@ -20,6 +21,119 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
     } else {
         $state.go('tenants');
     }*/
+
+    TYPE_HYDROSHARE = "HS";
+    TYPE_IKEWAI = "IW";
+    TYPE_REPO_PUSH = "RP";
+    TYPE_REPO_UPDATE = "RU";
+    TYPE_PUBLIC_FILES = "PF";
+    TYPE_USAGE_STATS = "US";
+    TYPE_NOTICES = "N";
+    $scope.newDOIs = "";
+    $scope.outputString = "Welcome to the `Ikewai project's water science gateway."
+        + "  Currently, usage of the Gateway is limited to researchers involved in the `Ikewai project.<br /><br />"
+        + "  <center>All `Ikewai project data will be made publically available at <br/><b><a href='http://ikewai.org'>ikewai.org</a></b></center><br/>";
+    $scope.getRecentChangesForDisplay = function() {
+        $scope.requesting = true;
+        var data = {};
+
+        var pastDate = new Date();
+        var todaysDate = new Date();
+
+        // originally was adjusting for the zero based month/day, but realized that actually worked
+        // for us as we wanted to go back about a month.
+        //var formattedDate = pastDate.getFullYear() + "-" + pastDate.getMonth() + "-" + pastDate.getDay();
+        var formattedDate = pastDate.getFullYear()
+        + "-" + ('0' + pastDate.getMonth()).slice(-2)
+        + "-" + ('0' + pastDate.getDate()).slice(-2);
+
+        //console.log("Date: " + formattedDate);
+        var baseUrl = 'https://ikeauth.its.hawaii.edu/search/v2/data?q=';
+        var doiQuery = '{"name":"DataDescriptor","value.gotDOIDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToHydroshareQuery = '{"name":"DataDescriptor","value.pushedToHydroshareDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToIkewaiQuery = '{"name":"DataDescriptor","value.pushedToIkewaiDate":{"$gt":"' + formattedDate + '"}}';
+        var pushedToAnnotatedRepoQuery = '{"name":"PublishedFile","created":{ "$gt":"' + formattedDate + '"}}'
+        var filesRecentlyMadePublicQuery = '{"name":"PublicFile","created":{ "$gt":"' + formattedDate + '"}}'
+        var recentlyUpdatedAnnotateRepoItemsQuery = '{"name":"DataDescriptor","value.published":"True","lastUpdated":{ "$gt":"' + formattedDate + '"}}';
+        var noticesQuery = '{"name":"Notices","value.expiration_date":{ "$gt":"' + todaysDate.toISOString() + '"}}';
+        var usageStatsQuery = '{"name":"UsageStats"}'
+
+        $scope.doQuery(baseUrl, doiQuery, "Recent DOIs obtained", TYPE_HYDROSHARE);
+        //$scope.doQuery(baseUrl, pushedToHydroshareQuery, "Recent pushes to Hydroshare", TYPE_HYDROSHARE);
+        $scope.doQuery(baseUrl, pushedToIkewaiQuery, "Recent pushes to Ikewai.org", TYPE_IKEWAI);
+        $scope.doQuery(baseUrl, pushedToAnnotatedRepoQuery, "Recent pushes to annotated repository", TYPE_REPO_PUSH);
+        $scope.doQuery(baseUrl, filesRecentlyMadePublicQuery, "Files recently made public", TYPE_PUBLIC_FILES);
+        $scope.doQuery(baseUrl, recentlyUpdatedAnnotateRepoItemsQuery, "Recently updated file metadata in annotate repository", TYPE_REPO_UPDATE);
+        $scope.doQuery(baseUrl, usageStatsQuery, "Gateway data storage statistics", TYPE_USAGE_STATS);
+        $scope.doQuery(baseUrl, noticesQuery, "General Notices", TYPE_NOTICES);
+    }
+
+    $scope.doQuery = function(baseUrl, queryString, headerLabel, type) {
+        console.log("queryUrl: " + queryString);
+        var queryUrl = baseUrl + encodeURIComponent(queryString);
+        //console.log("encodedQueryUrl: " + queryUrl);
+        // access token used here was provided by Sean, it's a long lived, search only token.
+        var req = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8','Accept': '*/*',
+                'Authorization': 'Bearer ' + accessToken
+            },
+            url: queryUrl
+        }
+        $http(req).then(function (response) {
+            $scope.requesting = false;
+            angular.forEach(response.data.result, function (item, key) {
+                if (item) {
+                    //console.log("item: " + item.uuid);
+                    if (key === 0) {
+                        $scope.outputString += "<br />";
+                        $scope.outputString += "<b>" + headerLabel + "</b>: <br />";
+                    }
+                    if (type === TYPE_HYDROSHARE) {
+                        urlString = 'https://doi.org/10.4211/hs.' + item.value.hydroshareResourceId;
+                        $scope.outputString += "   <a href='" + urlString + "'>" + item.value.title + "</a>";
+                        $scope.outputString += " (" + (new Date(Date.parse(item.value.gotDOIDate)).toDateString()) + ")";
+                    }
+                    else if (type === TYPE_IKEWAI && item.value.pushedToIkewaiDate) {
+                        // https://ikeauth.its.hawaii.edu/files/v2/download/public/system/ikewai-annotated-data/new_data/PEARC__Ike_Wai_Dissemination.pdf
+                        $scope.outputString += "   " + item.value.title;
+                        $scope.outputString += " (" + (new Date(Date.parse(item.value.pushedToIkewaiDate)).toDateString()) + ")";
+                    }
+                    else if (type === TYPE_PUBLIC_FILES) {
+                        urlString = item.value.file_public_url;
+                        filename = urlString.split('/').pop();
+                        $scope.outputString += "   <a href='" + urlString + "'>" + filename  + "</a>";
+                        $scope.outputString += " (" + (new Date(Date.parse(item.created)).toDateString()) + ")";
+                    }
+                    else if (type === TYPE_REPO_PUSH) {
+                        $scope.outputString += "  " + item.value.filename;
+                        $scope.outputString += " (" + (new Date(Date.parse(item.created)).toDateString()) + ")";
+                    }
+                    else if (type === TYPE_REPO_UPDATE) {
+                        $scope.outputString += "  " + item.value.title;
+                        $scope.outputString += " (" + (new Date(Date.parse(item.lastUpdated)).toDateString()) + ")";
+                    }
+                    else if (type === TYPE_USAGE_STATS) {
+                        $scope.outputString += "   Number of files: " + item.value.allFilesCount + "<br />";
+                        $scope.outputString += "   Storage space used: " + item.value.allStorage + "<br />";
+                        $scope.outputString += "   Number of annotated files: " + item.value.annotatedFilesCount + "<br />";
+                        $scope.outputString += "   Storage space used by annotate files: " + item.value.annotatedStorage;
+                    }
+                    else if (type === TYPE_NOTICES) {
+                        console.log("Got a notice: " + item.value);
+                        $scope.outputString += "   " + item.value.notice;
+                    }
+                    else {
+                        $scope.outputString += "   " + item.value.title;
+                    }
+                    $scope.outputString += "<br />";
+                }
+            });
+        })
+    }
+
+    $scope.getRecentChangesForDisplay();
 
     $scope.getTenantByCode = function (tenantId) {
         var namedTenant = false;
@@ -42,7 +156,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
         var post_data = {};
         var url = 'https://ikewai.its.hawaii.edu:8888/login';
         var options = {
-            withCredentials: true, 
+            withCredentials: true,
             headers:{ 'Authorization':  'Basic ' + btoa($scope.username + ":" + $scope.password)}
           }
         $http.post(url,post_data, options)
@@ -73,7 +187,8 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                                     			}
                                     		}
                                     	};
-                    $location.path("/success");
+                    $localStorage.activeProfile = {"first_name":"","last_name":"","full_name":"","email":$scope.username+"@hawaii.edu","phone":"","mobile_phone":"","status":"","create_time":"","uid":0,"username": $scope.username}
+                    $window.location.href = '/app';
                 }
                 else{
                     $scope.login_error=true;
@@ -83,7 +198,7 @@ angular.module('AgaveAuth').controller('LoginController', function ($injector, $
                 $scope.requesting=false;
                 Alerts.danger({message:angular.toJson(data)});
             });
-            
+
     }
 
 

@@ -14,8 +14,8 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
 
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
-    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor']
 
     $scope.queryLimit = 99999;
 
@@ -78,6 +78,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         if ($scope.schemaBox.val7){
           typearray.push('Timeseries_Template')
         }
+        if ($scope.schemaBox.val8){
+          typearray.push('DataDescriptor')
+        }
         // if no schema types are selected, select all
         if (typearray.length == 0) {
           typearray.push('Site');
@@ -87,6 +90,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           typearray.push('Water_Quality_Site');
           typearray.push('Timeseries');
           typearray.push('Timeseries_Template');
+          typearray.push('DataDescriptor');
         }
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)

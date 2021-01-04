@@ -1,0 +1,204 @@
+{
+  "status" : "success",
+  "message" : null,
+  "version" : "2.2.22-r7deb380",
+  "result" : [ {
+    "uuid" : "6594733581855363561-242ac1110-0001-013",
+    "internalUsername" : null,
+    "lastUpdated" : "2019-06-25T14:31:38.623-05:00",
+    "schema" : {
+      "title" : "RainfallStation",
+      "description" : "Describe a rainfall gauge associated with an object",
+      "type" : "object",
+      "ikewai" : true,
+      "geospatial" : true,
+      "properties" : {
+        "skn" : {
+          "title" : "State Idenitifier- needs to be unique",
+          "type" : "string"
+        },
+        "station_name" : {
+          "title" : "Station name",
+          "type" : "string"
+        },
+        "station_id" : {
+          "title" : "Station Identifier",
+          "type" : "string"
+        },
+        "nws_sid" : {
+          "title" : "NWS Station ID.",
+          "type" : "string"
+        },
+        "island" : {
+          "title" : "Island",
+          "type" : "string"
+        },
+        "network" : {
+          "title" : "Station Network",
+          "type" : "string"
+        },
+        "elevation" : {
+          "title" : "Elevation in meters.",
+          "type" : "number"
+        },
+        "start_year" : {
+          "title" : "Year station began collecting.",
+          "type" : "number"
+        },
+        "end_year" : {
+          "title" : "Year station stopped collecting.",
+          "type" : "number"
+        },
+        "latitude" : {
+          "title" : "Latitude",
+          "type" : "number"
+        },
+        "longitude" : {
+          "title" : "Longitude",
+          "type" : "number"
+        },
+        "rf" : {
+          "title" : "RF",
+          "type" : "string"
+        },
+        "ta" : {
+          "title" : "Ta",
+          "type" : "string"
+        },
+        "rh" : {
+          "title" : "RH",
+          "type" : "string"
+        },
+        "ws" : {
+          "title" : "WS",
+          "type" : "string"
+        },
+        "sw" : {
+          "title" : "Sw",
+          "type" : "string"
+        },
+        "lw" : {
+          "title" : "Lw",
+          "type" : "string"
+        },
+        "observer" : {
+          "title" : "Entity observing the station.",
+          "type" : "string"
+        },
+        "data_source" : {
+          "title" : "Data Source",
+          "type" : "string"
+        },
+        "edit_notes" : {
+          "title" : "Edit Notes",
+          "type" : "string"
+        },
+        "nwsli" : {
+          "title" : "nwsli",
+          "type" : "string"
+        },
+        "nesdis_id" : {
+          "title" : "nesdis_id",
+          "type" : "string"
+        },
+        "name_hads" : {
+          "title" : "Name in HADS database.",
+          "type" : "string"
+        },
+        "hads_elev" : {
+          "title" : "HADS database elevation.",
+          "type" : "number"
+        },
+        "owner_code_HADS" : {
+          "title" : "Owner Code in HADS Database.",
+          "type" : "string"
+        },
+        "vars_hads" : {
+          "title" : "Variable in HADS.",
+          "type" : "string"
+        },
+        "latitude_d_hads" : {
+          "title" : "Latitude d HADS.",
+          "type" : "number"
+        },
+        "longitude_d_hads" : {
+          "title" : "Longitude d HADS.",
+          "type" : "number"
+        },
+        "match_notes" : {
+          "title" : "Match Notest",
+          "type" : "string"
+        },
+        "name_ncei" : {
+          "title" : "Name NCEI.",
+          "type" : "string"
+        },
+        "mindate_ncei" : {
+          "title" : "Mindate NCEI.",
+          "type" : "string"
+        },
+        "maxdate_ncei" : {
+          "title" : "Maxdate NCEI.",
+          "type" : "string"
+        },
+        "latitude_ncei" : {
+          "title" : "Latitude NCEI.",
+          "type" : "number"
+        },
+        "longitude_ncei" : {
+          "title" : "Longitude NCEI.",
+          "type" : "number"
+        },
+        "name_scan" : {
+          "title" : "Name SCAN.",
+          "type" : "string"
+        },
+        "id_scan" : {
+          "title" : "ID SCAN.",
+          "type" : "string"
+        },
+        "latitude_scan" : {
+          "title" : "Latitude SCAN.",
+          "type" : "number"
+        },
+        "longitude_scan" : {
+          "title" : "Longitude SCAN.",
+          "type" : "number"
+        },
+        "nws_kk_name" : {
+          "title" : "NWS KK Name.",
+          "type" : "string"
+        },
+        "kk_nws_match_notes" : {
+          "title" : "KK NWS Match Notes.",
+          "type" : "string"
+        },
+        "name" : {
+          "title" : "Name.",
+          "type" : "string"
+        },
+        "nws_id" : {
+          "title" : "NWS ID.",
+          "type" : "string"
+        },
+        "nws_name" : {
+          "title" : "NWS  Name.",
+          "type" : "string"
+        }
+      }
+    },
+    "created" : "2019-06-24T18:04:02.358-05:00",
+    "owner" : "seanbc",
+    "_links" : {
+      "self" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6594733581855363561-242ac1110-0001-013"
+      },
+      "permissions" : {
+        "href" : "https://ikeauth.its.hawaii.edu/meta/v2/schemas/6594733581855363561-242ac1110-0001-013/pems"
+      },
+      "owner" : {
+        "href" : "https://ikeauth.its.hawaii.edu/profiles/v2/seanbc"
+      }
+    }
+  } ]
+}
