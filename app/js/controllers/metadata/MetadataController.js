@@ -134,7 +134,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
             $scope.requesting = false;
           },
           function(response){
-            MessageService.handle(response, $translate.instant('error_metadata_list'));
+            // changed because the message would never go away and it got irritating fast.
+            //MessageService.handle(response, $translate.instant('error_metadata_list'));
+            App.alert({type: 'danger',message: $translate.instant('error_metadata_list'),closeInSeconds: 5 });
             $scope.requesting = false;
           }
       );
