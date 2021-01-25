@@ -14,8 +14,8 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     //Don't display metadata schema types as options
     $scope.ignoreSchemaType = ['PublishedFile'];
 
-    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor']
-    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor']
+    $scope.approvedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor','Organization']
+    $scope.selectedSchema = ['Well','Site','Water_Quality_Site','Variable','Person','Timeseries_Template','DataDescriptor','Organization']
 
     $scope.queryLimit = 99999;
 
@@ -29,7 +29,7 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
     $scope.query = "{'name':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}";
     $scope.schemaQuery = "{'schema.title':{'$in': ['" + $scope.approvedSchema.join("','") +"'] }}"
 
-    $scope.schemaBox = {val1:false,val2:false,val3:false,val4:false,val5:false};
+    $scope.schemaBox = {val1:false,val2:false,val3:false,val4:false,val5:false,val6:false,val7:false,val8:false,val9:false};
     $scope.wellbox = true;
     $scope.searchField = {value:''}
 
@@ -42,19 +42,6 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         var andarray = []
         var innerquery = {}
         var typearray = []
-        if ($scope.searchField.value != ''){
-          angular.forEach($scope.metadataschema, function(value, key){
-            //alert(angular.toJson(value))
-            if($scope.approvedSchema.indexOf(value.schema.title) > -1){
-              angular.forEach(value.schema.properties, function(val, key){
-                var valquery = {}
-                valquery['value.'+key] = {$regex: $scope.searchField.value}
-                queryarray.push(valquery)
-              })
-            }
-          })
-          orquery['$or'] = queryarray;
-       }
         var typequery = {}
 
         if ($scope.schemaBox.val1){
@@ -81,6 +68,9 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
         if ($scope.schemaBox.val8){
           typearray.push('DataDescriptor')
         }
+        if ($scope.schemaBox.val9){
+          typearray.push('Organization')
+        }
         // if no schema types are selected, select all
         if (typearray.length == 0) {
           typearray.push('Site');
@@ -91,7 +81,23 @@ angular.module('AgaveToGo').controller('MetadataController', function ($scope, $
           typearray.push('Timeseries');
           typearray.push('Timeseries_Template');
           typearray.push('DataDescriptor');
+          typearray.push('Organization');
         }
+        // had to move this down here so we only retrieved the fields of schemas that were actually selected.
+        // note that this will still fail if too many schema types are selected as the query gets too big.
+        if ($scope.searchField.value != ''){
+          angular.forEach($scope.metadataschema, function(value, key) {
+            if(typearray.indexOf(value.schema.title) > -1 && $scope.approvedSchema.indexOf(value.schema.title) > -1){
+              angular.forEach(value.schema.properties, function(val, key){
+                var valquery = {}
+                valquery['value.'+key] = {$regex: $scope.searchField.value}
+                queryarray.push(valquery)
+              })
+            }
+          })
+          orquery['$or'] = queryarray;
+       }
+
         typequery['name'] = {'$in': typearray}
         andarray.push(typequery)
         andarray.push(orquery)

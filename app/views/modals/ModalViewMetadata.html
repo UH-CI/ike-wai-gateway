@@ -83,6 +83,18 @@
              <td>Created</td>
              <td>{{metadatum.created}}</td>
            </tr>
+           <tr ng-if="metadatum.uuid">
+            <td>UUID</td>
+            <td>{{metadatum.uuid}}</td>
+          </tr>
+          <tr ng-if="metadatum.schemaId">
+            <td>Schema ID</td>
+            <td>{{metadatum.schemaId}}</td>
+          </tr>
+          <tr ng-if="metadatum.name">
+            <td>Name</td>
+            <td>{{metadatum.name}}</td>
+          </tr>
           </tbody>
         </table>
         <!--

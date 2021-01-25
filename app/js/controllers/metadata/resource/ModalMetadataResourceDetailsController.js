@@ -17,6 +17,8 @@ angular.module('AgaveToGo').controller('ModalMetadataResourceDetailsController',
   $scope.order['Person'] =['first_name','last_name','email','orcid','organization','address','phone','url']
   $scope.order['Organization'] = ['name','email','address','phone','url']
   $scope.order['Water_Quality_Site'] = ['name','latitude','longitude','description','MonitoringLocationName','siteUrl','MonitoringLocationTypeName','ProviderName','activityCount','HUCEightDigitCode','ResolvedMonitoringLocationTypeName','OrganizationFormalName','OrganizationIdentifier','resultCount','MonitoringLocationIdentifier','variables','keywords']
+  $scope.order['DataDescriptor'] = ['title','description','organizations','creators','contributors','formats','subjects','data_states','data_types','contributors_agency','license_rights','license_permission','subject','start_datetime','end_datetime','relations','language','publisher','date_published','project_type','funding','pushedToIkewai','pushedToHydroshare','stagedToIkewai','stagedToHydroshare','rejectedFromHydroshare','rejectedReasonHydroshare','rejectedFromIkewai','published','hydroshareResourceId','stagedToHydroshareDate','institution']
+
   //$scope.order['Subject'] = ['word','uuid','short_heirarchy','full_heirarchy','display']
 
   $scope.get_editors = function(){
