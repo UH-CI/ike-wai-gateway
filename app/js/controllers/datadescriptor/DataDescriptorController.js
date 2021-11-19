@@ -1114,65 +1114,92 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     $scope.confirmAction(metadatum.name, metadatum, 'delete', $scope[$scope._COLLECTION_NAME])
   }
 
-  //The save
+  $scope.isValidDate = function (dateString) {
+    if (dateString && typeof dateString !== 'undefined') {
+      var regEx = /^\d{4}-\d{2}-\d{2}$/;
+      if(!dateString.match(regEx)) return false;  // Invalid format
+      var d = new Date(dateString);
+      var dNum = d.getTime();
+      if(!dNum && dNum !== 0) return false; // NaN value, Invalid date
+      return d.toISOString().slice(0,10) === dateString;
+    }
+    // return true if undefined or empty, they don't have to set it
+    return true;
+  }
+  
+
+  //The save, happens the first time a dd is saved, after that, the update method gets called instead.
   $scope.saveDataDescriptor = function (container_id="") {
     //console.log("JEN DDC: saveDataDescriptor: " + $scope.datadescriptor.uuid);
     $scope.requesting = true;
     $scope.$broadcast('schemaFormValidate');
     // check for required fields before continuing with the save process
     if ($scope.datadescriptor.creators.length > 0 && $scope.datadescriptor.title && $scope.datadescriptor.data_states.length > 0) {
-      // Then we check if the form is valid
-      //	if (form.$valid) {
-      MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-        .then(function (response) {
-          var body = {};
-          body.name = "DataDescriptor";
-          body.value = $scope.datadescriptor;
-          body.schemaId = response;
-          if($stateParams.fileUuids){
-            body.associationIds = $stateParams.fileUuids
-          }
+      // verify date is in correct format
+      if ($scope.isValidDate($scope.datadescriptor.start_datetime) && $scope.isValidDate($scope.datadescriptor.end_datetime)) {
+        // Then we check if the form is valid
+        //	if (form.$valid) {
+        MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+          .then(function (response) {
+            var body = {};
+            body.name = "DataDescriptor";
+            body.value = $scope.datadescriptor;
+            body.schemaId = response;
+            if($stateParams.fileUuids){
+              body.associationIds = $stateParams.fileUuids
+            }
 
-          MetaController.addMetadata(body)
-            .then(
-              function (response) {
-                $scope.metadataUuid = response.result.uuid;
-                $scope.ddUuid = $scope.metadataUuid;
-                //add the default permissions for the system in addition to the owners
-                MetadataService.addDefaultPermissions($scope.metadataUuid);
-                if ($scope.fileUuid && $scope.fileUuid != undefined) {
-                  $scope.addAssociation($scope.metadataUuid, $scope.fileUuid)
+            MetaController.addMetadata(body)
+              .then(
+                function (response) {
+                  $scope.metadataUuid = response.result.uuid;
+                  $scope.ddUuid = $scope.metadataUuid;
+                  //add the default permissions for the system in addition to the owners
+                  MetadataService.addDefaultPermissions($scope.metadataUuid);
+                  if ($scope.fileUuid && $scope.fileUuid != undefined) {
+                    $scope.addAssociation($scope.metadataUuid, $scope.fileUuid)
+                  }
+                  // JEN TODO: need to add a mechanism to loop through all the files and add the association.
+                  App.alert({
+                    message: "Success Data Descriptor Saved",
+                    closeInSeconds: 5
+                  });
+
+                  $scope.wizardSecondPage = true;
+                  $scope.edit_data_descriptor = true;
+                  $scope.has_data_descriptor = true;
+                  $scope.action = "edit";
+                  $rootScope.$broadcast('metadataUpdated');
+                },
+                function (response) {
+                  MessageService.handle(response, $translate.instant('error_metadata_add'));
+                  $scope.requesting = false;
                 }
-                // JEN TODO: need to add a mechanism to loop through all the files and add the association.
-                App.alert({
-                  message: "Success Data Descriptor Saved",
-                  closeInSeconds: 5
-                });
-
-                $scope.wizardSecondPage = true;
-                $scope.edit_data_descriptor = true;
-                $scope.has_data_descriptor = true;
-                $scope.action = "edit";
-                $rootScope.$broadcast('metadataUpdated');
-              },
-              function (response) {
-                MessageService.handle(response, $translate.instant('error_metadata_add'));
-                $scope.requesting = false;
-              }
-            );
-          //}
-          //else{
-          $scope.requesting = false;
-          //}
-        })
-    } else {
+              );
+            //}
+            //else{
+            $scope.requesting = false;
+            //}
+          })
+      } else { // date not valid
+        $scope.requesting = false;
+        $scope.missing_values_error = true;
+        App.alert({
+          type: 'danger',
+          container: container_id,
+          message: "Date is not in correct format, must be yyyy-mm-dd - Please correct and submit again.",
+          closeInSeconds: 20,
+          focus: true }
+        );
+      }
+    } else { // creators, title, or data state is empty
       $scope.requesting = false;
       $scope.missing_values_error = true;
       App.alert({
         type: 'danger',
         container: container_id,
         message: "Title, Author, and Data State are required fields - Please correct and submit again.",
-        closeInSeconds: 5,
+        closeInSeconds: 20,
         focus: true }
       );
     }
@@ -1192,35 +1219,49 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         && $scope.datadescriptor.title
         && $scope.datadescriptor.data_states
         && $scope.datadescriptor.data_states.length > 0) {
-      // Then we check if the form is valid
-      //	if (form.$valid) {
-      MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
-        .then(function (response) {
-          var body = {};
-          body.name = $scope.data_descriptor_metadatum.name;
-          body.value = $scope.datadescriptor;
-          body.schemaId = $scope.data_descriptor_metadatum.schemaId;
-          body.associationIds = $scope.data_descriptor_metadatum.associationIds;
-          MetaController.updateMetadata(body, $scope.data_descriptor_metadatum.uuid)
-            .then(
-              function (response) {
-                $scope.metadataUuid = response.result.uuid;
-                App.alert({
-                  message: "Success Data Descriptor Saved",
-                  closeInSeconds: 5
-                });
-                //$rootScope.$broadcast('metadataUpdated');
-                $scope.cancelEditDataDescriptorWithBroadcast();
-              },
-              function (response) {
-                MessageService.handle(response, $translate.instant('error_metadata_add'));
-                $scope.requesting = false;
-              }
-            );
-          //}
-          //else{
-          //	$scope.requesting = false;
-          //}
+
+        // Then we check if the form is valid
+        //	if (form.$valid) {
+        MetadataService.fetchSystemMetadataSchemaUuid('DataDescriptor')
+          .then(function (response) {
+            var body = {};
+            body.name = $scope.data_descriptor_metadatum.name;
+            body.value = $scope.datadescriptor;
+            body.schemaId = $scope.data_descriptor_metadatum.schemaId;
+            body.associationIds = $scope.data_descriptor_metadatum.associationIds;
+            // verify date is in correct format
+            if ($scope.isValidDate($scope.datadescriptor.start_datetime) && $scope.isValidDate($scope.datadescriptor.end_datetime)) {
+              MetaController.updateMetadata(body, $scope.data_descriptor_metadatum.uuid)
+                .then(
+                  function (response) {
+                    $scope.metadataUuid = response.result.uuid;
+                    App.alert({
+                      message: "Success Data Descriptor Saved",
+                      closeInSeconds: 5
+                    });
+                    //$rootScope.$broadcast('metadataUpdated');
+                    $scope.cancelEditDataDescriptorWithBroadcast();
+                  },
+                  function (response) {
+                    MessageService.handle(response, $translate.instant('error_metadata_add'));
+                    $scope.requesting = false;
+                  }
+                );
+            } else { // date not valid
+              $scope.requesting = false;
+              $scope.missing_values_error = true;
+              App.alert({
+                type: 'danger',
+                container: container_id,
+                message: "Date is not in correct format, must be yyyy-mm-dd - Please correct and submit again.",
+                closeInSeconds: 20,
+                focus: true }
+              );
+            }
+            //}
+            //else{
+            //	$scope.requesting = false;
+            //}
         })
     } else {
       $scope.requesting = false;
@@ -1232,7 +1273,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
         type: 'danger',
         container: container_id,
         message: "Title, Author, and Data State are required fields - Please correct and submit again.",
-        closeInSeconds: 5,
+        closeInSeconds: 20,
         focus: true }
       );
     }
