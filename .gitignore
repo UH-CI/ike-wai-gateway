@@ -1,5 +1,7 @@
 app/views/help/tiffs
 auth/scripts/implicit.js
+assets/global/
+assets/apps/css/
 rotate_keys.sh
 bower_components
 node_modules/
