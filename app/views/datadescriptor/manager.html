@@ -115,7 +115,7 @@
               <tr ng-repeat="link in data_descriptor_metadatum._links.associationIds">
                 <td ng-if="link.title == 'file'">
                   <!--<a href="#/data/explorer/{{link.href.split('system')[1]}}"><i class="fa fa-file-o">{{link.href.split('system')[1]}}</i></a>-->
-                  {{link.href.split('system')[1]}}  
+                  {{link.href.split('system')[1]}}  <div ng-show="edit_data_descriptor"><button type="button" class="btn btn-success text-center"  ng-click="unAssociateMetadata([link.rel])"><i class="fa fa-trash"></i> {{"Remove Association" | translate}}</button></div>
                   <td ng-show="link.href.includes('ikewai-annotated-data')">
                       <button type="button" class="btn btn-success text-center"  ng-click="download([link.href])"><i class="fa fa-download"></i> {{"Download" | translate}}</button>
                     </td>
