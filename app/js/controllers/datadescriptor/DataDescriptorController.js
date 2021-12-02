@@ -903,7 +903,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
   // an old method and don't want a bunch of arbitrary changes to show
   // during a comparison, I just do an assignment on the first line.
   $scope.addClone = function (dataDescriptorUuid, fileUuid) {
-    //console.log("JEN DDC: addClone from dd: " + dataDescriptorUuid);
+    //console.log("JEN DDC: DataDescriptorController.addClone from dd: " + dataDescriptorUuid);
     metadatumUuid = dataDescriptorUuid;
     if (metadatumUuid) {
       $scope.requesting = true;
@@ -914,6 +914,27 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
           body.name = $scope.metadatum.name;
           body.value = $scope.metadatum.value;
           body.schemaId = $scope.metadatum.schemaId;
+
+          // clear out any of the stage/push/doi stuff as this is supposed to be a new data descriptor
+          body.value.ikewaiPushed = "False";
+          body.value.pushedToIkewai = false;
+          body.value.pushedToIkewaiDate = "";
+          body.value.hydroPushed = "False";
+          body.value.pushedToHydroshare = false;
+          body.value.pushedToHydroshareDate = "";
+          body.value.stagedToIkewai = false;
+          body.value.stagedToHydroshare = false;
+          body.value.stagedToHydroshareDate = "";
+          body.value.rejectedFromHydroshare = false;
+          body.value.rejectedReasonHydroshare = "";
+          body.value.rejectedFromIkewai = false;
+          body.value.rejectedReasonIkewai = "";
+          body.value.hydroshareResourceId = "";
+          body.value.hasDOI = false;
+          body.value.doi = "";
+          body.value.gotDOIDate = "";
+          body.value.published = "False";
+
           if($stateParams.fileUuids){
             body.associationIds = $stateParams.fileUuids
           }
@@ -955,7 +976,7 @@ angular.module('AgaveToGo').controller('DataDescriptorController', function ($sc
     } else {
       App.alert({
         type: 'danger',
-        message: $translate.instant('Error access existing Data Descritpor!'),
+        message: $translate.instant('Error accessing existing Data Descriptor!'),
         closeInSeconds: 5
       });
     }
